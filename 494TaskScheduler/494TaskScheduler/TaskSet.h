@@ -39,6 +39,12 @@ public:
 	/** Sorts the internal task set representation by WCET. **/
 	stack<Task> sortTaskSetByWCET();
 
+	stack<Task> addTaskByUtilization(stack<Task> taskStack, Task newTask);
+
+	stack<Task> addTaskByWCET(stack<Task> taskStack, Task newTask);
+
+	stack<Task> addTaskByPeriod(stack<Task> taskStack, Task newTask);
+
 	~TaskSet(void);
 };	
 
