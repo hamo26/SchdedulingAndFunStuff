@@ -44,6 +44,21 @@ stack<Task> TaskSet::createStackFromVector(vector<Task> taskVector)
 	return taskStack;
 }
 
+stack<Task> TaskSet::addTaskByUtilization(stack<Task> taskStack, Task task)
+{
+	return taskStack;
+}
+
+stack<Task> TaskSet::addTaskByWCET(stack<Task> taskStack, Task task)
+{
+	return taskStack;
+}
+
+stack<Task> TaskSet::addTaskByPeriod(stack<Task> taskStack, Task task)
+{
+	return taskStack;
+}
+
 TaskSet::~TaskSet(void)
 {
 	//Empty for now.
