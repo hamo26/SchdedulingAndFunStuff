@@ -22,8 +22,8 @@ bool TaskSetInputParser::parseInputFile(string relativeFilePath)
 		return false;
 	} else {
 		string currentLine;
+		vector<Task> *currentTaskSet = NULL;
 		while (getline(inputFile, currentLine)) {
-			vector<Task> *currentTaskSet = NULL;
 			if (currentLine == BEGIN_TASK_SET) {
 				cout << "Parsing new task set.\n";
 				currentTaskSet = new vector<Task>();
