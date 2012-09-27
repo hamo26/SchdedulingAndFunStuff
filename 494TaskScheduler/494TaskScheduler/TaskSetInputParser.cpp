@@ -35,6 +35,8 @@ bool TaskSetInputParser::parseInputFile(string relativeFilePath)
 				}
 				delete currentTaskSet;
 				continue;
+			} else if(currentLine == "") {
+				continue;
 			} else {
 				try 
 				{
