@@ -6,6 +6,7 @@ Task::Task(double worstCaseExecutionTime, double relativeDeadline, int period)
 	i_period = period;
 	f_relativeDeadline = relativeDeadline;
 	f_wcet = worstCaseExecutionTime;
+	i_nextArrival = 0;
 }
 
 int Task::getPeriod() { return i_period; }
@@ -20,6 +21,7 @@ double Task::getUtlization() { return (f_wcet / (double) i_period); }
 
 void Task::incrementProcessorTimeConsumed(float incrementValue) { f_processorTimeConsumed+=incrementValue; }
 
+void Task::updateNextArrivalTime(int time) {i_nextArrival = time;}
 Task::~Task() { return; }
 
 
