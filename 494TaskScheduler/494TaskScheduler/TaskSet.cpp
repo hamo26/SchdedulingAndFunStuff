@@ -61,11 +61,12 @@ stack<Task> TaskSet::addTaskByUtilization(stack<Task> taskStack, Task newTask)
 				task = taskStack.pop;
 				newStack.push(task);
 			}
+		}
 	}
 	return newStack;
 }
 
-stack<Task> TaskSet::addTaskByWCET(stack<Task> taskStack, Task task)
+stack<Task> TaskSet::addTaskByWCET(stack<Task> taskStack, Task newTask)
 {
 	stack<Task> newStack;
 	Task task;
@@ -87,27 +88,27 @@ stack<Task> TaskSet::addTaskByWCET(stack<Task> taskStack, Task task)
 	return newStack;
 }
 
-stack<Task> TaskSet::addTaskByPeriod(stack<Task> taskStack, Task task)
+stack<Task> TaskSet::addTaskByPeriod(stack<Task> taskStack, Task newTask)
+{
+	stack<Task> newStack;
+	Task task;
+	while(!taskStack.empty)
 	{
-		stack<Task> newStack;
-		Task task;
-		while(!taskStack.empty)
+		task = taskStack.pop;
+		if (compareWCET(newTask, task))
+			newStack.push(task);
+		else
 		{
-			task = taskStack.pop;
-			if (compareWCET(newTask, task))
-				newStack.push(task);
-			else
+			newStack.push(newTask);
+			while (!taskStack.empty)
 			{
-				newStack.push(newTask);
-				while (!taskStack.empty)
-				{
-					task = taskStack.pop;
-					newStack.push(task);
-				}
+				task = taskStack.pop;
+				newStack.push(task);
 			}
 		}
-		return newStack;
 	}
+	return newStack;
+}
 
 TaskSet::~TaskSet(void)
 {
