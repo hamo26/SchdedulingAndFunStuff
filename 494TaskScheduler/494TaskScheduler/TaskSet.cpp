@@ -1,4 +1,5 @@
 #include "stdafx.h"
+#include <iostream>
 #include <algorithm>
 #include "TaskSet.h"
 
@@ -9,10 +10,13 @@ TaskSet::TaskSet(vector<Task> taskSet)
 	v_taskSet = taskSet;
 }
 
-bool compareTaskPeriods(Task taskA, Task taskB) { return (taskA.getPeriod() < taskB.getPeriod()); }
+/** We want the top of the stack to have the shortest period for RM.**/
+bool compareTaskPeriods(Task taskA, Task taskB) { return (taskA.getPeriod() > taskB.getPeriod()); }
 
-bool compareWCET(Task taskA, Task taskB) { return (taskA.getWorstCaseExecutionTime() < taskB.getWorstCaseExecutionTime()); }
-	
+/** We want the top of the stack to have the shortest wcet for SJF.**/
+bool compareWCET(Task taskA, Task taskB) { return (taskA.getWorstCaseExecutionTime() > taskB.getWorstCaseExecutionTime()); }
+
+/**We want the top of the stack to have the largest utilization for MUF.**/
 bool compareUtilization(Task taskA, Task taskB) { return (taskA.getUtlization() < taskB.getUtlization()); }
 
 stack<Task> TaskSet::sortTaskSetByUtilization()
@@ -42,6 +46,17 @@ stack<Task> TaskSet::createStackFromVector(vector<Task> taskVector)
 		taskStack.push(*iterator);
 	}
 	return taskStack;
+}
+
+void TaskSet::printTaskSet() 
+{
+	vector<Task>::iterator iterator;
+	int i=1;
+	for(iterator = v_taskSet.begin(); iterator != v_taskSet.end(); ++iterator) {
+		cout << "Task" << i << ":" << "WCET: " << iterator->getWorstCaseExecutionTime() 
+			<< " RDL: " << iterator->getRelativeDeadline() << " Period: " << iterator->getPeriod() << "\n"; 
+		i++;
+	}
 }
 
 TaskSet::~TaskSet(void)

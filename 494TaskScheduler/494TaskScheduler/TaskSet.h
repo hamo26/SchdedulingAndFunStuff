@@ -28,8 +28,10 @@ public:
 	/** Constructor taking vector of tasks representing a task set as a parameter. **/
 	TaskSet(vector<Task> taskSet);
 
-	//SORTING METHODS
+	/**Print task set being analyzed to the screen.**/
+	void printTaskSet();
 
+	//SORTING METHODS
 	/** Sorts the internal task set representation by period. **/
 	stack<Task> sortTaskSetByPeriod();
 
