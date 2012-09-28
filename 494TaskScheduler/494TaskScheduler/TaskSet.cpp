@@ -48,6 +48,7 @@ stack<Task> TaskSet::createStackFromVector(vector<Task> taskVector)
 	return taskStack;
 }
 
+
 void TaskSet::printTaskSet() 
 {
 	vector<Task>::iterator iterator;
@@ -57,6 +58,24 @@ void TaskSet::printTaskSet()
 			<< " RDL: " << iterator->getRelativeDeadline() << " Period: " << iterator->getPeriod() << "\n"; 
 		i++;
 	}
+}
+
+stack<Task> TaskSet::addTaskByUtilization(stack<Task> taskStack, Task newTask)
+{
+	v_taskSet.push_back(newTask);
+	return sortTaskSetByUtilization();
+}
+
+stack<Task> TaskSet::addTaskByWCET(stack<Task> taskStack, Task newTask)
+{
+	v_taskSet.push_back(newTask);
+	return sortTaskSetByWCET();
+}
+
+stack<Task> TaskSet::addTaskByPeriod(stack<Task> taskStack, Task newTask)
+{
+	v_taskSet.push_back(newTask);
+	return sortTaskSetByPeriod();
 }
 
 TaskSet::~TaskSet(void)

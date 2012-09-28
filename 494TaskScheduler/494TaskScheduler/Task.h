@@ -21,6 +21,7 @@ private:
 	/** This parameter may be used to keep track of how many "clock ticks" the task has executed **/
 	double f_processorTimeConsumed; 
 	
+	int i_nextArrival;
 	/**
 	Flag to signal that the task has finished execution.
 	**/
@@ -51,6 +52,8 @@ public:
 
 	//SETTERS
 	void incrementProcessorTimeConsumed(float incrementValue);
+
+	void updateNextArrivalTime(int time);
 
 	/**
 	Default Destructor
