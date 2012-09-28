@@ -19,6 +19,8 @@ double Task::getWorstCaseExecutionTime() { return f_wcet; }
 
 double Task::getUtlization() { return (f_wcet / (double) i_period); }
 
+int Task::getNextArrivalTime() {return i_nextArrival;}
+
 void Task::incrementProcessorTimeConsumed(float incrementValue) { f_processorTimeConsumed+=incrementValue; }
 
 void Task::updateNextArrivalTime(int time) {i_nextArrival = time;}

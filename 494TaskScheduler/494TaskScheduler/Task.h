@@ -50,6 +50,8 @@ public:
 	
 	double getUtlization();
 
+	int getNextArrivalTime();
+
 	//SETTERS
 	void incrementProcessorTimeConsumed(float incrementValue);
 
