@@ -22,6 +22,7 @@ private:
 	double f_processorTimeConsumed; 
 	
 	int i_nextArrival;
+	int i_timeKeeper;
 	/**
 	Flag to signal that the task has finished execution.
 	**/
@@ -52,10 +53,16 @@ public:
 
 	int getNextArrivalTime();
 
+	int getTimeKeeper();
+
 	//SETTERS
 	void incrementProcessorTimeConsumed(float incrementValue);
 
 	void updateNextArrivalTime(int time);
+
+	void timeKeep(int time);
+
+	void complete(bool complete);
 
 	/**
 	Default Destructor
