@@ -3,7 +3,7 @@
 #include "BaseAnalyzer.h"
 
 /**Liu and Layland Analyzer implements BaseAnalyzer.**/
-class LALAnalyzer : BaseAnalyzer {
+class LALAnalyzer : public BaseAnalyzer {
 public:
 	/**Constructor.**/
 	LALAnalyzer(TaskSet taskSet) : BaseAnalyzer(taskSet) {};
@@ -14,7 +14,7 @@ public:
 
 };
 
-class HBAnalyzer : BaseAnalyzer {
+class HBAnalyzer : public BaseAnalyzer {
 public:
 	/**Contructor.**/
 	HBAnalyzer(TaskSet taskSet) : BaseAnalyzer(taskSet) { };
