@@ -13,11 +13,11 @@ public:
 		while (!tasks.empty()) {
 			Task task = tasks.top();
 			if (task.getRelativeDeadline() < task.getPeriod()) {
-				return false;
+				return true;
 			}
 			tasks.pop();
 		}
-		return true;
+		return false;
 	}
 
 	

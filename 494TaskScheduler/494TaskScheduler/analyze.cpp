@@ -32,13 +32,12 @@ public:
 
 	/**Run profile for Liu and Layland.**/
 	void AlgorithmicProfiler::profile() {
-		double d_time_init, d_time_end;
+		time_t t_time_init, t_time_end;
 		
-		d_time_init = (double) clock() / CLOCKS_PER_SEC;
-		b_isTaskSetScheduable = p_analyzer->isTaskSetScheduable();
-		d_time_end = (double) clock();
-		
-		d_deltaTime = (((double) clock() / CLOCKS_PER_SEC) - d_time_init)*pow(10,3); //Get the time elapsed in milliseconds.
+		time(&t_time_init);
+ 		b_isTaskSetScheduable = p_analyzer->isTaskSetScheduable();
+		time(&t_time_end);
+		d_deltaTime = difftime(t_time_end, t_time_init); 
 		return;
 	}
 

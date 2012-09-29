@@ -25,11 +25,9 @@ bool TaskSetInputParser::parseInputFile(string relativeFilePath)
 		vector<Task> *currentTaskSet = NULL;
 		while (getline(inputFile, currentLine)) {
 			if (currentLine == BEGIN_TASK_SET) {
-				cout << "Parsing new task set.\n";
 				currentTaskSet = new vector<Task>();
 				continue;
 			} else if(currentLine == END_TASK_SET) {
-				cout << "Finished parsing task set.\n";
 				if (currentTaskSet) {
 					q_taskSets.push(*currentTaskSet);
 				}
@@ -86,6 +84,11 @@ TaskSet TaskSetInputParser::getNext()
 bool TaskSetInputParser::isEmpty() 
 {
 	return q_taskSets.empty();
+}
+
+int TaskSetInputParser::getTaskSetSize()
+{
+	return q_taskSets.size();
 }
 
 TaskSetInputParser::~TaskSetInputParser(void)

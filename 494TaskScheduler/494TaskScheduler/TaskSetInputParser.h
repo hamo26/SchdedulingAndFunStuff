@@ -37,6 +37,9 @@ public:
 	/** Determines whether task set is empty. **/
 	bool isEmpty();
 
+	/** Gets the current size of the task set.**/
+	int getTaskSetSize();
+
 	/**Destructor**/
 	~TaskSetInputParser(void);
 };
