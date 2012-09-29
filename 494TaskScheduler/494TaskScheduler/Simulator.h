@@ -15,15 +15,17 @@
 class Simulator
 {
 private:
-
+	TaskSet v_ts;
 public:
-	Simulator();
+	Simulator(TaskSet ts);
 
-	bool RM(stack<Task> set);
-	bool SJF(stack<Task> set);
-	bool MUF(stack<Task> set);
+	bool RM();
+	bool SJF();
+	bool MUF();
 	queue<Task> addToWait(queue<Task> waitQueue, Task t);
-	stack<Task> checkNewArrivals(int time, queue<Task> waitQueue, stack<Task> readyStack);
+	int checkNewArrivals(int time, queue<Task> waitQueue);
+	bool Simulator::addNewTaskOnPeriod(int time, Task t);
+
 
 };
 
