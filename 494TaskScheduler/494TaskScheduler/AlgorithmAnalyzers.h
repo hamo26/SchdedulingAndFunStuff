@@ -19,6 +19,8 @@ public:
 		}
 		return true;
 	}
+
+	
 };
 
 /**Liu and Layland Analyzer implements BaseAnalyzer.**/
@@ -38,6 +40,14 @@ public:
 
 	virtual bool isTaskSetScheduable();
 
+};
+
+class WCRTAnalyzer : public BaseAnalyzer {
+public:
+	/**Constructor.**/
+	WCRTAnalyzer(TaskSet taskSet) : BaseAnalyzer(taskSet) { };
+
+	virtual bool isTaskSetScheduable();
 };
 
 

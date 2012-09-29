@@ -74,8 +74,32 @@ int main(int argc, char** argv)
 				<< (hbProfiler.getIsScheduable() ? "Yes " : "No ")				
 				<< "<" << hbProfiler.getTimeElapsed() << ">\n";
 
+			//RM SCHEDULING, WCRT TEST
+			taskSet.sortTaskSetByPeriod();
+			WCRTAnalyzer rmwcrtAnalyzer(taskSet);
+			AlgorithmicProfiler rmwcrtProfiler(&rmwcrtAnalyzer);
+			rmwcrtProfiler.profile();
+			cout << "Scheduable using RM scheduling/ WCRT test: " 
+				<< (rmwcrtProfiler.getIsScheduable() ? "Yes " : "No ")				
+				<< "<" << rmwcrtProfiler.getTimeElapsed() << ">\n";
 
-			
+			//SJF SCHEDULING, WCRT TEST
+			taskSet.sortTaskSetByWCET();
+			WCRTAnalyzer sjfwcrtAnalyzer(taskSet);
+			AlgorithmicProfiler sjfwcrtProfiler(&sjfwcrtAnalyzer);
+			rmwcrtProfiler.profile();
+			cout << "Scheduable using SJF scheduling/ WCRT test: " 
+				<< (sjfwcrtProfiler.getIsScheduable() ? "Yes " : "No ")				
+				<< "<" << sjfwcrtProfiler.getTimeElapsed() << ">\n";
+
+			//MUF SCHEDULING, WCRT TEST
+			taskSet.sortTaskSetByUtilization();
+			WCRTAnalyzer mufwcrtAnalyzer(taskSet);
+			AlgorithmicProfiler mufwcrtProfiler(&mufwcrtAnalyzer);
+			mufwcrtProfiler.profile();
+			cout << "Scheduable using MUF scheduling/ WCRT test: " 
+				<< (mufwcrtProfiler.getIsScheduable() ? "Yes " : "No ")				
+				<< "<" << mufwcrtProfiler.getTimeElapsed() << ">\n";
 		}
 	}
 	return 0;
