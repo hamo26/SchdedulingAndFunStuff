@@ -4,9 +4,7 @@
 #include <vector>
 #include <math.h>
 
-using std::cout;
-using std::endl;
-using std::vector;
+using namespace std;
 
 // Generate a random number between a and b
 float RandomFloat(float a, float b) {
@@ -23,7 +21,7 @@ void genRand(vector<double> &randVector, int N, double U){
         randVector.push_back(randNo);
     }
     randVector.push_back(0);
-    randVector.push_back(1);
+    randVector.push_back(U);
 }
 
 
@@ -97,23 +95,25 @@ void subRand(vector<double> &randVector, vector<double> &uVector){
     }
 }
 
-void genPVector(vector<double> &pVector, int N){
+void genPVector(vector<int> &pVector, int N){
     for(int i = 0; i < N; i++){
         double randNo = RandomFloat(1, 6);
-        randNo = pow10(randNo);
-        pVector.push_back(randNo);
+        randNo = pow(10.0, randNo);
+        pVector.push_back( (int) randNo);
     }
 
 }
 
 int main(int argc, char *argv[])
 {
+    srand(time(NULL)); // Initialise the random seed.
+    
     double U = strtod(argv[1], NULL);
     int N = strtod(argv[2], NULL);
 
     vector<double> randVector;
     vector<double> uVector;
-    vector<double> pVector;
+    vector<int> pVector;
 
     // Generate uVector
     genRand(randVector, N, U);
@@ -126,9 +126,11 @@ int main(int argc, char *argv[])
 
     cout << "<begin task set>\n";
     for (int i = 0; i < N; i++){
-        double deadline = pVector.at(i);
-        double executionTime = uVector.at(i) * deadline;
-        cout << executionTime << " " << deadline << " " << deadline << "\n";
+        int period = pVector.at(i);
+        double deadline = uVector.at(i);
+        double executionTime = period * deadline;
+        
+        cout << executionTime << " " << period << " " << period << "\n";
     }
     cout << "<end task set>\n";
 
