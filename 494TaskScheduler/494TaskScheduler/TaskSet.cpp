@@ -118,6 +118,6 @@ int TaskSet::lcm(int a, int b)
 
 int TaskSet::calculateLCM()
 {
-	int result = std::accumulate(v_taskSet, v_taskSet + v_taskSet.size() - 1, 1, lcm);
+	int result = 0;//accumulate(v_taskSet, v_taskSet + v_taskSet.size() - 1, 1, lcm);
 	return result;
 }

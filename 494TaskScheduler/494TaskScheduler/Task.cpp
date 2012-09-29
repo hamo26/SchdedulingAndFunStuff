@@ -35,7 +35,7 @@ void Task::updateNextArrivalTime(int time) {i_nextArrival = time;}
 
 //void Task::timeKeep(int time) {i_timeKeeper = time;}
 
-void Task::complete(bool complete) {b_isComplete = complete;}
+//void Task::complete(bool complete) {b_isComplete = complete;}
 
 Task::~Task() { return; }
 
