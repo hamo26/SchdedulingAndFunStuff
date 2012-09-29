@@ -95,11 +95,11 @@ void subRand(vector<double> &randVector, vector<double> &uVector){
     }
 }
 
-void genPVector(vector<double> &pVector, int N){
+void genPVector(vector<int> &pVector, int N){
     for(int i = 0; i < N; i++){
         double randNo = RandomFloat(1, 6);
         randNo = pow(10.0, randNo);
-        pVector.push_back(randNo);
+        pVector.push_back( (int) randNo);
     }
 
 }
@@ -113,7 +113,7 @@ int main(int argc, char *argv[])
 
     vector<double> randVector;
     vector<double> uVector;
-    vector<double> pVector;
+    vector<int> pVector;
 
     // Generate uVector
     genRand(randVector, N, U);
@@ -126,7 +126,7 @@ int main(int argc, char *argv[])
 
     cout << "<begin task set>\n";
     for (int i = 0; i < N; i++){
-        double period = pVector.at(i);
+        int period = pVector.at(i);
         double deadline = uVector.at(i);
         double executionTime = period * deadline;
         
