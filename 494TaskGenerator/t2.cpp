@@ -104,8 +104,7 @@ void genPVector(vector<int> &pVector, int N){
 
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     srand(time(NULL)); // Initialise the random seed.
 
     double U = strtod(argv[1], NULL);// u of the taskset
