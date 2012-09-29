@@ -18,13 +18,14 @@ private:
 	/** The relative deadline of the task. **/
 	double f_relativeDeadline;
 	
-	double f_absoluteDeadline;
+	//double f_absoluteDeadline;
 
 	/** This parameter may be used to keep track of how many "clock ticks" the task has executed **/
 	double f_processorTimeConsumed; 
 	
 	int i_nextArrival;
-	int i_timeKeeper;
+
+	//int i_timeKeeper;
 	/**
 	Flag to signal that the task has finished execution.
 	**/
@@ -53,11 +54,11 @@ public:
 	
 	double getUtlization();
 
-	double getAbsoluteDeadline();
+	//double getAbsoluteDeadline();
 
 	int getNextArrivalTime();
 
-	int getTimeKeeper();
+	//int getTimeKeeper();
 
 	//SETTERS
 	void incrementProcessorTimeConsumed(float incrementValue);
@@ -66,9 +67,9 @@ public:
 
 	void updateNextArrivalTime(int time);
 
-	void timeKeep(int time);
+	//void timeKeep(int time);
 
-	void complete(bool complete);
+	//void complete(bool complete);
 
 	/**
 	Default Destructor
