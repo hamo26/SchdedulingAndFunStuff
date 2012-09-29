@@ -61,7 +61,7 @@ public:
 	//int getTimeKeeper();
 
 	//SETTERS
-	void incrementProcessorTimeConsumed(float incrementValue);
+	void incrementProcessorTimeConsumed(double incrementValue);
 
 	void updateAbsoluteDeadline(int time);
 
