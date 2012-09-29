@@ -18,6 +18,8 @@ private:
 	/** The relative deadline of the task. **/
 	double f_relativeDeadline;
 	
+	double f_absoluteDeadline;
+
 	/** This parameter may be used to keep track of how many "clock ticks" the task has executed **/
 	double f_processorTimeConsumed; 
 	
@@ -51,12 +53,16 @@ public:
 	
 	double getUtlization();
 
+	double getAbsoluteDeadline();
+
 	int getNextArrivalTime();
 
 	int getTimeKeeper();
 
 	//SETTERS
 	void incrementProcessorTimeConsumed(float incrementValue);
+
+	void updateAbsoluteDeadline(int time);
 
 	void updateNextArrivalTime(int time);
 
