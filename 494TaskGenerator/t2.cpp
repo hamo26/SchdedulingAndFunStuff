@@ -104,35 +104,36 @@ void genPVector(vector<int> &pVector, int N){
 
 }
 
-int main(int argc, char *argv[])
-{
+int main(int argc, char *argv[]){
     srand(time(NULL)); // Initialise the random seed.
-    
-    double U = strtod(argv[1], NULL);
-    int N = strtod(argv[2], NULL);
 
-    vector<double> randVector;
-    vector<double> uVector;
-    vector<int> pVector;
+    double U = strtod(argv[1], NULL);// u of the taskset
+    int N = strtod(argv[2], NULL);// no. of the tasks
+    int no = strtod(argv[3], NULL);// no. of the tasksets
 
-    // Generate uVector
-    genRand(randVector, N, U);
+    for (int j = 0; j < no; j++){
+        vector<double> randVector;
+        vector<double> uVector;
+        vector<int> pVector;
 
-    vector<double> sortedRandVector = mergeSort(randVector);
-    subRand(sortedRandVector, uVector);
+        // Generate uVector
+        genRand(randVector, N, U);
 
-    // Generate pVector
-    genPVector(pVector, N);
+        vector<double> sortedRandVector = mergeSort(randVector);
+        subRand(sortedRandVector, uVector);
 
-    cout << "<begin task set>\n";
-    for (int i = 0; i < N; i++){
-        int period = pVector.at(i);
-        double deadline = uVector.at(i);
-        double executionTime = period * deadline;
-        
-        cout << executionTime << " " << period << " " << period << "\n";
+        // Generate pVector
+        genPVector(pVector, N);
+
+        cout << "<begin task set>\n";
+        for (int i = 0; i < N; i++){
+            int period = pVector.at(i);
+            double deadline = uVector.at(i);
+            double executionTime = period * deadline;
+
+            cout << executionTime << " " << period << " " << period << "\n";
+        }
+        cout << "<end task set>\n";
     }
-    cout << "<end task set>\n";
-
     return EXIT_SUCCESS;
 } 

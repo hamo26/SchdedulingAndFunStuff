@@ -49,6 +49,12 @@ public:
 
 	stack<Task> reverseStackOrdering();
 
+	int TaskSet::gcd(int a, int b);
+
+	int TaskSet::lcm(int a, int b);
+
+	int TaskSet::calculateLCM();
+
 	~TaskSet(void);
 };	
 

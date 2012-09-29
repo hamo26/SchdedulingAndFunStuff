@@ -28,7 +28,7 @@ bool Simulator::RM()
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
-	while (time <= LCM)
+	while (time <= v_ts.calculateLCM())
 	{
 		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
@@ -37,41 +37,109 @@ bool Simulator::RM()
 			readyQueue = v_ts.addTaskByPeriod(readyQueue, t); 	//Adds ready tasks to readyQueue
 		}
 
-		//Generates new periodic task -- needs work
-		if (addNewTaskOnPeriod(time, readyQueue.top()) == true)
-		{
-			Task newTask = readyQueue.top();
-			newTask.updateNextArrivalTime(time + newTask.getPeriod());
-			addToWait(waitQueue, newTask);
-		}
 		//Service the next job in the readyQueue
 		t = readyQueue.pop();
-		t.timeKeep(t.getTimeKeeper() + 1);
+		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
-		if (t.getAbsoluteDeadline() > time)
+		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
 			return false;
+
 		//Determines whether the task is complete
-		if (t.getTimeKeeper() == t.getWorstCaseExecutionTime())
+		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
 			{
-				t.complete(true);
+				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
 				waitQueue = addToWait(waitQueue, t);
 			}
 		else
-			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top
+			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
 		time++;													//Time tick
 	}
 
 	return true;
 }
 
-bool Simulator::SJF(stack<Task> set)
+//Given a taskSet, determines whether the taskSet is schedulable according to shortest-job-first scheduling policy.
+bool Simulator::SJF()
 {
+	//Initialization of variables
+	stack<Task> readyQueue = v_ts.sortTaskSetByWCET(); 		//Converts the taskSet into SJF policy readyQueue (implemented in a stack)
+	queue<Task> waitQueue;
+	Task t = NULL;
+	int time, k = 0;
+
+	//It is sufficient to say a job set meet all its deadlines
+	//As long as jobs in a job set meet deadlines up to the LCM of job periods
+	while (time <= v_ts.calculateLCM())
+	{
+		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
+		for (int i = 0; i < k; i++)
+		{
+			t = waitQueue.pop();
+			readyQueue = v_ts.addTaskByWCET(readyQueue, t); 	//Adds ready tasks to readyQueue
+		}
+
+		//Service the next job in the readyQueue
+		t = readyQueue.pop();
+		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
+
+		//Determines whether the task missed its deadline - if it does, unschedulable
+		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
+			return false;
+
+		//Determines whether the task is complete
+		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
+			{
+				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
+				waitQueue = addToWait(waitQueue, t);
+			}
+		else
+			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
+		time++;													//Time tick
+	}
+
 	return true;
 }
 
-bool Simulator::MUF(stack<Task> set)
+//Given a taskSet, determines whether the taskSet is schedulable according to max-utilization-first scheduling policy.
+bool Simulator::MUF()
 {
+	//Initialization of variables
+	stack<Task> readyQueue = v_ts.sortTaskSetByUtilization(); 		//Converts the taskSet into MUF policy readyQueue (implemented in a stack)
+	queue<Task> waitQueue;
+	Task t = NULL;
+	int time, k = 0;
+
+	//It is sufficient to say a job set meet all its deadlines
+	//As long as jobs in a job set meet deadlines up to the LCM of job periods
+	while (time <= v_ts.calculateLCM())
+	{
+		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
+		for (int i = 0; i < k; i++)
+		{
+			t = waitQueue.pop();
+			readyQueue = v_ts.addTaskByUtilization(readyQueue, t); 	//Adds ready tasks to readyQueue
+		}
+
+		//Service the next job in the readyQueue
+		t = readyQueue.pop();
+		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
+
+		//Determines whether the task missed its deadline - if it does, unschedulable
+		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
+			return false;
+
+		//Determines whether the task is complete
+		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
+			{
+				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
+				waitQueue = addToWait(waitQueue, t);
+			}
+		else
+			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
+		time++;													//Time tick
+	}
+
 	return true;
 }
 
@@ -107,14 +175,22 @@ int Simulator::checkNewArrivals(int time, queue<Task> waitQueue)
 		else
 			return k;
 	}
-
 }
 
-bool Simulator::addNewTaskOnPeriod(int time, Task t)
+/*bool Simulator::addNewTaskOnPeriod(int time, Task t)
 {
 	int period = t.getPeriod();
 	if ((time mod period) == 0)
 		return true;
 	else
 		return false;
-}
+}*/
+
+//Generates new periodic task -- needs work
+
+/*if (addNewTaskOnPeriod(time, readyQueue.top()) == true)
+{
+	Task newTask = readyQueue.top();
+	newTask.updateNextArrivalTime(time + newTask.getPeriod());
+	addToWait(waitQueue, newTask);
+}*/

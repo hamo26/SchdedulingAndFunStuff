@@ -24,7 +24,7 @@ public:
 	bool MUF();
 	queue<Task> addToWait(queue<Task> waitQueue, Task t);
 	int checkNewArrivals(int time, queue<Task> waitQueue);
-	bool Simulator::addNewTaskOnPeriod(int time, Task t);
+	//bool Simulator::addNewTaskOnPeriod(int time, Task t);
 
 
 };
