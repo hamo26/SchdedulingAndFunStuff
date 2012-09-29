@@ -78,6 +78,18 @@ stack<Task> TaskSet::addTaskByPeriod(stack<Task> taskStack, Task newTask)
 	return sortTaskSetByPeriod();
 }
 
+stack<Task> TaskSet::reverseStackOrdering()
+{
+	stack<Task> currentStack = createStackFromVector(v_taskSet);
+	stack<Task> tempStack;
+
+	while(!currentStack.empty()) {
+		tempStack.push(currentStack.top());
+		currentStack.pop();
+	}
+	return tempStack;
+}
+
 TaskSet::~TaskSet(void)
 {
 	//Empty for now.

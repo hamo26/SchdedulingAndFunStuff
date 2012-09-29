@@ -47,6 +47,8 @@ public:
 
 	stack<Task> addTaskByPeriod(stack<Task> taskStack, Task newTask);
 
+	stack<Task> reverseStackOrdering();
+
 	~TaskSet(void);
 };	
 

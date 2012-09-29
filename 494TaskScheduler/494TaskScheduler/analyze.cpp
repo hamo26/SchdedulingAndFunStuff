@@ -21,10 +21,6 @@ private:
 
 	BaseAnalyzer* p_analyzer;
 
-	void AlgorithmicProfiler::isTaskSetScheduable(BaseAnalyzer* analyzer) {
-		b_isTaskSetScheduable = analyzer->isTestValid() && analyzer->isTaskSetScheduable();
-	}
-
 public:
 	AlgorithmicProfiler::AlgorithmicProfiler(BaseAnalyzer* analyzer) : p_analyzer(analyzer) {} 
 
@@ -39,7 +35,7 @@ public:
 		double d_time_init, d_time_end;
 		
 		d_time_init = (double) clock() / CLOCKS_PER_SEC;
-		b_isTaskSetScheduable = p_analyzer->isTestValid() && p_analyzer->isTaskSetScheduable();
+		b_isTaskSetScheduable = p_analyzer->isTaskSetScheduable();
 		d_time_end = (double) clock();
 		
 		d_deltaTime = (((double) clock() / CLOCKS_PER_SEC) - d_time_init)*pow(10,3); //Get the time elapsed in milliseconds.
