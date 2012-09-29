@@ -112,20 +112,20 @@ int main(int argc, char *argv[])
     int N = strtod(argv[2], NULL);// no. of the tasks
     int no = strtod(argv[3], NULL);// no. of the tasksets
 
-    vector<double> randVector;
-    vector<double> uVector;
-    vector<int> pVector;
-
-    // Generate uVector
-    genRand(randVector, N, U);
-
-    vector<double> sortedRandVector = mergeSort(randVector);
-    subRand(sortedRandVector, uVector);
-
-    // Generate pVector
-    genPVector(pVector, N);
-
     for (int j = 0; j < no; j++){
+        vector<double> randVector;
+        vector<double> uVector;
+        vector<int> pVector;
+
+        // Generate uVector
+        genRand(randVector, N, U);
+
+        vector<double> sortedRandVector = mergeSort(randVector);
+        subRand(sortedRandVector, uVector);
+
+        // Generate pVector
+        genPVector(pVector, N);
+
         cout << "<begin task set>\n";
         for (int i = 0; i < N; i++){
             int period = pVector.at(i);
