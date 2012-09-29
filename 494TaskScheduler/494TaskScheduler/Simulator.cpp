@@ -39,14 +39,14 @@ bool Simulator::RM()
 
 		//Service the next job in the readyQueue
 		t = readyQueue.pop();
-		t.timeKeep(t.getTimeKeeper() + 1);
+		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
 		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
 			return false;
 
 		//Determines whether the task is complete
-		if (t.getTimeKeeper() == t.getWorstCaseExecutionTime())
+		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
 			{
 				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
 				waitQueue = addToWait(waitQueue, t);
@@ -81,14 +81,14 @@ bool Simulator::SJF()
 
 		//Service the next job in the readyQueue
 		t = readyQueue.pop();
-		t.timeKeep(t.getTimeKeeper() + 1);
+		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
 		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
 			return false;
 
 		//Determines whether the task is complete
-		if (t.getTimeKeeper() == t.getWorstCaseExecutionTime())
+		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
 			{
 				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
 				waitQueue = addToWait(waitQueue, t);
@@ -123,14 +123,14 @@ bool Simulator::MUF()
 
 		//Service the next job in the readyQueue
 		t = readyQueue.pop();
-		t.timeKeep(t.getTimeKeeper() + 1);
+		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
 		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
 			return false;
 
 		//Determines whether the task is complete
-		if (t.getTimeKeeper() == t.getWorstCaseExecutionTime())
+		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
 			{
 				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
 				waitQueue = addToWait(waitQueue, t);
