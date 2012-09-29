@@ -130,7 +130,7 @@ int main(int argc, char *argv[])
         double deadline = uVector.at(i);
         double executionTime = period * deadline;
         
-        cout << executionTime << " " << deadline << " " << period << "\n";
+        cout << executionTime << " " << period << " " << period << "\n";
     }
     cout << "<end task set>\n";
 
