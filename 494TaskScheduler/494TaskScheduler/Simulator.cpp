@@ -28,7 +28,7 @@ bool Simulator::RM()
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
-	while (time <= LCM)
+	while (time <= v_ts.calculateLCM())
 	{
 		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
@@ -36,15 +36,6 @@ bool Simulator::RM()
 			t = waitQueue.pop();
 			readyQueue = v_ts.addTaskByPeriod(readyQueue, t); 	//Adds ready tasks to readyQueue
 		}
-
-		//Generates new periodic task -- needs work
-
-		/*if (addNewTaskOnPeriod(time, readyQueue.top()) == true)
-		{
-			Task newTask = readyQueue.top();
-			newTask.updateNextArrivalTime(time + newTask.getPeriod());
-			addToWait(waitQueue, newTask);
-		}*/
 
 		//Service the next job in the readyQueue
 		t = readyQueue.pop();
@@ -79,7 +70,7 @@ bool Simulator::SJF()
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
-	while (time <= LCM)
+	while (time <= v_ts.calculateLCM())
 	{
 		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
@@ -121,7 +112,7 @@ bool Simulator::MUF()
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
-	while (time <= LCM)
+	while (time <= v_ts.calculateLCM())
 	{
 		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
@@ -193,4 +184,13 @@ int Simulator::checkNewArrivals(int time, queue<Task> waitQueue)
 		return true;
 	else
 		return false;
+}*/
+
+//Generates new periodic task -- needs work
+
+/*if (addNewTaskOnPeriod(time, readyQueue.top()) == true)
+{
+	Task newTask = readyQueue.top();
+	newTask.updateNextArrivalTime(time + newTask.getPeriod());
+	addToWait(waitQueue, newTask);
 }*/
