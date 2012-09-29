@@ -10,11 +10,11 @@
 #include <queue>
 #include "Simulator.h"
 #include "TaskSet.h"
-#include "Task.h"
 
-Simulator::Simulator(TaskSet ts)
+
+void Simulator::Simulator(vector<Task> ts)
 {
-	v_ts = ts;
+	v_ts = TaskSet(ts);
 }
 
 //Given a taskSet, determines whether the taskSet is schedulable according to rate-monotonic scheduling policy.
@@ -23,8 +23,7 @@ bool Simulator::RM()
 	//Initialization of variables
 	stack<Task> readyQueue = v_ts.sortTaskSetByPeriod(); 		//Converts the taskSet into RM policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
-	Task t = NULL;
-	int time, k = 0;
+	int time, k = 0, j = 0;
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
@@ -33,13 +32,14 @@ bool Simulator::RM()
 		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
 		{
-			t = waitQueue.pop();
-			readyQueue = v_ts.addTaskByPeriod(readyQueue, t); 	//Adds ready tasks to readyQueue
+			readyQueue = v_ts.addTaskByPeriod(readyQueue, waitQueue.front()); //Adds ready tasks to readyQueue
+			waitQueue.pop();
 		}
 
 		//Service the next job in the readyQueue
-		t = readyQueue.pop();
-		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
+		Task t = readyQueue.top();
+		j = t.getProcessorTimeConsumed();
+		t.incrementProcessorTimeConsumed((j + 1));
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
 		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
@@ -65,8 +65,7 @@ bool Simulator::SJF()
 	//Initialization of variables
 	stack<Task> readyQueue = v_ts.sortTaskSetByWCET(); 		//Converts the taskSet into SJF policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
-	Task t = NULL;
-	int time, k = 0;
+	int time, k = 0, j = 0;
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
@@ -75,12 +74,12 @@ bool Simulator::SJF()
 		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
 		{
-			t = waitQueue.pop();
-			readyQueue = v_ts.addTaskByWCET(readyQueue, t); 	//Adds ready tasks to readyQueue
+			readyQueue = v_ts.addTaskByWCET(readyQueue, waitQueue.front()); 	//Adds ready tasks to readyQueue
+			waitQueue.pop();
 		}
 
 		//Service the next job in the readyQueue
-		t = readyQueue.pop();
+		Task t = readyQueue.top();
 		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
@@ -107,8 +106,7 @@ bool Simulator::MUF()
 	//Initialization of variables
 	stack<Task> readyQueue = v_ts.sortTaskSetByUtilization(); 		//Converts the taskSet into MUF policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
-	Task t = NULL;
-	int time, k = 0;
+	int time, k = 0, j = 0;
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
@@ -117,12 +115,12 @@ bool Simulator::MUF()
 		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
 		{
-			t = waitQueue.pop();
-			readyQueue = v_ts.addTaskByUtilization(readyQueue, t); 	//Adds ready tasks to readyQueue
+			readyQueue = v_ts.addTaskByUtilization(readyQueue, waitQueue.front()); 	//Adds ready tasks to readyQueue
+			waitQueue.pop();
 		}
 
 		//Service the next job in the readyQueue
-		t = readyQueue.pop();
+		Task t = readyQueue.top();
 		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
@@ -147,9 +145,10 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task t)
 {
 	queue<Task> tempQueue;
 	Task tempTask;
-	while (!waitQueue.empty)
+	while (!waitQueue.empty())
 	{
-		tempTask = waitQueue.pop();
+		tempTask = waitQueue.front();
+		waitQueue.pop();
 		if (tempTask.getNextArrivalTime() < t.getNextArrivalTime())
 			tempQueue.push(tempTask);
 		else
