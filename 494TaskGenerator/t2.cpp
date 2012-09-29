@@ -107,9 +107,10 @@ void genPVector(vector<int> &pVector, int N){
 int main(int argc, char *argv[])
 {
     srand(time(NULL)); // Initialise the random seed.
-    
-    double U = strtod(argv[1], NULL);
-    int N = strtod(argv[2], NULL);
+
+    double U = strtod(argv[1], NULL);// u of the taskset
+    int N = strtod(argv[2], NULL);// no. of the tasks
+    int no = strtod(argv[3], NULL);// no. of the tasksets
 
     vector<double> randVector;
     vector<double> uVector;
@@ -124,15 +125,16 @@ int main(int argc, char *argv[])
     // Generate pVector
     genPVector(pVector, N);
 
-    cout << "<begin task set>\n";
-    for (int i = 0; i < N; i++){
-        int period = pVector.at(i);
-        double deadline = uVector.at(i);
-        double executionTime = period * deadline;
-        
-        cout << executionTime << " " << period << " " << period << "\n";
-    }
-    cout << "<end task set>\n";
+    for (int j = 0; j < no; j++){
+        cout << "<begin task set>\n";
+        for (int i = 0; i < N; i++){
+            int period = pVector.at(i);
+            double deadline = uVector.at(i);
+            double executionTime = period * deadline;
 
+            cout << executionTime << " " << period << " " << period << "\n";
+        }
+        cout << "<end task set>\n";
+    }
     return EXIT_SUCCESS;
 } 
