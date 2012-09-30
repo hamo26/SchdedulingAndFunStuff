@@ -11,18 +11,19 @@
 
 #include "TaskSet.h"
 
-
 class Simulator
 {
+
 private:
-	TaskSet v_ts;
+//	TaskSet v_ts;
 
 public:
-	Simulator(vector<Task> ts);
+	Simulator(void);
+//	Simulator(vector<Task> taskSet);
 
-	bool RM();
-	bool SJF();
-	bool MUF();
+	bool RM(vector<Task> taskSet);
+	bool SJF(vector<Task> taskSet);
+	bool MUF(vector<Task> taskSet);
 	queue<Task> addToWait(queue<Task> waitQueue, Task t);
 	int checkNewArrivals(int time, queue<Task> waitQueue);
 
