@@ -42,10 +42,9 @@ public:
 
 };
 
-int main(int argc, char* argv[])
+int main(int argc, char** argv)
 {
 	TaskSetInputParser parser;
-
 	bool parseResult = parser.parseInputFile("testFile.txt");
 	if (!parseResult) {
 		cout << "parse failed\n";

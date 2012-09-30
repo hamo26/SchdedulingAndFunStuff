@@ -11,7 +11,7 @@
 #include <fstream>
 
 
-#define NUMBER_OF_TASKS_SETS 100000
+#define NUMBER_OF_TASKS_SETS 10
 
 using namespace std;
 
@@ -39,6 +39,10 @@ int main(int argc, char** argv)
 		while(!parser.isEmpty()) {
 			TaskSet taskSet = parser.getNext();
 			
+			cout << "<Analyzing task set> \n";
+			taskSet.printTaskSet();
+			cout << "\n";
+
 			LALAnalyzer lalAnalyzer(taskSet);
 			HBAnalyzer hbAnalyzer(taskSet);
 			
@@ -54,7 +58,10 @@ int main(int argc, char** argv)
 			if  (lalAnalyzer.isTaskSetScheduable() && hbAnalyzer.isTaskSetScheduable() 
 				&& rmwcrtAnalyzer.isTaskSetScheduable() && mufwcrtAnalyzer.isTaskSetScheduable()
 				&& sjfwcrtAnalyzer.isTaskSetScheduable()){ 
+					cout << "TaskSet is Scheduable.\n";
 					setsScheduable+=1; 
+			} else {
+				cout << "Taskset is not scheduable.\n";
 			}
 		}
 		
