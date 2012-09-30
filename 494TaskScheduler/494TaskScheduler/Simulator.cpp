@@ -11,19 +11,14 @@
 #include "Simulator.h"
 #include "TaskSet.h"
 
-
-void Simulator::Simulator(vector<Task> ts)
-{
-	v_ts = TaskSet(ts);
-}
-
 //Given a taskSet, determines whether the taskSet is schedulable according to rate-monotonic scheduling policy.
-bool Simulator::RM()
+bool Simulator::RM(vector<Task> ts)
 {
+	TaskSet v_ts = TaskSet(ts);
 	//Initialization of variables
 	stack<Task> readyQueue = v_ts.sortTaskSetByPeriod(); 		//Converts the taskSet into RM policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
-	int time, k = 0, j = 0;
+	int time, k = 0;
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
@@ -38,8 +33,7 @@ bool Simulator::RM()
 
 		//Service the next job in the readyQueue
 		Task t = readyQueue.top();
-		j = t.getProcessorTimeConsumed();
-		t.incrementProcessorTimeConsumed((j + 1));
+		t.incrementProcessorTimeConsumed(1);
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
 		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
@@ -60,12 +54,13 @@ bool Simulator::RM()
 }
 
 //Given a taskSet, determines whether the taskSet is schedulable according to shortest-job-first scheduling policy.
-bool Simulator::SJF()
+bool Simulator::SJF(vector<Task> ts)
 {
+	TaskSet v_ts = TaskSet(ts);
 	//Initialization of variables
 	stack<Task> readyQueue = v_ts.sortTaskSetByWCET(); 		//Converts the taskSet into SJF policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
-	int time, k = 0, j = 0;
+	int time, k = 0;
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
@@ -80,7 +75,7 @@ bool Simulator::SJF()
 
 		//Service the next job in the readyQueue
 		Task t = readyQueue.top();
-		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
+		t.incrementProcessorTimeConsumed(1);
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
 		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
@@ -101,12 +96,13 @@ bool Simulator::SJF()
 }
 
 //Given a taskSet, determines whether the taskSet is schedulable according to max-utilization-first scheduling policy.
-bool Simulator::MUF()
+bool Simulator::MUF(vector<Task> ts)
 {
+	TaskSet v_ts = TaskSet(ts);
 	//Initialization of variables
 	stack<Task> readyQueue = v_ts.sortTaskSetByUtilization(); 		//Converts the taskSet into MUF policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
-	int time, k = 0, j = 0;
+	int time, k = 0;
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
@@ -121,7 +117,7 @@ bool Simulator::MUF()
 
 		//Service the next job in the readyQueue
 		Task t = readyQueue.top();
-		t.incrementProcessorTimeConsumed(t.getProcessorTimeConsumed() + 1);
+		t.incrementProcessorTimeConsumed(1);
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
 		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
