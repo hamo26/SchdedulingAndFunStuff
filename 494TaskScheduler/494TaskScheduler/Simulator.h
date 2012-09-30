@@ -11,21 +11,21 @@
 
 #include "TaskSet.h"
 
-
 class Simulator
 {
-private:
-	TaskSet v_ts;
-public:
-	Simulator(TaskSet ts);
 
-	bool RM();
-	bool SJF();
-	bool MUF();
+private:
+//	TaskSet v_ts;
+
+public:
+	Simulator(void);
+//	Simulator(vector<Task> taskSet);
+
+	bool RM(vector<Task> taskSet);
+	bool SJF(vector<Task> taskSet);
+	bool MUF(vector<Task> taskSet);
 	queue<Task> addToWait(queue<Task> waitQueue, Task t);
 	int checkNewArrivals(int time, queue<Task> waitQueue);
-	//bool Simulator::addNewTaskOnPeriod(int time, Task t);
-
 
 };
 
