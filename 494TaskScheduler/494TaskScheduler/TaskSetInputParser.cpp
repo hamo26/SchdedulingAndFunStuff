@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "TaskSetInputParser.h"
 #include <iostream>
 #include <fstream>

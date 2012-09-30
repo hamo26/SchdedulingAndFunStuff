@@ -1,4 +1,3 @@
-#include "stdafx.h"
 #include "Task.h"
 
 Task::Task(double worstCaseExecutionTime, double relativeDeadline, int period) 
