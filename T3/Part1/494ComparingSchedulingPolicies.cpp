@@ -10,7 +10,7 @@
 #include <fstream>
 
 
-#define NUMBER_OF_TASKS_SETS 10
+#define NUMBER_OF_TASKS_SETS 100000
 
 using namespace std;
 
@@ -37,14 +37,6 @@ int main(int argc, char** argv)
 
 		while(!parser.isEmpty()) {
 			TaskSet taskSet = parser.getNext();
-			
-			cout << "<Analyzing task set> \n";
-			taskSet.printTaskSet();
-			cout << "\n";
-
-			LALAnalyzer lalAnalyzer(taskSet);
-			HBAnalyzer hbAnalyzer(taskSet);
-			
 			taskSet.sortTaskSetByPeriod();
 			WCRTAnalyzer rmwcrtAnalyzer(taskSet);
 
@@ -54,19 +46,14 @@ int main(int argc, char** argv)
 			taskSet.sortTaskSetByWCET();
 			WCRTAnalyzer sjfwcrtAnalyzer(taskSet);
 
-			if  (lalAnalyzer.isTaskSetScheduable() && hbAnalyzer.isTaskSetScheduable() 
-				&& rmwcrtAnalyzer.isTaskSetScheduable() && mufwcrtAnalyzer.isTaskSetScheduable()
+			if  (rmwcrtAnalyzer.isTaskSetScheduable() && mufwcrtAnalyzer.isTaskSetScheduable()
 				&& sjfwcrtAnalyzer.isTaskSetScheduable()){ 
-					cout << "TaskSet is Scheduable.\n";
 					setsScheduable+=1; 
-			} else {
-				cout << "Taskset is not scheduable.\n";
-			}
+			} 
 		}
 		
-		double percentScheduable = (setsScheduable / (double) totalTaskSets) * 100;
-		cout << "Utilization: " << currentIncrement << " Percentage Scheduable: " 
-			<< percentScheduable << "\n";
+		cout << "Utilization: " << currentIncrement << " Scheduable: " 
+			<< setsScheduable << " Total Task Sets: " << totalTaskSet << "\n";
 		outputFile << currentIncrement << " " << percentScheduable << "\n"; 
 	}
 	return 0;
