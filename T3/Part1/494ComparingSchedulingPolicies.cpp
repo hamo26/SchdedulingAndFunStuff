@@ -41,10 +41,7 @@ int main(int argc, char** argv)
 			cout << "<Analyzing task set> \n";
 			taskSet.printTaskSet();
 			cout << "\n";
-
-			LALAnalyzer lalAnalyzer(taskSet);
-			HBAnalyzer hbAnalyzer(taskSet);
-			
+		
 			taskSet.sortTaskSetByPeriod();
 			WCRTAnalyzer rmwcrtAnalyzer(taskSet);
 
@@ -54,8 +51,7 @@ int main(int argc, char** argv)
 			taskSet.sortTaskSetByWCET();
 			WCRTAnalyzer sjfwcrtAnalyzer(taskSet);
 
-			if  (lalAnalyzer.isTaskSetScheduable() && hbAnalyzer.isTaskSetScheduable() 
-				&& rmwcrtAnalyzer.isTaskSetScheduable() && mufwcrtAnalyzer.isTaskSetScheduable()
+			if  (rmwcrtAnalyzer.isTaskSetScheduable() && mufwcrtAnalyzer.isTaskSetScheduable()
 				&& sjfwcrtAnalyzer.isTaskSetScheduable()){ 
 					cout << "TaskSet is Scheduable.\n";
 					setsScheduable+=1; 
