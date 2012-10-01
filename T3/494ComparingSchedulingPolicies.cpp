@@ -1,8 +1,6 @@
 // 494CompaingSchedulingPolicies.cpp : Defines the entry point for the console application.
 //
 
-#include "stdafx.h"
-
 
 #include "TaskGenerator.h"
 #include "TaskSetInputParser.h"
@@ -19,7 +17,7 @@ int main(int argc, char** argv)
 {
 	int numTasks = strtod(argv[1], NULL);
 
-	char tempFile[] = "tempFile.txt";
+	char tempFile [] = "tempFile.txt";
 	TaskSetInputParser parser;
 	
 	stringstream csvFileName;
