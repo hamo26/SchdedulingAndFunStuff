@@ -27,13 +27,12 @@ double Simulator::RM(TaskSet ts)
 	stack<Task> readyQueue = v_ts.sortTaskSetByPeriod(); 		//Converts the taskSet into RM policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
 	double time = 0;
-	int k, deadlinesMissed, deadlinesMet = 0;
+	int k = 0, deadlinesMissed = 0, deadlinesMet = 0;
 	Task * t;
 
 	//Investigation of 100,000 time units
-	while (time <= 10000)
+	while (time <= 100000)
 	{
-		cout << "Debug waitQ:" << waitQueue.empty() << "\n";
 		//Check for any waiting jobs
 		while (!waitQueue.empty())
 		{
@@ -63,8 +62,10 @@ double Simulator::RM(TaskSet ts)
 				if ((time - overshoot) > (t->getNextArrivalTime() + t->getRelativeDeadline()))
 				{
 					deadlinesMissed++;
+					cout << "Deadline missed\n";
 				}
 				deadlinesMet++;
+				cout << "Deadline met\n";
 
 				//Removing completed task from readyQueue
 				readyQueue.pop();
@@ -73,7 +74,7 @@ double Simulator::RM(TaskSet ts)
 				t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
 				t->resetProcessorTime();
 
-				waitQueue = addToWait(&waitQueue, t);
+				waitQueue = addToWait(waitQueue, t);
 
 				//Service next job based on remaining fraction of time
 				if (!readyQueue.empty())
@@ -173,23 +174,33 @@ bool Simulator::MUF(TaskSet ts)
 	return true;
 }
 
-queue<Task> Simulator::addToWait(queue<Task> * waitQueue, Task * t)
+queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 {
 	queue<Task> tempQueue;
-	Task * tempTask;
-	while (!waitQueue->empty())
+        if (waitQueue.empty())
+        {
+            tempQueue.push(*t);
+            return tempQueue;
+        }
+	while (!waitQueue.empty())
 	{
-		tempTask = &waitQueue->front();
-		waitQueue->pop();
+            	Task * tempTask = &waitQueue.front();
+
 		if (tempTask->getNextArrivalTime() < t->getNextArrivalTime())
+		{
 			tempQueue.push(*tempTask);
+			waitQueue.pop();
+		}
+
 		else
 		{
 			tempQueue.push(*t);
 			tempQueue.push(*tempTask);
-			while(!waitQueue->empty())
+			waitQueue.pop();
+			while(!waitQueue.empty())
 			{
 				tempQueue.push(*tempTask);
+				waitQueue.pop();
 			}
 		}
 	}
@@ -218,9 +229,12 @@ int Simulator::checkNewArrivals(int time, queue<Task> waitQueue)
 	}
 }
 
-double Simulator::successJobCompletion(double deadlinesMissed, double totalJobs)
+double Simulator::successJobCompletion(double deadlinesMissed, double deadlinesMet)
 {
-	return (deadlinesMissed/totalJobs);
+    double totalJobs = deadlinesMissed + deadlinesMet;
+    if (totalJobs == 0)
+        return 0;
+    return (deadlinesMet/totalJobs)*100;
 }
 
 /*bool Simulator::addNewTaskOnPeriod(int time, Task t)
