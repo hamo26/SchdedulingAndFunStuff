@@ -33,7 +33,7 @@ double Simulator::RM(TaskSet ts)
 	//Investigation of 100,000 time units
 	while (time <= 10000)
 	{
-
+		cout << "Debug waitQ:" << waitQueue.empty() << "\n";
 		//Check for any waiting jobs
 		while (!waitQueue.empty())
 		{
@@ -47,37 +47,40 @@ double Simulator::RM(TaskSet ts)
 		}
 
 		//Service the next job in the readyQueue
-		t = &readyQueue.top();
-		t->incrementProcessorTimeConsumed(1);
-
-		//Determines whether the task is complete
-		if (t->getProcessorTimeConsumed() >= t->getWorstCaseExecutionTime())
+		if (!readyQueue.empty())
 		{
-			cout << "Task Complete\n";
-			//Adjusting time
-			double overshoot = t->getProcessorTimeConsumed() - t->getWorstCaseExecutionTime();
+			t = &readyQueue.top();
+			t->incrementProcessorTimeConsumed(1);
 
-			//Checking for missed deadline
-			if ((time - overshoot) > (t->getNextArrivalTime() + t->getRelativeDeadline()))
+			//Determines whether the task is complete
+			if (t->getProcessorTimeConsumed() >= t->getWorstCaseExecutionTime())
 			{
-				deadlinesMissed++;
-			}
-			deadlinesMet++;
+				cout << "Task Complete\n";
+				//Adjusting time
+				double overshoot = t->getProcessorTimeConsumed() - t->getWorstCaseExecutionTime();
 
-			//Removing completed task from readyQueue
-			readyQueue.pop();
+				//Checking for missed deadline
+				if ((time - overshoot) > (t->getNextArrivalTime() + t->getRelativeDeadline()))
+				{
+					deadlinesMissed++;
+				}
+				deadlinesMet++;
 
-			//Making adjustments for next service
-			t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
-			t->resetProcessorTime();
+				//Removing completed task from readyQueue
+				readyQueue.pop();
 
-			addToWait(&waitQueue, t);
+				//Making adjustments for next service
+				t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
+				t->resetProcessorTime();
 
-			//Service next job based on remaining fraction of time
-			if (!readyQueue.empty())
-			{
-				t =  &readyQueue.top();
-				t->incrementProcessorTimeConsumed(overshoot);
+				waitQueue = addToWait(&waitQueue, t);
+
+				//Service next job based on remaining fraction of time
+				if (!readyQueue.empty())
+				{
+					t =  &readyQueue.top();
+					t->incrementProcessorTimeConsumed(overshoot);
+				}
 			}
 		}
 		time++;											//Time tick
@@ -170,30 +173,30 @@ bool Simulator::MUF(TaskSet ts)
 	return true;
 }
 
-queue<Task> * Simulator::addToWait(queue<Task> * waitQueue, Task * t)
+queue<Task> Simulator::addToWait(queue<Task> * waitQueue, Task * t)
 {
-	queue<Task> * tempQueue;
+	queue<Task> tempQueue;
 	Task * tempTask;
 	while (!waitQueue->empty())
 	{
 		tempTask = &waitQueue->front();
 		waitQueue->pop();
 		if (tempTask->getNextArrivalTime() < t->getNextArrivalTime())
-			tempQueue->push(*tempTask);
+			tempQueue.push(*tempTask);
 		else
 		{
-			tempQueue->push(*t);
-			tempQueue->push(*tempTask);
+			tempQueue.push(*t);
+			tempQueue.push(*tempTask);
 			while(!waitQueue->empty())
 			{
-				tempQueue->push(*tempTask);
+				tempQueue.push(*tempTask);
 			}
 		}
 	}
 	cout << "Add to wait \n";
-	waitQueue = tempQueue;
 	return tempQueue;
 }
+
 int Simulator::checkNewArrivals(int time, queue<Task> waitQueue)
 {
 	queue<Task> tempQueue = waitQueue;
