@@ -52,9 +52,8 @@ int main(int argc, char** argv)
 			} 
 		}
 		
-		double percentScheduable = (setsScheduable / (double) totalTaskSets) * 100;
-		cout << "Utilization: " << currentIncrement << " Percentage Scheduable: " 
-			<< percentScheduable << "\n";
+		cout << "Utilization: " << currentIncrement << " Scheduable: " 
+			<< setsScheduable << " Total Task Sets: " << totalTaskSet << "\n";
 		outputFile << currentIncrement << " " << percentScheduable << "\n"; 
 	}
 	return 0;
