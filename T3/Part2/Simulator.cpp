@@ -57,23 +57,33 @@ int Simulator::RM(TaskSet ts)
 			cout << "Task Complete\n";
 			double overshoot = t->getProcessorTimeConsumed() - t->getWorstCaseExecutionTime();
 			time = time - overshoot;
+
 			if (time > (t->getNextArrivalTime() + t->getRelativeDeadline()))
 			{
 				deadlinesMissed++;
 				cout << "Missed deadline\n";
 			}
 
-			t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
-			waitQueue = addToWait(waitQueue, t);
 			readyQueue.pop();
+			Task newTask;
+			newTask.updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
+			waitQueue = addToWait(waitQueue, t);
+			if (!readyQueue.empty())
+			{
+				t =  &readyQueue.top();
 
-			Task t = readyQueue.top();
-			t.incrementProcessorTimeConsumed(overshoot);
-			readyQueue.push(t);
+				cout << overshoot << "\n";
+				t->incrementProcessorTimeConsumed(overshoot);
+				cout << "Debug\n";
+
+				readyQueue.push(*t);
+			}
+
 		}
 //		else
 //			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
-		time++;												//Time tick
+		time++;											//Time tick
+
 //		cout << "\n" << time << "\n";
 	}
 
@@ -184,17 +194,25 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 			}
 		}
 	}
+//	cout << "Add to wait \n";
+
 	return tempQueue;
 }
 int Simulator::checkNewArrivals(int time, queue<Task> waitQueue)
 {
+	queue<Task> tempQueue = waitQueue;
 	int k = 0;
-	int size = waitQueue.size();
+	int size = tempQueue.size();
 	for (int i = 0; i < size; i++)
 	{
 		if (waitQueue.front().getNextArrivalTime() >= time)
+		{
+			waitQueue.pop();
 			k++;
+		}
 		else
+			cout << "Check Arrivals \n";
+
 			return k;
 	}
 }
