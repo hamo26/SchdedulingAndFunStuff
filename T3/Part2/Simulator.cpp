@@ -27,6 +27,7 @@ int Simulator::RM(TaskSet ts)
 	stack<Task> readyQueue = v_ts.sortTaskSetByPeriod(); 		//Converts the taskSet into RM policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
 	double time = 0, k = 0, deadlinesMissed = 0;
+	Task * t;
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
@@ -42,8 +43,8 @@ int Simulator::RM(TaskSet ts)
 		}
 
 		//Service the next job in the readyQueue
-		Task t = readyQueue.top();
-		t.incrementProcessorTimeConsumed(1);
+		t = &readyQueue.top();
+		t->incrementProcessorTimeConsumed(1);
 //		cout << t.getProcessorTimeConsumed();
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
@@ -51,18 +52,18 @@ int Simulator::RM(TaskSet ts)
 //			return false;
 
 		//Determines whether the task is complete
-		if (t.getProcessorTimeConsumed() >= t.getWorstCaseExecutionTime())
+		if (t->getProcessorTimeConsumed() >= t->getWorstCaseExecutionTime())
 		{
 			cout << "Task Complete\n";
-			double overshoot = t.getProcessorTimeConsumed() - t.getWorstCaseExecutionTime();
+			double overshoot = t->getProcessorTimeConsumed() - t->getWorstCaseExecutionTime();
 			time = time - overshoot;
-			if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
+			if (time > (t->getNextArrivalTime() + t->getRelativeDeadline()))
 			{
 				deadlinesMissed++;
 				cout << "Missed deadline\n";
 			}
 
-			t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
+			t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
 			waitQueue = addToWait(waitQueue, t);
 			readyQueue.pop();
 
@@ -111,7 +112,7 @@ bool Simulator::SJF(TaskSet ts)
 		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
 			{
 				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
-				waitQueue = addToWait(waitQueue, t);
+//				waitQueue = addToWait(waitQueue, t);
 			}
 		else
 			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
@@ -153,7 +154,7 @@ bool Simulator::MUF(TaskSet ts)
 		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
 			{
 				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
-				waitQueue = addToWait(waitQueue, t);
+//				waitQueue = addToWait(waitQueue, t);
 			}
 		else
 			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
@@ -163,23 +164,23 @@ bool Simulator::MUF(TaskSet ts)
 	return true;
 }
 
-queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task t)
+queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 {
 	queue<Task> tempQueue;
-	Task tempTask;
+	Task * tempTask;
 	while (!waitQueue.empty())
 	{
-		tempTask = waitQueue.front();
+		tempTask = &waitQueue.front();
 		waitQueue.pop();
-		if (tempTask.getNextArrivalTime() < t.getNextArrivalTime())
-			tempQueue.push(tempTask);
+		if (tempTask->getNextArrivalTime() < t->getNextArrivalTime())
+			tempQueue.push(*tempTask);
 		else
 		{
-			tempQueue.push(t);
-			tempQueue.push(tempTask);
+			tempQueue.push(*t);
+			tempQueue.push(*tempTask);
 			while(!waitQueue.empty())
 			{
-				tempQueue.push(tempTask);
+				tempQueue.push(*tempTask);
 			}
 		}
 	}
