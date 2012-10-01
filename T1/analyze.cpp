@@ -75,13 +75,9 @@ int main(int argc, char** argv)
 
 			//RM SCHEDULING, WCRT TEST
 			taskSet.sortTaskSetByPeriod();
-                        cout << "\n after sort \n";
 			WCRTAnalyzer rmwcrtAnalyzer(taskSet);
-                        cout << "\n after wmwcrtA \n";
 			AlgorithmicProfiler rmwcrtProfiler(&rmwcrtAnalyzer);
-                        cout << "\n after profiler \n";
 			rmwcrtProfiler.profile();
-                        cout << "\n after profile() \n";
 			cout << "Scheduable using RM scheduling/ WCRT test: " 
 				<< (rmwcrtProfiler.getIsScheduable() ? "Yes " : "No ")				
 				<< "<" << rmwcrtProfiler.getTimeElapsed() << ">\n";
