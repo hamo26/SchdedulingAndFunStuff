@@ -4,7 +4,7 @@
 
 #include "TaskGenerator.h"
 #include "TaskSetInputParser.h"
-#include "AlgorithmAnalyzers.h"
+#include "Simulator.h"
 #include <sstream>
 #include <fstream>
 
@@ -26,6 +26,8 @@ int main(int argc, char** argv)
 	ofstream outputFile;
 	outputFile.open((char*)csvFileName.str().c_str());
 
+	Simulator s;
+
 	for (double currentIncrement = 0.1; currentIncrement<=1; currentIncrement+=0.1) {
 		TaskGenerator::generateTasksAndWriteToFile(tempFile, currentIncrement, NUMBER_OF_TASKS, NUMBER_OF_TASKS_SETS);
 		
@@ -40,14 +42,13 @@ int main(int argc, char** argv)
 			taskSet.printTaskSet();
 			cout << "\n";
 
-			Simulator s;
-
 //			taskSet.sortTaskSetByUtilization();
 //			s.MUF(taskSet);
 			
-			taskSet.sortTaskSetByPeriod();
-			int d = s.RM(taskSet);
-			double successPercent = s.sucessJobCompletion((double) d, (double) NUMBER_OF_TASKS);
+//			taskSet.sortTaskSetByPeriod();
+//			double d = s.RM(taskSet);
+//			double temp = NUMBER_OF_TASKS;
+//			double successPercent = s.sucessJobCompletion(d, temp);
 
 //			taskSet.sortTaskSetByWCET();
 //			s.SJF(taskSet);

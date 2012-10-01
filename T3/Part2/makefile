@@ -1,5 +1,5 @@
-simulator: Task.o TaskSet.o TaskSetInputParser.o 494ComparingSchedulingPolicies.o TaskGenerator.o
-	g++ -o graphingtool Task.o TaskSet.o TaskSetInputParser.o 494ComparingSchedulingPolicies.o TaskGenerator.o
+simulator: Task.o TaskSet.o TaskSetInputParser.o Simulator.o 494ComparingSchedulingPolicies.o TaskGenerator.o
+	g++ -o simulator Task.o TaskSet.o TaskSetInputParser.o Simulator.o 494ComparingSchedulingPolicies.o TaskGenerator.o
 
 Task.o: Task.cpp Task.h
 	g++ -c Task.cpp
