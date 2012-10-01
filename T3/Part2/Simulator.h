@@ -28,6 +28,7 @@ public:
 	int checkNewArrivals(int time, queue<Task> waitQueue);
 	double sucessJobCompletion(double deadlinesMissed, double totalJobs);
 
+//	~Simulator(void);
 };
 
 #endif

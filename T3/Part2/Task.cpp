@@ -1,4 +1,8 @@
 #include "Task.h"
+Task::Task ()
+{
+
+}
 
 Task::Task(double worstCaseExecutionTime, double relativeDeadline, int period) 
 {

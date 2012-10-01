@@ -10,8 +10,14 @@
 #include <queue>
 #include "Simulator.h"
 #include "TaskSet.h"
+#include "Task.h"
 
 //Given a taskSet, determines whether the taskSet is schedulable according to rate-monotonic scheduling policy.
+Simulator::Simulator()
+{
+
+}
+
 int Simulator::RM(TaskSet ts)
 {
 	TaskSet v_ts = ts;
