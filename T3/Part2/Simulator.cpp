@@ -11,6 +11,8 @@
 #include "Simulator.h"
 #include "TaskSet.h"
 #include "Task.h"
+#include <iostream>
+
 
 //Given a taskSet, determines whether the taskSet is schedulable according to rate-monotonic scheduling policy.
 Simulator::Simulator()
@@ -24,38 +26,65 @@ int Simulator::RM(TaskSet ts)
 	//Initialization of variables
 	stack<Task> readyQueue = v_ts.sortTaskSetByPeriod(); 		//Converts the taskSet into RM policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
-	int time, k = 0, deadlinesMissed = 0;
+	double time = 0, k = 0, deadlinesMissed = 0;
+	Task * t;
 
 	//It is sufficient to say a job set meet all its deadlines
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
-	while (time <= 100)
+	while (time <= 10000)
 	{
 		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
 		{
+			cout << "Checking arrivals\n";
+
 			readyQueue = v_ts.addTaskByPeriod(readyQueue, waitQueue.front()); //Adds ready tasks to readyQueue
 			waitQueue.pop();
 		}
 
 		//Service the next job in the readyQueue
-		Task t = readyQueue.top();
-		t.incrementProcessorTimeConsumed(1);
+		t = &readyQueue.top();
+		t->incrementProcessorTimeConsumed(1);
+//		cout << t.getProcessorTimeConsumed();
 
 		//Determines whether the task missed its deadline - if it does, unschedulable
 //		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
 //			return false;
 
 		//Determines whether the task is complete
-		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
+		if (t->getProcessorTimeConsumed() >= t->getWorstCaseExecutionTime())
 		{
-			if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
+			cout << "Task Complete\n";
+			double overshoot = t->getProcessorTimeConsumed() - t->getWorstCaseExecutionTime();
+			time = time - overshoot;
+
+			if (time > (t->getNextArrivalTime() + t->getRelativeDeadline()))
+			{
 				deadlinesMissed++;
-			t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
+				cout << "Missed deadline\n";
+			}
+
+			readyQueue.pop();
+			Task newTask;
+			newTask.updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
 			waitQueue = addToWait(waitQueue, t);
+			if (!readyQueue.empty())
+			{
+				t =  &readyQueue.top();
+
+				cout << overshoot << "\n";
+				t->incrementProcessorTimeConsumed(overshoot);
+				cout << "Debug\n";
+
+				readyQueue.push(*t);
+			}
+
 		}
-		else
-			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
-		time++;													//Time tick
+//		else
+//			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
+		time++;											//Time tick
+
+//		cout << "\n" << time << "\n";
 	}
 
 	return deadlinesMissed;
@@ -93,7 +122,7 @@ bool Simulator::SJF(TaskSet ts)
 		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
 			{
 				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
-				waitQueue = addToWait(waitQueue, t);
+//				waitQueue = addToWait(waitQueue, t);
 			}
 		else
 			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
@@ -135,7 +164,7 @@ bool Simulator::MUF(TaskSet ts)
 		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
 			{
 				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
-				waitQueue = addToWait(waitQueue, t);
+//				waitQueue = addToWait(waitQueue, t);
 			}
 		else
 			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
@@ -145,37 +174,45 @@ bool Simulator::MUF(TaskSet ts)
 	return true;
 }
 
-queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task t)
+queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 {
 	queue<Task> tempQueue;
-	Task tempTask;
+	Task * tempTask;
 	while (!waitQueue.empty())
 	{
-		tempTask = waitQueue.front();
+		tempTask = &waitQueue.front();
 		waitQueue.pop();
-		if (tempTask.getNextArrivalTime() < t.getNextArrivalTime())
-			tempQueue.push(tempTask);
+		if (tempTask->getNextArrivalTime() < t->getNextArrivalTime())
+			tempQueue.push(*tempTask);
 		else
 		{
-			tempQueue.push(t);
-			tempQueue.push(tempTask);
+			tempQueue.push(*t);
+			tempQueue.push(*tempTask);
 			while(!waitQueue.empty())
 			{
-				tempQueue.push(tempTask);
+				tempQueue.push(*tempTask);
 			}
 		}
 	}
+//	cout << "Add to wait \n";
+
 	return tempQueue;
 }
 int Simulator::checkNewArrivals(int time, queue<Task> waitQueue)
 {
+	queue<Task> tempQueue = waitQueue;
 	int k = 0;
-	int size = waitQueue.size();
+	int size = tempQueue.size();
 	for (int i = 0; i < size; i++)
 	{
 		if (waitQueue.front().getNextArrivalTime() >= time)
+		{
+			waitQueue.pop();
 			k++;
+		}
 		else
+			cout << "Check Arrivals \n";
+
 			return k;
 	}
 }
