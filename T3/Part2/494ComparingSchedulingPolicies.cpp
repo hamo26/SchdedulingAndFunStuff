@@ -9,8 +9,8 @@
 #include <fstream>
 
 
-#define NUMBER_OF_TASKS_SETS 100
-#define NUMBER_OF_TASKS 16
+#define NUMBER_OF_TASKS_SETS 1
+#define NUMBER_OF_TASKS 1
 
 using namespace std;
 
@@ -45,10 +45,8 @@ int main(int argc, char** argv)
 //			taskSet.sortTaskSetByUtilization();
 //			s.MUF(taskSet);
 			
-//			taskSet.sortTaskSetByPeriod();
-//			double d = s.RM(taskSet);
-//			double temp = NUMBER_OF_TASKS;
-//			double successPercent = s.sucessJobCompletion(d, temp);
+			taskSet.sortTaskSetByPeriod();
+			double d = s.RM(taskSet);
 
 //			taskSet.sortTaskSetByWCET();
 //			s.SJF(taskSet);

@@ -21,12 +21,12 @@ public:
 	Simulator(void);
 //	Simulator(vector<Task> taskSet);
 
-	int RM(TaskSet taskSet);
+	double RM(TaskSet taskSet);
 	bool SJF(TaskSet taskSet);
 	bool MUF(TaskSet taskSet);
-	queue<Task> addToWait(queue<Task> waitQueue, Task * t);
+	queue<Task> * addToWait(queue<Task> * waitQueue, Task * t);
 	int checkNewArrivals(int time, queue<Task> waitQueue);
-	double sucessJobCompletion(double deadlinesMissed, double totalJobs);
+	double successJobCompletion(double deadlinesMissed, double totalJobs);
 
 //	~Simulator(void);
 };
