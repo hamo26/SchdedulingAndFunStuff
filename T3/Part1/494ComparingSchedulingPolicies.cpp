@@ -5,6 +5,7 @@
 #include "TaskGenerator.h"
 #include "TaskSetInputParser.h"
 #include "AlgorithmAnalyzers.h"
+#include <cstdlib>
 #include <sstream>
 #include <fstream>
 
