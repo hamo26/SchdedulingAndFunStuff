@@ -7,7 +7,7 @@ using namespace std;
 bool WCRTAnalyzer::isTaskSetScheduable() 
 {
 	stack<Task> taskSet = t_taskSet.reverseStackOrdering();
-	
+
 	while(taskSet.size() > 1) {
 		Task currentTask = taskSet.top();
 		taskSet.pop();

@@ -9,9 +9,10 @@
 #include "AlgorithmAnalyzers.h"
 #include <sstream>
 #include <fstream>
+#include <iostream>
 
 
-#define NUMBER_OF_TASKS_SETS 10
+#define NUMBER_OF_TASKS_SETS 100000
 
 using namespace std;
 
@@ -27,22 +28,22 @@ int main(int argc, char** argv)
 
 	ofstream outputFile;
 	outputFile.open((char*)csvFileName.str().c_str());
+	outputFile << "Utilization,ScheduableByRM,ScheduableBySJF,ScheduableByMUF\n"; 
 
 	for (double currentIncrement = 0.05; currentIncrement<=1.05; currentIncrement+=0.05) {
 		TaskGenerator::generateTasksAndWriteToFile(tempFile, currentIncrement, numTasks, NUMBER_OF_TASKS_SETS); 
 		
 		parser.parseInputFile(tempFile);
 		
-		double setsScheduable = 0;
+		double setsScheduableByRm = 0;
+		double setsScheduableBySJF = 0;
+		double setsScheduableByMUF = 0;
+
 		int totalTaskSets = parser.getTaskSetSize();
 
 		while(!parser.isEmpty()) {
 			TaskSet taskSet = parser.getNext();
 			
-			cout << "<Analyzing task set> \n";
-			taskSet.printTaskSet();
-			cout << "\n";
-
 			LALAnalyzer lalAnalyzer(taskSet);
 			HBAnalyzer hbAnalyzer(taskSet);
 			
@@ -55,20 +56,24 @@ int main(int argc, char** argv)
 			taskSet.sortTaskSetByWCET();
 			WCRTAnalyzer sjfwcrtAnalyzer(taskSet);
 
-			if  (lalAnalyzer.isTaskSetScheduable() && hbAnalyzer.isTaskSetScheduable() 
-				&& sjfwcrtAnalyzer.isTaskSetScheduable() && rmwcrtAnalyzer.isTaskSetScheduable() 
-				&& mufwcrtAnalyzer.isTaskSetScheduable()){ 
-					cout << "TaskSet is Scheduable.\n";
-					setsScheduable+=1; 
-			} else {
-				cout << "Taskset is not scheduable.\n";
+			if  (lalAnalyzer.isTaskSetScheduable() || hbAnalyzer.isTaskSetScheduable() 
+				|| rmwcrtAnalyzer.isTaskSetScheduable()) {
+					setsScheduableByRm+=1;
+			}
+			
+			if (sjfwcrtAnalyzer.isTaskSetScheduable()){ 
+				setsScheduableBySJF+=1;
+			}
+
+			if (mufwcrtAnalyzer.isTaskSetScheduable()) {
+				setsScheduableByMUF+=1;
 			}
 		}
 		
-		double percentScheduable = (setsScheduable / (double) totalTaskSets) * 100;
-		cout << "Utilization: " << currentIncrement << " Percentage Scheduable: " 
-			<< percentScheduable << "\n";
-		outputFile << currentIncrement << " " << percentScheduable << "\n"; 
+		cout << "Utilization: " << currentIncrement << " Task Sets Scheduable by RM: " 
+			<< setsScheduableByRm << " by SJF: " << setsScheduableBySJF << " by MUF: " << setsScheduableByMUF << "\n";
+		outputFile << currentIncrement << "," << setsScheduableByRm << "," << setsScheduableBySJF << "," 
+			<< setsScheduableByMUF << "\n"; 
 	}
 	return 0;
 }
