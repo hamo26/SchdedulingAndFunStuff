@@ -21,20 +21,22 @@ private:
 	BaseAnalyzer* p_analyzer;
 
 public:
-	AlgorithmicProfiler::AlgorithmicProfiler(BaseAnalyzer* analyzer) : p_analyzer(analyzer) {} 
+	AlgorithmicProfiler(BaseAnalyzer* analyzer) : p_analyzer(analyzer) {} 
 
 	/**Get the time elapsed after running the profile for an algorithm.**/
-	double AlgorithmicProfiler::getTimeElapsed() { return d_deltaTime; }
+	double getTimeElapsed() { return d_deltaTime; }
 
 	/**Get whethr the algorithm is scheduable or not.**/
-	bool AlgorithmicProfiler::getIsScheduable() { return b_isTaskSetScheduable; }
+	bool getIsScheduable() { return b_isTaskSetScheduable; }
 
 	/**Run profile for Liu and Layland.**/
-	void AlgorithmicProfiler::profile() {
+	void profile() {
 		time_t t_time_init, t_time_end;
 		
 		time(&t_time_init);
+                cout << "\n after time() \n";
  		b_isTaskSetScheduable = p_analyzer->isTaskSetScheduable();
+                cout << "\n after taskSetSceduable()\n" ;
 		time(&t_time_end);
 		d_deltaTime = difftime(t_time_end, t_time_init); 
 		return;
@@ -45,7 +47,7 @@ public:
 int main(int argc, char** argv)
 {
 	TaskSetInputParser parser;
-	bool parseResult = parser.parseInputFile("testFile.txt");
+	bool parseResult = parser.parseInputFile(argv[1]);
 	if (!parseResult) {
 		cout << "parse failed\n";
 	} else {
@@ -66,16 +68,22 @@ int main(int argc, char** argv)
 			//HYPERBOLIC BOUND TEST
 			HBAnalyzer hbAnalayzer(taskSet);
 			AlgorithmicProfiler hbProfiler(&hbAnalayzer);
-			hbProfiler.profile();
+			taskSet.printTaskSet();
+                        hbProfiler.profile();
 			cout << "Scheduable using RM Scheduling / Hyperbolic bound test: " 
 				<< (hbProfiler.getIsScheduable() ? "Yes " : "No ")				
 				<< "<" << hbProfiler.getTimeElapsed() << ">\n";
 
+
 			//RM SCHEDULING, WCRT TEST
 			taskSet.sortTaskSetByPeriod();
+                        cout << "\n after sort \n";
 			WCRTAnalyzer rmwcrtAnalyzer(taskSet);
+                        cout << "\n after wmwcrtA \n";
 			AlgorithmicProfiler rmwcrtProfiler(&rmwcrtAnalyzer);
+                        cout << "\n after profiler \n";
 			rmwcrtProfiler.profile();
+                        cout << "\n after profile() \n";
 			cout << "Scheduable using RM scheduling/ WCRT test: " 
 				<< (rmwcrtProfiler.getIsScheduable() ? "Yes " : "No ")				
 				<< "<" << rmwcrtProfiler.getTimeElapsed() << ">\n";
