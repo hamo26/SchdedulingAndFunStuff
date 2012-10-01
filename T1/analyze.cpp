@@ -34,9 +34,7 @@ public:
 		time_t t_time_init, t_time_end;
 		
 		time(&t_time_init);
-                cout << "\n after time() \n";
  		b_isTaskSetScheduable = p_analyzer->isTaskSetScheduable();
-                cout << "\n after taskSetSceduable()\n" ;
 		time(&t_time_end);
 		d_deltaTime = difftime(t_time_end, t_time_init); 
 		return;

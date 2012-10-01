@@ -27,11 +27,9 @@ bool WCRTAnalyzer::isTaskSetScheduable() {
                 while(!tempTaskSet.empty()) {
                     Task topTask = tempTaskSet.top();
                     interference+=(ceil(responseTime / (double) topTask.getPeriod()) * topTask.getWorstCaseExecutionTime()); 
-//                   cout << "\nINTERFERENCE: " << (ceil(responseTime / (double) topTask.getPeriod()) * topTask.getWorstCaseExecutionTime()); 
                     tempTaskSet.pop();
                 }
             }
-            cout << "\nR: " << responseTime <<"\nI: "<<interference << "\nD: " << currentTask.getRelativeDeadline() << "\nWC: " << currentTask.getWorstCaseExecutionTime();
         } while((interference + currentTask.getWorstCaseExecutionTime()) > responseTime);
     }
     return true;

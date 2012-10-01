@@ -46,7 +46,7 @@ int main(int argc, char* argv[])
 {
 	TaskSetInputParser parser;
 
-	bool parseResult = parser.parseInputFile("testFile.txt");
+	bool parseResult = parser.parseInputFile(argv[1]);
 	if (!parseResult) {
 		cout << "parse failed\n";
 	} else {
