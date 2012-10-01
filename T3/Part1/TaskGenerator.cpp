@@ -117,10 +117,10 @@ void TaskGenerator::generateTasksAndWriteToFile(char* fileName, double utilizati
 	ofstream outputFile;
 	outputFile.open(fileName);
 
+	srand(time(NULL)); // Initialise the random seed.
+    
 	for (int i=0; i<numTaskSets; i++) {
 
-		srand(time(NULL)); // Initialise the random seed.
-    
 		//double U = strtod(utilization, NULL);
 		//int N = strtod(numTasks, NULL);
 		double U = utilization;
