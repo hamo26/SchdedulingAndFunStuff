@@ -22,8 +22,8 @@ public:
 //	Simulator(vector<Task> taskSet);
 
 	double RM(TaskSet taskSet);
-	bool SJF(TaskSet taskSet);
-	bool MUF(TaskSet taskSet);
+	double SJF(TaskSet taskSet);
+	double MUF(TaskSet taskSet);
 	queue<Task> addToWait(queue<Task> waitQueue, Task * t);
 	bool isJobComplete(Task * t);
 	bool isDeadlineMet(double time, Task * t);
