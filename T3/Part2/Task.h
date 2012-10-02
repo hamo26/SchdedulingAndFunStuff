@@ -60,6 +60,7 @@ public:
 
 	void updateNextArrivalTime(int time);
 
+	void resetProcessorTime(void);
 	//void complete(bool complete);
 
 	/**
