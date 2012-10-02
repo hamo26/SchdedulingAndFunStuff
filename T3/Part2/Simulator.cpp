@@ -37,12 +37,13 @@ double Simulator::RM(TaskSet ts)
 		while (!waitQueue.empty())
 		{
 			//Moves job from waiting to ready
-			if (waitQueue.front().getNextArrivalTime() >= time)
+			if (waitQueue.front().getNextArrivalTime() <= time)
 			{
 				readyQueue = v_ts.addTaskByPeriod(readyQueue, waitQueue.front());
 				waitQueue.pop();
-
 			}
+			else
+				break;
 		}
 
 		//Service the next job in the readyQueue
@@ -52,28 +53,23 @@ double Simulator::RM(TaskSet ts)
 			t->incrementProcessorTimeConsumed(1);
 
 			//Determines whether the task is complete
-			if (t->getProcessorTimeConsumed() >= t->getWorstCaseExecutionTime())
+			if (isJobComplete(t))
 			{
-				cout << "Task Complete\n";
-				//Adjusting time
+				//Adjusting time to calculate deadlines
 				double overshoot = t->getProcessorTimeConsumed() - t->getWorstCaseExecutionTime();
 
 				//Checking for missed deadline
-				if ((time - overshoot) > (t->getNextArrivalTime() + t->getRelativeDeadline()))
+				if (isDeadlineMet(time-overshoot, t))
 				{
 					deadlinesMissed++;
-					cout << "Deadline missed\n";
 				}
-				deadlinesMet++;
-				cout << "Deadline met\n";
+				else
+					deadlinesMet++;
 
 				//Removing completed task from readyQueue
 				readyQueue.pop();
 
-				//Making adjustments for next service
-				t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
-				t->resetProcessorTime();
-
+				//Services task and adds to waitQueue
 				waitQueue = addToWait(waitQueue, t);
 
 				//Service next job based on remaining fraction of time
@@ -103,7 +99,7 @@ bool Simulator::SJF(TaskSet ts)
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
 	while (time <= v_ts.calculateLCM())
 	{
-		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
+		//		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
 		{
 			readyQueue = v_ts.addTaskByWCET(readyQueue, waitQueue.front()); 	//Adds ready tasks to readyQueue
@@ -120,10 +116,10 @@ bool Simulator::SJF(TaskSet ts)
 
 		//Determines whether the task is complete
 		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
-			{
-				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
-//				waitQueue = addToWait(waitQueue, t);
-			}
+		{
+			t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
+			//				waitQueue = addToWait(waitQueue, t);
+		}
 		else
 			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
 		time++;													//Time tick
@@ -145,7 +141,7 @@ bool Simulator::MUF(TaskSet ts)
 	//As long as jobs in a job set meet deadlines up to the LCM of job periods
 	while (time <= v_ts.calculateLCM())
 	{
-		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
+		//		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
 		for (int i = 0; i < k; i++)
 		{
 			readyQueue = v_ts.addTaskByUtilization(readyQueue, waitQueue.front()); 	//Adds ready tasks to readyQueue
@@ -162,10 +158,10 @@ bool Simulator::MUF(TaskSet ts)
 
 		//Determines whether the task is complete
 		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
-			{
-				t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
-//				waitQueue = addToWait(waitQueue, t);
-			}
+		{
+			t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
+			//				waitQueue = addToWait(waitQueue, t);
+		}
 		else
 			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
 		time++;													//Time tick
@@ -176,15 +172,21 @@ bool Simulator::MUF(TaskSet ts)
 
 queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 {
+	//Making adjustments for next service
+	t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
+	t->resetProcessorTime();
+
 	queue<Task> tempQueue;
-        if (waitQueue.empty())
-        {
-            tempQueue.push(*t);
-            return tempQueue;
-        }
+
+	if (waitQueue.empty())
+	{
+		tempQueue.push(*t);
+		return tempQueue;
+	}
+
 	while (!waitQueue.empty())
 	{
-            	Task * tempTask = &waitQueue.front();
+		Task * tempTask = &waitQueue.front();
 
 		if (tempTask->getNextArrivalTime() < t->getNextArrivalTime())
 		{
@@ -208,49 +210,28 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 	return tempQueue;
 }
 
-int Simulator::checkNewArrivals(int time, queue<Task> waitQueue)
-{
-	queue<Task> tempQueue = waitQueue;
-	int k = 0;
-	int size = tempQueue.size();
-
-	for (int i = 0; i < size; i++)
-	{
-		if (waitQueue.empty())
-			return k;
-
-		if (waitQueue.front().getNextArrivalTime() >= time)
-		{
-			waitQueue.pop();
-			k++;
-		}
-		else
-			return k;
-	}
-}
-
+//Calculates the job success percentage
 double Simulator::successJobCompletion(double deadlinesMissed, double deadlinesMet)
 {
-    double totalJobs = deadlinesMissed + deadlinesMet;
-    if (totalJobs == 0)
-        return 0;
-    return (deadlinesMet/totalJobs)*100;
+	double totalJobs = deadlinesMissed + deadlinesMet;
+	if (totalJobs == 0)
+		return 0;
+	return (deadlinesMet/totalJobs)*100;
 }
 
-/*bool Simulator::addNewTaskOnPeriod(int time, Task t)
+//Checks if a task is complete
+bool Simulator::isJobComplete(Task * t)
 {
-	int period = t.getPeriod();
-	if ((time mod period) == 0)
+	if (t->getProcessorTimeConsumed() >= t->getWorstCaseExecutionTime())
 		return true;
 	else
 		return false;
-}*/
+}
 
-//Generates new periodic task -- needs work
-
-/*if (addNewTaskOnPeriod(time, readyQueue.top()) == true)
+bool Simulator::isDeadlineMet(double time, Task * t)
 {
-	Task newTask = readyQueue.top();
-	newTask.updateNextArrivalTime(time + newTask.getPeriod());
-	addToWait(waitQueue, newTask);
-}*/
+	if (time > (t->getNextArrivalTime() + t->getRelativeDeadline()))
+		return false;
+	else
+		return true;
+}
