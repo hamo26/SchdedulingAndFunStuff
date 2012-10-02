@@ -10,7 +10,7 @@
 
 
 #define NUMBER_OF_TASKS_SETS 1
-#define NUMBER_OF_TASKS 1
+#define NUMBER_OF_TASKS 16
 
 using namespace std;
 
@@ -47,7 +47,7 @@ int main(int argc, char** argv)
 			
 			taskSet.sortTaskSetByPeriod();
 			double d = s.RM(taskSet);
-
+                        cout << "percentage:" << d << "\n";
 //			taskSet.sortTaskSetByWCET();
 //			s.SJF(taskSet);
 		}
