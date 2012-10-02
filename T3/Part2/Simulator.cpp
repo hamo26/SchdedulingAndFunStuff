@@ -181,22 +181,23 @@ double Simulator::MUF(TaskSet ts)
 queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task t)
 {
 	//Making adjustments for next service
-	t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
-	t.resetProcessorTime();
+	Task newTask = t;
+	newTask.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
+	newTask.resetProcessorTime();
 
 	queue<Task> tempQueue;
 
 	if (waitQueue.empty())
 	{
-		tempQueue.push(t);
+		tempQueue.push(newTask);
 		return tempQueue;
 	}
 
 	while (!waitQueue.empty())
 	{
 
-		if (t.getNextArrivalTime() < waitQueue.front().getNextArrivalTime()) {
-			tempQueue.push(t);
+		if (newTask.getNextArrivalTime() < waitQueue.front().getNextArrivalTime()) {
+			tempQueue.push(newTask);
 			while(!waitQueue.empty())
 			{
 				tempQueue.push(waitQueue.front());
@@ -207,7 +208,7 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task t)
 		tempQueue.push(waitQueue.front());
 		waitQueue.pop();
 		if (waitQueue.empty())
-			tempQueue.push(t);
+			tempQueue.push(newTask);
 	}
 	return tempQueue;
 }
@@ -232,8 +233,8 @@ bool Simulator::isJobComplete(Task t)
 //Checks if a job meets its deadline
 bool Simulator::isDeadlineMet(double time, Task t)
 {
-	double overshoot = t.getProcessorTimeConsumed - t.getWorstCaseExecutionTime;
-	if ((time - overshoot) <= (t.getNextArrivalTime() + t.getRelativeDeadline()))
+	double overshoot = (t.getProcessorTimeConsumed() - t.getWorstCaseExecutionTime());
+	if ((time - overshoot + 1) <= (t.getNextArrivalTime() + t.getRelativeDeadline()))
 		return true;
 	else
 		return false;
