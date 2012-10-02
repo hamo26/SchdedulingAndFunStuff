@@ -168,18 +168,19 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 	t->resetProcessorTime();
 
 	queue<Task> tempQueue;
-	waitQueue.push(*t);
-	if (waitQueue.size() == 1) {
-		return waitQueue;
-	}
-
 
 	while (!waitQueue.empty())
 	{
 	Task tempTask = waitQueue.front();
 
-    if (tempTask.getNextArrivalTime() > t->getNextArrivalTime()) {
+    if (t->getNextArrivalTime() < tempTask.getNextArrivalTime()) {
             tempQueue.push(*t);
+            while(!waitQueue.empty())
+            {
+            	tempQueue.push(waitQueue.front());
+            	waitQueue.pop();
+            }
+            return tempQueue;
     }
     tempQueue.push(tempTask);
     waitQueue.pop();
@@ -191,8 +192,7 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 double Simulator::successJobCompletion(double deadlinesMissed, double deadlinesMet)
 {
 	double totalJobs = deadlinesMissed + deadlinesMet;
-	if (totalJobs == 0)
-		return 0;
+	if (totalJobs == 0) {return 0;}
 	return (deadlinesMet/totalJobs)*100;
 }
 
