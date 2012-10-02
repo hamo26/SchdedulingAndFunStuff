@@ -6,6 +6,7 @@
 
 #include <iostream>
 #include <time.h>
+#include <math.h>
 
 using namespace std;
 
@@ -31,12 +32,12 @@ public:
 
 	/**Run profile for Liu and Layland.**/
 	void profile() {
-		time_t t_time_init, t_time_end;
+		timespec ts, te;
 		
-		time(&t_time_init);
+		clock_gettime(CLOCK_REALTIME, &ts);
  		b_isTaskSetScheduable = p_analyzer->isTaskSetScheduable();
-		time(&t_time_end);
-		d_deltaTime = difftime(t_time_end, t_time_init); 
+		clock_gettime(CLOCK_REALTIME, &te);
+		d_deltaTime = (double) (te.tv_nsec-ts.tv_nsec)*pow(10,-9);
 		return;
 	}
 
@@ -61,16 +62,15 @@ int main(int argc, char** argv)
 			lalProfiler.profile();
 			cout << "Scheduable using RM Scheduling / Liu and Layland bound test: " 
 				<< (lalProfiler.getIsScheduable() ? "Yes " : "No ")				
-				<< "<" << lalProfiler.getTimeElapsed() << ">\n";
+				<< "<" << lalProfiler.getTimeElapsed() << " seconds>\n";
 
 			//HYPERBOLIC BOUND TEST
 			HBAnalyzer hbAnalayzer(taskSet);
 			AlgorithmicProfiler hbProfiler(&hbAnalayzer);
-			taskSet.printTaskSet();
                         hbProfiler.profile();
 			cout << "Scheduable using RM Scheduling / Hyperbolic bound test: " 
 				<< (hbProfiler.getIsScheduable() ? "Yes " : "No ")				
-				<< "<" << hbProfiler.getTimeElapsed() << ">\n";
+				<< "<" << hbProfiler.getTimeElapsed() << " seconds>\n";
 
 
 			//RM SCHEDULING, WCRT TEST
@@ -80,16 +80,16 @@ int main(int argc, char** argv)
 			rmwcrtProfiler.profile();
 			cout << "Scheduable using RM scheduling/ WCRT test: " 
 				<< (rmwcrtProfiler.getIsScheduable() ? "Yes " : "No ")				
-				<< "<" << rmwcrtProfiler.getTimeElapsed() << ">\n";
+				<< "<" << rmwcrtProfiler.getTimeElapsed() << " seconds>\n";
 
 			//SJF SCHEDULING, WCRT TEST
 			taskSet.sortTaskSetByWCET();
 			WCRTAnalyzer sjfwcrtAnalyzer(taskSet);
 			AlgorithmicProfiler sjfwcrtProfiler(&sjfwcrtAnalyzer);
-			rmwcrtProfiler.profile();
+			sjfwcrtProfiler.profile();
 			cout << "Scheduable using SJF scheduling/ WCRT test: " 
 				<< (sjfwcrtProfiler.getIsScheduable() ? "Yes " : "No ")				
-				<< "<" << sjfwcrtProfiler.getTimeElapsed() << ">\n";
+				<< "<" << sjfwcrtProfiler.getTimeElapsed() << " seconds>\n";
 
 			//MUF SCHEDULING, WCRT TEST
 			taskSet.sortTaskSetByUtilization();
@@ -98,7 +98,7 @@ int main(int argc, char** argv)
 			mufwcrtProfiler.profile();
 			cout << "Scheduable using MUF scheduling/ WCRT test: " 
 				<< (mufwcrtProfiler.getIsScheduable() ? "Yes " : "No ")				
-				<< "<" << mufwcrtProfiler.getTimeElapsed() << ">\n";
+				<< "<" << mufwcrtProfiler.getTimeElapsed() << " seconds>\n";
 		}
 	}
 	return 0;

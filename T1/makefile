@@ -1,5 +1,5 @@
 analyze: Task.o TaskSet.o TaskSetInputParser.o HBAnalyzer.o LALAnalyzer.o analyze.o WCRTAnalyzer.o
-	g++ -o analyze Task.o TaskSet.o TaskSetInputParser.o HBAnalyzer.o LALAnalyzer.o analyze.o WCRTAnalyzer.o
+	g++ -o analyze Task.o TaskSet.o TaskSetInputParser.o HBAnalyzer.o LALAnalyzer.o analyze.o WCRTAnalyzer.o -lrt
 
 Task.o: Task.cpp Task.h
 	g++ -c Task.cpp
