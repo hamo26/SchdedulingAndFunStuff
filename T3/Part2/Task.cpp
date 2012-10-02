@@ -22,6 +22,8 @@ double Task::getRelativeDeadline() { return f_relativeDeadline; }
 
 double Task::getWorstCaseExecutionTime() { return f_wcet; }
 
+int Task::getCeiledWorstCaseExecutionTime() { return (int) ceil(f_wcet); }
+
 double Task::getUtlization() { return (f_wcet / (double) i_period); }
 
 int Task::getNextArrivalTime() {return i_nextArrival;}

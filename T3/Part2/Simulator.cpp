@@ -42,8 +42,7 @@ double Simulator::RM(TaskSet ts)
 				readyQueue = v_ts.addTaskByPeriod(readyQueue, waitQueue.front());
 				waitQueue.pop();
 			}
-			else
-				break;
+			else { break; }
 		}
 
 		//Service the next job in the readyQueue
@@ -60,8 +59,7 @@ double Simulator::RM(TaskSet ts)
 				{
 					deadlinesMet++;
 				}
-				else
-					deadlinesMissed++;
+				else { deadlinesMissed++; }
 
 				//Removing completed task from readyQueue
 				readyQueue.pop();
@@ -167,34 +165,17 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 	t->resetProcessorTime();
 
 	queue<Task> tempQueue;
-
-	if (waitQueue.empty())
-	{
-		tempQueue.push(*t);
-		return tempQueue;
-	}
+	waitQueue.push(*t);
 
 	while (!waitQueue.empty())
 	{
-		Task * tempTask = &waitQueue.front();
+	Task * tempTask = &waitQueue.front();
 
-		if (tempTask->getNextArrivalTime() < t->getNextArrivalTime())
-		{
-			tempQueue.push(*tempTask);
-			waitQueue.pop();
-		}
-
-		else
-		{
-			tempQueue.push(*t);
-			tempQueue.push(*tempTask);
-			waitQueue.pop();
-			while(!waitQueue.empty())
-			{
-				tempQueue.push(*tempTask);
-				waitQueue.pop();
-			}
-		}
+    if (tempTask->getNextArrivalTime() > t->getNextArrivalTime()) {
+            tempQueue.push(*t);
+    }
+    tempQueue.push(*tempTask);
+    waitQueue.pop();
 	}
 	return tempQueue;
 }
@@ -211,7 +192,7 @@ double Simulator::successJobCompletion(double deadlinesMissed, double deadlinesM
 //Checks if a job is complete
 bool Simulator::isJobComplete(Task * t)
 {
-	if (t->getProcessorTimeConsumed() >= t->getWorstCaseExecutionTime())
+	if (t->getProcessorTimeConsumed() >= t->getCeiledWorstCaseExecutionTime())
 		return true;
 	else
 		return false;
@@ -220,8 +201,7 @@ bool Simulator::isJobComplete(Task * t)
 //Checks if a job meets its deadline
 bool Simulator::isDeadlineMet(double time, Task * t)
 {
-    double overshoot = t->getProcessorTimeConsumed() - t->getWorstCaseExecutionTime();
-	if (time - overshoot > (t->getNextArrivalTime() + t->getRelativeDeadline()))
+	if (time > (t->getNextArrivalTime() + t->getRelativeDeadline()))
 		return false;
 	else
 		return true;
