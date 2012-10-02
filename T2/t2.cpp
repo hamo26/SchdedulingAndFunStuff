@@ -128,8 +128,8 @@ int main(int argc, char *argv[]){
         cout << "<begin task set>\n";
         for (int i = 0; i < N; i++){
             int period = pVector.at(i);
-            double utilization = uVector.at(i);
-            double executionTime = period * utilization;
+            double uValue = uVector.at(i);
+            double executionTime = period * uValue;
 
             cout << executionTime << " " << period << " " << period << "\n";
         }
