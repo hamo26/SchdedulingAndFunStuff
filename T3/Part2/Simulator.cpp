@@ -33,6 +33,9 @@ double Simulator::RM(TaskSet ts)
 	//Investigation of 100,000 time units
 	while (time <= 100000)
 	{
+		if (time == 99999) {
+			cout << "";
+		}
 		//Check for any waiting jobs
 		while (!waitQueue.empty())
 		{
@@ -166,15 +169,19 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 
 	queue<Task> tempQueue;
 	waitQueue.push(*t);
+	if (waitQueue.size() == 1) {
+		return waitQueue;
+	}
+
 
 	while (!waitQueue.empty())
 	{
-	Task * tempTask = &waitQueue.front();
+	Task tempTask = waitQueue.front();
 
-    if (tempTask->getNextArrivalTime() > t->getNextArrivalTime()) {
+    if (tempTask.getNextArrivalTime() > t->getNextArrivalTime()) {
             tempQueue.push(*t);
     }
-    tempQueue.push(*tempTask);
+    tempQueue.push(tempTask);
     waitQueue.pop();
 	}
 	return tempQueue;
