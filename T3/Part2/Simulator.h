@@ -25,7 +25,8 @@ public:
 	bool SJF(TaskSet taskSet);
 	bool MUF(TaskSet taskSet);
 	queue<Task> addToWait(queue<Task> waitQueue, Task * t);
-	int checkNewArrivals(int time, queue<Task> waitQueue);
+	bool isJobComplete(Task * t);
+	bool isDeadlineMet(double time, Task * t);
 	double successJobCompletion(double deadlinesMissed, double totalJobs);
 
 //	~Simulator(void);

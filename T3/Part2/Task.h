@@ -43,8 +43,12 @@ public:
 
 	int getPeriod();
 
+
 	double getWorstCaseExecutionTime();
 	
+	/**Get Ceiled worst case execution time.**/
+	int getCeiledWorstCaseExecutionTime();
+
 	double getProcessorTimeConsumed();
 
 	bool isExecutionComplete();
