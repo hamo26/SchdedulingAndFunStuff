@@ -9,7 +9,7 @@
 #include <fstream>
 
 
-#define NUMBER_OF_TASKS_SETS 1
+#define NUMBER_OF_TASKS_SETS 100
 #define NUMBER_OF_TASKS 16
 
 using namespace std;
@@ -28,7 +28,7 @@ int main(int argc, char** argv)
 
 	Simulator s;
 
-	for (double currentIncrement = 0.1; currentIncrement<=1; currentIncrement+=0.1) {
+	for (double currentIncrement = 0.1; currentIncrement<=0.9; currentIncrement+=0.1) {
 		TaskGenerator::generateTasksAndWriteToFile(tempFile, currentIncrement, NUMBER_OF_TASKS, NUMBER_OF_TASKS_SETS);
 		
 		parser.parseInputFile(tempFile);
@@ -42,14 +42,14 @@ int main(int argc, char** argv)
 			taskSet.printTaskSet();
 			cout << "\n";
 
-//			taskSet.sortTaskSetByUtilization();
-//			s.MUF(taskSet);
+			taskSet.sortTaskSetByUtilization();
+			cout << s.MUF(taskSet);
 			
 			taskSet.sortTaskSetByPeriod();
-			double d = s.RM(taskSet);
-                        cout << "percentage:" << d << "\n";
-//			taskSet.sortTaskSetByWCET();
-//			s.SJF(taskSet);
+			cout << s.RM(taskSet);
+
+			taskSet.sortTaskSetByWCET();
+			cout << s.SJF(taskSet);
 		}
 
 	}

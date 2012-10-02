@@ -1,4 +1,5 @@
 #include "Task.h"
+#include <math.h>
 #include <iostream>
 Task::Task ()
 {

@@ -11,8 +11,6 @@
 #include "Simulator.h"
 #include "TaskSet.h"
 #include "Task.h"
-#include <iostream>
-
 
 //Given a taskSet, determines whether the taskSet is schedulable according to rate-monotonic scheduling policy.
 Simulator::Simulator()
@@ -27,7 +25,9 @@ double Simulator::RM(TaskSet ts)
 	stack<Task> readyQueue = v_ts.sortTaskSetByPeriod(); 		//Converts the taskSet into RM policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
 	double time = 0;
-	int k = 0, deadlinesMissed = 0, deadlinesMet = 0;
+	int k = 0;
+	double deadlinesMissed = 0;
+	double deadlinesMet = 0;
 	Task * t;
 
 	//Investigation of 100,000 time units
@@ -65,7 +65,7 @@ double Simulator::RM(TaskSet ts)
 				readyQueue.pop();
 
 				//Services task and adds to waitQueue
-				waitQueue = addToWait(waitQueue, t);
+				waitQueue = addToWait(&waitQueue, t);
 			}
 		}
 		time++;											//Time tick
@@ -75,107 +75,150 @@ double Simulator::RM(TaskSet ts)
 }
 
 //Given a taskSet, determines whether the taskSet is schedulable according to shortest-job-first scheduling policy.
-bool Simulator::SJF(TaskSet ts)
+double Simulator::SJF(TaskSet ts)
 {
 	TaskSet v_ts = ts;
 	//Initialization of variables
 	stack<Task> readyQueue = v_ts.sortTaskSetByWCET(); 		//Converts the taskSet into SJF policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
-	int time, k = 0;
+	double time = 0;
+	int k = 0;
+	double deadlinesMissed = 0;
+	double deadlinesMet = 0;
+	Task * t;
 
-	//It is sufficient to say a job set meet all its deadlines
-	//As long as jobs in a job set meet deadlines up to the LCM of job periods
-	while (time <= v_ts.calculateLCM())
+	//Investigation of 100,000 time units
+	while (time <= 100000)
 	{
-		//		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
-		for (int i = 0; i < k; i++)
+		//Check for any waiting jobs
+		while (!waitQueue.empty())
 		{
-			readyQueue = v_ts.addTaskByWCET(readyQueue, waitQueue.front()); 	//Adds ready tasks to readyQueue
-			waitQueue.pop();
+			//Moves job from waiting to ready
+			if (waitQueue.front().getNextArrivalTime() <= time)
+			{
+				readyQueue = v_ts.addTaskByWCET(readyQueue, waitQueue.front());
+				waitQueue.pop();
+			}
+			else { break; }
 		}
 
 		//Service the next job in the readyQueue
-		Task t = readyQueue.top();
-		t.incrementProcessorTimeConsumed(1);
-
-		//Determines whether the task missed its deadline - if it does, unschedulable
-		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
-			return false;
-
-		//Determines whether the task is complete
-		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
+		if (!readyQueue.empty())
 		{
-			t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
-			//				waitQueue = addToWait(waitQueue, t);
+			t = &readyQueue.top();
+			t->incrementProcessorTimeConsumed(1);
+
+			//Determines whether the task is complete
+			if (isJobComplete(t))
+			{
+				//Checking for missed deadline
+				if (isDeadlineMet(time, t))
+				{
+					deadlinesMet++;
+				}
+				else { deadlinesMissed++; }
+
+				//Removing completed task from readyQueue
+				readyQueue.pop();
+
+				//Services task and adds to waitQueue
+				waitQueue = addToWait(&waitQueue, t);
+			}
 		}
-		else
-			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
-		time++;													//Time tick
+		time++;											//Time tick
 	}
 
-	return true;
+	return successJobCompletion(deadlinesMissed, deadlinesMet);
 }
 
 //Given a taskSet, determines whether the taskSet is schedulable according to max-utilization-first scheduling policy.
-bool Simulator::MUF(TaskSet ts)
+double Simulator::MUF(TaskSet ts)
 {
 	TaskSet v_ts = ts;
 	//Initialization of variables
 	stack<Task> readyQueue = v_ts.sortTaskSetByUtilization(); 		//Converts the taskSet into MUF policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
-	int time, k = 0;
+	double time = 0;
+	int k = 0;
+	double deadlinesMissed = 0;
+	double deadlinesMet = 0;
+	Task * t;
 
-	//It is sufficient to say a job set meet all its deadlines
-	//As long as jobs in a job set meet deadlines up to the LCM of job periods
-	while (time <= v_ts.calculateLCM())
+	//Investigation of 100,000 time units
+	while (time <= 100000)
 	{
-		//		k = checkNewArrivals(time, waitQueue); 					//Determines how many jobs in the waitQueue are ready
-		for (int i = 0; i < k; i++)
+		//Check for any waiting jobs
+		while (!waitQueue.empty())
 		{
-			readyQueue = v_ts.addTaskByUtilization(readyQueue, waitQueue.front()); 	//Adds ready tasks to readyQueue
-			waitQueue.pop();
+			//Moves job from waiting to ready
+			if (waitQueue.front().getNextArrivalTime() <= time)
+			{
+				readyQueue = v_ts.addTaskByUtilization(readyQueue, waitQueue.front());
+				waitQueue.pop();
+			}
+			else { break; }
 		}
 
 		//Service the next job in the readyQueue
-		Task t = readyQueue.top();
-		t.incrementProcessorTimeConsumed(1);
-
-		//Determines whether the task missed its deadline - if it does, unschedulable
-		if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
-			return false;
-
-		//Determines whether the task is complete
-		if (t.getProcessorTimeConsumed() == t.getWorstCaseExecutionTime())
+		if (!readyQueue.empty())
 		{
-			t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
-			//				waitQueue = addToWait(waitQueue, t);
+			t = &readyQueue.top();
+			t->incrementProcessorTimeConsumed(1);
+
+			//Determines whether the task is complete
+			if (isJobComplete(t))
+			{
+				//Checking for missed deadline
+				if (isDeadlineMet(time, t))
+				{
+					deadlinesMet++;
+				}
+				else { deadlinesMissed++; }
+
+				//Removing completed task from readyQueue
+				readyQueue.pop();
+
+				//Services task and adds to waitQueue
+				waitQueue = addToWait(&waitQueue, t);
+			}
 		}
-		else
-			readyQueue.push(t);									//Done servicing - placing back onto stack (it remains the highest priority, therefore it belongs on the top)
-		time++;													//Time tick
+		time++;											//Time tick
 	}
 
-	return true;
+	return successJobCompletion(deadlinesMissed, deadlinesMet);
 }
 
-queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
+queue<Task> Simulator::addToWait(queue<Task> * waitQueue, Task * t)
 {
 	//Making adjustments for next service
 	t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
 	t->resetProcessorTime();
 
 	queue<Task> tempQueue;
-	waitQueue.push(*t);
-
-	while (!waitQueue.empty())
-	{
-	Task * tempTask = &waitQueue.front();
-
-    if (tempTask->getNextArrivalTime() > t->getNextArrivalTime()) {
+        
+        if (waitQueue->empty())
+        {
             tempQueue.push(*t);
+            return tempQueue;
+        }
+
+	while (!waitQueue->empty())
+	{
+	Task tempTask = waitQueue->front();
+
+    if (t->getNextArrivalTime() < tempTask.getNextArrivalTime()) {
+            tempQueue.push(*t);
+            while(!waitQueue->empty())
+            {
+            	tempQueue.push(waitQueue->front());
+            	waitQueue->pop();
+            }
+            return tempQueue;
     }
-    tempQueue.push(*tempTask);
-    waitQueue.pop();
+    tempQueue.push(tempTask);
+    waitQueue->pop();
+    if (waitQueue->empty())
+        tempQueue.push(*t);
 	}
 	return tempQueue;
 }
@@ -184,8 +227,7 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 double Simulator::successJobCompletion(double deadlinesMissed, double deadlinesMet)
 {
 	double totalJobs = deadlinesMissed + deadlinesMet;
-	if (totalJobs == 0)
-		return 0;
+	if (totalJobs == 0) {return 0;}
 	return (deadlinesMet/totalJobs)*100;
 }
 
