@@ -24,9 +24,9 @@ public:
 	double RM(TaskSet taskSet);
 	double SJF(TaskSet taskSet);
 	double MUF(TaskSet taskSet);
-	queue<Task> addToWait(queue<Task> * waitQueue, Task * t);
-	bool isJobComplete(Task * t);
-	bool isDeadlineMet(double time, Task * t);
+	queue<Task> addToWait(queue<Task> waitQueue, Task t);
+	bool isJobComplete(Task t);
+	bool isDeadlineMet(double time, Task t);
 	double successJobCompletion(double deadlinesMissed, double totalJobs);
 
 //	~Simulator(void);

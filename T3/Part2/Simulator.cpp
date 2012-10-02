@@ -28,7 +28,6 @@ double Simulator::RM(TaskSet ts)
 	int k = 0;
 	double deadlinesMissed = 0;
 	double deadlinesMet = 0;
-	Task * t;
 
 	//Investigation of 100,000 time units
 	while (time <= 100000)
@@ -48,24 +47,23 @@ double Simulator::RM(TaskSet ts)
 		//Service the next job in the readyQueue
 		if (!readyQueue.empty())
 		{
-			t = &readyQueue.top();
-			t->incrementProcessorTimeConsumed(1);
+			readyQueue.top().incrementProcessorTimeConsumed(1);
 
 			//Determines whether the task is complete
-			if (isJobComplete(t))
+			if (isJobComplete(readyQueue.top()))
 			{
 				//Checking for missed deadline
-				if (isDeadlineMet(time, t))
+				if (isDeadlineMet(time, readyQueue.top()))
 				{
 					deadlinesMet++;
 				}
 				else { deadlinesMissed++; }
 
+				//Services task and adds to waitQueue
+				waitQueue = addToWait(waitQueue, readyQueue.top());
+
 				//Removing completed task from readyQueue
 				readyQueue.pop();
-
-				//Services task and adds to waitQueue
-				waitQueue = addToWait(&waitQueue, t);
 			}
 		}
 		time++;											//Time tick
@@ -85,7 +83,6 @@ double Simulator::SJF(TaskSet ts)
 	int k = 0;
 	double deadlinesMissed = 0;
 	double deadlinesMet = 0;
-	Task * t;
 
 	//Investigation of 100,000 time units
 	while (time <= 100000)
@@ -105,24 +102,23 @@ double Simulator::SJF(TaskSet ts)
 		//Service the next job in the readyQueue
 		if (!readyQueue.empty())
 		{
-			t = &readyQueue.top();
-			t->incrementProcessorTimeConsumed(1);
+			readyQueue.top().incrementProcessorTimeConsumed(1);
 
 			//Determines whether the task is complete
-			if (isJobComplete(t))
+			if (isJobComplete(readyQueue.top()))
 			{
 				//Checking for missed deadline
-				if (isDeadlineMet(time, t))
+				if (isDeadlineMet(time, readyQueue.top()))
 				{
 					deadlinesMet++;
 				}
 				else { deadlinesMissed++; }
 
+				//Services task and adds to waitQueue
+				waitQueue = addToWait(waitQueue, readyQueue.top());
+
 				//Removing completed task from readyQueue
 				readyQueue.pop();
-
-				//Services task and adds to waitQueue
-				waitQueue = addToWait(&waitQueue, t);
 			}
 		}
 		time++;											//Time tick
@@ -142,7 +138,6 @@ double Simulator::MUF(TaskSet ts)
 	int k = 0;
 	double deadlinesMissed = 0;
 	double deadlinesMet = 0;
-	Task * t;
 
 	//Investigation of 100,000 time units
 	while (time <= 100000)
@@ -162,24 +157,23 @@ double Simulator::MUF(TaskSet ts)
 		//Service the next job in the readyQueue
 		if (!readyQueue.empty())
 		{
-			t = &readyQueue.top();
-			t->incrementProcessorTimeConsumed(1);
+			readyQueue.top().incrementProcessorTimeConsumed(1);
 
 			//Determines whether the task is complete
-			if (isJobComplete(t))
+			if (isJobComplete(readyQueue.top()))
 			{
 				//Checking for missed deadline
-				if (isDeadlineMet(time, t))
+				if (isDeadlineMet(time, readyQueue.top()))
 				{
 					deadlinesMet++;
 				}
 				else { deadlinesMissed++; }
 
+				//Services task and adds to waitQueue
+				waitQueue = addToWait(waitQueue, readyQueue.top());
+
 				//Removing completed task from readyQueue
 				readyQueue.pop();
-
-				//Services task and adds to waitQueue
-				waitQueue = addToWait(&waitQueue, t);
 			}
 		}
 		time++;											//Time tick
@@ -188,37 +182,36 @@ double Simulator::MUF(TaskSet ts)
 	return successJobCompletion(deadlinesMissed, deadlinesMet);
 }
 
-queue<Task> Simulator::addToWait(queue<Task> * waitQueue, Task * t)
+queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task t)
 {
 	//Making adjustments for next service
-	t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
-	t->resetProcessorTime();
+	t.updateNextArrivalTime(t.getNextArrivalTime() + t.getPeriod());
+	t.resetProcessorTime();
 
 	queue<Task> tempQueue;
-        
-        if (waitQueue->empty())
-        {
-            tempQueue.push(*t);
-            return tempQueue;
-        }
 
-	while (!waitQueue->empty())
+	if (waitQueue.empty())
 	{
-	Task tempTask = waitQueue->front();
+		tempQueue.push(t);
+		return tempQueue;
+	}
 
-    if (t->getNextArrivalTime() < tempTask.getNextArrivalTime()) {
-            tempQueue.push(*t);
-            while(!waitQueue->empty())
-            {
-            	tempQueue.push(waitQueue->front());
-            	waitQueue->pop();
-            }
-            return tempQueue;
-    }
-    tempQueue.push(tempTask);
-    waitQueue->pop();
-    if (waitQueue->empty())
-        tempQueue.push(*t);
+	while (!waitQueue.empty())
+	{
+
+		if (t.getNextArrivalTime() < waitQueue.front().getNextArrivalTime()) {
+			tempQueue.push(t);
+			while(!waitQueue.empty())
+			{
+				tempQueue.push(waitQueue.front());
+				waitQueue.pop();
+			}
+			return tempQueue;
+		}
+		tempQueue.push(waitQueue.front());
+		waitQueue.pop();
+		if (waitQueue.empty())
+			tempQueue.push(t);
 	}
 	return tempQueue;
 }
@@ -232,18 +225,18 @@ double Simulator::successJobCompletion(double deadlinesMissed, double deadlinesM
 }
 
 //Checks if a job is complete
-bool Simulator::isJobComplete(Task * t)
+bool Simulator::isJobComplete(Task t)
 {
-	if (t->getProcessorTimeConsumed() >= t->getCeiledWorstCaseExecutionTime())
+	if (t.getProcessorTimeConsumed() >= t.getCeiledWorstCaseExecutionTime())
 		return true;
 	else
 		return false;
 }
 
 //Checks if a job meets its deadline
-bool Simulator::isDeadlineMet(double time, Task * t)
+bool Simulator::isDeadlineMet(double time, Task t)
 {
-	if (time > (t->getNextArrivalTime() + t->getRelativeDeadline()))
+	if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
 		return false;
 	else
 		return true;
