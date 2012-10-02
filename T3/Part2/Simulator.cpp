@@ -55,29 +55,19 @@ double Simulator::RM(TaskSet ts)
 			//Determines whether the task is complete
 			if (isJobComplete(t))
 			{
-				//Adjusting time to calculate deadlines
-				double overshoot = t->getProcessorTimeConsumed() - t->getWorstCaseExecutionTime();
-
 				//Checking for missed deadline
-				if (isDeadlineMet(time-overshoot, t))
+				if (isDeadlineMet(time, t))
 				{
-					deadlinesMissed++;
+					deadlinesMet++;
 				}
 				else
-					deadlinesMet++;
+					deadlinesMissed++;
 
 				//Removing completed task from readyQueue
 				readyQueue.pop();
 
 				//Services task and adds to waitQueue
 				waitQueue = addToWait(waitQueue, t);
-
-				//Service next job based on remaining fraction of time
-				if (!readyQueue.empty())
-				{
-					t =  &readyQueue.top();
-					t->incrementProcessorTimeConsumed(overshoot);
-				}
 			}
 		}
 		time++;											//Time tick
@@ -206,7 +196,6 @@ queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
 			}
 		}
 	}
-	cout << "Add to wait \n";
 	return tempQueue;
 }
 
@@ -219,7 +208,7 @@ double Simulator::successJobCompletion(double deadlinesMissed, double deadlinesM
 	return (deadlinesMet/totalJobs)*100;
 }
 
-//Checks if a task is complete
+//Checks if a job is complete
 bool Simulator::isJobComplete(Task * t)
 {
 	if (t->getProcessorTimeConsumed() >= t->getWorstCaseExecutionTime())
@@ -228,9 +217,11 @@ bool Simulator::isJobComplete(Task * t)
 		return false;
 }
 
+//Checks if a job meets its deadline
 bool Simulator::isDeadlineMet(double time, Task * t)
 {
-	if (time > (t->getNextArrivalTime() + t->getRelativeDeadline()))
+    double overshoot = t->getProcessorTimeConsumed() - t->getWorstCaseExecutionTime();
+	if (time - overshoot > (t->getNextArrivalTime() + t->getRelativeDeadline()))
 		return false;
 	else
 		return true;
