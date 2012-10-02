@@ -9,7 +9,7 @@
 #include <fstream>
 
 
-#define NUMBER_OF_TASKS_SETS 1
+#define NUMBER_OF_TASKS_SETS 10
 #define NUMBER_OF_TASKS 16
 
 using namespace std;
@@ -42,11 +42,11 @@ int main(int argc, char** argv)
 			taskSet.printTaskSet();
 			cout << "\n";
 
-			taskSet.sortTaskSetByUtilization();
-			cout << "MUF:" << s.MUF(taskSet) << "\n";
-			
 			taskSet.sortTaskSetByPeriod();
 			cout << "RM:" << s.RM(taskSet) << "\n";
+			
+			taskSet.sortTaskSetByUtilization();
+			cout << "MUF:" << s.MUF(taskSet) << "\n";
 
 			taskSet.sortTaskSetByWCET();
 			cout << "SJF:" << s.SJF(taskSet) << "\n";

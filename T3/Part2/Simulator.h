@@ -28,6 +28,10 @@ public:
 	bool isJobComplete(Task t);
 	bool isDeadlineMet(double time, Task t);
 	double successJobCompletion(double deadlinesMissed, double totalJobs);
+	stack<Task> addTaskByPeriod(stack<Task> readyQueue, Task t);
+	stack<Task> addTaskByWCET (stack<Task> readyQueue, Task t);
+	stack<Task> addTaskByUtilization (stack<Task> readyQueue, Task t);
+	stack<Task> reverseStackOrdering(stack<Task> currentStack);
 
 //	~Simulator(void);
 };

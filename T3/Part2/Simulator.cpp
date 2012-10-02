@@ -20,9 +20,8 @@ Simulator::Simulator()
 
 double Simulator::RM(TaskSet ts)
 {
-	TaskSet v_ts = ts;
 	//Initialization of variables
-	stack<Task> readyQueue = v_ts.sortTaskSetByPeriod(); 		//Converts the taskSet into RM policy readyQueue (implemented in a stack)
+	stack<Task> readyQueue = ts.sortTaskSetByPeriod(); 		//Converts the taskSet into RM policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
 	double time = 0;
 	int k = 0;
@@ -38,7 +37,7 @@ double Simulator::RM(TaskSet ts)
 			//Moves job from waiting to ready
 			if (waitQueue.front().getNextArrivalTime() <= time)
 			{
-				readyQueue = v_ts.addTaskByPeriod(readyQueue, waitQueue.front());
+				readyQueue = addTaskByPeriod(readyQueue, waitQueue.front());
 				waitQueue.pop();
 			}
 			else { break; }
@@ -75,12 +74,10 @@ double Simulator::RM(TaskSet ts)
 //Given a taskSet, determines whether the taskSet is schedulable according to shortest-job-first scheduling policy.
 double Simulator::SJF(TaskSet ts)
 {
-	TaskSet v_ts = ts;
 	//Initialization of variables
-	stack<Task> readyQueue = v_ts.sortTaskSetByWCET(); 		//Converts the taskSet into SJF policy readyQueue (implemented in a stack)
+	stack<Task> readyQueue = ts.sortTaskSetByWCET(); 		//Converts the taskSet into SJF policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
 	double time = 0;
-	int k = 0;
 	double deadlinesMissed = 0;
 	double deadlinesMet = 0;
 
@@ -93,7 +90,7 @@ double Simulator::SJF(TaskSet ts)
 			//Moves job from waiting to ready
 			if (waitQueue.front().getNextArrivalTime() <= time)
 			{
-				readyQueue = v_ts.addTaskByWCET(readyQueue, waitQueue.front());
+				readyQueue = addTaskByWCET(readyQueue, waitQueue.front());
 				waitQueue.pop();
 			}
 			else { break; }
@@ -130,9 +127,8 @@ double Simulator::SJF(TaskSet ts)
 //Given a taskSet, determines whether the taskSet is schedulable according to max-utilization-first scheduling policy.
 double Simulator::MUF(TaskSet ts)
 {
-	TaskSet v_ts = ts;
 	//Initialization of variables
-	stack<Task> readyQueue = v_ts.sortTaskSetByUtilization(); 		//Converts the taskSet into MUF policy readyQueue (implemented in a stack)
+	stack<Task> readyQueue = ts.sortTaskSetByUtilization(); 		//Converts the taskSet into MUF policy readyQueue (implemented in a stack)
 	queue<Task> waitQueue;
 	double time = 0;
 	int k = 0;
@@ -148,7 +144,7 @@ double Simulator::MUF(TaskSet ts)
 			//Moves job from waiting to ready
 			if (waitQueue.front().getNextArrivalTime() <= time)
 			{
-				readyQueue = v_ts.addTaskByUtilization(readyQueue, waitQueue.front());
+				readyQueue = addTaskByUtilization(readyQueue, waitQueue.front());
 				waitQueue.pop();
 			}
 			else { break; }
@@ -236,8 +232,110 @@ bool Simulator::isJobComplete(Task t)
 //Checks if a job meets its deadline
 bool Simulator::isDeadlineMet(double time, Task t)
 {
-	if (time > (t.getNextArrivalTime() + t.getRelativeDeadline()))
-		return false;
-	else
+	double overshoot = t.getProcessorTimeConsumed - t.getWorstCaseExecutionTime;
+	if ((time - overshoot) <= (t.getNextArrivalTime() + t.getRelativeDeadline()))
 		return true;
+	else
+		return false;
+}
+
+stack<Task> Simulator::addTaskByPeriod (stack<Task> readyQueue, Task t)
+{
+	stack<Task> tempReady;
+
+	if (readyQueue.empty())
+	{
+		tempReady.push(t);
+		return tempReady;
+	}
+
+	while (!readyQueue.empty())
+	{
+
+		if (t.getPeriod() < readyQueue.top().getPeriod()) {
+			tempReady.push(t);
+			while(!readyQueue.empty())
+			{
+				tempReady.push(readyQueue.top());
+				readyQueue.pop();
+			}
+			return reverseStackOrdering(tempReady);
+		}
+		tempReady.push(readyQueue.top());
+		readyQueue.pop();
+		if (readyQueue.empty())
+			tempReady.push(t);
+	}
+	return reverseStackOrdering(tempReady);
+}
+
+stack<Task> Simulator::addTaskByWCET (stack<Task> readyQueue, Task t)
+{
+	stack<Task> tempReady;
+
+	if (readyQueue.empty())
+	{
+		tempReady.push(t);
+		return tempReady;
+	}
+
+	while (!readyQueue.empty())
+	{
+
+		if (t.getWorstCaseExecutionTime() < readyQueue.top().getWorstCaseExecutionTime()) {
+			tempReady.push(t);
+			while(!readyQueue.empty())
+			{
+				tempReady.push(readyQueue.top());
+				readyQueue.pop();
+			}
+			return reverseStackOrdering(tempReady);
+		}
+		tempReady.push(readyQueue.top());
+		readyQueue.pop();
+		if (readyQueue.empty())
+			tempReady.push(t);
+	}
+	return reverseStackOrdering(tempReady);
+}
+
+stack<Task> Simulator::addTaskByUtilization (stack<Task> readyQueue, Task t)
+{
+	stack<Task> tempReady;
+
+	if (readyQueue.empty())
+	{
+		tempReady.push(t);
+		return tempReady;
+	}
+
+	while (!readyQueue.empty())
+	{
+
+		if (t.getUtlization() < readyQueue.top().getUtlization()) {
+			tempReady.push(t);
+			while(!readyQueue.empty())
+			{
+				tempReady.push(readyQueue.top());
+				readyQueue.pop();
+			}
+			return reverseStackOrdering(tempReady);
+		}
+		tempReady.push(readyQueue.top());
+		readyQueue.pop();
+		if (readyQueue.empty())
+			tempReady.push(t);
+	}
+	return reverseStackOrdering(tempReady);
+}
+
+stack<Task> Simulator::reverseStackOrdering(stack<Task> currentStack)
+{
+	stack<Task> tempStack;
+
+	while(!currentStack.empty()) {
+		tempStack.push(currentStack.top());
+		currentStack.pop();
+	}
+	return tempStack;
 }

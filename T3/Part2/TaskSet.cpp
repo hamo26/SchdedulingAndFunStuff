@@ -94,29 +94,3 @@ TaskSet::~TaskSet(void)
 {
 	//Empty for now.
 }
-
-//Code ref: http://stackoverflow.com/questions/4229870/c-algorithm-to-calculate-least-common-multiple-for-multiple-numbers
-int TaskSet::gcd(int a, int b)
-{
-    for (;;)
-    {
-        if (a == 0) return b;
-        b %= a;
-        if (b == 0) return a;
-        a %= b;
-    }
-    return -1;
-}
-
-int TaskSet::lcm(int a, int b)
-{
-    int temp = gcd(a, b);
-
-    return temp ? (a / temp * b) : 0;
-}
-
-int TaskSet::calculateLCM()
-{
-	int result = 0;//accumulate(v_taskSet, v_taskSet + v_taskSet.size() - 1, 1, lcm);
-	return result;
-}
