@@ -65,7 +65,7 @@ double Simulator::RM(TaskSet ts)
 				readyQueue.pop();
 
 				//Services task and adds to waitQueue
-				waitQueue = addToWait(waitQueue, t);
+				waitQueue = addToWait(&waitQueue, t);
 			}
 		}
 		time++;											//Time tick
@@ -96,7 +96,7 @@ double Simulator::SJF(TaskSet ts)
 			//Moves job from waiting to ready
 			if (waitQueue.front().getNextArrivalTime() <= time)
 			{
-				readyQueue = v_ts.addTaskByPeriod(readyQueue, waitQueue.front());
+				readyQueue = v_ts.addTaskByWCET(readyQueue, waitQueue.front());
 				waitQueue.pop();
 			}
 			else { break; }
@@ -122,7 +122,7 @@ double Simulator::SJF(TaskSet ts)
 				readyQueue.pop();
 
 				//Services task and adds to waitQueue
-				waitQueue = addToWait(waitQueue, t);
+				waitQueue = addToWait(&waitQueue, t);
 			}
 		}
 		time++;											//Time tick
@@ -153,7 +153,7 @@ double Simulator::MUF(TaskSet ts)
 			//Moves job from waiting to ready
 			if (waitQueue.front().getNextArrivalTime() <= time)
 			{
-				readyQueue = v_ts.addTaskByPeriod(readyQueue, waitQueue.front());
+				readyQueue = v_ts.addTaskByUtilization(readyQueue, waitQueue.front());
 				waitQueue.pop();
 			}
 			else { break; }
@@ -179,7 +179,7 @@ double Simulator::MUF(TaskSet ts)
 				readyQueue.pop();
 
 				//Services task and adds to waitQueue
-				waitQueue = addToWait(waitQueue, t);
+				waitQueue = addToWait(&waitQueue, t);
 			}
 		}
 		time++;											//Time tick
@@ -188,29 +188,37 @@ double Simulator::MUF(TaskSet ts)
 	return successJobCompletion(deadlinesMissed, deadlinesMet);
 }
 
-queue<Task> Simulator::addToWait(queue<Task> waitQueue, Task * t)
+queue<Task> Simulator::addToWait(queue<Task> * waitQueue, Task * t)
 {
 	//Making adjustments for next service
 	t->updateNextArrivalTime(t->getNextArrivalTime() + t->getPeriod());
 	t->resetProcessorTime();
 
 	queue<Task> tempQueue;
+        
+        if (waitQueue->empty())
+        {
+            tempQueue.push(*t);
+            return tempQueue;
+        }
 
-	while (!waitQueue.empty())
+	while (!waitQueue->empty())
 	{
-	Task tempTask = waitQueue.front();
+	Task tempTask = waitQueue->front();
 
     if (t->getNextArrivalTime() < tempTask.getNextArrivalTime()) {
             tempQueue.push(*t);
-            while(!waitQueue.empty())
+            while(!waitQueue->empty())
             {
-            	tempQueue.push(waitQueue.front());
-            	waitQueue.pop();
+            	tempQueue.push(waitQueue->front());
+            	waitQueue->pop();
             }
             return tempQueue;
     }
     tempQueue.push(tempTask);
-    waitQueue.pop();
+    waitQueue->pop();
+    if (waitQueue->empty())
+        tempQueue.push(*t);
 	}
 	return tempQueue;
 }
