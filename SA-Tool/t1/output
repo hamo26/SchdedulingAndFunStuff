@@ -1,0 +1,140 @@
+Analyzing task set: 
+Task1:WCET: 7.23181 RDL: 41 Period: 41
+Task2:WCET: 198.982 RDL: 1081 Period: 1081
+Task3:WCET: 4181.53 RDL: 50166 Period: 50166
+Task4:WCET: 1127.34 RDL: 4017 Period: 4017
+Task5:WCET: 49161.4 RDL: 858118 Period: 858118
+Task6:WCET: 39.9017 RDL: 1370 Period: 1370
+Task7:WCET: 9036.09 RDL: 648464 Period: 648464
+Task8:WCET: 8.58456 RDL: 49 Period: 49
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
+Analyzing task set: 
+Task1:WCET: 8256.66 RDL: 54182 Period: 54182
+Task2:WCET: 1.63112 RDL: 29 Period: 29
+Task3:WCET: 2.21547 RDL: 24 Period: 24
+Task4:WCET: 1.38405 RDL: 27 Period: 27
+Task5:WCET: 1074.63 RDL: 3484 Period: 3484
+Task6:WCET: 36.3161 RDL: 305 Period: 305
+Task7:WCET: 6758.88 RDL: 86770 Period: 86770
+Task8:WCET: 34.1722 RDL: 240 Period: 240
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
+Analyzing task set: 
+Task1:WCET: 313.262 RDL: 50551 Period: 50551
+Task2:WCET: 3.30654 RDL: 12 Period: 12
+Task3:WCET: 114.414 RDL: 1161 Period: 1161
+Task4:WCET: 194.377 RDL: 2536 Period: 2536
+Task5:WCET: 712.712 RDL: 5033 Period: 5033
+Task6:WCET: 121.158 RDL: 997 Period: 997
+Task7:WCET: 61311.1 RDL: 347597 Period: 347597
+Task8:WCET: 337.874 RDL: 3263 Period: 3263
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
+Analyzing task set: 
+Task1:WCET: 613.963 RDL: 3198 Period: 3198
+Task2:WCET: 131.456 RDL: 379 Period: 379
+Task3:WCET: 8.08386 RDL: 268 Period: 268
+Task4:WCET: 935.581 RDL: 7866 Period: 7866
+Task5:WCET: 24.6634 RDL: 1052 Period: 1052
+Task6:WCET: 12027.8 RDL: 93677 Period: 93677
+Task7:WCET: 131.25 RDL: 240159 Period: 240159
+Task8:WCET: 14.5305 RDL: 91 Period: 91
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
+Analyzing task set: 
+Task1:WCET: 898.587 RDL: 12731 Period: 12731
+Task2:WCET: 36310 RDL: 361792 Period: 361792
+Task3:WCET: 5535.14 RDL: 34148 Period: 34148
+Task4:WCET: 3.94438 RDL: 14 Period: 14
+Task5:WCET: 66.3215 RDL: 917 Period: 917
+Task6:WCET: 17.7065 RDL: 171 Period: 171
+Task7:WCET: 0.00694543 RDL: 1475 Period: 1475
+Task8:WCET: 66.5718 RDL: 318 Period: 318
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
+Analyzing task set: 
+Task1:WCET: 0.301731 RDL: 10 Period: 10
+Task2:WCET: 192.227 RDL: 446 Period: 446
+Task3:WCET: 154.7 RDL: 536 Period: 536
+Task4:WCET: 17.6475 RDL: 282 Period: 282
+Task5:WCET: 5839.98 RDL: 351285 Period: 351285
+Task6:WCET: 8110.24 RDL: 56479 Period: 56479
+Task7:WCET: 0.418031 RDL: 26 Period: 26
+Task8:WCET: 955.473 RDL: 84364 Period: 84364
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
+Analyzing task set: 
+Task1:WCET: 1727.44 RDL: 14606 Period: 14606
+Task2:WCET: 21.7274 RDL: 589 Period: 589
+Task3:WCET: 69301.1 RDL: 119921 Period: 119921
+Task4:WCET: 0.0477304 RDL: 498 Period: 498
+Task5:WCET: 148.892 RDL: 871 Period: 871
+Task6:WCET: 4.22412 RDL: 110 Period: 110
+Task7:WCET: 28.4525 RDL: 8573 Period: 8573
+Task8:WCET: 6965.29 RDL: 128529 Period: 128529
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
+Analyzing task set: 
+Task1:WCET: 44982.4 RDL: 137682 Period: 137682
+Task2:WCET: 110.416 RDL: 11366 Period: 11366
+Task3:WCET: 3097.67 RDL: 19206 Period: 19206
+Task4:WCET: 0.826771 RDL: 73 Period: 73
+Task5:WCET: 31399.2 RDL: 321279 Period: 321279
+Task6:WCET: 1265.72 RDL: 6746 Period: 6746
+Task7:WCET: 1338.01 RDL: 417336 Period: 417336
+Task8:WCET: 172172 RDL: 850664 Period: 850664
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
+Analyzing task set: 
+Task1:WCET: 287.174 RDL: 3304 Period: 3304
+Task2:WCET: 2153.12 RDL: 39731 Period: 39731
+Task3:WCET: 370.744 RDL: 6052 Period: 6052
+Task4:WCET: 58.8786 RDL: 396 Period: 396
+Task5:WCET: 2.24711 RDL: 19 Period: 19
+Task6:WCET: 68778.6 RDL: 527411 Period: 527411
+Task7:WCET: 1163.49 RDL: 4360 Period: 4360
+Task8:WCET: 2266.84 RDL: 16991 Period: 16991
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
+Analyzing task set: 
+Task1:WCET: 7486.39 RDL: 202680 Period: 202680
+Task2:WCET: 1427.89 RDL: 10945 Period: 10945
+Task3:WCET: 28681 RDL: 78096 Period: 78096
+Task4:WCET: 101.101 RDL: 3892 Period: 3892
+Task5:WCET: 16629.2 RDL: 80880 Period: 80880
+Task6:WCET: 347.367 RDL: 25090 Period: 25090
+Task7:WCET: 5.26233 RDL: 26 Period: 26
+Task8:WCET: 591.628 RDL: 33754 Period: 33754
+Scheduable using RM Scheduling / Liu and Layland bound test: No <0>
+Scheduable using RM Scheduling / Hyperbolic bound test: No <0>
+Scheduable using RM scheduling/ WCRT test: No <0>
+Scheduable using SJF scheduling/ WCRT test: Yes <0>
+Scheduable using MUF scheduling/ WCRT test: No <0>
