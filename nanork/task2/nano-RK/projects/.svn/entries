@@ -1,0 +1,80 @@
+10
+
+dir
+1390
+svn://nanork.org/srv/svn/repos/nano-RK/projects
+svn://nanork.org/srv/svn/repos
+
+
+
+2012-10-07T22:41:41.196677Z
+1390
+agr
+has-props
+
+
+
+
+
+
+
+
+
+
+
+
+
+d5223eb8-5f29-0410-a7c7-974caa64965b
+
+utils
+dir
+
+tests
+dir
+
+demos
+dir
+
+networking
+dir
+
+README.txt
+file
+
+
+
+
+2012-10-10T04:31:50.252666Z
+3701b7251c44859fd39e0a8c984b8d25
+2010-01-18T06:53:31.373951Z
+1051
+agr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+190
+
+experimental
+dir
+
+examples
+dir
+
