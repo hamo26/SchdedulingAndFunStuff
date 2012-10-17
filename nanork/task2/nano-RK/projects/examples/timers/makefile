@@ -1,5 +1,5 @@
 # Platform name  micaZ, firefly2_2
-PLATFORM = firefly3
+PLATFORM = micaZ
 
 
 # Target file name (without extension).

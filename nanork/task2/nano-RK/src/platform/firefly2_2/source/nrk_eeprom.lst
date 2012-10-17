@@ -401,22 +401,22 @@
  529               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_eeprom.c
-     /tmp/ccAy9cPw.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccAy9cPw.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccAy9cPw.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccAy9cPw.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccAy9cPw.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccAy9cPw.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccAy9cPw.s:129    .text:00000000 nrk_eeprom_read_byte
-     /tmp/ccAy9cPw.s:154    .text:00000006 nrk_eeprom_write_byte
-     /tmp/ccAy9cPw.s:177    .text:0000000c read_eeprom_mac_address
-     /tmp/ccAy9cPw.s:270    .text:00000078 read_eeprom_channel
-     /tmp/ccAy9cPw.s:303    .text:00000090 write_eeprom_load_img_pages
-     /tmp/ccAy9cPw.s:332    .text:000000a0 read_eeprom_load_img_pages
-     /tmp/ccAy9cPw.s:364    .text:000000b8 read_eeprom_aes_key
-     /tmp/ccAy9cPw.s:413    .text:000000e8 write_eeprom_aes_key
-     /tmp/ccAy9cPw.s:463    .text:00000118 read_eeprom_current_image_checksum
-     /tmp/ccAy9cPw.s:496    .text:00000130 write_eeprom_current_image_checksum
+     /tmp/cc3pubAU.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc3pubAU.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc3pubAU.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc3pubAU.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc3pubAU.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc3pubAU.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc3pubAU.s:129    .text:00000000 nrk_eeprom_read_byte
+     /tmp/cc3pubAU.s:154    .text:00000006 nrk_eeprom_write_byte
+     /tmp/cc3pubAU.s:177    .text:0000000c read_eeprom_mac_address
+     /tmp/cc3pubAU.s:270    .text:00000078 read_eeprom_channel
+     /tmp/cc3pubAU.s:303    .text:00000090 write_eeprom_load_img_pages
+     /tmp/cc3pubAU.s:332    .text:000000a0 read_eeprom_load_img_pages
+     /tmp/cc3pubAU.s:364    .text:000000b8 read_eeprom_aes_key
+     /tmp/cc3pubAU.s:413    .text:000000e8 write_eeprom_aes_key
+     /tmp/cc3pubAU.s:463    .text:00000118 read_eeprom_current_image_checksum
+     /tmp/cc3pubAU.s:496    .text:00000130 write_eeprom_current_image_checksum
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num

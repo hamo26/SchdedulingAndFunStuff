@@ -10,11 +10,11 @@
   29               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_reserve.c
-     /tmp/cchd6N1D.s:2      *ABS*:0000003f __SREG__
-     /tmp/cchd6N1D.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cchd6N1D.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cchd6N1D.s:5      *ABS*:00000034 __CCP__
-     /tmp/cchd6N1D.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cchd6N1D.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cccHSIs8.s:2      *ABS*:0000003f __SREG__
+     /tmp/cccHSIs8.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cccHSIs8.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cccHSIs8.s:5      *ABS*:00000034 __CCP__
+     /tmp/cccHSIs8.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cccHSIs8.s:7      *ABS*:00000001 __zero_reg__
 
 NO UNDEFINED SYMBOLS

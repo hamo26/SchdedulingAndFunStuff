@@ -651,20 +651,20 @@
  761               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_ext_int.c
-     /tmp/cc7EAL8Q.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc7EAL8Q.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc7EAL8Q.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc7EAL8Q.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc7EAL8Q.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc7EAL8Q.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc7EAL8Q.s:123    .text:00000000 nrk_ext_int_enable
-     /tmp/cc7EAL8Q.s:257    .text:00000082 nrk_ext_int_disable
-     /tmp/cc7EAL8Q.s:393    .text:00000104 nrk_ext_int_configure
+     /tmp/cc9jk3lm.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc9jk3lm.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc9jk3lm.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc9jk3lm.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc9jk3lm.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc9jk3lm.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc9jk3lm.s:123    .text:00000000 nrk_ext_int_enable
+     /tmp/cc9jk3lm.s:257    .text:00000082 nrk_ext_int_disable
+     /tmp/cc9jk3lm.s:393    .text:00000104 nrk_ext_int_configure
                             *COM*:00000002 ext_int0_callback
                             *COM*:00000002 ext_int1_callback
                             *COM*:00000002 pc_int0_callback
-     /tmp/cc7EAL8Q.s:600    .text:0000021a __vector_9
-     /tmp/cc7EAL8Q.s:674    .text:0000027e __vector_1
+     /tmp/cc9jk3lm.s:600    .text:0000021a __vector_9
+     /tmp/cc9jk3lm.s:674    .text:0000027e __vector_1
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000002 ext_int2_callback
                             *COM*:00000001 error_task

@@ -167,13 +167,13 @@
  224               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_status.c
-     /tmp/ccQHZT4M.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccQHZT4M.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccQHZT4M.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccQHZT4M.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccQHZT4M.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccQHZT4M.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccQHZT4M.s:122    .text:00000000 _nrk_startup_error
+     /tmp/cc9QgyRf.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc9QgyRf.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc9QgyRf.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc9QgyRf.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc9QgyRf.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc9QgyRf.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc9QgyRf.s:122    .text:00000000 _nrk_startup_error
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num

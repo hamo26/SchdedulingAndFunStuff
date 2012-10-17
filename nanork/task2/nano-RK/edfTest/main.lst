@@ -390,20 +390,20 @@
  451               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccHmJFgH.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccHmJFgH.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccHmJFgH.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccHmJFgH.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccHmJFgH.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccHmJFgH.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccHmJFgH.s:144    .text:00000000 Task2
-     /tmp/ccHmJFgH.s:174    .text:0000000e Task1
-     /tmp/ccHmJFgH.s:200    .text:0000001c nrk_create_taskset
+     /tmp/ccRo5Tuc.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccRo5Tuc.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccRo5Tuc.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccRo5Tuc.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccRo5Tuc.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccRo5Tuc.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccRo5Tuc.s:144    .text:00000000 Task2
+     /tmp/ccRo5Tuc.s:174    .text:0000000e Task1
+     /tmp/ccRo5Tuc.s:200    .text:0000001c nrk_create_taskset
                             *COM*:00000023 TaskOne
                             *COM*:00000080 Stack1
                             *COM*:00000023 TaskTwo
                             *COM*:00000080 Stack2
-     /tmp/ccHmJFgH.s:382    .text:0000017e main
+     /tmp/ccRo5Tuc.s:382    .text:0000017e main
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr
