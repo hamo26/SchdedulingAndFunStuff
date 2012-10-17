@@ -78,7 +78,7 @@ void nrk_add_to_readyQ (int8_t task_ID)
 
         while (NextNode != NULL)
         {
-            if (nrk_task_TCB[NextNode->task_ID].elevated_prio_flag)
+            /*if (nrk_task_TCB[NextNode->task_ID].elevated_prio_flag)
                 if (nrk_task_TCB[NextNode->task_ID].task_prio_ceil <
                         nrk_task_TCB[task_ID].task_prio)
                     break;
@@ -88,7 +88,10 @@ void nrk_add_to_readyQ (int8_t task_ID)
                     break;
             if (nrk_task_TCB[NextNode->task_ID].task_prio <
                     nrk_task_TCB[task_ID].task_prio)
-                break;
+                break;*/
+
+			//
+			if (nrk_task_TCB[NextNode->taskID].next_period > nrk_task_TCB[task_ID].next_period) {break;}
 
             NextNode = NextNode->Next;
         }
