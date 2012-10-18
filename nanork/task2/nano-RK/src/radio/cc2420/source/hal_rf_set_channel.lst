@@ -134,13 +134,13 @@
  204               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 hal_rf_set_channel.c
-     /tmp/ccZuwu2a.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccZuwu2a.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccZuwu2a.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccZuwu2a.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccZuwu2a.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccZuwu2a.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccZuwu2a.s:120    .text:00000000 halRfSetChannel
+     /tmp/cctUM4lh.s:2      *ABS*:0000003f __SREG__
+     /tmp/cctUM4lh.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cctUM4lh.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cctUM4lh.s:5      *ABS*:00000034 __CCP__
+     /tmp/cctUM4lh.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cctUM4lh.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cctUM4lh.s:120    .text:00000000 halRfSetChannel
                             *COM*:00000004 _nrk_signal_list
 
 UNDEFINED SYMBOLS

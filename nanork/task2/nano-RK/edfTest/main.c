@@ -53,8 +53,7 @@ int main ()
 
     nrk_setup_ports();
     nrk_setup_uart(UART_BAUDRATE_115K2);
-
-    printf("EDF test:\n");
+    nrk_kprintf( PSTR("EDF Test: \n") );
 
     nrk_init();
 
@@ -67,8 +66,7 @@ int main ()
 void Task1()
 {
     while(1) {
-	//nrk_kprintf( PSTR("In T1 loop ") );
-	printf("In Task 1\n");
+	nrk_kprintf( PSTR("In T1 loop \n") );
 	nrk_wait_until_next_period();
     }
 }
@@ -76,8 +74,7 @@ void Task1()
 void Task2()
 {
     while(1) {
-	//nrk_kprintf( PSTR("In T2 loop ") );
-	printf("In Task 2\n");
+	nrk_kprintf( PSTR("In T2 loop \n") );
 	nrk_wait_until_next_period();
     }
 }
