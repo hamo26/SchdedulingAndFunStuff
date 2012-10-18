@@ -91,7 +91,7 @@ void nrk_add_to_readyQ (int8_t task_ID)
                 break;*/
 
 			//
-			if (nrk_task_TCB[NextNode->taskID].next_period > nrk_task_TCB[task_ID].next_period) {break;}
+			if (nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period) {break;}
 
             NextNode = NextNode->Next;
         }
