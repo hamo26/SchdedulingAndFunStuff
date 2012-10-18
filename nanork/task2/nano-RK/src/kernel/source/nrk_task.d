@@ -13,5 +13,5 @@ nrk_task.o nrk_task.d : ..//src/kernel/source/nrk_task.c ..//src/kernel/include/
  ..//src/platform/micaZ/include/nrk_platform_time.h \
  ..//src/kernel/include/nrk_task.h ..//src/kernel/hal/include/nrk_timer.h \
  ..//src/kernel/include/nrk_scheduler.h \
- ..//src/kernel/include/nrk_error.h \
+ ..//src/kernel/include/nrk_error.h ..//src/kernel/include/nrk_defs.h \
  ..//src/kernel/include/nrk_stack_check.h

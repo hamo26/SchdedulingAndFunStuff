@@ -10,11 +10,11 @@
   29               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_driver.c
-     /tmp/ccKj4P1Y.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccKj4P1Y.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccKj4P1Y.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccKj4P1Y.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccKj4P1Y.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccKj4P1Y.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cchXl8gw.s:2      *ABS*:0000003f __SREG__
+     /tmp/cchXl8gw.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cchXl8gw.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cchXl8gw.s:5      *ABS*:00000034 __CCP__
+     /tmp/cchXl8gw.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cchXl8gw.s:7      *ABS*:00000001 __zero_reg__
 
 NO UNDEFINED SYMBOLS

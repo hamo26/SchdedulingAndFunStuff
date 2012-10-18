@@ -61,7 +61,7 @@ int main ()
 
     ACTIVATE_TASK(1);
     ACTIVATE_TASK(2);
- //   ACTIVATE_TASK(3);
+    ACTIVATE_TASK(3);
 
     nrk_start();
 

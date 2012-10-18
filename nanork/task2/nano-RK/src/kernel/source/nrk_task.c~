@@ -66,7 +66,7 @@ void nrk_add_to_readyQ (int8_t task_ID)
     nrk_queue *CurNode;
 
     //printf( "nrk_add_to_readyQ %d\n",task_ID );
-    //nrk_print_readyQ();
+    nrk_print_readyQ();
     // nrk_queue full
     if (_free_node == NULL)
     {
@@ -108,7 +108,7 @@ void nrk_add_to_readyQ (int8_t task_ID)
         // Stop if nextNode is freenode or next node less prio or (equal and elevated
         // Issues - 1 comes, becomes 2', 1 more comes (2' 1) then 2 comes where should it be placed ?
         // 2' 2  1 or 2 2' 1 in ready q , what happens after 2'->1, what if 2'->2
-	//printf("Im out of the while loop.\n");
+	printf("Im out of the while loop.\n");
     }
 
     CurNode->task_ID = task_ID;
@@ -153,7 +153,7 @@ void nrk_add_to_readyQ (int8_t task_ID)
         }
 
     }
-//nrk_print_readyQ();
+nrk_print_readyQ();
     //printf("Im out of the method\n");
 
 }

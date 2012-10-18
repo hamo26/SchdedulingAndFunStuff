@@ -1133,20 +1133,20 @@
  1157               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_time.c
-     /tmp/ccWlCoBJ.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccWlCoBJ.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccWlCoBJ.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccWlCoBJ.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccWlCoBJ.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccWlCoBJ.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccWlCoBJ.s:141    .text:00000000 nrk_time_get
-     /tmp/ccWlCoBJ.s:265    .text:000000bc nrk_time_sub
-     /tmp/ccWlCoBJ.s:462    .text:000001da nrk_time_compact_nanos
-     /tmp/ccWlCoBJ.s:529    .text:00000220 nrk_time_add
-     /tmp/ccWlCoBJ.s:646    .text:000002d6 nrk_time_set
-     /tmp/ccWlCoBJ.s:679    .text:000002f8 _nrk_time_to_ticks
-     /tmp/ccWlCoBJ.s:874    .text:00000416 _nrk_ticks_to_time
-     /tmp/ccWlCoBJ.s:958    .text:00000488 _nrk_time_to_ticks_long
+     /tmp/ccwLiA0n.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccwLiA0n.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccwLiA0n.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccwLiA0n.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccwLiA0n.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccwLiA0n.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccwLiA0n.s:141    .text:00000000 nrk_time_get
+     /tmp/ccwLiA0n.s:265    .text:000000bc nrk_time_sub
+     /tmp/ccwLiA0n.s:462    .text:000001da nrk_time_compact_nanos
+     /tmp/ccwLiA0n.s:529    .text:00000220 nrk_time_add
+     /tmp/ccwLiA0n.s:646    .text:000002d6 nrk_time_set
+     /tmp/ccwLiA0n.s:679    .text:000002f8 _nrk_time_to_ticks
+     /tmp/ccwLiA0n.s:874    .text:00000416 _nrk_ticks_to_time
+     /tmp/ccwLiA0n.s:958    .text:00000488 _nrk_time_to_ticks_long
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

@@ -13,4 +13,5 @@ main.o main.d : main.c ..//src/kernel/include/nrk.h \
  ..//src/platform/micaZ/include/nrk_platform_time.h \
  ..//src/kernel/include/nrk_task.h ..//src/kernel/include/nrk_error.h \
  ..//src/kernel/hal/include/nrk_timer.h \
- ..//src/kernel/include/nrk_stack_check.h
+ ..//src/kernel/include/nrk_stack_check.h \
+ ..//src/kernel/include/nrk_stats.h
