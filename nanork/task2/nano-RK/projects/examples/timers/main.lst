@@ -520,21 +520,21 @@
  486               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/cckj335P.s:2      *ABS*:0000003f __SREG__
-     /tmp/cckj335P.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cckj335P.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cckj335P.s:5      *ABS*:00000034 __CCP__
-     /tmp/cckj335P.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cckj335P.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cckj335P.s:148    .text:00000000 Task1
-     /tmp/cckj335P.s:272    .text:000000b6 my_timer_callback
-     /tmp/cckj335P.s:465    .progmem.data:00000022 __c.2117
-     /tmp/cckj335P.s:461    .progmem.data:00000000 __c.2119
-     /tmp/cckj335P.s:297    .text:000000c0 nrk_create_taskset
+     /tmp/ccPD4ObU.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccPD4ObU.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccPD4ObU.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccPD4ObU.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccPD4ObU.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccPD4ObU.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccPD4ObU.s:148    .text:00000000 Task1
+     /tmp/ccPD4ObU.s:272    .text:000000b6 my_timer_callback
+     /tmp/ccPD4ObU.s:465    .progmem.data:00000022 __c.2117
+     /tmp/ccPD4ObU.s:461    .progmem.data:00000000 __c.2119
+     /tmp/ccPD4ObU.s:297    .text:000000c0 nrk_create_taskset
                             *COM*:00000023 TaskOne
                             *COM*:00000080 Stack1
-     /tmp/cckj335P.s:397    .text:00000170 main
-     /tmp/cckj335P.s:469    .progmem.data:00000039 __c.2109
+     /tmp/ccPD4ObU.s:397    .text:00000170 main
+     /tmp/ccPD4ObU.s:469    .progmem.data:00000039 __c.2109
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

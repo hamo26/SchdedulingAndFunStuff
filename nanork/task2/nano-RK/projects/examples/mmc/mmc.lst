@@ -1,0 +1,1028 @@
+   1               		.file	"mmc.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+ 140               	.global	spi_byte
+ 142               	spi_byte:
+ 143               		.stabd	46,0,0
+   1:mmc.c         **** /* ***********************************************************************
+   2:mmc.c         **** **
+   3:mmc.c         **** **  Copyright (C) 2006  Jesper Hansen <jesper@redegg.net> 
+   4:mmc.c         **** **
+   5:mmc.c         **** **
+   6:mmc.c         **** **  Interface functions for MMC/SD cards
+   7:mmc.c         **** **
+   8:mmc.c         **** **  File mmc_if.h
+   9:mmc.c         **** **
+  10:mmc.c         **** *************************************************************************
+  11:mmc.c         **** **
+  12:mmc.c         **** **  This program is free software; you can redistribute it and/or
+  13:mmc.c         **** **  modify it under the terms of the GNU General Public License
+  14:mmc.c         **** **  as published by the Free Software Foundation; either version 2
+  15:mmc.c         **** **  of the License, or (at your option) any later version.
+  16:mmc.c         **** **
+  17:mmc.c         **** **  This program is distributed in the hope that it will be useful,
+  18:mmc.c         **** **  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  19:mmc.c         **** **  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  20:mmc.c         **** **  GNU General Public License for more details.
+  21:mmc.c         **** **
+  22:mmc.c         **** **  You should have received a copy of the GNU General Public License
+  23:mmc.c         **** **  along with this program; if not, write to the Free Software Foundation, 
+  24:mmc.c         **** **  Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
+  25:mmc.c         **** **
+  26:mmc.c         **** *************************************************************************/
+  27:mmc.c         **** 
+  28:mmc.c         **** /* Modified by Hsin-Mu (Michael) Tsai <hsinmu@cmu.edu> to address a "write busy" bug.      July 200
+  29:mmc.c         **** 
+  30:mmc.c         **** #include <nrk.h>
+  31:mmc.c         **** 
+  32:mmc.c         **** #include <avr/io.h>
+  33:mmc.c         **** #include <inttypes.h>
+  34:mmc.c         **** #include <stdio.h>
+  35:mmc.c         **** #include "mmc.h"
+  36:mmc.c         **** 
+  37:mmc.c         **** uint8_t busy_flag=0;
+  38:mmc.c         **** 
+  39:mmc.c         **** 
+  40:mmc.c         **** /** Hardware SPI I/O. 
+  41:mmc.c         **** 	\param byte Data to send over SPI bus
+  42:mmc.c         **** 	\return Received data from SPI bus
+  43:mmc.c         **** */
+  44:mmc.c         **** uint8_t spi_byte(uint8_t byte)
+  45:mmc.c         **** {
+ 145               	.LM0:
+ 146               	.LFBB1:
+ 147               	/* prologue: function */
+ 148               	/* frame size = 0 */
+ 149               	/* stack size = 0 */
+ 150               	.L__stack_usage = 0
+  46:mmc.c         **** 	SPDR = byte;
+ 152               	.LM1:
+ 153 0000 8EBD      		out 78-32,r24
+ 154               	.L2:
+  47:mmc.c         **** 	while(!(SPSR & (1<<SPIF)))
+ 156               	.LM2:
+ 157 0002 0DB4      		in __tmp_reg__,77-32
+ 158 0004 07FE      		sbrs __tmp_reg__,7
+ 159 0006 00C0      		rjmp .L2
+  48:mmc.c         **** 	{}
+  49:mmc.c         **** 	return SPDR;
+ 161               	.LM3:
+ 162 0008 8EB5      		in r24,78-32
+ 163               	/* epilogue start */
+  50:mmc.c         **** }
+ 165               	.LM4:
+ 166 000a 0895      		ret
+ 168               	.Lscope1:
+ 170               		.stabd	78,0,0
+ 173               	.global	mmc_send_command
+ 175               	mmc_send_command:
+ 176               		.stabd	46,0,0
+  51:mmc.c         **** 
+  52:mmc.c         **** 
+  53:mmc.c         **** 
+  54:mmc.c         **** /** Send a command to the MMC/SD card.
+  55:mmc.c         **** 	\param command	Command to send
+  56:mmc.c         **** 	\param px	Command parameter 1
+  57:mmc.c         **** 	\param py	Command parameter 2
+  58:mmc.c         **** */
+  59:mmc.c         **** void mmc_send_command(uint8_t command, uint16_t px, uint16_t py)
+  60:mmc.c         **** {
+ 178               	.LM5:
+ 179               	.LFBB2:
+ 180 000c 1F93      		push r17
+ 181 000e DF93      		push r29
+ 182 0010 CF93      		push r28
+ 183 0012 00D0      		rcall .
+ 184 0014 00D0      		rcall .
+ 185 0016 CDB7      		in r28,__SP_L__
+ 186 0018 DEB7      		in r29,__SP_H__
+ 187               	/* prologue: function */
+ 188               	/* frame size = 4 */
+ 189               	/* stack size = 7 */
+ 190               	.L__stack_usage = 7
+ 191 001a 182F      		mov r17,r24
+  61:mmc.c         **** 	register union u16convert r;
+  62:mmc.c         **** 
+  63:mmc.c         **** 	MMC_CS_PORT &= ~(1 << MMC_CS);	// enable CS
+ 193               	.LM6:
+ 194 001c 7698      		cbi 46-32,6
+  64:mmc.c         **** 
+  65:mmc.c         **** 	spi_byte(0xff);			// dummy byte
+ 196               	.LM7:
+ 197 001e 8FEF      		ldi r24,lo8(-1)
+ 198 0020 4C83      		std Y+4,r20
+ 199 0022 5B83      		std Y+3,r21
+ 200 0024 6A83      		std Y+2,r22
+ 201 0026 7983      		std Y+1,r23
+ 202 0028 0E94 0000 		call spi_byte
+  66:mmc.c         **** 
+  67:mmc.c         **** 	spi_byte(command | 0x40);
+ 204               	.LM8:
+ 205 002c 812F      		mov r24,r17
+ 206 002e 8064      		ori r24,lo8(64)
+ 207 0030 0E94 0000 		call spi_byte
+  68:mmc.c         **** 
+  69:mmc.c         **** 	r.value = px;
+  70:mmc.c         **** 	spi_byte(r.bytes.high);	// high byte of param x
+ 209               	.LM9:
+ 210 0034 7981      		ldd r23,Y+1
+ 211 0036 872F      		mov r24,r23
+ 212 0038 0E94 0000 		call spi_byte
+  71:mmc.c         **** 	spi_byte(r.bytes.low);	// low byte of param x
+ 214               	.LM10:
+ 215 003c 6A81      		ldd r22,Y+2
+ 216 003e 862F      		mov r24,r22
+ 217 0040 0E94 0000 		call spi_byte
+  72:mmc.c         **** 
+  73:mmc.c         **** 	r.value = py;
+  74:mmc.c         **** 	spi_byte(r.bytes.high);	// high byte of param y
+ 219               	.LM11:
+ 220 0044 5B81      		ldd r21,Y+3
+ 221 0046 852F      		mov r24,r21
+ 222 0048 0E94 0000 		call spi_byte
+  75:mmc.c         **** 	spi_byte(r.bytes.low);	// low byte of param y
+ 224               	.LM12:
+ 225 004c 4C81      		ldd r20,Y+4
+ 226 004e 842F      		mov r24,r20
+ 227 0050 0E94 0000 		call spi_byte
+  76:mmc.c         **** 
+  77:mmc.c         **** 	spi_byte(0x95);			// correct CRC for first command in SPI          
+ 229               	.LM13:
+ 230 0054 85E9      		ldi r24,lo8(-107)
+ 231 0056 0E94 0000 		call spi_byte
+  78:mmc.c         **** 							// after that CRC is ignored, so no problem with 
+  79:mmc.c         **** 							// always sending 0x95                           
+  80:mmc.c         **** 	spi_byte(0xff);			// ignore return byte
+ 233               	.LM14:
+ 234 005a 8FEF      		ldi r24,lo8(-1)
+ 235 005c 0E94 0000 		call spi_byte
+ 236               	/* epilogue start */
+  81:mmc.c         **** }
+ 238               	.LM15:
+ 239 0060 0F90      		pop __tmp_reg__
+ 240 0062 0F90      		pop __tmp_reg__
+ 241 0064 0F90      		pop __tmp_reg__
+ 242 0066 0F90      		pop __tmp_reg__
+ 243 0068 CF91      		pop r28
+ 244 006a DF91      		pop r29
+ 245 006c 1F91      		pop r17
+ 246 006e 0895      		ret
+ 248               	.Lscope2:
+ 250               		.stabd	78,0,0
+ 252               	.global	mmc_get
+ 254               	mmc_get:
+ 255               		.stabd	46,0,0
+  82:mmc.c         **** 
+  83:mmc.c         **** 
+  84:mmc.c         **** /** Get Token.
+  85:mmc.c         **** 	Wait for and return a non-ff token from the MMC/SD card
+  86:mmc.c         **** 	\return The received token or 0xFF if timeout
+  87:mmc.c         **** */
+  88:mmc.c         **** uint8_t mmc_get(void)
+  89:mmc.c         **** {
+ 257               	.LM16:
+ 258               	.LFBB3:
+ 259 0070 CF93      		push r28
+ 260 0072 DF93      		push r29
+ 261               	/* prologue: function */
+ 262               	/* frame size = 0 */
+ 263               	/* stack size = 2 */
+ 264               	.L__stack_usage = 2
+ 266               	.LM17:
+ 267 0074 CFEF      		ldi r28,lo8(-1)
+ 268 0076 DFEF      		ldi r29,hi8(-1)
+ 269 0078 00C0      		rjmp .L6
+ 270               	.L8:
+  90:mmc.c         **** 	uint16_t i = 0xffff;
+  91:mmc.c         **** 	uint8_t b = 0xff;
+  92:mmc.c         **** 
+  93:mmc.c         **** 	while ((b == 0xff) && (--i)) 
+  94:mmc.c         **** 	{
+  95:mmc.c         **** 		b = spi_byte(0xff);
+ 272               	.LM18:
+ 273 007a 8FEF      		ldi r24,lo8(-1)
+ 274 007c 0E94 0000 		call spi_byte
+  93:mmc.c         **** 	while ((b == 0xff) && (--i)) 
+ 276               	.LM19:
+ 277 0080 8F3F      		cpi r24,lo8(-1)
+ 278 0082 01F4      		brne .L7
+ 279               	.L6:
+  93:mmc.c         **** 	while ((b == 0xff) && (--i)) 
+ 281               	.LM20:
+ 282 0084 2197      		sbiw r28,1
+ 283 0086 01F4      		brne .L8
+  93:mmc.c         **** 	while ((b == 0xff) && (--i)) 
+ 285               	.LM21:
+ 286 0088 8FEF      		ldi r24,lo8(-1)
+ 287               	.L7:
+ 288               	/* epilogue start */
+  96:mmc.c         **** 	}
+  97:mmc.c         **** 	return b;
+  98:mmc.c         **** 
+  99:mmc.c         **** }
+ 290               	.LM22:
+ 291 008a DF91      		pop r29
+ 292 008c CF91      		pop r28
+ 293 008e 0895      		ret
+ 298               	.Lscope3:
+ 300               		.stabd	78,0,0
+ 302               	.global	mmc_datatoken
+ 304               	mmc_datatoken:
+ 305               		.stabd	46,0,0
+ 100:mmc.c         **** 
+ 101:mmc.c         **** /** Get Datatoken.
+ 102:mmc.c         **** 	Wait for and return a data token from the MMC/SD card
+ 103:mmc.c         **** 	\return The received token or 0xFF if timeout
+ 104:mmc.c         **** */
+ 105:mmc.c         **** uint8_t mmc_datatoken(void)
+ 106:mmc.c         **** {
+ 307               	.LM23:
+ 308               	.LFBB4:
+ 309 0090 CF93      		push r28
+ 310 0092 DF93      		push r29
+ 311               	/* prologue: function */
+ 312               	/* frame size = 0 */
+ 313               	/* stack size = 2 */
+ 314               	.L__stack_usage = 2
+ 316               	.LM24:
+ 317 0094 CFEF      		ldi r28,lo8(2047)
+ 318 0096 D7E0      		ldi r29,hi8(2047)
+ 107:mmc.c         **** 	uint16_t i = 0x07ff;
+ 108:mmc.c         **** 	
+ 109:mmc.c         **** 	uint8_t b = 0xff;
+ 320               	.LM25:
+ 321 0098 8FEF      		ldi r24,lo8(-1)
+ 322 009a 00C0      		rjmp .L10
+ 323               	.L12:
+ 110:mmc.c         **** 
+ 111:mmc.c         **** 	while ((b != 0xfe) && (--i)) 
+ 112:mmc.c         **** 	{
+ 113:mmc.c         **** 		b = spi_byte(0xff);
+ 325               	.LM26:
+ 326 009c 8FEF      		ldi r24,lo8(-1)
+ 327 009e 0E94 0000 		call spi_byte
+ 111:mmc.c         **** 	while ((b != 0xfe) && (--i)) 
+ 329               	.LM27:
+ 330 00a2 8E3F      		cpi r24,lo8(-2)
+ 331 00a4 01F0      		breq .L11
+ 332               	.L10:
+ 111:mmc.c         **** 	while ((b != 0xfe) && (--i)) 
+ 334               	.LM28:
+ 335 00a6 2197      		sbiw r28,1
+ 336 00a8 01F4      		brne .L12
+ 337               	.L11:
+ 338               	/* epilogue start */
+ 114:mmc.c         **** 	}
+ 115:mmc.c         **** 	return b;
+ 116:mmc.c         **** }
+ 340               	.LM29:
+ 341 00aa DF91      		pop r29
+ 342 00ac CF91      		pop r28
+ 343 00ae 0895      		ret
+ 348               	.Lscope4:
+ 350               		.stabd	78,0,0
+ 352               	.global	mmc_clock_and_release
+ 354               	mmc_clock_and_release:
+ 355               		.stabd	46,0,0
+ 117:mmc.c         **** 
+ 118:mmc.c         **** 
+ 119:mmc.c         **** /** Finish Clocking and Release card.
+ 120:mmc.c         **** 	Send 10 clocks to the MMC/SD card
+ 121:mmc.c         ****  	and release the CS line 
+ 122:mmc.c         **** */
+ 123:mmc.c         **** void mmc_clock_and_release(void)
+ 124:mmc.c         **** {
+ 357               	.LM30:
+ 358               	.LFBB5:
+ 359 00b0 1F93      		push r17
+ 360               	/* prologue: function */
+ 361               	/* frame size = 0 */
+ 362               	/* stack size = 1 */
+ 363               	.L__stack_usage = 1
+ 365               	.LM31:
+ 366 00b2 10E2      		ldi r17,lo8(32)
+ 367               	.L14:
+ 125:mmc.c         **** 	uint8_t i;
+ 126:mmc.c         **** 
+ 127:mmc.c         **** 	// SD cards require at least 8 final clocks
+ 128:mmc.c         **** 	//	for(i=0;i<10;i++)
+ 129:mmc.c         **** 	for(i=0;i<32;i++)
+ 130:mmc.c         **** 		spi_byte(0xff);	
+ 369               	.LM32:
+ 370 00b4 8FEF      		ldi r24,lo8(-1)
+ 371 00b6 0E94 0000 		call spi_byte
+ 372 00ba 1150      		subi r17,lo8(-(-1))
+ 129:mmc.c         **** 	for(i=0;i<32;i++)
+ 374               	.LM33:
+ 375 00bc 01F4      		brne .L14
+ 131:mmc.c         **** 
+ 132:mmc.c         **** 	
+ 133:mmc.c         **** 	//nrk_spin_wait_us(320);
+ 134:mmc.c         **** 
+ 135:mmc.c         ****     MMC_CS_PORT |= (1 << MMC_CS);	// release CS (high)
+ 377               	.LM34:
+ 378 00be 769A      		sbi 46-32,6
+ 379               	/* epilogue start */
+ 136:mmc.c         **** }
+ 381               	.LM35:
+ 382 00c0 1F91      		pop r17
+ 383 00c2 0895      		ret
+ 385               	.Lscope5:
+ 387               		.stabd	78,0,0
+ 391               	.global	mmc_readsector
+ 393               	mmc_readsector:
+ 394               		.stabd	46,0,0
+ 137:mmc.c         **** 
+ 138:mmc.c         **** 
+ 139:mmc.c         **** 
+ 140:mmc.c         **** /** Read MMC/SD sector.
+ 141:mmc.c         ****  	Read a single 512 byte sector from the MMC/SD card
+ 142:mmc.c         **** 	\param lba	Logical sectornumber to read
+ 143:mmc.c         **** 	\param buffer	Pointer to buffer for received data
+ 144:mmc.c         **** 	\return 0 on success, -1 on error
+ 145:mmc.c         **** */
+ 146:mmc.c         **** int mmc_readsector(uint32_t lba, uint8_t *buffer)
+ 147:mmc.c         **** {
+ 396               	.LM36:
+ 397               	.LFBB6:
+ 398 00c4 0F93      		push r16
+ 399 00c6 1F93      		push r17
+ 400 00c8 CF93      		push r28
+ 401 00ca DF93      		push r29
+ 402               	/* prologue: function */
+ 403               	/* frame size = 0 */
+ 404               	/* stack size = 4 */
+ 405               	.L__stack_usage = 4
+ 406 00cc EA01      		movw r28,r20
+ 148:mmc.c         **** 	uint16_t i;
+ 149:mmc.c         **** 
+ 150:mmc.c         **** 	// send read command and logical sector address
+ 151:mmc.c         **** 
+ 152:mmc.c         **** 	mmc_send_command(17,(lba>>7) & 0xffff, (lba<<9) & 0xffff);
+ 408               	.LM37:
+ 409 00ce 9B01      		movw r18,r22
+ 410 00d0 AC01      		movw r20,r24
+ 411 00d2 97E0      		ldi r25,7
+ 412 00d4 5695      	1:	lsr r21
+ 413 00d6 4795      		ror r20
+ 414 00d8 3795      		ror r19
+ 415 00da 2795      		ror r18
+ 416 00dc 9A95      		dec r25
+ 417 00de 01F4      		brne 1b
+ 418 00e0 FB01      		movw r30,r22
+ 419 00e2 FE2F      		mov r31,r30
+ 420 00e4 EE27      		clr r30
+ 421 00e6 FF0F      		lsl r31
+ 422 00e8 81E1      		ldi r24,lo8(17)
+ 423 00ea B901      		movw r22,r18
+ 424 00ec AF01      		movw r20,r30
+ 425 00ee 0E94 0000 		call mmc_send_command
+ 153:mmc.c         **** 
+ 154:mmc.c         **** 	if (mmc_datatoken() != 0xfe)	// if no valid token
+ 427               	.LM38:
+ 428 00f2 0E94 0000 		call mmc_datatoken
+ 429 00f6 8E3F      		cpi r24,lo8(-2)
+ 430 00f8 01F0      		breq .L17
+ 155:mmc.c         **** 	{
+ 156:mmc.c         **** 	    mmc_clock_and_release();	// cleanup and	
+ 432               	.LM39:
+ 433 00fa 0E94 0000 		call mmc_clock_and_release
+ 157:mmc.c         ****    		return -1;					// return error code
+ 435               	.LM40:
+ 436 00fe 2FEF      		ldi r18,lo8(-1)
+ 437 0100 3FEF      		ldi r19,hi8(-1)
+ 438 0102 00C0      		rjmp .L18
+ 439               	.L17:
+ 154:mmc.c         **** 	if (mmc_datatoken() != 0xfe)	// if no valid token
+ 441               	.LM41:
+ 442 0104 00E0      		ldi r16,lo8(0)
+ 443 0106 10E0      		ldi r17,hi8(0)
+ 444               	.L19:
+ 158:mmc.c         **** 	}
+ 159:mmc.c         **** 
+ 160:mmc.c         **** 	for (i=0;i<512;i++)				// read sector data
+ 161:mmc.c         ****     	*buffer++ = spi_byte(0xff);
+ 446               	.LM42:
+ 447 0108 8FEF      		ldi r24,lo8(-1)
+ 448 010a 0E94 0000 		call spi_byte
+ 449 010e 8993      		st Y+,r24
+ 160:mmc.c         **** 	for (i=0;i<512;i++)				// read sector data
+ 451               	.LM43:
+ 452 0110 0F5F      		subi r16,lo8(-(1))
+ 453 0112 1F4F      		sbci r17,hi8(-(1))
+ 454 0114 82E0      		ldi r24,hi8(512)
+ 455 0116 0030      		cpi r16,lo8(512)
+ 456 0118 1807      		cpc r17,r24
+ 457 011a 01F4      		brne .L19
+ 162:mmc.c         **** 
+ 163:mmc.c         **** 	spi_byte(0xff);					// ignore dummy checksum
+ 459               	.LM44:
+ 460 011c 8FEF      		ldi r24,lo8(-1)
+ 461 011e 0E94 0000 		call spi_byte
+ 164:mmc.c         **** 	spi_byte(0xff);					// ignore dummy checksum
+ 463               	.LM45:
+ 464 0122 8FEF      		ldi r24,lo8(-1)
+ 465 0124 0E94 0000 		call spi_byte
+ 165:mmc.c         **** 
+ 166:mmc.c         **** 	mmc_clock_and_release();		// cleanup
+ 467               	.LM46:
+ 468 0128 0E94 0000 		call mmc_clock_and_release
+ 167:mmc.c         **** 
+ 168:mmc.c         **** 	return 0;						// return success		
+ 470               	.LM47:
+ 471 012c 20E0      		ldi r18,lo8(0)
+ 472 012e 30E0      		ldi r19,hi8(0)
+ 473               	.L18:
+ 169:mmc.c         **** }
+ 475               	.LM48:
+ 476 0130 C901      		movw r24,r18
+ 477               	/* epilogue start */
+ 478 0132 DF91      		pop r29
+ 479 0134 CF91      		pop r28
+ 480 0136 1F91      		pop r17
+ 481 0138 0F91      		pop r16
+ 482 013a 0895      		ret
+ 487               	.Lscope6:
+ 489               		.stabd	78,0,0
+ 493               	.global	_mmc_writesector
+ 495               	_mmc_writesector:
+ 496               		.stabd	46,0,0
+ 170:mmc.c         **** 
+ 171:mmc.c         **** 
+ 172:mmc.c         **** inline int mmc_writesector(uint32_t lba, uint8_t *buffer) {
+ 173:mmc.c         ****   return _mmc_writesector(lba, buffer, 0);  
+ 174:mmc.c         **** }
+ 175:mmc.c         **** 
+ 176:mmc.c         **** inline int mmc_writesector_pending(uint32_t lba, uint8_t *buffer) {
+ 177:mmc.c         ****   return _mmc_writesector(lba, buffer, 1);
+ 178:mmc.c         **** }
+ 179:mmc.c         **** 
+ 180:mmc.c         **** 
+ 181:mmc.c         **** /** Write MMC/SD sector.
+ 182:mmc.c         ****  	Read a single 512 byte sector from the MMC/SD card
+ 183:mmc.c         **** 	\param lba	Logical sectornumber to read
+ 184:mmc.c         **** 	\param buffer	Pointer to buffer for received data
+ 185:mmc.c         **** 	\return 0 on success, -1 on error
+ 186:mmc.c         **** */
+ 187:mmc.c         **** int _mmc_writesector(uint32_t lba, uint8_t *buffer, uint8_t pending)
+ 188:mmc.c         **** {
+ 498               	.LM49:
+ 499               	.LFBB7:
+ 500 013c 9F92      		push r9
+ 501 013e AF92      		push r10
+ 502 0140 BF92      		push r11
+ 503 0142 CF92      		push r12
+ 504 0144 DF92      		push r13
+ 505 0146 EF92      		push r14
+ 506 0148 FF92      		push r15
+ 507 014a 0F93      		push r16
+ 508 014c 1F93      		push r17
+ 509 014e CF93      		push r28
+ 510 0150 DF93      		push r29
+ 511               	/* prologue: function */
+ 512               	/* frame size = 0 */
+ 513               	/* stack size = 11 */
+ 514               	.L__stack_usage = 11
+ 515 0152 942E      		mov r9,r20
+ 516 0154 B52E      		mov r11,r21
+ 517 0156 A22E      		mov r10,r18
+ 189:mmc.c         **** 	uint16_t i;
+ 190:mmc.c         **** 	//	uint8_t t,b,j;
+ 191:mmc.c         **** 	// send read command and logical sector address
+ 192:mmc.c         **** 	uint8_t val;
+ 193:mmc.c         **** 	uint16_t count=0, write_count=0;
+ 194:mmc.c         **** 
+ 195:mmc.c         **** 	//	printf("lba:%lu\n",lba);
+ 196:mmc.c         **** 
+ 197:mmc.c         **** 	if (busy_flag)
+ 519               	.LM50:
+ 520 0158 2091 0000 		lds r18,busy_flag
+ 521 015c 2223      		tst r18
+ 522 015e 01F0      		breq .+2
+ 523 0160 00C0      		rjmp .L32
+ 198:mmc.c         **** 	  return (-1);
+ 199:mmc.c         **** 
+ 200:mmc.c         **** 	do {
+ 201:mmc.c         **** 	++write_count;
+ 202:mmc.c         **** 
+ 203:mmc.c         **** 	  mmc_send_command(24,(lba>>7) & 0xffff, (lba<<9) & 0xffff);
+ 525               	.LM51:
+ 526 0162 9B01      		movw r18,r22
+ 527 0164 AC01      		movw r20,r24
+ 528 0166 E7E0      		ldi r30,7
+ 529 0168 5695      	1:	lsr r21
+ 530 016a 4795      		ror r20
+ 531 016c 3795      		ror r19
+ 532 016e 2795      		ror r18
+ 533 0170 EA95      		dec r30
+ 534 0172 01F4      		brne 1b
+ 535 0174 E901      		movw r28,r18
+ 536 0176 6B01      		movw r12,r22
+ 537 0178 DC2C      		mov r13,r12
+ 538 017a CC24      		clr r12
+ 539 017c DD0C      		lsl r13
+ 540               	.L26:
+ 541 017e 88E1      		ldi r24,lo8(24)
+ 542 0180 BE01      		movw r22,r28
+ 543 0182 A601      		movw r20,r12
+ 544 0184 0E94 0000 		call mmc_send_command
+ 204:mmc.c         **** 	    
+ 205:mmc.c         **** 	  val=mmc_get();
+ 546               	.LM52:
+ 547 0188 0E94 0000 		call mmc_get
+ 206:mmc.c         **** 
+ 207:mmc.c         **** 	  if (val==0xff) { //write command timeout
+ 549               	.LM53:
+ 550 018c 8F3F      		cpi r24,lo8(-1)
+ 551 018e 01F4      		brne .L23
+ 208:mmc.c         **** 	    mmc_clock_and_release();
+ 553               	.LM54:
+ 554 0190 0E94 0000 		call mmc_clock_and_release
+ 555 0194 00C0      		rjmp .L32
+ 556               	.L23:
+ 209:mmc.c         **** 	    return (-1);
+ 210:mmc.c         **** 	  }
+ 211:mmc.c         **** 	    
+ 212:mmc.c         **** 	  spi_byte(0xFE);   //start block token
+ 558               	.LM55:
+ 559 0196 8EEF      		ldi r24,lo8(-2)
+ 560 0198 0E94 0000 		call spi_byte
+ 561 019c E92C      		mov r14,r9
+ 562 019e FB2C      		mov r15,r11
+ 213:mmc.c         **** 	  for (i=0;i<512;i++)				// read sector data
+ 564               	.LM56:
+ 565 01a0 00E0      		ldi r16,lo8(0)
+ 566 01a2 10E0      		ldi r17,hi8(0)
+ 567               	.L24:
+ 214:mmc.c         **** 	    {
+ 215:mmc.c         **** 	      spi_byte(buffer[i]);
+ 569               	.LM57:
+ 570 01a4 F701      		movw r30,r14
+ 571 01a6 8191      		ld r24,Z+
+ 572 01a8 7F01      		movw r14,r30
+ 573 01aa 0E94 0000 		call spi_byte
+ 213:mmc.c         **** 	  for (i=0;i<512;i++)				// read sector data
+ 575               	.LM58:
+ 576 01ae 0F5F      		subi r16,lo8(-(1))
+ 577 01b0 1F4F      		sbci r17,hi8(-(1))
+ 578 01b2 F2E0      		ldi r31,hi8(512)
+ 579 01b4 0030      		cpi r16,lo8(512)
+ 580 01b6 1F07      		cpc r17,r31
+ 581 01b8 01F4      		brne .L24
+ 216:mmc.c         **** 	    }
+ 217:mmc.c         **** 	  
+ 218:mmc.c         **** 	  spi_byte(0xff);					// ignore dummy checksum
+ 583               	.LM59:
+ 584 01ba 8FEF      		ldi r24,lo8(-1)
+ 585 01bc 0E94 0000 		call spi_byte
+ 219:mmc.c         **** 	  spi_byte(0xff);					// ignore dummy checksum
+ 587               	.LM60:
+ 588 01c0 8FEF      		ldi r24,lo8(-1)
+ 589 01c2 0E94 0000 		call spi_byte
+ 590               	.L25:
+ 220:mmc.c         **** 	  
+ 221:mmc.c         **** 	  while ((val=mmc_get())==0xff);
+ 592               	.LM61:
+ 593 01c6 0E94 0000 		call mmc_get
+ 594 01ca 8F3F      		cpi r24,lo8(-1)
+ 595 01cc 01F0      		breq .L25
+ 222:mmc.c         **** 	  if ((val & 0x1f)!= 5) {
+ 597               	.LM62:
+ 598 01ce 8F71      		andi r24,lo8(31)
+ 599 01d0 8530      		cpi r24,lo8(5)
+ 600 01d2 01F4      		brne .L26
+ 602               	.LM63:
+ 603 01d4 C0E0      		ldi r28,lo8(0)
+ 604 01d6 D0E0      		ldi r29,hi8(0)
+ 605 01d8 00C0      		rjmp .L27
+ 606               	.L30:
+ 223:mmc.c         **** 	    //printf("data_response: %X\n", val);
+ 224:mmc.c         **** 	    continue; // send the command again.
+ 225:mmc.c         **** 	  }
+ 226:mmc.c         **** 	  
+ 227:mmc.c         **** 	  while(spi_byte(0xff)==0) {
+ 228:mmc.c         **** 	    if (!pending && count >=3000)
+ 608               	.LM64:
+ 609 01da AA20      		tst r10
+ 610 01dc 01F4      		brne .L28
+ 612               	.LM65:
+ 613 01de 8BE0      		ldi r24,hi8(3000)
+ 614 01e0 C83B      		cpi r28,lo8(3000)
+ 615 01e2 D807      		cpc r29,r24
+ 616 01e4 00F4      		brsh .L29
+ 617               	.L28:
+ 229:mmc.c         **** 	      break;
+ 230:mmc.c         **** 	    ++count;
+ 619               	.LM66:
+ 620 01e6 2196      		adiw r28,1
+ 621               	.L27:
+ 227:mmc.c         **** 	  while(spi_byte(0xff)==0) {
+ 623               	.LM67:
+ 624 01e8 8FEF      		ldi r24,lo8(-1)
+ 625 01ea 0E94 0000 		call spi_byte
+ 626 01ee 8823      		tst r24
+ 627 01f0 01F0      		breq .L30
+ 231:mmc.c         **** 	  }  //waiting for write operation to finish
+ 232:mmc.c         **** 
+ 233:mmc.c         **** 
+ 234:mmc.c         **** 	  if (!pending) {
+ 629               	.LM68:
+ 630 01f2 AA20      		tst r10
+ 631 01f4 01F4      		brne .L31
+ 235:mmc.c         **** 	    if (count>=3000) { //timeout ....release without waiting for the busy signal
+ 633               	.LM69:
+ 634 01f6 EBE0      		ldi r30,hi8(3000)
+ 635 01f8 C83B      		cpi r28,lo8(3000)
+ 636 01fa DE07      		cpc r29,r30
+ 637 01fc 00F0      		brlo .L31
+ 638               	.L29:
+ 236:mmc.c         **** 	      busy_flag=1;
+ 640               	.LM70:
+ 641 01fe 81E0      		ldi r24,lo8(1)
+ 642 0200 8093 0000 		sts busy_flag,r24
+ 643               	.L31:
+ 237:mmc.c         **** #ifdef MMC_DEBUG
+ 238:mmc.c         **** 	      printf("timeout\n");
+ 239:mmc.c         **** #endif
+ 240:mmc.c         **** 	      mmc_clock_and_release();
+ 241:mmc.c         **** 	      return (0);  // the write operation is actually successful. (just waiting for it to be done)
+ 242:mmc.c         **** 	      
+ 243:mmc.c         **** 	    }
+ 244:mmc.c         **** 	  }
+ 245:mmc.c         **** 	  
+ 246:mmc.c         **** 	}while( (val & 0x1f) != 5);
+ 247:mmc.c         **** 	mmc_clock_and_release();		// cleanup
+ 645               	.LM71:
+ 646 0204 0E94 0000 		call mmc_clock_and_release
+ 248:mmc.c         **** 	//	printf("write count:%u busy count:%u\n", write_count, count);
+ 249:mmc.c         **** 	
+ 250:mmc.c         **** 	return 0;						// return success		
+ 648               	.LM72:
+ 649 0208 20E0      		ldi r18,lo8(0)
+ 650 020a 30E0      		ldi r19,hi8(0)
+ 651 020c 00C0      		rjmp .L22
+ 652               	.L32:
+ 198:mmc.c         **** 	  return (-1);
+ 654               	.LM73:
+ 655 020e 2FEF      		ldi r18,lo8(-1)
+ 656 0210 3FEF      		ldi r19,hi8(-1)
+ 657               	.L22:
+ 251:mmc.c         **** }
+ 659               	.LM74:
+ 660 0212 C901      		movw r24,r18
+ 661               	/* epilogue start */
+ 662 0214 DF91      		pop r29
+ 663 0216 CF91      		pop r28
+ 664 0218 1F91      		pop r17
+ 665 021a 0F91      		pop r16
+ 666 021c FF90      		pop r15
+ 667 021e EF90      		pop r14
+ 668 0220 DF90      		pop r13
+ 669 0222 CF90      		pop r12
+ 670 0224 BF90      		pop r11
+ 671 0226 AF90      		pop r10
+ 672 0228 9F90      		pop r9
+ 673 022a 0895      		ret
+ 679               	.Lscope7:
+ 681               		.stabd	78,0,0
+ 685               	.global	mmc_writesector_pending
+ 687               	mmc_writesector_pending:
+ 688               		.stabd	46,0,0
+ 176:mmc.c         **** inline int mmc_writesector_pending(uint32_t lba, uint8_t *buffer) {
+ 690               	.LM75:
+ 691               	.LFBB8:
+ 692               	/* prologue: function */
+ 693               	/* frame size = 0 */
+ 694               	/* stack size = 0 */
+ 695               	.L__stack_usage = 0
+ 177:mmc.c         ****   return _mmc_writesector(lba, buffer, 1);
+ 697               	.LM76:
+ 698 022c 21E0      		ldi r18,lo8(1)
+ 699 022e 0E94 0000 		call _mmc_writesector
+ 700               	/* epilogue start */
+ 178:mmc.c         **** }
+ 702               	.LM77:
+ 703 0232 0895      		ret
+ 705               	.Lscope8:
+ 707               		.stabd	78,0,0
+ 711               	.global	mmc_writesector
+ 713               	mmc_writesector:
+ 714               		.stabd	46,0,0
+ 172:mmc.c         **** inline int mmc_writesector(uint32_t lba, uint8_t *buffer) {
+ 716               	.LM78:
+ 717               	.LFBB9:
+ 718               	/* prologue: function */
+ 719               	/* frame size = 0 */
+ 720               	/* stack size = 0 */
+ 721               	.L__stack_usage = 0
+ 173:mmc.c         ****   return _mmc_writesector(lba, buffer, 0);  
+ 723               	.LM79:
+ 724 0234 20E0      		ldi r18,lo8(0)
+ 725 0236 0E94 0000 		call _mmc_writesector
+ 726               	/* epilogue start */
+ 174:mmc.c         **** }
+ 728               	.LM80:
+ 729 023a 0895      		ret
+ 731               	.Lscope9:
+ 733               		.stabd	78,0,0
+ 735               	.global	mmc_card_detect
+ 737               	mmc_card_detect:
+ 738               		.stabd	46,0,0
+ 252:mmc.c         **** 
+ 253:mmc.c         **** uint8_t mmc_card_detect()
+ 254:mmc.c         **** {
+ 740               	.LM81:
+ 741               	.LFBB10:
+ 742               	/* prologue: function */
+ 743               	/* frame size = 0 */
+ 744               	/* stack size = 0 */
+ 745               	.L__stack_usage = 0
+ 255:mmc.c         **** return (!(MMC_DETECT_PIN & (1<<MMC_DETECT)));
+ 747               	.LM82:
+ 748 023c 81E0      		ldi r24,lo8(1)
+ 749 023e 1C99      		sbic 35-32,4
+ 750 0240 80E0      		ldi r24,lo8(0)
+ 751               	.L39:
+ 256:mmc.c         **** 
+ 257:mmc.c         **** }
+ 753               	.LM83:
+ 754 0242 0895      		ret
+ 756               	.Lscope10:
+ 758               		.stabd	78,0,0
+ 760               	.global	mmc_init
+ 762               	mmc_init:
+ 763               		.stabd	46,0,0
+ 258:mmc.c         **** 
+ 259:mmc.c         **** 
+ 260:mmc.c         **** 
+ 261:mmc.c         **** /** Init MMC/SD card.
+ 262:mmc.c         **** 	Initialize I/O ports for the MMC/SD interface and 
+ 263:mmc.c         **** 	send init commands to the MMC/SD card
+ 264:mmc.c         **** 	\return 0 on success, other values on error 
+ 265:mmc.c         **** */
+ 266:mmc.c         **** uint8_t mmc_init(void)
+ 267:mmc.c         **** {
+ 765               	.LM84:
+ 766               	.LFBB11:
+ 767 0244 CF93      		push r28
+ 768 0246 DF93      		push r29
+ 769               	/* prologue: function */
+ 770               	/* frame size = 0 */
+ 771               	/* stack size = 2 */
+ 772               	.L__stack_usage = 2
+ 268:mmc.c         **** 	int i;
+ 269:mmc.c         **** 	uint8_t val;
+ 270:mmc.c         **** 	uint16_t counter=0;
+ 271:mmc.c         **** 	
+ 272:mmc.c         **** 
+ 273:mmc.c         **** 	
+ 274:mmc.c         **** 	// setup I/O ports 
+ 275:mmc.c         **** 
+ 276:mmc.c         **** 	SPI_PORT &= ~((1 << MMC_SCK) | (1 << MMC_MOSI));	// low bits
+ 774               	.LM85:
+ 775 0248 85B1      		in r24,37-32
+ 776 024a 897F      		andi r24,lo8(-7)
+ 777 024c 85B9      		out 37-32,r24
+ 277:mmc.c         **** 	SPI_PORT |= (1 << MMC_MISO);						// high bits
+ 779               	.LM86:
+ 780 024e 2B9A      		sbi 37-32,3
+ 278:mmc.c         **** 	SPI_DDR  |= (1<<MMC_SCK) | (1<<MMC_MOSI);			// direction
+ 782               	.LM87:
+ 783 0250 84B1      		in r24,36-32
+ 784 0252 8660      		ori r24,lo8(6)
+ 785 0254 84B9      		out 36-32,r24
+ 279:mmc.c         **** 
+ 280:mmc.c         **** 
+ 281:mmc.c         **** 	MMC_DETECT_PORT |= (1 << MMC_DETECT);	// Initial level is high	
+ 787               	.LM88:
+ 788 0256 2C9A      		sbi 37-32,4
+ 282:mmc.c         **** 	MMC_DETECT_DDR  &= ~(1 << MMC_DETECT);	// Direction is input 
+ 790               	.LM89:
+ 791 0258 2498      		cbi 36-32,4
+ 283:mmc.c         **** 	
+ 284:mmc.c         **** 	MMC_CS_PORT |= (1 << MMC_CS);	// Initial level is high	
+ 793               	.LM90:
+ 794 025a 769A      		sbi 46-32,6
+ 285:mmc.c         **** 	MMC_CS_DIR  |= (1 << MMC_CS);	// Direction is output
+ 796               	.LM91:
+ 797 025c 6E9A      		sbi 45-32,6
+ 286:mmc.c         **** 
+ 287:mmc.c         **** 
+ 288:mmc.c         **** //	SPI_DDR |= (1<<0);			// assume it's bit0 (mega128, portB and others)
+ 289:mmc.c         **** 
+ 290:mmc.c         **** 	SPCR = (1<<MSTR)|(1<<SPE);	// enable SPI interface
+ 799               	.LM92:
+ 800 025e 80E5      		ldi r24,lo8(80)
+ 801 0260 8CBD      		out 76-32,r24
+ 291:mmc.c         **** 	SPSR = 1;					// set double speed	
+ 803               	.LM93:
+ 804 0262 81E0      		ldi r24,lo8(1)
+ 805 0264 8DBD      		out 77-32,r24
+ 806 0266 CAE0      		ldi r28,lo8(10)
+ 807 0268 D0E0      		ldi r29,hi8(10)
+ 808               	.L41:
+ 292:mmc.c         **** 
+ 293:mmc.c         **** 
+ 294:mmc.c         **** 	for(i=0;i<10;i++)			// send 80 clocks while card power stabilizes
+ 295:mmc.c         **** 		spi_byte(0xff);
+ 810               	.LM94:
+ 811 026a 8FEF      		ldi r24,lo8(-1)
+ 812 026c 0E94 0000 		call spi_byte
+ 813 0270 2197      		sbiw r28,1
+ 294:mmc.c         **** 	for(i=0;i<10;i++)			// send 80 clocks while card power stabilizes
+ 815               	.LM95:
+ 816 0272 01F4      		brne .L41
+ 296:mmc.c         **** 
+ 297:mmc.c         **** 	if (busy_flag) { //write operation is possibly still in progress
+ 818               	.LM96:
+ 819 0274 8091 0000 		lds r24,busy_flag
+ 820 0278 8823      		tst r24
+ 821 027a 01F0      		breq .L42
+ 298:mmc.c         **** 
+ 299:mmc.c         **** 	  MMC_CS_PORT &= ~(1 << MMC_CS);	// enable CS so SD starts to access dataOut
+ 823               	.LM97:
+ 824 027c 7698      		cbi 46-32,6
+ 825 027e CAE0      		ldi r28,lo8(10)
+ 826 0280 D0E0      		ldi r29,hi8(10)
+ 827               	.L43:
+ 300:mmc.c         **** 	  
+ 301:mmc.c         **** 	  for(i=0;i<10;i++)			// send 80 clocks while card power stabilizes
+ 302:mmc.c         **** 	    spi_byte(0xff);
+ 829               	.LM98:
+ 830 0282 8FEF      		ldi r24,lo8(-1)
+ 831 0284 0E94 0000 		call spi_byte
+ 832 0288 2197      		sbiw r28,1
+ 301:mmc.c         **** 	  for(i=0;i<10;i++)			// send 80 clocks while card power stabilizes
+ 834               	.LM99:
+ 835 028a 01F4      		brne .L43
+ 301:mmc.c         **** 	  for(i=0;i<10;i++)			// send 80 clocks while card power stabilizes
+ 837               	.LM100:
+ 838 028c C0E0      		ldi r28,lo8(0)
+ 839 028e D0E0      		ldi r29,hi8(0)
+ 840               	.L45:
+ 303:mmc.c         **** 
+ 304:mmc.c         **** 	  do{
+ 305:mmc.c         **** 	    val=spi_byte(0xff);
+ 842               	.LM101:
+ 843 0290 8FEF      		ldi r24,lo8(-1)
+ 844 0292 0E94 0000 		call spi_byte
+ 306:mmc.c         **** 	    ++counter;
+ 846               	.LM102:
+ 847 0296 2196      		adiw r28,1
+ 307:mmc.c         **** 	  }while(val==0 && counter <= 1000) ; //wait for possible write operation to finish.
+ 849               	.LM103:
+ 850 0298 8823      		tst r24
+ 851 029a 01F4      		brne .L44
+ 852 029c 83E0      		ldi r24,hi8(1001)
+ 853 029e C93E      		cpi r28,lo8(1001)
+ 854 02a0 D807      		cpc r29,r24
+ 855 02a2 01F4      		brne .L45
+ 856 02a4 00C0      		rjmp .L46
+ 857               	.L44:
+ 308:mmc.c         **** 
+ 309:mmc.c         **** 	  if (counter>=1000) {  //timeout again...
+ 859               	.LM104:
+ 860 02a6 83E0      		ldi r24,hi8(1000)
+ 861 02a8 C83E      		cpi r28,lo8(1000)
+ 862 02aa D807      		cpc r29,r24
+ 863 02ac 00F0      		brlo .L47
+ 864               	.L46:
+ 310:mmc.c         **** #ifdef MMC_DEBUG
+ 311:mmc.c         **** 	    nrk_kprintf(PSTR("mmc_init: waiting for write busy but timeout again..\n"));
+ 312:mmc.c         **** #endif
+ 313:mmc.c         **** 	    mmc_clock_and_release();
+ 866               	.LM105:
+ 867 02ae 0E94 0000 		call mmc_clock_and_release
+ 314:mmc.c         **** 	    return 4;
+ 869               	.LM106:
+ 870 02b2 84E0      		ldi r24,lo8(4)
+ 871 02b4 00C0      		rjmp .L48
+ 872               	.L47:
+ 315:mmc.c         **** 	  }
+ 316:mmc.c         **** #ifdef MMC_DEBUG
+ 317:mmc.c         **** 	  printf("counter:%d\n", counter);
+ 318:mmc.c         **** #endif
+ 319:mmc.c         ****   	  busy_flag=0;
+ 874               	.LM107:
+ 875 02b6 1092 0000 		sts busy_flag,__zero_reg__
+ 876               	.L42:
+ 320:mmc.c         **** 	}
+ 321:mmc.c         **** 
+ 322:mmc.c         **** 	
+ 323:mmc.c         **** 	mmc_send_command(0,0,0);	// send CMD0 - reset card
+ 878               	.LM108:
+ 879 02ba 80E0      		ldi r24,lo8(0)
+ 880 02bc 60E0      		ldi r22,lo8(0)
+ 881 02be 70E0      		ldi r23,hi8(0)
+ 882 02c0 40E0      		ldi r20,lo8(0)
+ 883 02c2 50E0      		ldi r21,hi8(0)
+ 884 02c4 0E94 0000 		call mmc_send_command
+ 324:mmc.c         **** 	
+ 325:mmc.c         **** 	if ((val=mmc_get()) != 1)			// if no valid response code
+ 886               	.LM109:
+ 887 02c8 0E94 0000 		call mmc_get
+ 888 02cc 8130      		cpi r24,lo8(1)
+ 889 02ce 01F0      		breq .L54
+ 326:mmc.c         **** 	  {
+ 327:mmc.c         **** 	  //printf("mmc_init: mmc get val:%u\n", val);
+ 328:mmc.c         **** 	  
+ 329:mmc.c         **** 	  mmc_clock_and_release();
+ 891               	.LM110:
+ 892 02d0 0E94 0000 		call mmc_clock_and_release
+ 330:mmc.c         **** 	  return 3;
+ 894               	.LM111:
+ 895 02d4 83E0      		ldi r24,lo8(3)
+ 896 02d6 00C0      		rjmp .L48
+ 897               	.L54:
+ 331:mmc.c         **** 	}
+ 332:mmc.c         **** 	
+ 333:mmc.c         **** 
+ 334:mmc.c         **** 	//
+ 335:mmc.c         **** 	// send CMD1 until we get a 0 back, indicating card is done initializing 
+ 336:mmc.c         **** 	//
+ 337:mmc.c         **** 	i = 0xffff;						// max timeout
+ 338:mmc.c         **** 	while (((val=spi_byte(0xff)) != 0) && (--i))	// wait for it
+ 899               	.LM112:
+ 900 02d8 8FEF      		ldi r24,lo8(-1)
+ 901 02da 0E94 0000 		call spi_byte
+ 902 02de 8823      		tst r24
+ 903 02e0 01F0      		breq .L50
+ 339:mmc.c         **** 	{
+ 340:mmc.c         **** 	     mmc_send_command(1,0,0);	// send CMD1 - activate card init
+ 905               	.LM113:
+ 906 02e2 81E0      		ldi r24,lo8(1)
+ 907 02e4 60E0      		ldi r22,lo8(0)
+ 908 02e6 70E0      		ldi r23,hi8(0)
+ 909 02e8 40E0      		ldi r20,lo8(0)
+ 910 02ea 50E0      		ldi r21,hi8(0)
+ 911 02ec 0E94 0000 		call mmc_send_command
+ 912 02f0 00C0      		rjmp .L54
+ 913               	.L50:
+ 341:mmc.c         **** 	}
+ 342:mmc.c         **** 
+ 343:mmc.c         **** 
+ 344:mmc.c         **** 
+ 345:mmc.c         **** 
+ 346:mmc.c         **** 	//printf("mmc_init: CMD1 response: %u\n", val);
+ 347:mmc.c         **** 	mmc_clock_and_release();		// clean up
+ 915               	.LM114:
+ 916 02f2 0E94 0000 		call mmc_clock_and_release
+ 348:mmc.c         **** 
+ 349:mmc.c         **** 	if (i == 0)						// if we timed out above
+ 350:mmc.c         **** 	   return 2;					// return failure code
+ 351:mmc.c         **** 
+ 352:mmc.c         **** 	return 0;
+ 918               	.LM115:
+ 919 02f6 80E0      		ldi r24,lo8(0)
+ 920               	.L48:
+ 921               	/* epilogue start */
+ 353:mmc.c         **** }
+ 923               	.LM116:
+ 924 02f8 DF91      		pop r29
+ 925 02fa CF91      		pop r28
+ 926 02fc 0895      		ret
+ 931               	.Lscope11:
+ 933               		.stabd	78,0,0
+ 934               	.global	busy_flag
+ 935               	.global	busy_flag
+ 936               		.section .bss
+ 939               	busy_flag:
+ 940 0000 00        		.skip 1,0
+ 941               		.comm _nrk_signal_list,4,1
+ 942               		.comm nrk_idle_task_stk,128,1
+ 943               		.comm nrk_kernel_stk_ptr,2,1
+ 948               		.text
+ 950               	.Letext0:
+ 951               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 mmc.c
+     /tmp/ccu7D4pp.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccu7D4pp.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccu7D4pp.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccu7D4pp.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccu7D4pp.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccu7D4pp.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccu7D4pp.s:142    .text:00000000 spi_byte
+     /tmp/ccu7D4pp.s:175    .text:0000000c mmc_send_command
+     /tmp/ccu7D4pp.s:254    .text:00000070 mmc_get
+     /tmp/ccu7D4pp.s:304    .text:00000090 mmc_datatoken
+     /tmp/ccu7D4pp.s:354    .text:000000b0 mmc_clock_and_release
+     /tmp/ccu7D4pp.s:393    .text:000000c4 mmc_readsector
+     /tmp/ccu7D4pp.s:495    .text:0000013c _mmc_writesector
+     /tmp/ccu7D4pp.s:939    .bss:00000000 busy_flag
+     /tmp/ccu7D4pp.s:687    .text:0000022c mmc_writesector_pending
+     /tmp/ccu7D4pp.s:713    .text:00000234 mmc_writesector
+     /tmp/ccu7D4pp.s:737    .text:0000023c mmc_card_detect
+     /tmp/ccu7D4pp.s:762    .text:00000244 mmc_init
+                            *COM*:00000004 _nrk_signal_list
+                            *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000002 nrk_kernel_stk_ptr
+
+UNDEFINED SYMBOLS
+__do_clear_bss

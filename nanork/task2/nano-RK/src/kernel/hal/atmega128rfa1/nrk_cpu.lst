@@ -516,22 +516,22 @@
  726               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_cpu.c
-     /tmp/ccMyrzDP.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccMyrzDP.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccMyrzDP.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccMyrzDP.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccMyrzDP.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccMyrzDP.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccMyrzDP.s:299    .text:00000000 nrk_battery_save
-     /tmp/ccMyrzDP.s:319    .text:00000002 nrk_sleep
-     /tmp/ccMyrzDP.s:359    .text:0000001a nrk_idle
-     /tmp/ccMyrzDP.s:400    .text:00000030 nrk_task_set_entry_function
-     /tmp/ccMyrzDP.s:428    .text:00000038 nrk_task_set_stk
-     /tmp/ccMyrzDP.s:487    .text:00000076 nrk_task_stk_init
-     /tmp/ccMyrzDP.s:593    .text:000000cc nrk_stack_pointer_init
+     /tmp/ccR4OdZW.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccR4OdZW.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccR4OdZW.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccR4OdZW.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccR4OdZW.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccR4OdZW.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccR4OdZW.s:299    .text:00000000 nrk_battery_save
+     /tmp/ccR4OdZW.s:319    .text:00000002 nrk_sleep
+     /tmp/ccR4OdZW.s:359    .text:0000001a nrk_idle
+     /tmp/ccR4OdZW.s:400    .text:00000030 nrk_task_set_entry_function
+     /tmp/ccR4OdZW.s:428    .text:00000038 nrk_task_set_stk
+     /tmp/ccR4OdZW.s:487    .text:00000076 nrk_task_stk_init
+     /tmp/ccR4OdZW.s:593    .text:000000cc nrk_stack_pointer_init
                             *COM*:00000002 nrk_kernel_stk_ptr
-     /tmp/ccMyrzDP.s:631    .text:000000ea nrk_stack_pointer_restore
-     /tmp/ccMyrzDP.s:659    .text:000000f8 nrk_target_start
+     /tmp/ccR4OdZW.s:631    .text:000000ea nrk_stack_pointer_restore
+     /tmp/ccR4OdZW.s:659    .text:000000f8 nrk_target_start
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:000000a5 nrk_task_TCB

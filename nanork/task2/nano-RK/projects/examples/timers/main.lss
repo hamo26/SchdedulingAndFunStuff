@@ -9,9 +9,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, ALLOC, LOAD, READONLY, CODE
   2 .bss          00000250  008002c4  008002c4  000086e6  2**0
                   ALLOC
-  3 .stab         00019494  00000000  00000000  000086e8  2**2
+  3 .stab         00019314  00000000  00000000  000086e8  2**2
                   CONTENTS, READONLY, DEBUGGING
-  4 .stabstr      000074e1  00000000  00000000  00021b7c  2**0
+  4 .stabstr      00006bea  00000000  00000000  000219fc  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -17180,46 +17180,97 @@ void TUM_LKN_Sensorboard_init() 									{ writeIOs( 0xFF ); writeDAC( 0x00 ); }
     60ac:	08 95       	ret
 
 000060ae <nrk_start_high_ready_task>:
+
+.global nrk_start_high_ready_task 
+
+nrk_start_high_ready_task:
+
+	lds r26,nrk_high_ready_TCB		
     60ae:	a0 91 cc 04 	lds	r26, 0x04CC
+	lds r27,nrk_high_ready_TCB+1
     60b2:	b0 91 cd 04 	lds	r27, 0x04CD
+
+    	;x points to &OSTCB[x]
+    
+	ld r28,x+
     60b6:	cd 91       	ld	r28, X+
+	out __SP_L__, r28
     60b8:	cd bf       	out	0x3d, r28	; 61
+	ld r29,x+
     60ba:	dd 91       	ld	r29, X+
+	out __SP_H__, r29
     60bc:	de bf       	out	0x3e, r29	; 62
+  
+	pop r31	
     60be:	ff 91       	pop	r31
+	pop r30
     60c0:	ef 91       	pop	r30
+	pop r29
     60c2:	df 91       	pop	r29
+	pop r28
     60c4:	cf 91       	pop	r28
+	pop r27
     60c6:	bf 91       	pop	r27
+	pop r26
     60c8:	af 91       	pop	r26
+	pop r25
     60ca:	9f 91       	pop	r25
+	pop r24			
     60cc:	8f 91       	pop	r24
+	pop r23
     60ce:	7f 91       	pop	r23
+	pop r22
     60d0:	6f 91       	pop	r22
+	pop r21
     60d2:	5f 91       	pop	r21
+	pop r20	
     60d4:	4f 91       	pop	r20
+	pop r19
     60d6:	3f 91       	pop	r19
+	pop r18	
     60d8:	2f 91       	pop	r18
+	pop r17
     60da:	1f 91       	pop	r17
+	pop r16
     60dc:	0f 91       	pop	r16
+	pop r15
     60de:	ff 90       	pop	r15
+	pop r14
     60e0:	ef 90       	pop	r14
+	pop r13
     60e2:	df 90       	pop	r13
+	pop r12
     60e4:	cf 90       	pop	r12
+	pop r11
     60e6:	bf 90       	pop	r11
+	pop r10
     60e8:	af 90       	pop	r10
+	pop r9
     60ea:	9f 90       	pop	r9
+	pop r8
     60ec:	8f 90       	pop	r8
+	pop r7
     60ee:	7f 90       	pop	r7
+	pop r6
     60f0:	6f 90       	pop	r6
+	pop r5
     60f2:	5f 90       	pop	r5
+	pop r4
     60f4:	4f 90       	pop	r4
+	pop r3
     60f6:	3f 90       	pop	r3
+	pop r2
     60f8:	2f 90       	pop	r2
+	pop r1
     60fa:	1f 90       	pop	r1
+	pop r0
     60fc:	0f 90       	pop	r0
+	out __SREG__, r0
     60fe:	0f be       	out	0x3f, r0	; 63
+	pop r0	
     6100:	0f 90       	pop	r0
+	   
+    	reti 
     6102:	18 95       	reti
 
 00006104 <__udivdi3>:

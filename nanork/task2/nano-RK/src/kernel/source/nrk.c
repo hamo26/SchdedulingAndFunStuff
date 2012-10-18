@@ -80,7 +80,7 @@ void nrk_init()
    //if((volatile)TCCR1B!=0) nrk_kernel_error_add(NRK_STACK_OVERFLOW,0); 
 #ifndef NRK_SOFT_REBOOT_ON_ERROR
    i=_nrk_startup_error();
-   if((i&0x1)!=0) nrk_kernel_error_add(NRK_BAD_STARTUP,0);
+   //if((i&0x1)!=0) nrk_kernel_error_add(NRK_BAD_STARTUP,0);
 #ifndef IGNORE_EXT_RST_ERROR
    if((i&0x2)!=0) nrk_kernel_error_add(NRK_EXT_RST_ERROR,0);
 #endif

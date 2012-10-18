@@ -651,20 +651,20 @@
  922               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_ext_int.c
-     /tmp/ccFhz37K.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccFhz37K.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccFhz37K.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccFhz37K.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccFhz37K.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccFhz37K.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccFhz37K.s:284    .text:00000000 nrk_ext_int_enable
-     /tmp/ccFhz37K.s:418    .text:00000082 nrk_ext_int_disable
-     /tmp/ccFhz37K.s:554    .text:00000104 nrk_ext_int_configure
+     /tmp/cclQKU8N.s:2      *ABS*:0000003f __SREG__
+     /tmp/cclQKU8N.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cclQKU8N.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cclQKU8N.s:5      *ABS*:00000034 __CCP__
+     /tmp/cclQKU8N.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cclQKU8N.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cclQKU8N.s:284    .text:00000000 nrk_ext_int_enable
+     /tmp/cclQKU8N.s:418    .text:00000082 nrk_ext_int_disable
+     /tmp/cclQKU8N.s:554    .text:00000104 nrk_ext_int_configure
                             *COM*:00000002 ext_int0_callback
                             *COM*:00000002 ext_int1_callback
                             *COM*:00000002 pc_int0_callback
-     /tmp/ccFhz37K.s:761    .text:0000021a __vector_9
-     /tmp/ccFhz37K.s:835    .text:0000027e __vector_1
+     /tmp/cclQKU8N.s:761    .text:0000021a __vector_9
+     /tmp/cclQKU8N.s:835    .text:0000027e __vector_1
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000002 ext_int2_callback
                             *COM*:00000001 error_task
