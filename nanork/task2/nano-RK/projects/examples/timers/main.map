@@ -1282,163 +1282,163 @@ LOAD /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a
 .signature
  *(.signature*)
 
-.stab           0x00000000    0x19494
+.stab           0x00000000    0x19314
  *(.stab)
  .stab          0x00000000      0x6cc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
  .stab          0x000006cc      0x930 main.o
                                 0x93c (size before relaxing)
- .stab          0x00000ffc      0x354 ../../../src/radio/cc2420/source/hal_rf_set_channel.o
+ .stab          0x00000ffc      0x294 ../../../src/radio/cc2420/source/hal_rf_set_channel.o
                                 0x600 (size before relaxing)
- .stab          0x00001350      0x264 ../../../src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
+ .stab          0x00001290      0x264 ../../../src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
                                 0x5d0 (size before relaxing)
- .stab          0x000015b4     0x3804 ../../../src/radio/cc2420/source/basic_rf.o
+ .stab          0x000014f4     0x3750 ../../../src/radio/cc2420/source/basic_rf.o
                                0x3b70 (size before relaxing)
- .stab          0x00004db8     0x1170 ../../../src/platform/micaZ/source/ulib.o
+ .stab          0x00004c44     0x1170 ../../../src/platform/micaZ/source/ulib.o
                                0x14f4 (size before relaxing)
- .stab          0x00005f28      0x240 ../../../src/platform/micaZ/source/hal_wait.o
+ .stab          0x00005db4      0x240 ../../../src/platform/micaZ/source/hal_wait.o
                                 0x5ac (size before relaxing)
- .stab          0x00006168      0x684 ../../../src/platform/micaZ/source/nrk_eeprom.o
+ .stab          0x00005ff4      0x684 ../../../src/platform/micaZ/source/nrk_eeprom.o
                                 0x9f0 (size before relaxing)
- .stab          0x000067ec      0x9f0 ../../../src/kernel/source/nrk.o
+ .stab          0x00006678      0x9f0 ../../../src/kernel/source/nrk.o
                                 0xde0 (size before relaxing)
- .stab          0x000071dc      0x2a0 ../../../src/kernel/source/nrk_stats.o
+ .stab          0x00007068      0x2a0 ../../../src/kernel/source/nrk_stats.o
                                 0x6b4 (size before relaxing)
- .stab          0x0000747c      0xc6c ../../../src/kernel/source/nrk_error.o
+ .stab          0x00007308      0xc6c ../../../src/kernel/source/nrk_error.o
                                0x108c (size before relaxing)
- .stab          0x000080e8      0x498 ../../../src/kernel/source/nrk_stack_check.o
+ .stab          0x00007f74      0x498 ../../../src/kernel/source/nrk_stack_check.o
                                 0x8ac (size before relaxing)
- .stab          0x00008580      0xe4c ../../../src/kernel/source/nrk_events.o
+ .stab          0x0000840c      0xe4c ../../../src/kernel/source/nrk_events.o
                                0x1278 (size before relaxing)
- .stab          0x000093cc      0xf54 ../../../src/kernel/source/nrk_task.o
+ .stab          0x00009258      0xf54 ../../../src/kernel/source/nrk_task.o
                                0x1380 (size before relaxing)
- .stab          0x0000a320      0x7ec ../../../src/kernel/source/nrk_time.o
+ .stab          0x0000a1ac      0x7ec ../../../src/kernel/source/nrk_time.o
                                 0xc18 (size before relaxing)
- .stab          0x0000ab0c      0x30c ../../../src/kernel/source/nrk_idle_task.o
+ .stab          0x0000a998      0x30c ../../../src/kernel/source/nrk_idle_task.o
                                 0x738 (size before relaxing)
- .stab          0x0000ae18      0x834 ../../../src/kernel/source/nrk_scheduler.o
+ .stab          0x0000aca4      0x834 ../../../src/kernel/source/nrk_scheduler.o
                                 0xc60 (size before relaxing)
- .stab          0x0000b64c       0xe4 ../../../src/kernel/source/nrk_driver.o
+ .stab          0x0000b4d8       0xe4 ../../../src/kernel/source/nrk_driver.o
                                  0xf0 (size before relaxing)
- .stab          0x0000b730       0xe4 ../../../src/kernel/source/nrk_reserve.o
+ .stab          0x0000b5bc       0xe4 ../../../src/kernel/source/nrk_reserve.o
                                  0xf0 (size before relaxing)
- .stab          0x0000b814      0x210 ../../../src/kernel/source/nrk_sw_wdt.o
+ .stab          0x0000b6a0      0x210 ../../../src/kernel/source/nrk_sw_wdt.o
                                 0x624 (size before relaxing)
- .stab          0x0000ba24      0xd98 ../../../src/kernel/hal/atmega128/nrk_timer.o
+ .stab          0x0000b8b0      0xd98 ../../../src/kernel/hal/atmega128/nrk_timer.o
                                0x11b8 (size before relaxing)
- .stab          0x0000c7bc      0x2dc ../../../src/kernel/hal/atmega128/nrk_status.o
+ .stab          0x0000c648      0x2dc ../../../src/kernel/hal/atmega128/nrk_status.o
                                 0x648 (size before relaxing)
- .stab          0x0000ca98      0x36c ../../../src/kernel/hal/atmega128/nrk_ext_int.o
+ .stab          0x0000c924      0x36c ../../../src/kernel/hal/atmega128/nrk_ext_int.o
                                 0x6f0 (size before relaxing)
- .stab          0x0000ce04      0x3d8 ../../../src/kernel/hal/atmega128/nrk_watchdog.o
+ .stab          0x0000cc90      0x3d8 ../../../src/kernel/hal/atmega128/nrk_watchdog.o
                                 0x7e0 (size before relaxing)
- .stab          0x0000d1dc      0x774 ../../../src/kernel/hal/atmega128/nrk_cpu.o
+ .stab          0x0000d068      0x774 ../../../src/kernel/hal/atmega128/nrk_cpu.o
                                 0xb94 (size before relaxing)
- .stab          0x0000d950      0x1f8 ../../../src/drivers/platform/micaZ/source/ad5242.o
+ .stab          0x0000d7dc      0x1f8 ../../../src/drivers/platform/micaZ/source/ad5242.o
                                 0x204 (size before relaxing)
- .stab          0x0000db48      0x318 ../../../src/drivers/platform/micaZ/source/adc_driver.o
+ .stab          0x0000d9d4      0x318 ../../../src/drivers/platform/micaZ/source/adc_driver.o
                                 0x4e0 (size before relaxing)
- .stab          0x0000de60      0x534 ../../../src/drivers/platform/micaZ/source/i2c_driver.o
+ .stab          0x0000dcec      0x534 ../../../src/drivers/platform/micaZ/source/i2c_driver.o
                                 0x6fc (size before relaxing)
- .stab          0x0000e394      0x594 ../../../src/drivers/platform/micaZ/source/mda100_driver.o
+ .stab          0x0000e220      0x594 ../../../src/drivers/platform/micaZ/source/mda100_driver.o
                                 0x75c (size before relaxing)
- .stab          0x0000e928      0xb10 ../../../src/drivers/platform/micaZ/source/mts310cb_driver.o
+ .stab          0x0000e7b4      0xb10 ../../../src/drivers/platform/micaZ/source/mts310cb_driver.o
                                 0xcd8 (size before relaxing)
- .stab          0x0000f438      0x8ac ../../../src/drivers/platform/micaZ/source/DS2401.o
+ .stab          0x0000f2c4      0x8a0 ../../../src/drivers/platform/micaZ/source/DS2401.o
                                 0xc9c (size before relaxing)
- .stab          0x0000fce4      0x828 ../../../src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
+ .stab          0x0000fb64      0x828 ../../../src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
                                 0xa98 (size before relaxing)
- .stab          0x0001050c      0xeac ../../../src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
+ .stab          0x0001038c      0xeac ../../../src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
                                0x12a8 (size before relaxing)
- .stab          0x000113b8     0x189c ../../../src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
+ .stab          0x00011238     0x189c ../../../src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
                                0x1ce0 (size before relaxing)
- .stab          0x00012c54      0x204 ../../../src/kernel/hal/atmega128/atmel_hw_specific.o
+ .stab          0x00012ad4      0x204 ../../../src/kernel/hal/atmega128/atmel_hw_specific.o
                                 0x210 (size before relaxing)
- .stab          0x00012e58     0x12f0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+ .stab          0x00012cd8     0x12f0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
                                0x1350 (size before relaxing)
- .stab          0x00014148       0x78 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
+ .stab          0x00013fc8       0x78 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
                                  0x84 (size before relaxing)
- .stab          0x000141c0      0x4bc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
+ .stab          0x00014040      0x4bc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
                                 0x4c8 (size before relaxing)
- .stab          0x0001467c       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
+ .stab          0x000144fc       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
                                  0x54 (size before relaxing)
- .stab          0x000146c4      0x510 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
+ .stab          0x00014544      0x510 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
                                 0x51c (size before relaxing)
- .stab          0x00014bd4      0x240 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
+ .stab          0x00014a54      0x240 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
                                 0x24c (size before relaxing)
- .stab          0x00014e14      0x318 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
+ .stab          0x00014c94      0x318 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
                                 0x324 (size before relaxing)
- .stab          0x0001512c       0x78 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
+ .stab          0x00014fac       0x78 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
                                  0x84 (size before relaxing)
- .stab          0x000151a4       0x54 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
+ .stab          0x00015024       0x54 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
                                  0x60 (size before relaxing)
- .stab          0x000151f8       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
+ .stab          0x00015078       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
                                  0x90 (size before relaxing)
- .stab          0x0001527c       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
+ .stab          0x000150fc       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
                                  0x90 (size before relaxing)
- .stab          0x00015300       0xfc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
+ .stab          0x00015180       0xfc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
                                 0x108 (size before relaxing)
- .stab          0x000153fc      0x1d4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
+ .stab          0x0001527c      0x1d4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
                                 0x1e0 (size before relaxing)
- .stab          0x000155d0       0x90 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
+ .stab          0x00015450       0x90 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
                                  0x9c (size before relaxing)
- .stab          0x00015660       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
+ .stab          0x000154e0       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
                                  0x78 (size before relaxing)
- .stab          0x000156cc      0x378 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
+ .stab          0x0001554c      0x378 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
                                 0x384 (size before relaxing)
- .stab          0x00015a44       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
+ .stab          0x000158c4       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
                                  0x54 (size before relaxing)
- .stab          0x00015a8c      0x4d4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
+ .stab          0x0001590c      0x4d4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
                                 0x4e0 (size before relaxing)
- .stab          0x00015f60      0x3c0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
+ .stab          0x00015de0      0x3c0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
                                 0x3cc (size before relaxing)
- .stab          0x00016320      0x288 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
+ .stab          0x000161a0      0x288 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
                                 0x294 (size before relaxing)
- .stab          0x000165a8      0x1e0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
+ .stab          0x00016428      0x1e0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
                                 0x1ec (size before relaxing)
- .stab          0x00016788       0xe4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
+ .stab          0x00016608       0xe4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
                                  0xf0 (size before relaxing)
- .stab          0x0001686c      0x1ec /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
+ .stab          0x000166ec      0x1ec /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
                                 0x1f8 (size before relaxing)
- .stab          0x00016a58       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
+ .stab          0x000168d8       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
                                  0x90 (size before relaxing)
- .stab          0x00016adc      0x2c4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
+ .stab          0x0001695c      0x2c4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
                                 0x2d0 (size before relaxing)
- .stab          0x00016da0      0x2a0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
+ .stab          0x00016c20      0x2a0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
                                 0x2ac (size before relaxing)
- .stab          0x00017040      0xa38 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+ .stab          0x00016ec0      0xa38 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
                                 0xa44 (size before relaxing)
- .stab          0x00017a78       0x9c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
+ .stab          0x000178f8       0x9c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
                                  0xa8 (size before relaxing)
- .stab          0x00017b14       0x9c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
+ .stab          0x00017994       0x9c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
                                  0xa8 (size before relaxing)
- .stab          0x00017bb0      0x288 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
+ .stab          0x00017a30      0x288 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
                                 0x4b0 (size before relaxing)
- .stab          0x00017e38      0x264 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
+ .stab          0x00017cb8      0x264 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
                                 0x444 (size before relaxing)
- .stab          0x0001809c      0x1e0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
+ .stab          0x00017f1c      0x1e0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
                                 0x3c0 (size before relaxing)
- .stab          0x0001827c      0x12c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
+ .stab          0x000180fc      0x12c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
                                 0x30c (size before relaxing)
- .stab          0x000183a8      0x18c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
+ .stab          0x00018228      0x18c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
                                 0x36c (size before relaxing)
- .stab          0x00018534      0x1f8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
+ .stab          0x000183b4      0x1f8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
                                 0x3d8 (size before relaxing)
- .stab          0x0001872c      0x480 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+ .stab          0x000185ac      0x480 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
                                 0x48c (size before relaxing)
- .stab          0x00018bac       0x90 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
+ .stab          0x00018a2c       0x90 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
                                  0x9c (size before relaxing)
- .stab          0x00018c3c       0xd8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
+ .stab          0x00018abc       0xd8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
                                  0xe4 (size before relaxing)
- .stab          0x00018d14      0x198 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
+ .stab          0x00018b94      0x198 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
                                 0x1d4 (size before relaxing)
- .stab          0x00018eac      0x57c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
+ .stab          0x00018d2c      0x57c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
                                 0x75c (size before relaxing)
- .stab          0x00019428       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
+ .stab          0x000192a8       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
                                  0x78 (size before relaxing)
 
-.stabstr        0x00000000     0x74e1
+.stabstr        0x00000000     0x6bea
  *(.stabstr)
- .stabstr       0x00000000     0x74e1 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
+ .stabstr       0x00000000     0x6bea /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
 
 .stab.excl
  *(.stab.excl)

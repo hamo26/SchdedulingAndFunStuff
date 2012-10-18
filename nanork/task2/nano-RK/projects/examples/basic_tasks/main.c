@@ -90,13 +90,11 @@ t.nano_secs=0;
 nrk_sw_wdt_init(0, &t, NULL);
 nrk_sw_wdt_start(0);
 
-nrk_gpio_direction(NRK_BUTTON, NRK_PIN_INPUT);
-
   while(1) {
 	// Update watchdog timer
 	nrk_sw_wdt_update(0);
 	nrk_led_toggle(ORANGE_LED);
-	val=nrk_gpio_get(NRK_BUTTON);
+	val=1;
 
 	// Button logic is inverter 0 means pressed, 1 not pressed
 	printf( "Task1 cnt=%u button state=%u\r\n",cnt,val );

@@ -2522,68 +2522,68 @@
  2443               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 basic_rf.c
-     /tmp/cc9cO1cU.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc9cO1cU.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc9cO1cU.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc9cO1cU.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc9cO1cU.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc9cO1cU.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc9cO1cU.s:308    .text:00000000 rf_cmd
-     /tmp/cc9cO1cU.s:338    .text:00000010 rf_power_down
-     /tmp/cc9cO1cU.s:409    .text:00000058 rf_power_up
-     /tmp/cc9cO1cU.s:462    .text:00000084 rf_tx_power
-     /tmp/cc9cO1cU.s:495    .text:00000098 rf_addr_decode_enable
-     /tmp/cc9cO1cU.s:522    .text:000000a4 rf_addr_decode_disable
-     /tmp/cc9cO1cU.s:549    .text:000000b0 rf_auto_ack_enable
-     /tmp/cc9cO1cU.s:576    .text:000000bc rf_auto_ack_disable
-     /tmp/cc9cO1cU.s:604    .text:000000c8 rf_addr_decode_set_my_mac
+     /tmp/ccDzoAjJ.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccDzoAjJ.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccDzoAjJ.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccDzoAjJ.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccDzoAjJ.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccDzoAjJ.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccDzoAjJ.s:308    .text:00000000 rf_cmd
+     /tmp/ccDzoAjJ.s:338    .text:00000010 rf_power_down
+     /tmp/ccDzoAjJ.s:409    .text:00000058 rf_power_up
+     /tmp/ccDzoAjJ.s:462    .text:00000084 rf_tx_power
+     /tmp/ccDzoAjJ.s:495    .text:00000098 rf_addr_decode_enable
+     /tmp/ccDzoAjJ.s:522    .text:000000a4 rf_addr_decode_disable
+     /tmp/ccDzoAjJ.s:549    .text:000000b0 rf_auto_ack_enable
+     /tmp/ccDzoAjJ.s:576    .text:000000bc rf_auto_ack_disable
+     /tmp/ccDzoAjJ.s:604    .text:000000c8 rf_addr_decode_set_my_mac
                             *COM*:00000009 rfSettings
-     /tmp/cc9cO1cU.s:636    .text:000000da rf_set_rx
-     /tmp/cc9cO1cU.s:673    .text:000000f4 rx_start_callback
-     /tmp/cc9cO1cU.s:2397   .bss:00000000 rx_start_func
-     /tmp/cc9cO1cU.s:701    .text:000000fe rf_init
+     /tmp/ccDzoAjJ.s:636    .text:000000da rf_set_rx
+     /tmp/ccDzoAjJ.s:673    .text:000000f4 rx_start_callback
+     /tmp/ccDzoAjJ.s:2397   .bss:00000000 rx_start_func
+     /tmp/ccDzoAjJ.s:701    .text:000000fe rf_init
                             *COM*:00000001 rf_ready
                             *COM*:00000001 rx_ready
                             *COM*:00000001 tx_done
-     /tmp/cc9cO1cU.s:868    .text:000001ea rf_rx_on
-     /tmp/cc9cO1cU.s:892    .text:000001f2 rf_polling_rx_on
-     /tmp/cc9cO1cU.s:916    .text:000001fa rf_rx_off
-     /tmp/cc9cO1cU.s:945    .text:00000206 rf_tx_packet_repeat
+     /tmp/ccDzoAjJ.s:868    .text:000001ea rf_rx_on
+     /tmp/ccDzoAjJ.s:892    .text:000001f2 rf_polling_rx_on
+     /tmp/ccDzoAjJ.s:916    .text:000001fa rf_rx_off
+     /tmp/ccDzoAjJ.s:945    .text:00000206 rf_tx_packet_repeat
                             *COM*:00000008 curr_t
                             *COM*:00000008 target_t
                             *COM*:00000008 dummy_t
-     /tmp/cc9cO1cU.s:1323   .text:00000460 rf_tx_packet
-     /tmp/cc9cO1cU.s:1348   .text:0000046a rf_cca_check
-     /tmp/cc9cO1cU.s:1449   .text:000004d0 rf_rx_packet_nonblock
-     /tmp/cc9cO1cU.s:1619   .text:000005ee __vector_60
-     /tmp/cc9cO1cU.s:1681   .text:0000062c __vector_64
-     /tmp/cc9cO1cU.s:1716   .text:0000064a __vector_63
-     /tmp/cc9cO1cU.s:1755   .text:0000066e __vector_62
-     /tmp/cc9cO1cU.s:1790   .text:0000068c __vector_61
-     /tmp/cc9cO1cU.s:1825   .text:000006aa __vector_59
-     /tmp/cc9cO1cU.s:1896   .text:0000070a __vector_58
-     /tmp/cc9cO1cU.s:1931   .text:00000728 __vector_57
-     /tmp/cc9cO1cU.s:1967   .text:00000746 rf_set_cca_thresh
-     /tmp/cc9cO1cU.s:2000   .text:0000075a rf_security_last_pkt_status
-     /tmp/cc9cO1cU.s:2022   .text:0000075e rf_security_set_ctr_counter
-     /tmp/cc9cO1cU.s:2043   .text:00000760 rf_security_set_key
-     /tmp/cc9cO1cU.s:2063   .text:00000762 rf_security_disable
-     /tmp/cc9cO1cU.s:2086   .text:00000764 rf_tx_tdma_packet
-     /tmp/cc9cO1cU.s:2107   .text:00000768 rf_get_sem
+     /tmp/ccDzoAjJ.s:1323   .text:00000460 rf_tx_packet
+     /tmp/ccDzoAjJ.s:1348   .text:0000046a rf_cca_check
+     /tmp/ccDzoAjJ.s:1449   .text:000004d0 rf_rx_packet_nonblock
+     /tmp/ccDzoAjJ.s:1619   .text:000005ee __vector_60
+     /tmp/ccDzoAjJ.s:1681   .text:0000062c __vector_64
+     /tmp/ccDzoAjJ.s:1716   .text:0000064a __vector_63
+     /tmp/ccDzoAjJ.s:1755   .text:0000066e __vector_62
+     /tmp/ccDzoAjJ.s:1790   .text:0000068c __vector_61
+     /tmp/ccDzoAjJ.s:1825   .text:000006aa __vector_59
+     /tmp/ccDzoAjJ.s:1896   .text:0000070a __vector_58
+     /tmp/ccDzoAjJ.s:1931   .text:00000728 __vector_57
+     /tmp/ccDzoAjJ.s:1967   .text:00000746 rf_set_cca_thresh
+     /tmp/ccDzoAjJ.s:2000   .text:0000075a rf_security_last_pkt_status
+     /tmp/ccDzoAjJ.s:2022   .text:0000075e rf_security_set_ctr_counter
+     /tmp/ccDzoAjJ.s:2043   .text:00000760 rf_security_set_key
+     /tmp/ccDzoAjJ.s:2063   .text:00000762 rf_security_disable
+     /tmp/ccDzoAjJ.s:2086   .text:00000764 rf_tx_tdma_packet
+     /tmp/ccDzoAjJ.s:2107   .text:00000768 rf_get_sem
                             *COM*:00000002 radio_sem
-     /tmp/cc9cO1cU.s:2129   .text:00000772 rf_rx_packet
-     /tmp/cc9cO1cU.s:2150   .text:00000776 rf_flush_rx_fifo
-     /tmp/cc9cO1cU.s:2170   .text:00000778 rf_busy
-     /tmp/cc9cO1cU.s:2191   .text:0000077c rf_rx_check_fifop
-     /tmp/cc9cO1cU.s:2212   .text:00000780 rf_rx_check_sfd
-     /tmp/cc9cO1cU.s:2233   .text:00000784 rf_carrier_on
-     /tmp/cc9cO1cU.s:2253   .text:00000786 rf_carrier_off
-     /tmp/cc9cO1cU.s:2273   .text:00000788 rf_test_mode
-     /tmp/cc9cO1cU.s:2293   .text:0000078a rf_data_mode
-     /tmp/cc9cO1cU.s:2313   .text:0000078c rf_rx_set_serial
-     /tmp/cc9cO1cU.s:2333   .text:0000078e rf_tx_set_serial
-     /tmp/cc9cO1cU.s:2354   .text:00000790 rf_set_preamble_length
-     /tmp/cc9cO1cU.s:2375   .text:00000792 rf_set_cca_mode
+     /tmp/ccDzoAjJ.s:2129   .text:00000772 rf_rx_packet
+     /tmp/ccDzoAjJ.s:2150   .text:00000776 rf_flush_rx_fifo
+     /tmp/ccDzoAjJ.s:2170   .text:00000778 rf_busy
+     /tmp/ccDzoAjJ.s:2191   .text:0000077c rf_rx_check_fifop
+     /tmp/ccDzoAjJ.s:2212   .text:00000780 rf_rx_check_sfd
+     /tmp/ccDzoAjJ.s:2233   .text:00000784 rf_carrier_on
+     /tmp/ccDzoAjJ.s:2253   .text:00000786 rf_carrier_off
+     /tmp/ccDzoAjJ.s:2273   .text:00000788 rf_test_mode
+     /tmp/ccDzoAjJ.s:2293   .text:0000078a rf_data_mode
+     /tmp/ccDzoAjJ.s:2313   .text:0000078c rf_rx_set_serial
+     /tmp/ccDzoAjJ.s:2333   .text:0000078e rf_tx_set_serial
+     /tmp/ccDzoAjJ.s:2354   .text:00000790 rf_set_preamble_length
+     /tmp/ccDzoAjJ.s:2375   .text:00000792 rf_set_cca_mode
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

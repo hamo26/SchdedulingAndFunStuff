@@ -1195,41 +1195,41 @@
  1181               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_timer.c
-     /tmp/cchQ7xxc.s:2      *ABS*:0000003f __SREG__
-     /tmp/cchQ7xxc.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cchQ7xxc.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cchQ7xxc.s:5      *ABS*:00000034 __CCP__
-     /tmp/cchQ7xxc.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cchQ7xxc.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cchQ7xxc.s:139    .text:00000000 nrk_spin_wait_us
-     /tmp/cchQ7xxc.s:190    .text:0000000e _nrk_high_speed_timer_stop
-     /tmp/cchQ7xxc.s:213    .text:00000012 _nrk_high_speed_timer_start
-     /tmp/cchQ7xxc.s:237    .text:00000018 _nrk_high_speed_timer_reset
-     /tmp/cchQ7xxc.s:266    .text:00000024 _nrk_high_speed_timer_get
-     /tmp/cchQ7xxc.s:311    .text:00000046 nrk_high_speed_timer_wait
-     /tmp/cchQ7xxc.s:403    .text:000000b6 _nrk_os_timer_set
-     /tmp/cchQ7xxc.s:426    .text:000000ba _nrk_os_timer_stop
-     /tmp/cchQ7xxc.s:459    .text:000000ca _nrk_os_timer_start
-     /tmp/cchQ7xxc.s:488    .text:000000d6 _nrk_os_timer_reset
+     /tmp/ccFRQJl1.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccFRQJl1.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccFRQJl1.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccFRQJl1.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccFRQJl1.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccFRQJl1.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccFRQJl1.s:139    .text:00000000 nrk_spin_wait_us
+     /tmp/ccFRQJl1.s:190    .text:0000000e _nrk_high_speed_timer_stop
+     /tmp/ccFRQJl1.s:213    .text:00000012 _nrk_high_speed_timer_start
+     /tmp/ccFRQJl1.s:237    .text:00000018 _nrk_high_speed_timer_reset
+     /tmp/ccFRQJl1.s:266    .text:00000024 _nrk_high_speed_timer_get
+     /tmp/ccFRQJl1.s:311    .text:00000046 nrk_high_speed_timer_wait
+     /tmp/ccFRQJl1.s:403    .text:000000b6 _nrk_os_timer_set
+     /tmp/ccFRQJl1.s:426    .text:000000ba _nrk_os_timer_stop
+     /tmp/ccFRQJl1.s:459    .text:000000ca _nrk_os_timer_start
+     /tmp/ccFRQJl1.s:488    .text:000000d6 _nrk_os_timer_reset
                             *COM*:00000001 _nrk_time_trigger
                             *COM*:00000001 _nrk_prev_timer_val
-     /tmp/cchQ7xxc.s:522    .text:000000e8 _nrk_setup_timer
-     /tmp/cchQ7xxc.s:591    .text:00000120 _nrk_precision_os_timer_reset
-     /tmp/cchQ7xxc.s:611    .text:00000122 _nrk_get_next_wakeup
-     /tmp/cchQ7xxc.s:636    .text:00000128 _nrk_set_next_wakeup
-     /tmp/cchQ7xxc.s:660    .text:0000012e _nrk_os_timer_get
-     /tmp/cchQ7xxc.s:683    .text:00000132 __vector_default
-     /tmp/cchQ7xxc.s:745    .text:00000186 __vector_16
-     /tmp/cchQ7xxc.s:764    .text:00000186 __vector_15
+     /tmp/ccFRQJl1.s:522    .text:000000e8 _nrk_setup_timer
+     /tmp/ccFRQJl1.s:591    .text:00000120 _nrk_precision_os_timer_reset
+     /tmp/ccFRQJl1.s:611    .text:00000122 _nrk_get_next_wakeup
+     /tmp/ccFRQJl1.s:636    .text:00000128 _nrk_set_next_wakeup
+     /tmp/ccFRQJl1.s:660    .text:0000012e _nrk_os_timer_get
+     /tmp/ccFRQJl1.s:683    .text:00000132 __vector_default
+     /tmp/ccFRQJl1.s:745    .text:00000186 __vector_16
+     /tmp/ccFRQJl1.s:764    .text:00000186 __vector_15
                             *COM*:00000002 nrk_kernel_stk_ptr
-     /tmp/cchQ7xxc.s:838    .text:000001ec nrk_timer_int_stop
-     /tmp/cchQ7xxc.s:870    .text:000001fa nrk_timer_int_reset
-     /tmp/cchQ7xxc.s:905    .text:00000208 nrk_timer_int_read
-     /tmp/cchQ7xxc.s:942    .text:0000021a nrk_timer_int_start
-     /tmp/cchQ7xxc.s:981    .text:0000022c nrk_timer_int_configure
+     /tmp/ccFRQJl1.s:838    .text:000001ec nrk_timer_int_stop
+     /tmp/ccFRQJl1.s:870    .text:000001fa nrk_timer_int_reset
+     /tmp/ccFRQJl1.s:905    .text:00000208 nrk_timer_int_read
+     /tmp/ccFRQJl1.s:942    .text:0000021a nrk_timer_int_start
+     /tmp/ccFRQJl1.s:981    .text:0000022c nrk_timer_int_configure
                             *COM*:00000001 app_timer0_prescale
                             *COM*:00000002 app_timer0_callback
-     /tmp/cchQ7xxc.s:1090   .text:0000028e __vector_9
+     /tmp/ccFRQJl1.s:1090   .text:0000028e __vector_9
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000001 error_task

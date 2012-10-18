@@ -1397,45 +1397,45 @@
  1553               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_timer.c
-     /tmp/ccGuhZcA.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccGuhZcA.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccGuhZcA.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccGuhZcA.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccGuhZcA.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccGuhZcA.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccGuhZcA.s:299    .text:00000000 _nrk_precision_os_timer_start
-     /tmp/ccGuhZcA.s:329    .text:00000014 _nrk_precision_os_timer_reset
-     /tmp/ccGuhZcA.s:354    .text:0000001e nrk_spin_wait_us
-     /tmp/ccGuhZcA.s:453    .text:0000003c _nrk_precision_os_timer_stop
-     /tmp/ccGuhZcA.s:476    .text:00000042 _nrk_precision_os_timer_get
-     /tmp/ccGuhZcA.s:519    .text:00000068 _nrk_high_speed_timer_stop
-     /tmp/ccGuhZcA.s:542    .text:0000006e _nrk_high_speed_timer_start
-     /tmp/ccGuhZcA.s:566    .text:00000076 _nrk_high_speed_timer_reset
-     /tmp/ccGuhZcA.s:595    .text:00000086 _nrk_high_speed_timer_get
-     /tmp/ccGuhZcA.s:640    .text:000000ac nrk_high_speed_timer_wait
-     /tmp/ccGuhZcA.s:735    .text:00000120 _nrk_os_timer_stop
-     /tmp/ccGuhZcA.s:771    .text:00000136 _nrk_os_timer_set
-     /tmp/ccGuhZcA.s:794    .text:0000013c _nrk_os_timer_start
-     /tmp/ccGuhZcA.s:825    .text:0000014e _nrk_os_timer_reset
+     /tmp/ccqlrhXw.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccqlrhXw.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccqlrhXw.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccqlrhXw.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccqlrhXw.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccqlrhXw.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccqlrhXw.s:299    .text:00000000 _nrk_precision_os_timer_start
+     /tmp/ccqlrhXw.s:329    .text:00000014 _nrk_precision_os_timer_reset
+     /tmp/ccqlrhXw.s:354    .text:0000001e nrk_spin_wait_us
+     /tmp/ccqlrhXw.s:453    .text:0000003c _nrk_precision_os_timer_stop
+     /tmp/ccqlrhXw.s:476    .text:00000042 _nrk_precision_os_timer_get
+     /tmp/ccqlrhXw.s:519    .text:00000068 _nrk_high_speed_timer_stop
+     /tmp/ccqlrhXw.s:542    .text:0000006e _nrk_high_speed_timer_start
+     /tmp/ccqlrhXw.s:566    .text:00000076 _nrk_high_speed_timer_reset
+     /tmp/ccqlrhXw.s:595    .text:00000086 _nrk_high_speed_timer_get
+     /tmp/ccqlrhXw.s:640    .text:000000ac nrk_high_speed_timer_wait
+     /tmp/ccqlrhXw.s:735    .text:00000120 _nrk_os_timer_stop
+     /tmp/ccqlrhXw.s:771    .text:00000136 _nrk_os_timer_set
+     /tmp/ccqlrhXw.s:794    .text:0000013c _nrk_os_timer_start
+     /tmp/ccqlrhXw.s:825    .text:0000014e _nrk_os_timer_reset
                             *COM*:00000001 _nrk_time_trigger
                             *COM*:00000001 _nrk_prev_timer_val
-     /tmp/ccGuhZcA.s:859    .text:00000162 _nrk_setup_timer
-     /tmp/ccGuhZcA.s:970    .text:000001dc _nrk_get_next_wakeup
-     /tmp/ccGuhZcA.s:995    .text:000001e4 _nrk_set_next_wakeup
-     /tmp/ccGuhZcA.s:1020   .text:000001ec nrk_timer_int_stop
-     /tmp/ccGuhZcA.s:1050   .text:000001f8 nrk_timer_int_reset
-     /tmp/ccGuhZcA.s:1086   .text:0000020c nrk_timer_int_read
-     /tmp/ccGuhZcA.s:1123   .text:00000222 nrk_timer_int_start
-     /tmp/ccGuhZcA.s:1161   .text:00000234 nrk_timer_int_configure
+     /tmp/ccqlrhXw.s:859    .text:00000162 _nrk_setup_timer
+     /tmp/ccqlrhXw.s:970    .text:000001dc _nrk_get_next_wakeup
+     /tmp/ccqlrhXw.s:995    .text:000001e4 _nrk_set_next_wakeup
+     /tmp/ccqlrhXw.s:1020   .text:000001ec nrk_timer_int_stop
+     /tmp/ccqlrhXw.s:1050   .text:000001f8 nrk_timer_int_reset
+     /tmp/ccqlrhXw.s:1086   .text:0000020c nrk_timer_int_read
+     /tmp/ccqlrhXw.s:1123   .text:00000222 nrk_timer_int_start
+     /tmp/ccqlrhXw.s:1161   .text:00000234 nrk_timer_int_configure
                             *COM*:00000001 app_timer0_prescale
                             *COM*:00000002 app_timer0_callback
-     /tmp/ccGuhZcA.s:1276   .text:000002ae _nrk_os_timer_get
-     /tmp/ccGuhZcA.s:1299   .text:000002b4 __vector_default
-     /tmp/ccGuhZcA.s:1341   .text:000002e4 __vector_15
-     /tmp/ccGuhZcA.s:1360   .text:000002e4 __vector_13
+     /tmp/ccqlrhXw.s:1276   .text:000002ae _nrk_os_timer_get
+     /tmp/ccqlrhXw.s:1299   .text:000002b4 __vector_default
+     /tmp/ccqlrhXw.s:1341   .text:000002e4 __vector_15
+     /tmp/ccqlrhXw.s:1360   .text:000002e4 __vector_13
                             *COM*:00000002 nrk_kernel_stk_ptr
-     /tmp/ccGuhZcA.s:1433   .text:0000034a __vector_32
-     /tmp/ccGuhZcA.s:1507   .text:000003ae SIG_OUTPUT_COMPARE1A
+     /tmp/ccqlrhXw.s:1433   .text:0000034a __vector_32
+     /tmp/ccqlrhXw.s:1507   .text:000003ae SIG_OUTPUT_COMPARE1A
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000001 error_task
