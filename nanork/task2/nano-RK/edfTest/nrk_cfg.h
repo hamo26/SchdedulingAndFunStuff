@@ -45,5 +45,7 @@
 #define NRK_KERNEL_STACKSIZE           128 
 #define NRK_MAX_RESOURCE_CNT           1
 
+//If this is defined, nrk will use edf to schedule. Otherwise it will fall back to the default scheduler.
+#define NRK_EDF
 
 #endif

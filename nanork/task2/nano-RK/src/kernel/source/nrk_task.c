@@ -82,7 +82,8 @@ void nrk_add_to_readyQ (int8_t task_ID)
 
         while (NextNode != NULL)
         {
-  /*         if (nrk_task_TCB[NextNode->task_ID].elevated_prio_flag)
+#ifndef NRK_EDF
+	if (nrk_task_TCB[NextNode->task_ID].elevated_prio_flag)
                 if (nrk_task_TCB[NextNode->task_ID].task_prio_ceil <
                         nrk_task_TCB[task_ID].task_prio)
                     break;
@@ -92,13 +93,14 @@ void nrk_add_to_readyQ (int8_t task_ID)
                     break;
             if (nrk_task_TCB[NextNode->task_ID].task_prio <
                     nrk_task_TCB[task_ID].task_prio)
-                break; */
+                break; 
+#else
 
 			//
 			//printf("%d\n",&NextNode->task_ID);
 			//printf("task id: %d", &task_ID);
-	    if (NextNode->task_ID == NRK_IDLE_TASK_ID || nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period) {break;}
-	    
+	    if (NextNode->task_ID == NRK_IDLE_TASK_ID || nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB		  [task_ID].next_period) {break;}
+#endif    
             NextNode = NextNode->Next;
         }
 
