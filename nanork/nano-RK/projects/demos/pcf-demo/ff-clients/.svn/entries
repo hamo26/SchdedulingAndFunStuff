@@ -1,0 +1,52 @@
+10
+
+dir
+1390
+svn://nanork.org/srv/svn/repos/nano-RK/projects/demos/pcf-demo/ff-clients
+svn://nanork.org/srv/svn/repos
+
+
+
+2012-09-09T19:25:46.685032Z
+1387
+agr
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+d5223eb8-5f29-0410-a7c7-974caa64965b
+
+amb-orb
+dir
+
+deprecated
+dir
+
+plug-client
+dir
+
+gpio-read
+dir
+
+ff3-sensors
+dir
+
+pkt-sniffer
+dir
+
+forwarder
+dir
+
+syntonistor
+dir
+
