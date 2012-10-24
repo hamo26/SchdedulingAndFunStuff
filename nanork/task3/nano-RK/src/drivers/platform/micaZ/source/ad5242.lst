@@ -1,0 +1,151 @@
+   1               		.file	"ad5242.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+  29               	.global	ad5242_init
+  31               	ad5242_init:
+  32               		.stabd	46,0,0
+   1:..//src/drivers/platform/micaZ/source/ad5242.c **** /******************************************************************************
+   2:..//src/drivers/platform/micaZ/source/ad5242.c **** *  Nano-RK, a real-time operating system for sensor networks.
+   3:..//src/drivers/platform/micaZ/source/ad5242.c **** *  Copyright (C) 2011 Technische Universität München (www.vmi.ei.tum.de)
+   4:..//src/drivers/platform/micaZ/source/ad5242.c **** *  All rights reserved.
+   5:..//src/drivers/platform/micaZ/source/ad5242.c **** *
+   6:..//src/drivers/platform/micaZ/source/ad5242.c **** *  This is the Open Source Version of Nano-RK included as part of a Dual
+   7:..//src/drivers/platform/micaZ/source/ad5242.c **** *  Licensing Model. If you are unsure which license to use please refer to:
+   8:..//src/drivers/platform/micaZ/source/ad5242.c **** *  http://www.nanork.org/nano-RK/wiki/Licensing
+   9:..//src/drivers/platform/micaZ/source/ad5242.c **** *
+  10:..//src/drivers/platform/micaZ/source/ad5242.c **** *  This program is free software: you can redistribute it and/or modify
+  11:..//src/drivers/platform/micaZ/source/ad5242.c **** *  it under the terms of the GNU General Public License as published by
+  12:..//src/drivers/platform/micaZ/source/ad5242.c **** *  the Free Software Foundation, version 2.0 of the License.
+  13:..//src/drivers/platform/micaZ/source/ad5242.c **** *
+  14:..//src/drivers/platform/micaZ/source/ad5242.c **** *  This program is distributed in the hope that it will be useful,
+  15:..//src/drivers/platform/micaZ/source/ad5242.c **** *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:..//src/drivers/platform/micaZ/source/ad5242.c **** *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  17:..//src/drivers/platform/micaZ/source/ad5242.c **** *  GNU General Public License for more details.
+  18:..//src/drivers/platform/micaZ/source/ad5242.c **** *
+  19:..//src/drivers/platform/micaZ/source/ad5242.c **** *  You should have received a copy of the GNU General Public License
+  20:..//src/drivers/platform/micaZ/source/ad5242.c **** *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  21:..//src/drivers/platform/micaZ/source/ad5242.c **** *
+  22:..//src/drivers/platform/micaZ/source/ad5242.c **** *
+  23:..//src/drivers/platform/micaZ/source/ad5242.c **** *  AD5242 digital potentiometer driver
+  24:..//src/drivers/platform/micaZ/source/ad5242.c **** *
+  25:..//src/drivers/platform/micaZ/source/ad5242.c **** *  Contributing Authors (specific to this file):
+  26:..//src/drivers/platform/micaZ/source/ad5242.c **** *  Author: Peter Diener
+  27:..//src/drivers/platform/micaZ/source/ad5242.c **** *
+  28:..//src/drivers/platform/micaZ/source/ad5242.c **** ***************************************************************************************/
+  29:..//src/drivers/platform/micaZ/source/ad5242.c **** 
+  30:..//src/drivers/platform/micaZ/source/ad5242.c **** #include "ad5242.h"
+  31:..//src/drivers/platform/micaZ/source/ad5242.c **** #include "i2c_driver.h"
+  32:..//src/drivers/platform/micaZ/source/ad5242.c **** 
+  33:..//src/drivers/platform/micaZ/source/ad5242.c **** 
+  34:..//src/drivers/platform/micaZ/source/ad5242.c **** 
+  35:..//src/drivers/platform/micaZ/source/ad5242.c **** // Initialize the interface
+  36:..//src/drivers/platform/micaZ/source/ad5242.c **** void ad5242_init()
+  37:..//src/drivers/platform/micaZ/source/ad5242.c **** {
+  34               	.LM0:
+  35               	.LFBB1:
+  36               	/* prologue: function */
+  37               	/* frame size = 0 */
+  38               	/* stack size = 0 */
+  39               	.L__stack_usage = 0
+  38:..//src/drivers/platform/micaZ/source/ad5242.c **** 	i2c_init();
+  41               	.LM1:
+  42 0000 0E94 0000 		call i2c_init
+  43               	/* epilogue start */
+  39:..//src/drivers/platform/micaZ/source/ad5242.c **** }
+  45               	.LM2:
+  46 0004 0895      		ret
+  48               	.Lscope1:
+  50               		.stabd	78,0,0
+  55               	.global	ad5242_set
+  57               	ad5242_set:
+  58               		.stabd	46,0,0
+  40:..//src/drivers/platform/micaZ/source/ad5242.c **** 
+  41:..//src/drivers/platform/micaZ/source/ad5242.c **** 
+  42:..//src/drivers/platform/micaZ/source/ad5242.c **** // hwAddress is defined by the Pin settings [AD1 AD0]
+  43:..//src/drivers/platform/micaZ/source/ad5242.c **** // channel is 1 or 2
+  44:..//src/drivers/platform/micaZ/source/ad5242.c **** // value is the resistor divider value
+  45:..//src/drivers/platform/micaZ/source/ad5242.c **** void ad5242_set(unsigned char hwAddress, unsigned char channel, unsigned char value)
+  46:..//src/drivers/platform/micaZ/source/ad5242.c **** {
+  60               	.LM3:
+  61               	.LFBB2:
+  62 0006 1F93      		push r17
+  63 0008 DF93      		push r29
+  64 000a CF93      		push r28
+  65 000c 0F92      		push __tmp_reg__
+  66 000e CDB7      		in r28,__SP_L__
+  67 0010 DEB7      		in r29,__SP_H__
+  68               	/* prologue: function */
+  69               	/* frame size = 1 */
+  70               	/* stack size = 4 */
+  71               	.L__stack_usage = 4
+  72 0012 142F      		mov r17,r20
+  47:..//src/drivers/platform/micaZ/source/ad5242.c **** 	unsigned char address = 0b0101100 | (hwAddress & 0b11);
+  74               	.LM4:
+  75 0014 8370      		andi r24,lo8(3)
+  48:..//src/drivers/platform/micaZ/source/ad5242.c **** 	
+  49:..//src/drivers/platform/micaZ/source/ad5242.c **** 	i2c_controlByte_TX(address);
+  77               	.LM5:
+  78 0016 8C62      		ori r24,lo8(44)
+  79 0018 6983      		std Y+1,r22
+  80 001a 0E94 0000 		call i2c_controlByte_TX
+  50:..//src/drivers/platform/micaZ/source/ad5242.c **** 	
+  51:..//src/drivers/platform/micaZ/source/ad5242.c **** 	// Instruction byte
+  52:..//src/drivers/platform/micaZ/source/ad5242.c **** 	if (channel == 1)
+  82               	.LM6:
+  83 001e 6981      		ldd r22,Y+1
+  84 0020 6130      		cpi r22,lo8(1)
+  85 0022 01F4      		brne .L3
+  53:..//src/drivers/platform/micaZ/source/ad5242.c **** 		i2c_send(0x00);		// Channel A (1)
+  87               	.LM7:
+  88 0024 80E0      		ldi r24,lo8(0)
+  89 0026 00C0      		rjmp .L5
+  90               	.L3:
+  54:..//src/drivers/platform/micaZ/source/ad5242.c **** 	else
+  55:..//src/drivers/platform/micaZ/source/ad5242.c **** 		i2c_send(0x80);		// Channel B (2)
+  92               	.LM8:
+  93 0028 80E8      		ldi r24,lo8(-128)
+  94               	.L5:
+  95 002a 0E94 0000 		call i2c_send
+  56:..//src/drivers/platform/micaZ/source/ad5242.c **** 		
+  57:..//src/drivers/platform/micaZ/source/ad5242.c **** 	// Resistor divider value
+  58:..//src/drivers/platform/micaZ/source/ad5242.c **** 	i2c_send(value);
+  97               	.LM9:
+  98 002e 812F      		mov r24,r17
+  99 0030 0E94 0000 		call i2c_send
+  59:..//src/drivers/platform/micaZ/source/ad5242.c **** 		
+  60:..//src/drivers/platform/micaZ/source/ad5242.c **** 	i2c_stop();
+ 101               	.LM10:
+ 102 0034 0E94 0000 		call i2c_stop
+ 103               	/* epilogue start */
+  61:..//src/drivers/platform/micaZ/source/ad5242.c **** }
+ 105               	.LM11:
+ 106 0038 0F90      		pop __tmp_reg__
+ 107 003a CF91      		pop r28
+ 108 003c DF91      		pop r29
+ 109 003e 1F91      		pop r17
+ 110 0040 0895      		ret
+ 112               	.Lscope2:
+ 114               		.stabd	78,0,0
+ 116               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 ad5242.c
+     /tmp/cc1XDt2n.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc1XDt2n.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc1XDt2n.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc1XDt2n.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc1XDt2n.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc1XDt2n.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc1XDt2n.s:31     .text:00000000 ad5242_init
+     /tmp/cc1XDt2n.s:57     .text:00000006 ad5242_set
+
+UNDEFINED SYMBOLS
+i2c_init
+i2c_controlByte_TX
+i2c_send
+i2c_stop

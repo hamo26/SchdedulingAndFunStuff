@@ -1,0 +1,213 @@
+   1               		.file	"nrk_ext_int.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+ 121               	.global	nrk_ext_int_enable
+ 123               	nrk_ext_int_enable:
+ 124               		.stabd	46,0,0
+   1:..//src/kernel/hal/atmega128/nrk_ext_int.c **** /******************************************************************************
+   2:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  Nano-RK, a real-time operating system for sensor networks.
+   3:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  Copyright (C) 2007, Real-Time and Multimedia Lab, Carnegie Mellon University
+   4:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  All rights reserved.
+   5:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *
+   6:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  This is the Open Source Version of Nano-RK included as part of a Dual
+   7:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  Licensing Model. If you are unsure which license to use please refer to:
+   8:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  http://www.nanork.org/nano-RK/wiki/Licensing
+   9:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *
+  10:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  This program is free software: you can redistribute it and/or modify
+  11:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  it under the terms of the GNU General Public License as published by
+  12:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  the Free Software Foundation, version 2.0 of the License.
+  13:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *
+  14:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  This program is distributed in the hope that it will be useful,
+  15:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  17:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  GNU General Public License for more details.
+  18:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *
+  19:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  You should have received a copy of the GNU General Public License
+  20:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  21:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *
+  22:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  Contributing Authors (specific to this file):
+  23:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *  Anthony Rowe
+  24:..//src/kernel/hal/atmega128/nrk_ext_int.c **** *******************************************************************************/
+  25:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  26:..//src/kernel/hal/atmega128/nrk_ext_int.c **** #include <include.h>
+  27:..//src/kernel/hal/atmega128/nrk_ext_int.c **** #include <avr/interrupt.h>
+  28:..//src/kernel/hal/atmega128/nrk_ext_int.c **** #include <ulib.h>
+  29:..//src/kernel/hal/atmega128/nrk_ext_int.c **** #include <nrk_ext_int.h>
+  30:..//src/kernel/hal/atmega128/nrk_ext_int.c **** #include <nrk_error.h>
+  31:..//src/kernel/hal/atmega128/nrk_ext_int.c **** #include <nrk_cfg.h>
+  32:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  33:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  34:..//src/kernel/hal/atmega128/nrk_ext_int.c **** int8_t  nrk_ext_int_enable(uint8_t pin )
+  35:..//src/kernel/hal/atmega128/nrk_ext_int.c **** {
+ 126               	.LM0:
+ 127               	.LFBB1:
+ 128               	/* prologue: function */
+ 129               	/* frame size = 0 */
+ 130               	/* stack size = 0 */
+ 131               	.L__stack_usage = 0
+  36:..//src/kernel/hal/atmega128/nrk_ext_int.c **** //if(pin==NRK_EXT_INT_0) { EIMSK |= 1; return NRK_OK; }
+  37:..//src/kernel/hal/atmega128/nrk_ext_int.c **** return NRK_ERROR;
+  38:..//src/kernel/hal/atmega128/nrk_ext_int.c **** }
+ 133               	.LM1:
+ 134 0000 8FEF      		ldi r24,lo8(-1)
+ 135               	/* epilogue start */
+ 136 0002 0895      		ret
+ 138               	.Lscope1:
+ 140               		.stabd	78,0,0
+ 143               	.global	nrk_ext_int_disable
+ 145               	nrk_ext_int_disable:
+ 146               		.stabd	46,0,0
+  39:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  40:..//src/kernel/hal/atmega128/nrk_ext_int.c **** int8_t  nrk_ext_int_disable(uint8_t pin )
+  41:..//src/kernel/hal/atmega128/nrk_ext_int.c **** {
+ 148               	.LM2:
+ 149               	.LFBB2:
+ 150               	/* prologue: function */
+ 151               	/* frame size = 0 */
+ 152               	/* stack size = 0 */
+ 153               	.L__stack_usage = 0
+  42:..//src/kernel/hal/atmega128/nrk_ext_int.c **** //if(pin==NRK_EXT_INT_0) { EIMSK &= ~1; return NRK_OK; }
+  43:..//src/kernel/hal/atmega128/nrk_ext_int.c **** return NRK_ERROR;
+  44:..//src/kernel/hal/atmega128/nrk_ext_int.c **** }
+ 155               	.LM3:
+ 156 0004 8FEF      		ldi r24,lo8(-1)
+ 157               	/* epilogue start */
+ 158 0006 0895      		ret
+ 160               	.Lscope2:
+ 162               		.stabd	78,0,0
+ 167               	.global	nrk_ext_int_configure
+ 169               	nrk_ext_int_configure:
+ 170               		.stabd	46,0,0
+  45:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  46:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  47:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  48:..//src/kernel/hal/atmega128/nrk_ext_int.c **** int8_t  nrk_ext_int_configure(uint8_t pin, uint8_t mode, void *callback_func)
+  49:..//src/kernel/hal/atmega128/nrk_ext_int.c **** {
+ 172               	.LM4:
+ 173               	.LFBB3:
+ 174               	/* prologue: function */
+ 175               	/* frame size = 0 */
+ 176               	/* stack size = 0 */
+ 177               	.L__stack_usage = 0
+  50:..//src/kernel/hal/atmega128/nrk_ext_int.c **** /*if(pin==NRK_EXT_INT_0)
+  51:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	{
+  52:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	ext_int0_callback=callback_func;
+  53:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	if(mode==NRK_LOW_TRIGGER) EICRA &= ~(BM(ISC01) | BM(ISC00));
+  54:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	if(mode==NRK_LEVEL_TRIGGER) 
+  55:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 		{ EICRA &= (~BM(ISC01)); EICRA |= BM(ISC00); }
+  56:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	if(mode==NRK_FALLING_EDGE) 
+  57:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 		{ EICRA |= BM(ISC01); EICRA &= (~BM(ISC00)); }
+  58:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	if(mode==NRK_RISING_EDGE) EICRA |= BM(ISC01) | BM(ISC00);
+  59:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	return NRK_OK;
+  60:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	}
+  61:..//src/kernel/hal/atmega128/nrk_ext_int.c **** */
+  62:..//src/kernel/hal/atmega128/nrk_ext_int.c **** return NRK_ERROR;
+  63:..//src/kernel/hal/atmega128/nrk_ext_int.c **** }
+ 179               	.LM5:
+ 180 0008 8FEF      		ldi r24,lo8(-1)
+ 181               	/* epilogue start */
+ 182 000a 0895      		ret
+ 184               	.Lscope3:
+ 186               		.stabd	78,0,0
+ 188               	.global	__vector_1
+ 190               	__vector_1:
+ 191               		.stabd	46,0,0
+  64:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  65:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  66:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 
+  67:..//src/kernel/hal/atmega128/nrk_ext_int.c **** SIGNAL(INT0_vect) {
+ 193               	.LM6:
+ 194               	.LFBB4:
+ 195 000c 1F92      		push __zero_reg__
+ 196 000e 0F92      		push r0
+ 197 0010 0FB6      		in r0,__SREG__
+ 198 0012 0F92      		push r0
+ 199 0014 0BB6      		in r0,91-32
+ 200 0016 0F92      		push r0
+ 201 0018 1124      		clr __zero_reg__
+ 202 001a 2F93      		push r18
+ 203 001c 3F93      		push r19
+ 204 001e 4F93      		push r20
+ 205 0020 5F93      		push r21
+ 206 0022 6F93      		push r22
+ 207 0024 7F93      		push r23
+ 208 0026 8F93      		push r24
+ 209 0028 9F93      		push r25
+ 210 002a AF93      		push r26
+ 211 002c BF93      		push r27
+ 212 002e EF93      		push r30
+ 213 0030 FF93      		push r31
+ 214               	/* prologue: Signal */
+ 215               	/* frame size = 0 */
+ 216               	/* stack size = 16 */
+ 217               	.L__stack_usage = 16
+  68:..//src/kernel/hal/atmega128/nrk_ext_int.c **** //	if(ext_int0_callback!=NULL) ext_int0_callback();
+  69:..//src/kernel/hal/atmega128/nrk_ext_int.c **** //	else
+  70:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	nrk_kernel_error_add(NRK_SEG_FAULT,0);
+ 219               	.LM7:
+ 220 0032 8AE0      		ldi r24,lo8(10)
+ 221 0034 60E0      		ldi r22,lo8(0)
+ 222 0036 0E94 0000 		call nrk_kernel_error_add
+ 223               	/* epilogue start */
+  71:..//src/kernel/hal/atmega128/nrk_ext_int.c **** 	return;  	
+  72:..//src/kernel/hal/atmega128/nrk_ext_int.c **** }
+ 225               	.LM8:
+ 226 003a FF91      		pop r31
+ 227 003c EF91      		pop r30
+ 228 003e BF91      		pop r27
+ 229 0040 AF91      		pop r26
+ 230 0042 9F91      		pop r25
+ 231 0044 8F91      		pop r24
+ 232 0046 7F91      		pop r23
+ 233 0048 6F91      		pop r22
+ 234 004a 5F91      		pop r21
+ 235 004c 4F91      		pop r20
+ 236 004e 3F91      		pop r19
+ 237 0050 2F91      		pop r18
+ 238 0052 0F90      		pop r0
+ 239 0054 0BBE      		out 91-32,r0
+ 240 0056 0F90      		pop r0
+ 241 0058 0FBE      		out __SREG__,r0
+ 242 005a 0F90      		pop r0
+ 243 005c 1F90      		pop __zero_reg__
+ 244 005e 1895      		reti
+ 246               	.Lscope4:
+ 248               		.stabd	78,0,0
+ 249               		.comm _nrk_signal_list,4,1
+ 250               		.comm ext_int0_callback,2,1
+ 251               		.comm ext_int1_callback,2,1
+ 252               		.comm ext_int2_callback,2,1
+ 253               		.comm pc_int0_callback,2,1
+ 254               		.comm error_task,1,1
+ 255               		.comm error_num,1,1
+ 264               	.Letext0:
+ 265               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 nrk_ext_int.c
+     /tmp/ccPXntgd.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccPXntgd.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccPXntgd.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccPXntgd.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccPXntgd.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccPXntgd.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccPXntgd.s:123    .text:00000000 nrk_ext_int_enable
+     /tmp/ccPXntgd.s:145    .text:00000004 nrk_ext_int_disable
+     /tmp/ccPXntgd.s:169    .text:00000008 nrk_ext_int_configure
+     /tmp/ccPXntgd.s:190    .text:0000000c __vector_1
+                            *COM*:00000004 _nrk_signal_list
+                            *COM*:00000002 ext_int0_callback
+                            *COM*:00000002 ext_int1_callback
+                            *COM*:00000002 ext_int2_callback
+                            *COM*:00000002 pc_int0_callback
+                            *COM*:00000001 error_task
+                            *COM*:00000001 error_num
+
+UNDEFINED SYMBOLS
+nrk_kernel_error_add
+__do_clear_bss

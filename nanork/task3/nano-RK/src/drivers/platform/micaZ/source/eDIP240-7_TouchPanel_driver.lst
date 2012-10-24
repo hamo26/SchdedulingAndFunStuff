@@ -1,0 +1,1588 @@
+   1               		.file	"eDIP240-7_TouchPanel_driver.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+ 141               	.global	USART0_putchar
+ 143               	USART0_putchar:
+ 144               		.stabd	46,0,0
+   1:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** /******************************************************************************
+   2:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  Nano-RK, a real-time operating system for sensor networks.
+   3:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  Copyright (C) 2011 Technische Universität München (www.vmi.ei.tum.de)
+   4:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  All rights reserved.
+   5:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *
+   6:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  This is the Open Source Version of Nano-RK included as part of a Dual
+   7:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  Licensing Model. If you are unsure which license to use please refer to:
+   8:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  http://www.nanork.org/nano-RK/wiki/Licensing
+   9:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *
+  10:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  This program is free software: you can redistribute it and/or modify
+  11:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  it under the terms of the GNU General Public License as published by
+  12:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  the Free Software Foundation, version 2.0 of the License.
+  13:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *
+  14:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  This program is distributed in the hope that it will be useful,
+  15:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  17:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  GNU General Public License for more details.
+  18:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *
+  19:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  You should have received a copy of the GNU General Public License
+  20:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  21:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *
+  22:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *
+  23:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  eDIP240-7 TouchPanel 
+  24:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *
+  25:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  Contributing Authors (specific to this file):
+  26:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *  Author: Peter Diener
+  27:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** *
+  28:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** ***************************************************************************************/
+  29:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** #include <nrk.h>
+  30:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** #include <include.h>
+  31:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** #include <ulib.h>
+  32:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** #include <stdio.h>
+  33:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** #include <stdlib.h>
+  34:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** #include <hal.h>
+  35:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  36:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Interface functions
+  37:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** void USART0_putchar(char data)
+  38:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 146               	.LM0:
+ 147               	.LFBB1:
+ 148               	/* prologue: function */
+ 149               	/* frame size = 0 */
+ 150               	/* stack size = 0 */
+ 151               	.L__stack_usage = 0
+  39:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	putchar(data);
+ 153               	.LM1:
+ 154 0000 6091 0000 		lds r22,__iob+2
+ 155 0004 7091 0000 		lds r23,__iob+2+1
+ 156 0008 90E0      		ldi r25,lo8(0)
+ 157 000a 0E94 0000 		call fputc
+ 158               	/* epilogue start */
+  40:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 160               	.LM2:
+ 161 000e 0895      		ret
+ 163               	.Lscope1:
+ 165               		.stabd	78,0,0
+ 167               	.global	USART0_getchar
+ 169               	USART0_getchar:
+ 170               		.stabd	46,0,0
+  41:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  42:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  43:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  44:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed int USART0_getchar()
+  45:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 172               	.LM3:
+ 173               	.LFBB2:
+ 174               	/* prologue: function */
+ 175               	/* frame size = 0 */
+ 176               	/* stack size = 0 */
+ 177               	.L__stack_usage = 0
+  46:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	if (nrk_uart_data_ready(NRK_DEFAULT_UART)!=0)
+ 179               	.LM4:
+ 180 0010 80E0      		ldi r24,lo8(0)
+ 181 0012 0E94 0000 		call nrk_uart_data_ready
+ 182 0016 8823      		tst r24
+ 183 0018 01F0      		breq .L4
+  47:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 		return (signed int)(unsigned char)getchar();
+ 185               	.LM5:
+ 186 001a 8091 0000 		lds r24,__iob
+ 187 001e 9091 0000 		lds r25,__iob+1
+ 188 0022 0E94 0000 		call fgetc
+ 189 0026 282F      		mov r18,r24
+ 190 0028 30E0      		ldi r19,lo8(0)
+ 191 002a 00C0      		rjmp .L3
+ 192               	.L4:
+  48:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	else return -1;
+ 194               	.LM6:
+ 195 002c 2FEF      		ldi r18,lo8(-1)
+ 196 002e 3FEF      		ldi r19,hi8(-1)
+ 197               	.L3:
+  49:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 199               	.LM7:
+ 200 0030 C901      		movw r24,r18
+ 201               	/* epilogue start */
+ 202 0032 0895      		ret
+ 204               	.Lscope2:
+ 206               		.stabd	78,0,0
+ 209               	.global	eDIP240_7_Display_send_packet
+ 211               	eDIP240_7_Display_send_packet:
+ 212               		.stabd	46,0,0
+  50:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  51:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  52:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  53:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  54:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Electronic Assembly SMALLPROTOKOLL driver by P. Diener
+  55:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Befehle/Daten zum Display senden
+  56:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Display_send_packet sends a packet to the display.
+  57:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // The user has to provide a block of memory with the payload and the length of the payload
+  58:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // In case of success 0 is returned, in case of an error -1 is returned
+  59:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed char eDIP240_7_Display_send_packet(char * data, unsigned char length)
+  60:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 214               	.LM8:
+ 215               	.LFBB3:
+ 216 0034 BF92      		push r11
+ 217 0036 CF92      		push r12
+ 218 0038 DF92      		push r13
+ 219 003a EF92      		push r14
+ 220 003c FF92      		push r15
+ 221 003e 0F93      		push r16
+ 222 0040 1F93      		push r17
+ 223 0042 DF93      		push r29
+ 224 0044 CF93      		push r28
+ 225 0046 00D0      		rcall .
+ 226 0048 00D0      		rcall .
+ 227 004a 0F92      		push __tmp_reg__
+ 228 004c CDB7      		in r28,__SP_L__
+ 229 004e DEB7      		in r29,__SP_H__
+ 230               	/* prologue: function */
+ 231               	/* frame size = 5 */
+ 232               	/* stack size = 14 */
+ 233               	.L__stack_usage = 14
+ 234 0050 D82E      		mov r13,r24
+ 235 0052 B62E      		mov r11,r22
+  61:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char i=0, checksum=0, ack=0;
+  62:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  volatile unsigned long ack_timeout=100000;
+ 237               	.LM9:
+ 238 0054 20EA      		ldi r18,lo8(100000)
+ 239 0056 36E8      		ldi r19,hi8(100000)
+ 240 0058 41E0      		ldi r20,hlo8(100000)
+ 241 005a 50E0      		ldi r21,hhi8(100000)
+ 242 005c 2983      		std Y+1,r18
+ 243 005e 3A83      		std Y+2,r19
+ 244 0060 4B83      		std Y+3,r20
+ 245 0062 5C83      		std Y+4,r21
+  63:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  64:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x11);       // Send command (sending packet) to the display
+ 247               	.LM10:
+ 248 0064 81E1      		ldi r24,lo8(17)
+ 249 0066 9D83      		std Y+5,r25
+ 250 0068 0E94 0000 		call USART0_putchar
+  65:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(length);     // Send payload size to the display
+ 252               	.LM11:
+ 253 006c 8B2D      		mov r24,r11
+ 254 006e 0E94 0000 		call USART0_putchar
+  66:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  checksum = 0x11 + length;
+ 256               	.LM12:
+ 257 0072 81E1      		ldi r24,lo8(17)
+ 258 0074 C82E      		mov r12,r24
+ 259 0076 CB0C      		add r12,r11
+  67:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  while(i < length)
+ 261               	.LM13:
+ 262 0078 9D81      		ldd r25,Y+5
+ 263 007a 0D2D      		mov r16,r13
+ 264 007c 192F      		mov r17,r25
+ 265 007e 00C0      		rjmp .L6
+ 266               	.L7:
+  59:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed char eDIP240_7_Display_send_packet(char * data, unsigned char length)
+ 268               	.LM14:
+ 269 0080 7801      		movw r14,r16
+  68:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+  69:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	USART0_putchar(data[i]);  // Send payload to the display
+ 271               	.LM15:
+ 272 0082 F801      		movw r30,r16
+ 273 0084 8191      		ld r24,Z+
+ 274 0086 8F01      		movw r16,r30
+ 275 0088 0E94 0000 		call USART0_putchar
+  70:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	checksum += data[i];
+ 277               	.LM16:
+ 278 008c F701      		movw r30,r14
+ 279 008e 8081      		ld r24,Z
+ 280 0090 C80E      		add r12,r24
+ 281               	.L6:
+  67:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  while(i < length)
+ 283               	.LM17:
+ 284 0092 802F      		mov r24,r16
+ 285 0094 8D19      		sub r24,r13
+ 286 0096 8B15      		cp r24,r11
+ 287 0098 00F0      		brlo .L7
+  71:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	i++;
+  72:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }
+  73:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(checksum);   // Send checksum to the display
+ 289               	.LM18:
+ 290 009a 8C2D      		mov r24,r12
+ 291 009c 0E94 0000 		call USART0_putchar
+ 292               	.L9:
+  74:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // while (Tx0Empty == 0) {}    // Wait for complete transmission of the packet
+  75:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do                          // Wait for receiving ack from the display
+  76:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+  77:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack = USART0_getchar();
+ 294               	.LM19:
+ 295 00a0 0E94 0000 		call USART0_getchar
+  78:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack_timeout--;
+ 297               	.LM20:
+ 298 00a4 2981      		ldd r18,Y+1
+ 299 00a6 3A81      		ldd r19,Y+2
+ 300 00a8 4B81      		ldd r20,Y+3
+ 301 00aa 5C81      		ldd r21,Y+4
+ 302 00ac 2150      		subi r18,lo8(-(-1))
+ 303 00ae 3040      		sbci r19,hi8(-(-1))
+ 304 00b0 4040      		sbci r20,hlo8(-(-1))
+ 305 00b2 5040      		sbci r21,hhi8(-(-1))
+ 306 00b4 2983      		std Y+1,r18
+ 307 00b6 3A83      		std Y+2,r19
+ 308 00b8 4B83      		std Y+3,r20
+ 309 00ba 5C83      		std Y+4,r21
+  79:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }while((ack != 0x06) && (ack_timeout > 0));
+ 311               	.LM21:
+ 312 00bc 8630      		cpi r24,lo8(6)
+ 313 00be 01F0      		breq .L10
+ 314 00c0 8981      		ldd r24,Y+1
+ 315 00c2 9A81      		ldd r25,Y+2
+ 316 00c4 AB81      		ldd r26,Y+3
+ 317 00c6 BC81      		ldd r27,Y+4
+ 318 00c8 0097      		sbiw r24,0
+ 319 00ca A105      		cpc r26,__zero_reg__
+ 320 00cc B105      		cpc r27,__zero_reg__
+ 321 00ce 01F4      		brne .L9
+  80:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  81:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack == 0x06) return 0;  // Success!
+  82:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  else return -1;             // No success! User has to repeat the packet
+ 323               	.LM22:
+ 324 00d0 8FEF      		ldi r24,lo8(-1)
+ 325 00d2 00C0      		rjmp .L8
+ 326               	.L10:
+  81:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack == 0x06) return 0;  // Success!
+ 328               	.LM23:
+ 329 00d4 80E0      		ldi r24,lo8(0)
+ 330               	.L8:
+ 331               	/* epilogue start */
+  83:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 333               	.LM24:
+ 334 00d6 0F90      		pop __tmp_reg__
+ 335 00d8 0F90      		pop __tmp_reg__
+ 336 00da 0F90      		pop __tmp_reg__
+ 337 00dc 0F90      		pop __tmp_reg__
+ 338 00de 0F90      		pop __tmp_reg__
+ 339 00e0 CF91      		pop r28
+ 340 00e2 DF91      		pop r29
+ 341 00e4 1F91      		pop r17
+ 342 00e6 0F91      		pop r16
+ 343 00e8 FF90      		pop r15
+ 344 00ea EF90      		pop r14
+ 345 00ec DF90      		pop r13
+ 346 00ee CF90      		pop r12
+ 347 00f0 BF90      		pop r11
+ 348 00f2 0895      		ret
+ 354               	.Lscope3:
+ 356               		.stabd	78,0,0
+ 358               	.global	eDIP240_7_Display_get_buffer
+ 360               	eDIP240_7_Display_get_buffer:
+ 361               		.stabd	46,0,0
+  84:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  85:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  86:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  87:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Inhalt des Sendepuffers anfordern
+  88:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Display_get_buffer reads a payload packet from the display to a memory block provided by the use
+  89:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // In case of success the length of data is returned, in case of an error -1 is returned
+  90:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed char eDIP240_7_Display_get_buffer(unsigned char * data)
+  91:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 363               	.LM25:
+ 364               	.LFBB4:
+ 365 00f4 CF92      		push r12
+ 366 00f6 DF92      		push r13
+ 367 00f8 EF92      		push r14
+ 368 00fa FF92      		push r15
+ 369 00fc 0F93      		push r16
+ 370 00fe 1F93      		push r17
+ 371 0100 DF93      		push r29
+ 372 0102 CF93      		push r28
+ 373 0104 00D0      		rcall .
+ 374 0106 00D0      		rcall .
+ 375 0108 CDB7      		in r28,__SP_L__
+ 376 010a DEB7      		in r29,__SP_H__
+ 377               	/* prologue: function */
+ 378               	/* frame size = 4 */
+ 379               	/* stack size = 12 */
+ 380               	.L__stack_usage = 12
+ 381 010c F82E      		mov r15,r24
+ 382 010e 092F      		mov r16,r25
+  92:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char i=0, checksum=0, ack=0, error=0, length = 0;
+  93:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  signed int ch;
+  94:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  volatile unsigned long ack_timeout=100000;
+ 384               	.LM26:
+ 385 0110 20EA      		ldi r18,lo8(100000)
+ 386 0112 36E8      		ldi r19,hi8(100000)
+ 387 0114 41E0      		ldi r20,hlo8(100000)
+ 388 0116 50E0      		ldi r21,hhi8(100000)
+ 389 0118 2983      		std Y+1,r18
+ 390 011a 3A83      		std Y+2,r19
+ 391 011c 4B83      		std Y+3,r20
+ 392 011e 5C83      		std Y+4,r21
+  95:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+  96:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x12);                 // Send command (sending packet) to the display
+ 394               	.LM27:
+ 395 0120 82E1      		ldi r24,lo8(18)
+ 396 0122 0E94 0000 		call USART0_putchar
+  97:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x01);                 // Send payload size to the display
+ 398               	.LM28:
+ 399 0126 81E0      		ldi r24,lo8(1)
+ 400 0128 0E94 0000 		call USART0_putchar
+  98:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x53);                 // Payload
+ 402               	.LM29:
+ 403 012c 83E5      		ldi r24,lo8(83)
+ 404 012e 0E94 0000 		call USART0_putchar
+  99:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x12 + 0x01 + 0x53);   // Send checksum to the display
+ 406               	.LM30:
+ 407 0132 86E6      		ldi r24,lo8(102)
+ 408 0134 0E94 0000 		call USART0_putchar
+ 409               	.L14:
+ 100:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // while (Tx0Empty == 0) {}              // Wait for complete transmission of the packet
+ 101:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do                                    // Wait for receiving ack from the display
+ 102:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 103:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack = USART0_getchar();
+ 411               	.LM31:
+ 412 0138 0E94 0000 		call USART0_getchar
+ 104:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack_timeout--;
+ 414               	.LM32:
+ 415 013c 2981      		ldd r18,Y+1
+ 416 013e 3A81      		ldd r19,Y+2
+ 417 0140 4B81      		ldd r20,Y+3
+ 418 0142 5C81      		ldd r21,Y+4
+ 419 0144 2150      		subi r18,lo8(-(-1))
+ 420 0146 3040      		sbci r19,hi8(-(-1))
+ 421 0148 4040      		sbci r20,hlo8(-(-1))
+ 422 014a 5040      		sbci r21,hhi8(-(-1))
+ 423 014c 2983      		std Y+1,r18
+ 424 014e 3A83      		std Y+2,r19
+ 425 0150 4B83      		std Y+3,r20
+ 426 0152 5C83      		std Y+4,r21
+ 105:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }while((ack != 0x06) && (ack_timeout > 0));
+ 428               	.LM33:
+ 429 0154 8630      		cpi r24,lo8(6)
+ 430 0156 01F0      		breq .L21
+ 431 0158 2981      		ldd r18,Y+1
+ 432 015a 3A81      		ldd r19,Y+2
+ 433 015c 4B81      		ldd r20,Y+3
+ 434 015e 5C81      		ldd r21,Y+4
+ 435 0160 2115      		cp r18,__zero_reg__
+ 436 0162 3105      		cpc r19,__zero_reg__
+ 437 0164 4105      		cpc r20,__zero_reg__
+ 438 0166 5105      		cpc r21,__zero_reg__
+ 439 0168 01F4      		brne .L14
+ 106:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack != 0x06) error = 1;
+ 441               	.LM34:
+ 442 016a EE24      		clr r14
+ 443 016c E394      		inc r14
+ 444 016e 00C0      		rjmp .L28
+ 445               	.L21:
+  92:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char i=0, checksum=0, ack=0, error=0, length = 0;
+ 447               	.LM35:
+ 448 0170 EE24      		clr r14
+ 449               	.L28:
+ 107:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 108:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  // Now we have to receive and parse the answer from the display
+ 109:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do{ ch = USART0_getchar(); }while (ch == -1);       // Get the command byte
+ 451               	.LM36:
+ 452 0172 0E94 0000 		call USART0_getchar
+ 453 0176 2FEF      		ldi r18,hi8(-1)
+ 454 0178 8F3F      		cpi r24,lo8(-1)
+ 455 017a 9207      		cpc r25,r18
+ 456 017c 01F0      		breq .L28
+ 110:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ch == 0x11)                                     // Abort if command byte is incorrect
+ 458               	.LM37:
+ 459 017e 8131      		cpi r24,17
+ 460 0180 9105      		cpc r25,__zero_reg__
+ 461 0182 01F4      		brne .L24
+ 462               	.L27:
+ 111:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 112:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	do{ ch = USART0_getchar(); }while (ch == -1);     // Get payload length
+ 464               	.LM38:
+ 465 0184 0E94 0000 		call USART0_getchar
+ 466 0188 EFEF      		ldi r30,hi8(-1)
+ 467 018a 8F3F      		cpi r24,lo8(-1)
+ 468 018c 9E07      		cpc r25,r30
+ 469 018e 01F0      		breq .L27
+ 113:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	length = ch;
+ 471               	.LM39:
+ 472 0190 D82E      		mov r13,r24
+ 114:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	checksum = 0x11 + length;                         // Start checksum calculation
+ 474               	.LM40:
+ 475 0192 91E1      		ldi r25,lo8(17)
+ 476 0194 C92E      		mov r12,r25
+ 477 0196 CD0C      		add r12,r13
+ 115:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	while (i < length)
+ 479               	.LM41:
+ 480 0198 802F      		mov r24,r16
+ 481 019a 0F2D      		mov r16,r15
+ 482 019c 182F      		mov r17,r24
+ 483 019e 00C0      		rjmp .L18
+ 484               	.L26:
+ 116:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	{
+ 117:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  do{ ch = USART0_getchar(); }while (ch == -1);   // Get payload data
+ 486               	.LM42:
+ 487 01a0 0E94 0000 		call USART0_getchar
+ 488 01a4 FFEF      		ldi r31,hi8(-1)
+ 489 01a6 8F3F      		cpi r24,lo8(-1)
+ 490 01a8 9F07      		cpc r25,r31
+ 491 01aa 01F0      		breq .L26
+ 118:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  data[i] = ch;
+ 493               	.LM43:
+ 494 01ac F801      		movw r30,r16
+ 495 01ae 8193      		st Z+,r24
+ 496 01b0 8F01      		movw r16,r30
+ 119:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  checksum += ch;                                 // Calculate checksum
+ 498               	.LM44:
+ 499 01b2 C80E      		add r12,r24
+ 500               	.L18:
+ 115:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	while (i < length)
+ 502               	.LM45:
+ 503 01b4 802F      		mov r24,r16
+ 504 01b6 8F19      		sub r24,r15
+ 505 01b8 8D15      		cp r24,r13
+ 506 01ba 00F0      		brlo .L26
+ 507               	.L25:
+ 120:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  i++;
+ 121:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	}
+ 122:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	// Now we have received all the payload bytes.
+ 123:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	do{ ch = USART0_getchar(); }while (ch == -1);   // Get checksum
+ 509               	.LM46:
+ 510 01bc 0E94 0000 		call USART0_getchar
+ 511 01c0 FFEF      		ldi r31,hi8(-1)
+ 512 01c2 8F3F      		cpi r24,lo8(-1)
+ 513 01c4 9F07      		cpc r25,r31
+ 514 01c6 01F0      		breq .L25
+ 124:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	// If received checksum and calculated checksum do not match, we have an error!
+ 125:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	if (ch != checksum) error = 1;
+ 516               	.LM47:
+ 517 01c8 2C2D      		mov r18,r12
+ 518 01ca 30E0      		ldi r19,lo8(0)
+ 519 01cc 8217      		cp r24,r18
+ 520 01ce 9307      		cpc r25,r19
+ 521 01d0 01F4      		brne .L24
+ 126:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }
+ 127:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  else error = 1;
+ 128:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 129:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (error == 0) return length;   // Success!
+ 523               	.LM48:
+ 524 01d2 EE20      		tst r14
+ 525 01d4 01F4      		brne .L24
+ 527               	.LM49:
+ 528 01d6 8D2D      		mov r24,r13
+ 529 01d8 00C0      		rjmp .L16
+ 530               	.L24:
+ 130:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  else return -1;                   // No success! User has to repeat the packet
+ 532               	.LM50:
+ 533 01da 8FEF      		ldi r24,lo8(-1)
+ 534               	.L16:
+ 535               	/* epilogue start */
+ 131:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 537               	.LM51:
+ 538 01dc 0F90      		pop __tmp_reg__
+ 539 01de 0F90      		pop __tmp_reg__
+ 540 01e0 0F90      		pop __tmp_reg__
+ 541 01e2 0F90      		pop __tmp_reg__
+ 542 01e4 CF91      		pop r28
+ 543 01e6 DF91      		pop r29
+ 544 01e8 1F91      		pop r17
+ 545 01ea 0F91      		pop r16
+ 546 01ec FF90      		pop r15
+ 547 01ee EF90      		pop r14
+ 548 01f0 DF90      		pop r13
+ 549 01f2 CF90      		pop r12
+ 550 01f4 0895      		ret
+ 558               	.Lscope4:
+ 560               		.stabd	78,0,0
+ 564               	.global	eDIP240_7_Display_request_buffer_info
+ 566               	eDIP240_7_Display_request_buffer_info:
+ 567               		.stabd	46,0,0
+ 132:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 133:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 134:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 135:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Pufferinformationen anfordern
+ 136:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Display_request_buffer_info checks if there is any payload stored in the display that can be tra
+ 137:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // The data is provided by a call by reference method.
+ 138:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Return value: 0 -> ok;  -1 -> error
+ 139:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed char eDIP240_7_Display_request_buffer_info(char * bytes_ready, char * bytes_free)   //TBD
+ 140:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 569               	.LM52:
+ 570               	.LFBB5:
+ 571 01f6 CF92      		push r12
+ 572 01f8 DF92      		push r13
+ 573 01fa EF92      		push r14
+ 574 01fc FF92      		push r15
+ 575 01fe 0F93      		push r16
+ 576 0200 1F93      		push r17
+ 577 0202 DF93      		push r29
+ 578 0204 CF93      		push r28
+ 579 0206 00D0      		rcall .
+ 580 0208 00D0      		rcall .
+ 581 020a CDB7      		in r28,__SP_L__
+ 582 020c DEB7      		in r29,__SP_H__
+ 583               	/* prologue: function */
+ 584               	/* frame size = 4 */
+ 585               	/* stack size = 12 */
+ 586               	.L__stack_usage = 12
+ 587 020e 8C01      		movw r16,r24
+ 588 0210 7B01      		movw r14,r22
+ 141:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char checksum=0, ack=0, error=0, length;
+ 142:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  signed int ch;
+ 143:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  volatile unsigned long ack_timeout=1000000;
+ 590               	.LM53:
+ 591 0212 80E4      		ldi r24,lo8(1000000)
+ 592 0214 92E4      		ldi r25,hi8(1000000)
+ 593 0216 AFE0      		ldi r26,hlo8(1000000)
+ 594 0218 B0E0      		ldi r27,hhi8(1000000)
+ 595 021a 8983      		std Y+1,r24
+ 596 021c 9A83      		std Y+2,r25
+ 597 021e AB83      		std Y+3,r26
+ 598 0220 BC83      		std Y+4,r27
+ 144:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 145:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x12);                 // Send command (sending packet) to the display
+ 600               	.LM54:
+ 601 0222 82E1      		ldi r24,lo8(18)
+ 602 0224 0E94 0000 		call USART0_putchar
+ 146:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x01);                 // Send payload size to the display
+ 604               	.LM55:
+ 605 0228 81E0      		ldi r24,lo8(1)
+ 606 022a 0E94 0000 		call USART0_putchar
+ 147:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x49);                 // Payload
+ 608               	.LM56:
+ 609 022e 89E4      		ldi r24,lo8(73)
+ 610 0230 0E94 0000 		call USART0_putchar
+ 148:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x12 + 0x01 + 0x49);   // Send checksum to the display
+ 612               	.LM57:
+ 613 0234 8CE5      		ldi r24,lo8(92)
+ 614 0236 0E94 0000 		call USART0_putchar
+ 615               	.L36:
+ 149:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do                                    // Wait for receiving ack from the display
+ 150:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 151:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack = USART0_getchar();
+ 617               	.LM58:
+ 618 023a 0E94 0000 		call USART0_getchar
+ 152:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack_timeout--;
+ 620               	.LM59:
+ 621 023e 2981      		ldd r18,Y+1
+ 622 0240 3A81      		ldd r19,Y+2
+ 623 0242 4B81      		ldd r20,Y+3
+ 624 0244 5C81      		ldd r21,Y+4
+ 625 0246 2150      		subi r18,lo8(-(-1))
+ 626 0248 3040      		sbci r19,hi8(-(-1))
+ 627 024a 4040      		sbci r20,hlo8(-(-1))
+ 628 024c 5040      		sbci r21,hhi8(-(-1))
+ 629 024e 2983      		std Y+1,r18
+ 630 0250 3A83      		std Y+2,r19
+ 631 0252 4B83      		std Y+3,r20
+ 632 0254 5C83      		std Y+4,r21
+ 153:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }while((ack != 0x06) && (ack_timeout > 0));
+ 634               	.LM60:
+ 635 0256 8630      		cpi r24,lo8(6)
+ 636 0258 01F0      		breq .L43
+ 637 025a 8981      		ldd r24,Y+1
+ 638 025c 9A81      		ldd r25,Y+2
+ 639 025e AB81      		ldd r26,Y+3
+ 640 0260 BC81      		ldd r27,Y+4
+ 641 0262 0097      		sbiw r24,0
+ 642 0264 A105      		cpc r26,__zero_reg__
+ 643 0266 B105      		cpc r27,__zero_reg__
+ 644 0268 01F4      		brne .L36
+ 154:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack != 0x06) error = 1;
+ 646               	.LM61:
+ 647 026a DD24      		clr r13
+ 648 026c D394      		inc r13
+ 649 026e 00C0      		rjmp .L50
+ 650               	.L43:
+ 141:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char checksum=0, ack=0, error=0, length;
+ 652               	.LM62:
+ 653 0270 DD24      		clr r13
+ 654               	.L50:
+ 155:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 156:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  // Now we have to receive and parse the answer from the display
+ 157:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do{ ch = USART0_getchar(); }while (ch == -1);       // Get the command byte
+ 656               	.LM63:
+ 657 0272 0E94 0000 		call USART0_getchar
+ 658 0276 2FEF      		ldi r18,hi8(-1)
+ 659 0278 8F3F      		cpi r24,lo8(-1)
+ 660 027a 9207      		cpc r25,r18
+ 661 027c 01F0      		breq .L50
+ 158:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ch == 0x12)                                     // Abort if command byte is incorrect
+ 663               	.LM64:
+ 664 027e 8231      		cpi r24,18
+ 665 0280 9105      		cpc r25,__zero_reg__
+ 666 0282 01F4      		brne .L46
+ 667               	.L49:
+ 159:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 160:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	do{ ch = USART0_getchar(); }while (ch == -1);     // Get payload length
+ 669               	.LM65:
+ 670 0284 0E94 0000 		call USART0_getchar
+ 671 0288 EFEF      		ldi r30,hi8(-1)
+ 672 028a 8F3F      		cpi r24,lo8(-1)
+ 673 028c 9E07      		cpc r25,r30
+ 674 028e 01F0      		breq .L49
+ 161:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	length = ch;
+ 162:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	if (length == 2)                                  // Abort if length is incorrect
+ 676               	.LM66:
+ 677 0290 8230      		cpi r24,lo8(2)
+ 678 0292 01F4      		brne .L46
+ 679               	.L48:
+ 163:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	{
+ 164:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  checksum = 0x12 + length;                         // Start checksum calculation
+ 165:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 166:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  do{ ch = USART0_getchar(); }while (ch == -1);   // Get payload data
+ 681               	.LM67:
+ 682 0294 0E94 0000 		call USART0_getchar
+ 683 0298 FFEF      		ldi r31,hi8(-1)
+ 684 029a 8F3F      		cpi r24,lo8(-1)
+ 685 029c 9F07      		cpc r25,r31
+ 686 029e 01F0      		breq .L48
+ 167:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  checksum += ch;                                 // Calculate checksum
+ 688               	.LM68:
+ 689 02a0 24E1      		ldi r18,lo8(20)
+ 690 02a2 C22E      		mov r12,r18
+ 691 02a4 C80E      		add r12,r24
+ 168:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  *bytes_ready = ch;
+ 693               	.LM69:
+ 694 02a6 F801      		movw r30,r16
+ 695 02a8 8083      		st Z,r24
+ 696               	.L41:
+ 169:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 170:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  do{ ch = USART0_getchar(); }while (ch == -1);   // Get payload data
+ 698               	.LM70:
+ 699 02aa 0E94 0000 		call USART0_getchar
+ 700 02ae FFEF      		ldi r31,hi8(-1)
+ 701 02b0 8F3F      		cpi r24,lo8(-1)
+ 702 02b2 9F07      		cpc r25,r31
+ 703 02b4 01F0      		breq .L41
+ 171:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  checksum += ch;                                 // Calculate checksum
+ 705               	.LM71:
+ 706 02b6 0C2D      		mov r16,r12
+ 707 02b8 080F      		add r16,r24
+ 172:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  *bytes_free = ch;
+ 709               	.LM72:
+ 710 02ba F701      		movw r30,r14
+ 711 02bc 8083      		st Z,r24
+ 712               	.L42:
+ 173:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 174:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  // Now we have received all the payload bytes.
+ 175:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  do{ ch = USART0_getchar(); }while (ch == -1);   // Get checksum
+ 714               	.LM73:
+ 715 02be 0E94 0000 		call USART0_getchar
+ 716 02c2 FFEF      		ldi r31,hi8(-1)
+ 717 02c4 8F3F      		cpi r24,lo8(-1)
+ 718 02c6 9F07      		cpc r25,r31
+ 719 02c8 01F0      		breq .L42
+ 176:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  // If received checksum and calculated checksum do not match, we have an error!
+ 177:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  if (ch != checksum) error = 1;
+ 721               	.LM74:
+ 722 02ca 202F      		mov r18,r16
+ 723 02cc 30E0      		ldi r19,lo8(0)
+ 724 02ce 8217      		cp r24,r18
+ 725 02d0 9307      		cpc r25,r19
+ 726 02d2 01F4      		brne .L46
+ 178:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	}
+ 179:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	else error = 1;
+ 180:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }
+ 181:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  else error = 1;
+ 182:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 183:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (error == 0) return 0;  // Success!
+ 728               	.LM75:
+ 729 02d4 DD20      		tst r13
+ 730 02d6 01F0      		breq .L47
+ 731               	.L46:
+ 184:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  else return -1;             // No success! User has to repeat the packet
+ 733               	.LM76:
+ 734 02d8 8FEF      		ldi r24,lo8(-1)
+ 735 02da 00C0      		rjmp .L38
+ 736               	.L47:
+ 183:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (error == 0) return 0;  // Success!
+ 738               	.LM77:
+ 739 02dc 80E0      		ldi r24,lo8(0)
+ 740               	.L38:
+ 741               	/* epilogue start */
+ 185:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 743               	.LM78:
+ 744 02de 0F90      		pop __tmp_reg__
+ 745 02e0 0F90      		pop __tmp_reg__
+ 746 02e2 0F90      		pop __tmp_reg__
+ 747 02e4 0F90      		pop __tmp_reg__
+ 748 02e6 CF91      		pop r28
+ 749 02e8 DF91      		pop r29
+ 750 02ea 1F91      		pop r17
+ 751 02ec 0F91      		pop r16
+ 752 02ee FF90      		pop r15
+ 753 02f0 EF90      		pop r14
+ 754 02f2 DF90      		pop r13
+ 755 02f4 CF90      		pop r12
+ 756 02f6 0895      		ret
+ 762               	.Lscope5:
+ 764               		.stabd	78,0,0
+ 768               	.global	eDIP240_7_Display_set_protocol
+ 770               	eDIP240_7_Display_set_protocol:
+ 771               		.stabd	46,0,0
+ 186:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 187:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 188:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Protokolleinstellungen
+ 189:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Display_set_protocol can set the maximum transmission block size and the serial interface data b
+ 190:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // sendbuffer_size is set in bytes (1 .. 64)
+ 191:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // timeout is set in 1/100 seconds (0 .. 255)
+ 192:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Return value: 0 -> ok;  -1 -> error
+ 193:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed char eDIP240_7_Display_set_protocol(unsigned char sendbuffer_size, unsigned char timeout)
+ 194:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 773               	.LM79:
+ 774               	.LFBB6:
+ 775 02f8 0F93      		push r16
+ 776 02fa 1F93      		push r17
+ 777 02fc DF93      		push r29
+ 778 02fe CF93      		push r28
+ 779 0300 00D0      		rcall .
+ 780 0302 00D0      		rcall .
+ 781 0304 CDB7      		in r28,__SP_L__
+ 782 0306 DEB7      		in r29,__SP_H__
+ 783               	/* prologue: function */
+ 784               	/* frame size = 4 */
+ 785               	/* stack size = 8 */
+ 786               	.L__stack_usage = 8
+ 787 0308 182F      		mov r17,r24
+ 788 030a 062F      		mov r16,r22
+ 195:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char ack=0;
+ 196:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  volatile unsigned long ack_timeout=1000000;
+ 790               	.LM80:
+ 791 030c 20E4      		ldi r18,lo8(1000000)
+ 792 030e 32E4      		ldi r19,hi8(1000000)
+ 793 0310 4FE0      		ldi r20,hlo8(1000000)
+ 794 0312 50E0      		ldi r21,hhi8(1000000)
+ 795 0314 2983      		std Y+1,r18
+ 796 0316 3A83      		std Y+2,r19
+ 797 0318 4B83      		std Y+3,r20
+ 798 031a 5C83      		std Y+4,r21
+ 197:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 198:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x12);                 // Send command DC2 (sending packet) to the display
+ 800               	.LM81:
+ 801 031c 82E1      		ldi r24,lo8(18)
+ 802 031e 0E94 0000 		call USART0_putchar
+ 199:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(3);
+ 804               	.LM82:
+ 805 0322 83E0      		ldi r24,lo8(3)
+ 806 0324 0E94 0000 		call USART0_putchar
+ 200:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar('D');
+ 808               	.LM83:
+ 809 0328 84E4      		ldi r24,lo8(68)
+ 810 032a 0E94 0000 		call USART0_putchar
+ 201:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(sendbuffer_size);
+ 812               	.LM84:
+ 813 032e 812F      		mov r24,r17
+ 814 0330 0E94 0000 		call USART0_putchar
+ 202:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(timeout);
+ 816               	.LM85:
+ 817 0334 802F      		mov r24,r16
+ 818 0336 0E94 0000 		call USART0_putchar
+ 203:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar( (unsigned char) (0x12 + 3 + 'D' + sendbuffer_size + timeout) );                   
+ 820               	.LM86:
+ 821 033a 812F      		mov r24,r17
+ 822 033c 875A      		subi r24,lo8(-(89))
+ 823 033e 800F      		add r24,r16
+ 824 0340 0E94 0000 		call USART0_putchar
+ 825               	.L59:
+ 204:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do                                    // Wait for receiving ack from the display
+ 205:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 206:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack = USART0_getchar();
+ 827               	.LM87:
+ 828 0344 0E94 0000 		call USART0_getchar
+ 207:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack_timeout--;
+ 830               	.LM88:
+ 831 0348 2981      		ldd r18,Y+1
+ 832 034a 3A81      		ldd r19,Y+2
+ 833 034c 4B81      		ldd r20,Y+3
+ 834 034e 5C81      		ldd r21,Y+4
+ 835 0350 2150      		subi r18,lo8(-(-1))
+ 836 0352 3040      		sbci r19,hi8(-(-1))
+ 837 0354 4040      		sbci r20,hlo8(-(-1))
+ 838 0356 5040      		sbci r21,hhi8(-(-1))
+ 839 0358 2983      		std Y+1,r18
+ 840 035a 3A83      		std Y+2,r19
+ 841 035c 4B83      		std Y+3,r20
+ 842 035e 5C83      		std Y+4,r21
+ 208:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }while((ack != 0x06) && (ack_timeout > 0));
+ 844               	.LM89:
+ 845 0360 8630      		cpi r24,lo8(6)
+ 846 0362 01F0      		breq .L60
+ 847 0364 8981      		ldd r24,Y+1
+ 848 0366 9A81      		ldd r25,Y+2
+ 849 0368 AB81      		ldd r26,Y+3
+ 850 036a BC81      		ldd r27,Y+4
+ 851 036c 0097      		sbiw r24,0
+ 852 036e A105      		cpc r26,__zero_reg__
+ 853 0370 B105      		cpc r27,__zero_reg__
+ 854 0372 01F4      		brne .L59
+ 209:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack != 0x06) return (-1);
+ 856               	.LM90:
+ 857 0374 8FEF      		ldi r24,lo8(-1)
+ 858 0376 00C0      		rjmp .L58
+ 859               	.L60:
+ 210:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  return 0;
+ 861               	.LM91:
+ 862 0378 80E0      		ldi r24,lo8(0)
+ 863               	.L58:
+ 864               	/* epilogue start */
+ 211:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 866               	.LM92:
+ 867 037a 0F90      		pop __tmp_reg__
+ 868 037c 0F90      		pop __tmp_reg__
+ 869 037e 0F90      		pop __tmp_reg__
+ 870 0380 0F90      		pop __tmp_reg__
+ 871 0382 CF91      		pop r28
+ 872 0384 DF91      		pop r29
+ 873 0386 1F91      		pop r17
+ 874 0388 0F91      		pop r16
+ 875 038a 0895      		ret
+ 880               	.Lscope6:
+ 882               		.stabd	78,0,0
+ 887               	.global	eDIP240_7_Display_get_protocoll_info
+ 889               	eDIP240_7_Display_get_protocoll_info:
+ 890               		.stabd	46,0,0
+ 212:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 213:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 214:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 215:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Protokollinformationen anfordern
+ 216:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Display_get_protocoll_info requests the current sendbuffer_size and timeout settings and the sen
+ 217:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // sendbuffer_size: current setting of the maimum number of bytes that can be stored in the display
+ 218:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // sendbuffer_level: current number of bytes that are stored in the display-sendbuffer.
+ 219:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Return value: 0 -> ok;  -1 -> error
+ 220:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed char eDIP240_7_Display_get_protocoll_info(unsigned char * sendbuffer_size, unsigned char * s
+ 221:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 892               	.LM93:
+ 893               	.LFBB7:
+ 894 038c BF92      		push r11
+ 895 038e CF92      		push r12
+ 896 0390 DF92      		push r13
+ 897 0392 EF92      		push r14
+ 898 0394 FF92      		push r15
+ 899 0396 0F93      		push r16
+ 900 0398 1F93      		push r17
+ 901 039a DF93      		push r29
+ 902 039c CF93      		push r28
+ 903 039e 00D0      		rcall .
+ 904 03a0 00D0      		rcall .
+ 905 03a2 CDB7      		in r28,__SP_L__
+ 906 03a4 DEB7      		in r29,__SP_H__
+ 907               	/* prologue: function */
+ 908               	/* frame size = 4 */
+ 909               	/* stack size = 13 */
+ 910               	.L__stack_usage = 13
+ 911 03a6 6C01      		movw r12,r24
+ 912 03a8 8B01      		movw r16,r22
+ 913 03aa 7A01      		movw r14,r20
+ 222:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char checksum=0, ack=0, error=0, length;
+ 223:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  signed int ch;
+ 224:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  volatile unsigned long ack_timeout=1000000;
+ 915               	.LM94:
+ 916 03ac 80E4      		ldi r24,lo8(1000000)
+ 917 03ae 92E4      		ldi r25,hi8(1000000)
+ 918 03b0 AFE0      		ldi r26,hlo8(1000000)
+ 919 03b2 B0E0      		ldi r27,hhi8(1000000)
+ 920 03b4 8983      		std Y+1,r24
+ 921 03b6 9A83      		std Y+2,r25
+ 922 03b8 AB83      		std Y+3,r26
+ 923 03ba BC83      		std Y+4,r27
+ 225:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 226:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x12);                 // Send command DC2 (sending packet) to the display
+ 925               	.LM95:
+ 926 03bc 82E1      		ldi r24,lo8(18)
+ 927 03be 0E94 0000 		call USART0_putchar
+ 227:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(1);
+ 929               	.LM96:
+ 930 03c2 81E0      		ldi r24,lo8(1)
+ 931 03c4 0E94 0000 		call USART0_putchar
+ 228:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar('P');
+ 933               	.LM97:
+ 934 03c8 80E5      		ldi r24,lo8(80)
+ 935 03ca 0E94 0000 		call USART0_putchar
+ 229:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar( (unsigned char) (0x12 + 1 + 'P') );
+ 937               	.LM98:
+ 938 03ce 83E6      		ldi r24,lo8(99)
+ 939 03d0 0E94 0000 		call USART0_putchar
+ 940               	.L64:
+ 230:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do                                    // Wait for receiving ack from the display
+ 231:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 232:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack = USART0_getchar();
+ 942               	.LM99:
+ 943 03d4 0E94 0000 		call USART0_getchar
+ 233:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack_timeout--;
+ 945               	.LM100:
+ 946 03d8 2981      		ldd r18,Y+1
+ 947 03da 3A81      		ldd r19,Y+2
+ 948 03dc 4B81      		ldd r20,Y+3
+ 949 03de 5C81      		ldd r21,Y+4
+ 950 03e0 2150      		subi r18,lo8(-(-1))
+ 951 03e2 3040      		sbci r19,hi8(-(-1))
+ 952 03e4 4040      		sbci r20,hlo8(-(-1))
+ 953 03e6 5040      		sbci r21,hhi8(-(-1))
+ 954 03e8 2983      		std Y+1,r18
+ 955 03ea 3A83      		std Y+2,r19
+ 956 03ec 4B83      		std Y+3,r20
+ 957 03ee 5C83      		std Y+4,r21
+ 234:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }while((ack != 0x06) && (ack_timeout > 0));
+ 959               	.LM101:
+ 960 03f0 8630      		cpi r24,lo8(6)
+ 961 03f2 01F0      		breq .L76
+ 962 03f4 8981      		ldd r24,Y+1
+ 963 03f6 9A81      		ldd r25,Y+2
+ 964 03f8 AB81      		ldd r26,Y+3
+ 965 03fa BC81      		ldd r27,Y+4
+ 966 03fc 0097      		sbiw r24,0
+ 967 03fe A105      		cpc r26,__zero_reg__
+ 968 0400 B105      		cpc r27,__zero_reg__
+ 969 0402 01F4      		brne .L64
+ 970 0404 00C0      		rjmp .L72
+ 971               	.L76:
+ 235:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack != 0x06) return (-1);
+ 236:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 237:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  // Now we have to receive and parse the answer from the display
+ 238:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do{ ch = USART0_getchar(); }while (ch == -1);       // Get the command byte
+ 973               	.LM102:
+ 974 0406 0E94 0000 		call USART0_getchar
+ 975 040a 2FEF      		ldi r18,hi8(-1)
+ 976 040c 8F3F      		cpi r24,lo8(-1)
+ 977 040e 9207      		cpc r25,r18
+ 978 0410 01F0      		breq .L76
+ 239:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ch == 0x12)                                     // Abort if command byte is incorrect
+ 980               	.LM103:
+ 981 0412 8231      		cpi r24,18
+ 982 0414 9105      		cpc r25,__zero_reg__
+ 983 0416 01F4      		brne .L72
+ 984               	.L75:
+ 240:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 241:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	do{ ch = USART0_getchar(); }while (ch == -1);     // Get payload length
+ 986               	.LM104:
+ 987 0418 0E94 0000 		call USART0_getchar
+ 988 041c EFEF      		ldi r30,hi8(-1)
+ 989 041e 8F3F      		cpi r24,lo8(-1)
+ 990 0420 9E07      		cpc r25,r30
+ 991 0422 01F0      		breq .L75
+ 242:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	length = ch;
+ 243:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	if (length == 3)                                  // Abort if length is incorrect
+ 993               	.LM105:
+ 994 0424 8330      		cpi r24,lo8(3)
+ 995 0426 01F4      		brne .L72
+ 996               	.L74:
+ 244:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	{
+ 245:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  checksum = 0x12 + length;                         // Start checksum calculation
+ 246:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 247:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  do{ ch = USART0_getchar(); }while (ch == -1);   // Get payload data
+ 998               	.LM106:
+ 999 0428 0E94 0000 		call USART0_getchar
+ 1000 042c FFEF      		ldi r31,hi8(-1)
+ 1001 042e 8F3F      		cpi r24,lo8(-1)
+ 1002 0430 9F07      		cpc r25,r31
+ 1003 0432 01F0      		breq .L74
+ 248:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  checksum += ch;                                 // Calculate checksum
+ 1005               	.LM107:
+ 1006 0434 35E1      		ldi r19,lo8(21)
+ 1007 0436 B32E      		mov r11,r19
+ 1008 0438 B80E      		add r11,r24
+ 249:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  *sendbuffer_size = ch;
+ 1010               	.LM108:
+ 1011 043a F601      		movw r30,r12
+ 1012 043c 8083      		st Z,r24
+ 1013               	.L68:
+ 250:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 251:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  do{ ch = USART0_getchar(); }while (ch == -1);   // Get payload data
+ 1015               	.LM109:
+ 1016 043e 0E94 0000 		call USART0_getchar
+ 1017 0442 FFEF      		ldi r31,hi8(-1)
+ 1018 0444 8F3F      		cpi r24,lo8(-1)
+ 1019 0446 9F07      		cpc r25,r31
+ 1020 0448 01F0      		breq .L68
+ 252:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  checksum += ch;                                 // Calculate checksum
+ 1022               	.LM110:
+ 1023 044a CB2C      		mov r12,r11
+ 1024 044c C80E      		add r12,r24
+ 253:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  *sendbuffer_level = ch;
+ 1026               	.LM111:
+ 1027 044e F801      		movw r30,r16
+ 1028 0450 8083      		st Z,r24
+ 1029               	.L69:
+ 254:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 255:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  do{ ch = USART0_getchar(); }while (ch == -1);   // Get payload data
+ 1031               	.LM112:
+ 1032 0452 0E94 0000 		call USART0_getchar
+ 1033 0456 FFEF      		ldi r31,hi8(-1)
+ 1034 0458 8F3F      		cpi r24,lo8(-1)
+ 1035 045a 9F07      		cpc r25,r31
+ 1036 045c 01F0      		breq .L69
+ 256:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  checksum += ch;                                 // Calculate checksum
+ 1038               	.LM113:
+ 1039 045e 0C2D      		mov r16,r12
+ 1040 0460 080F      		add r16,r24
+ 257:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  *timeout = ch;
+ 1042               	.LM114:
+ 1043 0462 F701      		movw r30,r14
+ 1044 0464 8083      		st Z,r24
+ 1045               	.L70:
+ 258:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 259:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  // Now we have received all the payload bytes.
+ 260:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  do{ ch = USART0_getchar(); }while (ch == -1);   // Get checksum
+ 1047               	.LM115:
+ 1048 0466 0E94 0000 		call USART0_getchar
+ 1049 046a FFEF      		ldi r31,hi8(-1)
+ 1050 046c 8F3F      		cpi r24,lo8(-1)
+ 1051 046e 9F07      		cpc r25,r31
+ 1052 0470 01F0      		breq .L70
+ 261:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  // If received checksum and calculated checksum do not match, we have an error!
+ 262:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  if (ch != checksum) error = 1;
+ 1054               	.LM116:
+ 1055 0472 202F      		mov r18,r16
+ 1056 0474 30E0      		ldi r19,lo8(0)
+ 1057 0476 8217      		cp r24,r18
+ 1058 0478 9307      		cpc r25,r19
+ 1059 047a 01F0      		breq .L73
+ 1060               	.L72:
+ 263:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	}
+ 264:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	else error = 1;
+ 265:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }
+ 266:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  else error = 1;
+ 267:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 268:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (error == 0) return 0;  // Success!
+ 269:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  else return -1;             // No success! User has to repeat the packet
+ 1062               	.LM117:
+ 1063 047c 8FEF      		ldi r24,lo8(-1)
+ 1064 047e 00C0      		rjmp .L65
+ 1065               	.L73:
+ 268:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (error == 0) return 0;  // Success!
+ 1067               	.LM118:
+ 1068 0480 80E0      		ldi r24,lo8(0)
+ 1069               	.L65:
+ 1070               	/* epilogue start */
+ 270:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 271:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  return 0;
+ 272:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 273:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 1072               	.LM119:
+ 1073 0482 0F90      		pop __tmp_reg__
+ 1074 0484 0F90      		pop __tmp_reg__
+ 1075 0486 0F90      		pop __tmp_reg__
+ 1076 0488 0F90      		pop __tmp_reg__
+ 1077 048a CF91      		pop r28
+ 1078 048c DF91      		pop r29
+ 1079 048e 1F91      		pop r17
+ 1080 0490 0F91      		pop r16
+ 1081 0492 FF90      		pop r15
+ 1082 0494 EF90      		pop r14
+ 1083 0496 DF90      		pop r13
+ 1084 0498 CF90      		pop r12
+ 1085 049a BF90      		pop r11
+ 1086 049c 0895      		ret
+ 1091               	.Lscope7:
+ 1093               		.stabd	78,0,0
+ 1095               	.global	eDIP240_7_Display_repeat_last_packet
+ 1097               	eDIP240_7_Display_repeat_last_packet:
+ 1098               		.stabd	46,0,0
+ 274:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 275:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 276:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 277:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Letztes Datenpaket wiederholen
+ 278:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Display_repeat_last_packet will cause the display to repeat the last packet.
+ 279:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // The user has to provide a block of memory (data) where the received packet payload will be store
+ 280:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Return value: 0 -> ok;  -1 -> error
+ 281:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed char eDIP240_7_Display_repeat_last_packet(unsigned char * data)
+ 282:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 1100               	.LM120:
+ 1101               	.LFBB8:
+ 1102 049e EF92      		push r14
+ 1103 04a0 FF92      		push r15
+ 1104 04a2 0F93      		push r16
+ 1105 04a4 1F93      		push r17
+ 1106 04a6 DF93      		push r29
+ 1107 04a8 CF93      		push r28
+ 1108 04aa 00D0      		rcall .
+ 1109 04ac 00D0      		rcall .
+ 1110 04ae CDB7      		in r28,__SP_L__
+ 1111 04b0 DEB7      		in r29,__SP_H__
+ 1112               	/* prologue: function */
+ 1113               	/* frame size = 4 */
+ 1114               	/* stack size = 10 */
+ 1115               	.L__stack_usage = 10
+ 1116 04b2 F82E      		mov r15,r24
+ 1117 04b4 092F      		mov r16,r25
+ 283:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char i=0, checksum=0, ack=0, error=0, length;
+ 284:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  signed int ch;
+ 285:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  volatile unsigned long ack_timeout=1000000;
+ 1119               	.LM121:
+ 1120 04b6 20E4      		ldi r18,lo8(1000000)
+ 1121 04b8 32E4      		ldi r19,hi8(1000000)
+ 1122 04ba 4FE0      		ldi r20,hlo8(1000000)
+ 1123 04bc 50E0      		ldi r21,hhi8(1000000)
+ 1124 04be 2983      		std Y+1,r18
+ 1125 04c0 3A83      		std Y+2,r19
+ 1126 04c2 4B83      		std Y+3,r20
+ 1127 04c4 5C83      		std Y+4,r21
+ 286:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 287:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x12);                 // Send command DC2 (sending packet) to the display
+ 1129               	.LM122:
+ 1130 04c6 82E1      		ldi r24,lo8(18)
+ 1131 04c8 0E94 0000 		call USART0_putchar
+ 288:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(1);
+ 1133               	.LM123:
+ 1134 04cc 81E0      		ldi r24,lo8(1)
+ 1135 04ce 0E94 0000 		call USART0_putchar
+ 289:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar('R');
+ 1137               	.LM124:
+ 1138 04d2 82E5      		ldi r24,lo8(82)
+ 1139 04d4 0E94 0000 		call USART0_putchar
+ 290:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar( (unsigned char) (0x12 + 1 + 'R') );                     // Checksum
+ 1141               	.LM125:
+ 1142 04d8 85E6      		ldi r24,lo8(101)
+ 1143 04da 0E94 0000 		call USART0_putchar
+ 1144               	.L86:
+ 291:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do                                    // Wait for receiving ack from the display
+ 292:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 293:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack = USART0_getchar();
+ 1146               	.LM126:
+ 1147 04de 0E94 0000 		call USART0_getchar
+ 294:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack_timeout--;
+ 1149               	.LM127:
+ 1150 04e2 2981      		ldd r18,Y+1
+ 1151 04e4 3A81      		ldd r19,Y+2
+ 1152 04e6 4B81      		ldd r20,Y+3
+ 1153 04e8 5C81      		ldd r21,Y+4
+ 1154 04ea 2150      		subi r18,lo8(-(-1))
+ 1155 04ec 3040      		sbci r19,hi8(-(-1))
+ 1156 04ee 4040      		sbci r20,hlo8(-(-1))
+ 1157 04f0 5040      		sbci r21,hhi8(-(-1))
+ 1158 04f2 2983      		std Y+1,r18
+ 1159 04f4 3A83      		std Y+2,r19
+ 1160 04f6 4B83      		std Y+3,r20
+ 1161 04f8 5C83      		std Y+4,r21
+ 295:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }while((ack != 0x06) && (ack_timeout > 0));
+ 1163               	.LM128:
+ 1164 04fa 8630      		cpi r24,lo8(6)
+ 1165 04fc 01F0      		breq .L96
+ 1166 04fe 2981      		ldd r18,Y+1
+ 1167 0500 3A81      		ldd r19,Y+2
+ 1168 0502 4B81      		ldd r20,Y+3
+ 1169 0504 5C81      		ldd r21,Y+4
+ 1170 0506 2115      		cp r18,__zero_reg__
+ 1171 0508 3105      		cpc r19,__zero_reg__
+ 1172 050a 4105      		cpc r20,__zero_reg__
+ 1173 050c 5105      		cpc r21,__zero_reg__
+ 1174 050e 01F4      		brne .L86
+ 296:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack != 0x06) return (-1);
+ 1176               	.LM129:
+ 1177 0510 8FEF      		ldi r24,lo8(-1)
+ 1178 0512 00C0      		rjmp .L87
+ 1179               	.L96:
+ 297:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 298:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  // Now we have to receive and parse the answer from the display
+ 299:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do{ ch = USART0_getchar(); }while (ch == -1);       // Get the command byte
+ 1181               	.LM130:
+ 1182 0514 0E94 0000 		call USART0_getchar
+ 1183 0518 2FEF      		ldi r18,hi8(-1)
+ 1184 051a 8F3F      		cpi r24,lo8(-1)
+ 1185 051c 9207      		cpc r25,r18
+ 1186 051e 01F0      		breq .L96
+ 300:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ch == 0x11)                                     // Abort if command byte is incorrect
+ 1188               	.LM131:
+ 1189 0520 8131      		cpi r24,17
+ 1190 0522 9105      		cpc r25,__zero_reg__
+ 1191 0524 01F4      		brne .L92
+ 1192               	.L95:
+ 301:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 302:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	do{ ch = USART0_getchar(); }while (ch == -1);     // Get payload length
+ 1194               	.LM132:
+ 1195 0526 0E94 0000 		call USART0_getchar
+ 1196 052a EFEF      		ldi r30,hi8(-1)
+ 1197 052c 8F3F      		cpi r24,lo8(-1)
+ 1198 052e 9E07      		cpc r25,r30
+ 1199 0530 01F0      		breq .L95
+ 303:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	length = ch;
+ 1201               	.LM133:
+ 1202 0532 E82E      		mov r14,r24
+ 304:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	checksum = 0x11 + length;                         // Start checksum calculation
+ 305:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	while (i < length)
+ 1204               	.LM134:
+ 1205 0534 802F      		mov r24,r16
+ 1206 0536 0F2D      		mov r16,r15
+ 1207 0538 182F      		mov r17,r24
+ 1208 053a 00C0      		rjmp .L89
+ 1209               	.L94:
+ 306:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	{
+ 307:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  do{ ch = USART0_getchar(); }while (ch == -1);   // Get payload data
+ 1211               	.LM135:
+ 1212 053c 0E94 0000 		call USART0_getchar
+ 1213 0540 FFEF      		ldi r31,hi8(-1)
+ 1214 0542 8F3F      		cpi r24,lo8(-1)
+ 1215 0544 9F07      		cpc r25,r31
+ 1216 0546 01F0      		breq .L94
+ 308:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  data[i] = ch;
+ 1218               	.LM136:
+ 1219 0548 F801      		movw r30,r16
+ 1220 054a 8193      		st Z+,r24
+ 1221 054c 8F01      		movw r16,r30
+ 1222               	.L89:
+ 305:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	while (i < length)
+ 1224               	.LM137:
+ 1225 054e 802F      		mov r24,r16
+ 1226 0550 8F19      		sub r24,r15
+ 1227 0552 8E15      		cp r24,r14
+ 1228 0554 00F0      		brlo .L94
+ 1229               	.L93:
+ 309:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  checksum += ch;                                 // Calculate checksum
+ 310:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	  i++;
+ 311:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	}
+ 312:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	// Now we have received all the payload bytes.
+ 313:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	do{ ch = USART0_getchar(); }while (ch == -1);   // Get checksum
+ 1231               	.LM138:
+ 1232 0556 0E94 0000 		call USART0_getchar
+ 1233 055a FFEF      		ldi r31,hi8(-1)
+ 1234 055c 8F3F      		cpi r24,lo8(-1)
+ 1235 055e 9F07      		cpc r25,r31
+ 1236 0560 01F0      		breq .L93
+ 1237               	.L92:
+ 314:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	// If received checksum and calculated checksum do not match, we have an error!
+ 315:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	if (ch != checksum) error = 1;
+ 316:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }
+ 317:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  else error = 1;
+ 318:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 319:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack == 0x06) return 0;  // Success!
+ 1239               	.LM139:
+ 1240 0562 80E0      		ldi r24,lo8(0)
+ 1241               	.L87:
+ 1242               	/* epilogue start */
+ 320:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  else return -1;             // No success! User has to repeat the packet
+ 321:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 1244               	.LM140:
+ 1245 0564 0F90      		pop __tmp_reg__
+ 1246 0566 0F90      		pop __tmp_reg__
+ 1247 0568 0F90      		pop __tmp_reg__
+ 1248 056a 0F90      		pop __tmp_reg__
+ 1249 056c CF91      		pop r28
+ 1250 056e DF91      		pop r29
+ 1251 0570 1F91      		pop r17
+ 1252 0572 0F91      		pop r16
+ 1253 0574 FF90      		pop r15
+ 1254 0576 EF90      		pop r14
+ 1255 0578 0895      		ret
+ 1261               	.Lscope8:
+ 1263               		.stabd	78,0,0
+ 1266               	.global	eDIP240_7_Display_select
+ 1268               	eDIP240_7_Display_select:
+ 1269               		.stabd	46,0,0
+ 322:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 323:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 324:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 325:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Adressierung nur bei RS232/RS485 Betrieb
+ 326:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Display_select will select the display with the provided address as bus receiver.
+ 327:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Return value: 0 -> ok;  -1 -> error
+ 328:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed char eDIP240_7_Display_select(unsigned char address)
+ 329:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 1271               	.LM141:
+ 1272               	.LFBB9:
+ 1273 057a 1F93      		push r17
+ 1274 057c DF93      		push r29
+ 1275 057e CF93      		push r28
+ 1276 0580 00D0      		rcall .
+ 1277 0582 00D0      		rcall .
+ 1278 0584 CDB7      		in r28,__SP_L__
+ 1279 0586 DEB7      		in r29,__SP_H__
+ 1280               	/* prologue: function */
+ 1281               	/* frame size = 4 */
+ 1282               	/* stack size = 7 */
+ 1283               	.L__stack_usage = 7
+ 1284 0588 182F      		mov r17,r24
+ 330:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char ack=0;
+ 331:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  volatile unsigned long ack_timeout=1000000;
+ 1286               	.LM142:
+ 1287 058a 20E4      		ldi r18,lo8(1000000)
+ 1288 058c 32E4      		ldi r19,hi8(1000000)
+ 1289 058e 4FE0      		ldi r20,hlo8(1000000)
+ 1290 0590 50E0      		ldi r21,hhi8(1000000)
+ 1291 0592 2983      		std Y+1,r18
+ 1292 0594 3A83      		std Y+2,r19
+ 1293 0596 4B83      		std Y+3,r20
+ 1294 0598 5C83      		std Y+4,r21
+ 332:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 333:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x12);                 // Send command DC2 (sending packet) to the display
+ 1296               	.LM143:
+ 1297 059a 82E1      		ldi r24,lo8(18)
+ 1298 059c 0E94 0000 		call USART0_putchar
+ 334:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(3);
+ 1300               	.LM144:
+ 1301 05a0 83E0      		ldi r24,lo8(3)
+ 1302 05a2 0E94 0000 		call USART0_putchar
+ 335:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar('A');
+ 1304               	.LM145:
+ 1305 05a6 81E4      		ldi r24,lo8(65)
+ 1306 05a8 0E94 0000 		call USART0_putchar
+ 336:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar('S');
+ 1308               	.LM146:
+ 1309 05ac 83E5      		ldi r24,lo8(83)
+ 1310 05ae 0E94 0000 		call USART0_putchar
+ 337:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(address);
+ 1312               	.LM147:
+ 1313 05b2 812F      		mov r24,r17
+ 1314 05b4 0E94 0000 		call USART0_putchar
+ 338:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar( (unsigned char) (0x12 + 3 + 'A' + 'S' + address) );                     // Checksu
+ 1316               	.LM148:
+ 1317 05b8 812F      		mov r24,r17
+ 1318 05ba 8755      		subi r24,lo8(-(-87))
+ 1319 05bc 0E94 0000 		call USART0_putchar
+ 1320               	.L104:
+ 339:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do                                    // Wait for receiving ack from the display
+ 340:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 341:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack = USART0_getchar();
+ 1322               	.LM149:
+ 1323 05c0 0E94 0000 		call USART0_getchar
+ 342:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack_timeout--;
+ 1325               	.LM150:
+ 1326 05c4 2981      		ldd r18,Y+1
+ 1327 05c6 3A81      		ldd r19,Y+2
+ 1328 05c8 4B81      		ldd r20,Y+3
+ 1329 05ca 5C81      		ldd r21,Y+4
+ 1330 05cc 2150      		subi r18,lo8(-(-1))
+ 1331 05ce 3040      		sbci r19,hi8(-(-1))
+ 1332 05d0 4040      		sbci r20,hlo8(-(-1))
+ 1333 05d2 5040      		sbci r21,hhi8(-(-1))
+ 1334 05d4 2983      		std Y+1,r18
+ 1335 05d6 3A83      		std Y+2,r19
+ 1336 05d8 4B83      		std Y+3,r20
+ 1337 05da 5C83      		std Y+4,r21
+ 343:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }while((ack != 0x06) && (ack_timeout > 0));
+ 1339               	.LM151:
+ 1340 05dc 8630      		cpi r24,lo8(6)
+ 1341 05de 01F0      		breq .L105
+ 1342 05e0 8981      		ldd r24,Y+1
+ 1343 05e2 9A81      		ldd r25,Y+2
+ 1344 05e4 AB81      		ldd r26,Y+3
+ 1345 05e6 BC81      		ldd r27,Y+4
+ 1346 05e8 0097      		sbiw r24,0
+ 1347 05ea A105      		cpc r26,__zero_reg__
+ 1348 05ec B105      		cpc r27,__zero_reg__
+ 1349 05ee 01F4      		brne .L104
+ 344:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack != 0x06) return (-1);
+ 1351               	.LM152:
+ 1352 05f0 8FEF      		ldi r24,lo8(-1)
+ 1353 05f2 00C0      		rjmp .L103
+ 1354               	.L105:
+ 345:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  return 0;
+ 1356               	.LM153:
+ 1357 05f4 80E0      		ldi r24,lo8(0)
+ 1358               	.L103:
+ 1359               	/* epilogue start */
+ 346:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 1361               	.LM154:
+ 1362 05f6 0F90      		pop __tmp_reg__
+ 1363 05f8 0F90      		pop __tmp_reg__
+ 1364 05fa 0F90      		pop __tmp_reg__
+ 1365 05fc 0F90      		pop __tmp_reg__
+ 1366 05fe CF91      		pop r28
+ 1367 0600 DF91      		pop r29
+ 1368 0602 1F91      		pop r17
+ 1369 0604 0895      		ret
+ 1374               	.Lscope9:
+ 1376               		.stabd	78,0,0
+ 1379               	.global	eDIP240_7_Display_deselect
+ 1381               	eDIP240_7_Display_deselect:
+ 1382               		.stabd	46,0,0
+ 347:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 348:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 349:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Adressierung nur bei RS232/RS485 Betrieb
+ 350:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Display_deselect will deselect the display with the provided address.
+ 351:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // A deselected display will not listen to data sent over the serial line and will not transmit to 
+ 352:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Return value: 0 -> ok;  -1 -> error
+ 353:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** signed char eDIP240_7_Display_deselect(unsigned char address)
+ 354:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 1384               	.LM155:
+ 1385               	.LFBB10:
+ 1386 0606 1F93      		push r17
+ 1387 0608 DF93      		push r29
+ 1388 060a CF93      		push r28
+ 1389 060c 00D0      		rcall .
+ 1390 060e 00D0      		rcall .
+ 1391 0610 CDB7      		in r28,__SP_L__
+ 1392 0612 DEB7      		in r29,__SP_H__
+ 1393               	/* prologue: function */
+ 1394               	/* frame size = 4 */
+ 1395               	/* stack size = 7 */
+ 1396               	.L__stack_usage = 7
+ 1397 0614 182F      		mov r17,r24
+ 355:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  unsigned char ack=0;
+ 356:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  volatile unsigned long ack_timeout=1000000;
+ 1399               	.LM156:
+ 1400 0616 20E4      		ldi r18,lo8(1000000)
+ 1401 0618 32E4      		ldi r19,hi8(1000000)
+ 1402 061a 4FE0      		ldi r20,hlo8(1000000)
+ 1403 061c 50E0      		ldi r21,hhi8(1000000)
+ 1404 061e 2983      		std Y+1,r18
+ 1405 0620 3A83      		std Y+2,r19
+ 1406 0622 4B83      		std Y+3,r20
+ 1407 0624 5C83      		std Y+4,r21
+ 357:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 358:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(0x12);                 // Send command DC2 (sending packet) to the display
+ 1409               	.LM157:
+ 1410 0626 82E1      		ldi r24,lo8(18)
+ 1411 0628 0E94 0000 		call USART0_putchar
+ 359:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(3);
+ 1413               	.LM158:
+ 1414 062c 83E0      		ldi r24,lo8(3)
+ 1415 062e 0E94 0000 		call USART0_putchar
+ 360:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar('A');
+ 1417               	.LM159:
+ 1418 0632 81E4      		ldi r24,lo8(65)
+ 1419 0634 0E94 0000 		call USART0_putchar
+ 361:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar('D');
+ 1421               	.LM160:
+ 1422 0638 84E4      		ldi r24,lo8(68)
+ 1423 063a 0E94 0000 		call USART0_putchar
+ 362:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar(address);
+ 1425               	.LM161:
+ 1426 063e 812F      		mov r24,r17
+ 1427 0640 0E94 0000 		call USART0_putchar
+ 363:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  USART0_putchar( (unsigned char) (0x12 + 3 + 'A' + 'D' + address) );                     // Checksu
+ 1429               	.LM162:
+ 1430 0644 812F      		mov r24,r17
+ 1431 0646 8656      		subi r24,lo8(-(-102))
+ 1432 0648 0E94 0000 		call USART0_putchar
+ 1433               	.L109:
+ 364:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  do                                    // Wait for receiving ack from the display
+ 365:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  {
+ 366:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack = USART0_getchar();
+ 1435               	.LM163:
+ 1436 064c 0E94 0000 		call USART0_getchar
+ 367:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 	ack_timeout--;
+ 1438               	.LM164:
+ 1439 0650 2981      		ldd r18,Y+1
+ 1440 0652 3A81      		ldd r19,Y+2
+ 1441 0654 4B81      		ldd r20,Y+3
+ 1442 0656 5C81      		ldd r21,Y+4
+ 1443 0658 2150      		subi r18,lo8(-(-1))
+ 1444 065a 3040      		sbci r19,hi8(-(-1))
+ 1445 065c 4040      		sbci r20,hlo8(-(-1))
+ 1446 065e 5040      		sbci r21,hhi8(-(-1))
+ 1447 0660 2983      		std Y+1,r18
+ 1448 0662 3A83      		std Y+2,r19
+ 1449 0664 4B83      		std Y+3,r20
+ 1450 0666 5C83      		std Y+4,r21
+ 368:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  }while((ack != 0x06) && (ack_timeout > 0));
+ 1452               	.LM165:
+ 1453 0668 8630      		cpi r24,lo8(6)
+ 1454 066a 01F0      		breq .L110
+ 1455 066c 8981      		ldd r24,Y+1
+ 1456 066e 9A81      		ldd r25,Y+2
+ 1457 0670 AB81      		ldd r26,Y+3
+ 1458 0672 BC81      		ldd r27,Y+4
+ 1459 0674 0097      		sbiw r24,0
+ 1460 0676 A105      		cpc r26,__zero_reg__
+ 1461 0678 B105      		cpc r27,__zero_reg__
+ 1462 067a 01F4      		brne .L109
+ 369:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  if (ack != 0x06) return (-1);
+ 1464               	.LM166:
+ 1465 067c 8FEF      		ldi r24,lo8(-1)
+ 1466 067e 00C0      		rjmp .L108
+ 1467               	.L110:
+ 370:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  return 0;
+ 1469               	.LM167:
+ 1470 0680 80E0      		ldi r24,lo8(0)
+ 1471               	.L108:
+ 1472               	/* epilogue start */
+ 371:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 1474               	.LM168:
+ 1475 0682 0F90      		pop __tmp_reg__
+ 1476 0684 0F90      		pop __tmp_reg__
+ 1477 0686 0F90      		pop __tmp_reg__
+ 1478 0688 0F90      		pop __tmp_reg__
+ 1479 068a CF91      		pop r28
+ 1480 068c DF91      		pop r29
+ 1481 068e 1F91      		pop r17
+ 1482 0690 0895      		ret
+ 1487               	.Lscope10:
+ 1489               		.stabd	78,0,0
+ 1491               	.global	eDIP240_7_Display_send_string
+ 1493               	eDIP240_7_Display_send_string:
+ 1494               		.stabd	46,0,0
+ 372:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // End of Electronic Assembly SMALLPROTOKOLL driver
+ 373:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 374:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 375:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 376:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** // Use this for sending ascii commands to the Display
+ 377:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** void eDIP240_7_Display_send_string(char * str)
+ 378:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 1496               	.LM169:
+ 1497               	.LFBB11:
+ 1498               	/* prologue: function */
+ 1499               	/* frame size = 0 */
+ 1500               	/* stack size = 0 */
+ 1501               	.L__stack_usage = 0
+ 379:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  eDIP240_7_Display_send_packet(str, strlen(str));
+ 1503               	.LM170:
+ 1504 0692 DC01      		movw r26,r24
+ 1505 0694 0D90      		ld __tmp_reg__,X+
+ 1506 0696 0020      		tst __tmp_reg__
+ 1507 0698 01F4      		brne .-6
+ 1508 069a BD01      		movw r22,r26
+ 1509 069c 6150      		subi r22,lo8(-(-1))
+ 1510 069e 7040      		sbci r23,hi8(-(-1))
+ 1511 06a0 681B      		sub r22,r24
+ 1512 06a2 790B      		sbc r23,r25
+ 1513 06a4 0E94 0000 		call eDIP240_7_Display_send_packet
+ 1514               	/* epilogue start */
+ 380:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 1516               	.LM171:
+ 1517 06a8 0895      		ret
+ 1519               	.Lscope11:
+ 1521               		.stabd	78,0,0
+ 1523               	.global	eDIP240_7_Display_send_string_with_NULL
+ 1525               	eDIP240_7_Display_send_string_with_NULL:
+ 1526               		.stabd	46,0,0
+ 381:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 382:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 383:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** 
+ 384:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** void eDIP240_7_Display_send_string_with_NULL(char * str)
+ 385:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** {
+ 1528               	.LM172:
+ 1529               	.LFBB12:
+ 1530               	/* prologue: function */
+ 1531               	/* frame size = 0 */
+ 1532               	/* stack size = 0 */
+ 1533               	.L__stack_usage = 0
+ 386:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c ****  eDIP240_7_Display_send_packet(str, strlen(str) + 1);
+ 1535               	.LM173:
+ 1536 06aa DC01      		movw r26,r24
+ 1537 06ac 0D90      		ld __tmp_reg__,X+
+ 1538 06ae 0020      		tst __tmp_reg__
+ 1539 06b0 01F4      		brne .-6
+ 1540 06b2 6A2F      		mov r22,r26
+ 1541 06b4 681B      		sub r22,r24
+ 1542 06b6 0E94 0000 		call eDIP240_7_Display_send_packet
+ 1543               	/* epilogue start */
+ 387:..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.c **** }
+ 1545               	.LM174:
+ 1546 06ba 0895      		ret
+ 1548               	.Lscope12:
+ 1550               		.stabd	78,0,0
+ 1551               		.comm _nrk_signal_list,4,1
+ 1552               		.comm nrk_idle_task_stk,128,1
+ 1553               		.comm nrk_kernel_stk_ptr,2,1
+ 1558               	.Letext0:
+ 1559               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 eDIP240-7_TouchPanel_driver.c
+     /tmp/ccB8A7pX.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccB8A7pX.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccB8A7pX.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccB8A7pX.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccB8A7pX.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccB8A7pX.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccB8A7pX.s:143    .text:00000000 USART0_putchar
+     /tmp/ccB8A7pX.s:169    .text:00000010 USART0_getchar
+     /tmp/ccB8A7pX.s:211    .text:00000034 eDIP240_7_Display_send_packet
+     /tmp/ccB8A7pX.s:360    .text:000000f4 eDIP240_7_Display_get_buffer
+     /tmp/ccB8A7pX.s:566    .text:000001f6 eDIP240_7_Display_request_buffer_info
+     /tmp/ccB8A7pX.s:770    .text:000002f8 eDIP240_7_Display_set_protocol
+     /tmp/ccB8A7pX.s:889    .text:0000038c eDIP240_7_Display_get_protocoll_info
+     /tmp/ccB8A7pX.s:1097   .text:0000049e eDIP240_7_Display_repeat_last_packet
+     /tmp/ccB8A7pX.s:1268   .text:0000057a eDIP240_7_Display_select
+     /tmp/ccB8A7pX.s:1381   .text:00000606 eDIP240_7_Display_deselect
+     /tmp/ccB8A7pX.s:1493   .text:00000692 eDIP240_7_Display_send_string
+     /tmp/ccB8A7pX.s:1525   .text:000006aa eDIP240_7_Display_send_string_with_NULL
+                            *COM*:00000004 _nrk_signal_list
+                            *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000002 nrk_kernel_stk_ptr
+
+UNDEFINED SYMBOLS
+__iob
+fputc
+nrk_uart_data_ready
+fgetc
+__do_clear_bss
