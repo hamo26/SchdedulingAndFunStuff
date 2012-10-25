@@ -231,6 +231,13 @@ int8_t nrk_sem_pend(nrk_sem_t *rsrc )
 	}
 
 	nrk_sem_list[id].value--;	
+	// SRP - a task can be preempted if the preemption level is higher than system ceiling
+	// Bigger relative deadline means smaller priority - Smaller the value for system ceiling means higher the priority
+	// Compare and see if current_task_TCB period is smaller than the current system ceiling, if it is set new system ceiling
+	if ( nrk_cur_task_TCB->period < system_ceiling)
+		// set new system ceiling
+		system_ceiling =  nrk_cur_task_TCB->period;
+
 	nrk_cur_task_TCB->task_prio_ceil=nrk_sem_list[id].resource_ceiling;
 	nrk_cur_task_TCB->elevated_prio_flag=1;
 	nrk_int_enable();
@@ -244,6 +251,7 @@ int8_t nrk_sem_post(nrk_sem_t *rsrc)
 {
 	int8_t id=nrk_get_resource_index(rsrc);	
 	int8_t task_ID;
+	int8_t sem_ID;
 	if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
 	if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
 
@@ -254,6 +262,15 @@ int8_t nrk_sem_post(nrk_sem_t *rsrc)
 
 		nrk_sem_list[id].value++;
 		nrk_cur_task_TCB->elevated_prio_flag=0;
+
+		// Increasing value increases availability of the semaphore
+		// Reset system ceiling to lowest priority and iterate through the global semaphore array nrk_sem_list and find the highest locked resource ceiling
+		system_ceiling = 64;
+		for (sem_ID = 0; sem_ID < NRK_MAX_RESOURCE_CNT; sem_ID++){
+			
+			if (nrk_sem_list[sem_ID].resource_ceiling > system_ceiling && nrk_sem_list[sem_ID].count == 0)
+				system_ceiling = nrk_sem_list[sem_ID].resource_ceiling;
+		}
 
 		for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++){
 			if(nrk_task_TCB[task_ID].event_suspend==RSRC_EVENT_SUSPENDED)
