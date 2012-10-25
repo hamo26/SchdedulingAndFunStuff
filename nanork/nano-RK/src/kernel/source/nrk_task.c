@@ -93,7 +93,7 @@ void nrk_add_to_readyQ (int8_t task_ID)
 #elseif SRP
 			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
 				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period &&
-				1/nrk_task_TCB[task_ID].next_period > systemceiling) {break;}	//Small absolute deadline = larger preemption level
+				nrk_task_TCB[task_ID].next_period < systemceiling) {break;}	//Small absolute deadline = larger preemption level
 
 #else
 			if (nrk_task_TCB[NextNode->task_ID].elevated_prio_flag)
