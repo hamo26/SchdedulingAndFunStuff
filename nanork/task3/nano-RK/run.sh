@@ -1,5 +1,5 @@
 #! /bin/sh
-cd srp/
+cd srpTest/
 make clean all
 make
 cd ../avrora/bin/
