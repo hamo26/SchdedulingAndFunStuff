@@ -23,7 +23,6 @@
  *  Zane Starr
  *******************************************************************************/
 
-
 #include <nrk.h>
 #include <include.h>
 #include <ulib.h>
@@ -35,26 +34,64 @@
 #include <nrk_timer.h>
 
 
-NRK_STK Stack1[NRK_APP_STACKSIZE];
-nrk_task_type TaskOne;
-void Task1(void);
+/*
+   To stay inline (no pun intended) with the nano-rk direction of using guards for 
+   optimization and potential performance, we use macros rather than methods.
+   We could have created a method, but the call may be expensive and impede the performance of the kernel.
+ */
+#define TASK(n, taskPeriod, taskExecution)                                      \
+    	NRK_STK stack_##n[NRK_APP_STACKSIZE];                               	\
+	nrk_task_type task_##n;                                                 \
+	uint32_t task_##n##_period = taskPeriod;                               	\
+	uint32_t task_##n##_execution = taskExecution;                         	\
+	void task_##n##_activity()                                              \
+	{									\
+	    uint16_t cnt;                                                       \
+	    int8_t v;								\
+	    printf( "My node's address is %d\r\n",NODE_ADDR );			\
+	    printf( "Task##n PID=%d\r\n", nrk_get_pid());			\
+	    cnt=0;								\
+	    while(1) {								\
+		printf( "Task##n cnt=%d\r\n", cnt );				\
+		printf("Task##n accessing semaphore\r\n");			\
+		v = nrk_sem_pend(my_semaphore);					\
+		if(v==NRK_ERROR) printf("T##n error pend\r\n");			\
+		printf("Task##n holding semaphore\r\n");			\
+		nrk_wait_until_next_period();					\
+		v = nrk_sem_post(my_semaphore);					\
+		if(v==NRK_ERROR) printf("T%d error post\r\n", n);		\
+		printf("Task##n released semaphore\r\n");			\
+		nrk_wait_until_next_period();					\
+		cnt;								\
+	    }									\
+	}									\
 
-NRK_STK Stack2[NRK_APP_STACKSIZE];
-nrk_task_type TaskTwo;
-void Task2 (void);
+/*"Instantiate" the task*/
+#define INITIALIZE_TASK(n)						\
+    task_##n.FirstActivation = TRUE;                                    \
+task_##n.Type = BASIC_TASK;                                             \
+task_##n.prio = n;							\
+task_##n.SchType = PREEMPTIVE;                                          \
+task_##n.period.secs = task_##n##_period;                               \
+task_##n.period.nano_secs = 0;                                          \
+task_##n.cpu_reserve.secs = task_##n##_execution;                       \
+task_##n.cpu_reserve.nano_secs = 0;                                     \
+task_##n.offset.secs = 0;                                               \
+task_##n.offset.nano_secs = 0;                                          \
+nrk_task_set_entry_function(&task_##n, task_##n##_activity);            \
+nrk_task_set_stk(&task_##n, stack_##n, NRK_APP_STACKSIZE);              \
+nrk_activate_task(&task_##n)				
 
-NRK_STK Stack3[NRK_APP_STACKSIZE];
-nrk_task_type TaskThree;
-void Task3 (void);
-
-void nrk_create_taskset();
-
+//Semaphore shared among resources.
 nrk_sem_t *my_semaphore;
 
-    int
-main ()
+//"Instantiate" tasks.
+TASK(1, 4, 2);
+TASK(2, 7, 3);
+TASK(3, 5, 4);
+
+int main ()
 {
-    uint8_t t;
     nrk_setup_ports();
     nrk_setup_uart(UART_BAUDRATE_115K2);
 
@@ -62,13 +99,12 @@ main ()
 
     nrk_init();
 
-    nrk_led_clr(ORANGE_LED);
-    nrk_led_clr(BLUE_LED);
-    nrk_led_set(GREEN_LED);
-    nrk_led_clr(RED_LED);
-
     nrk_time_set(0,0);
-    nrk_create_taskset ();
+
+    //Initialize tasks 
+    INITIALIZE_TASK(1);
+    INITIALIZE_TASK(2);
+    INITIALIZE_TASK(3);
 
     //instead of passing the ceiling priority, the task with the shortest period that accesses the semaphore is given
     //in this case, task1 which has a period 350*NANOS_PER_MS
@@ -77,138 +113,4 @@ main ()
     nrk_start();
 
     return 0;
-}
-
-
-void Task1()
-{
-    uint16_t cnt;
-    int8_t v;
-
-    printf( "My node's address is %d\r\n",NODE_ADDR );
-
-    printf( "Task1 PID=%d\r\n",nrk_get_pid());
-    cnt=0;
-    while(1) {
-	nrk_led_toggle(ORANGE_LED);
-	printf( "Task1 cnt=%d\r\n",cnt );
-	nrk_kprintf( PSTR("Task1 accessing semaphore\r\n"));
-	v = nrk_sem_pend(my_semaphore);
-	if(v==NRK_ERROR) nrk_kprintf( PSTR("T1 error pend\r\n"));
-	nrk_kprintf( PSTR("Task1 holding semaphore\r\n"));
-	// wait some time inside semaphore to show the effect
-	nrk_wait_until_next_period();
-	v = nrk_sem_post(my_semaphore);
-	if(v==NRK_ERROR) nrk_kprintf( PSTR("T1 error post\r\n"));
-	nrk_kprintf( PSTR("Task1 released semaphore\r\n"));
-	nrk_wait_until_next_period();
-	cnt++;
-    }
-}
-
-void Task2()
-{
-    uint8_t cnt;
-    int8_t v;
-
-    printf( "Task2 PID=%d\r\n",nrk_get_pid());
-    cnt=0;
-    while(1) {
-	nrk_led_toggle(ORANGE_LED);
-	printf( "Task1 cnt=%d\r\n",cnt );
-	nrk_kprintf( PSTR("Task2 accessing semaphore\r\n"));
-	v = nrk_sem_pend(my_semaphore);
-	if(v==NRK_ERROR) nrk_kprintf( PSTR("T2 error pend\r\n"));
-	nrk_kprintf( PSTR("Task2 holding semaphore\r\n"));
-	// wait some time inside semaphore to show the effect
-	nrk_wait_until_next_period();
-	v = nrk_sem_post(my_semaphore);
-	if(v==NRK_ERROR) nrk_kprintf( PSTR("T2 error post\r\n"));
-	nrk_kprintf( PSTR("Task2 released semaphore\r\n"));
-	nrk_wait_until_next_period();
-	cnt++;
-    }
-
-
-
-}
-
-void Task3()
-{
-    //a task that is used to check if our implementation is correct. this task should norally be able to preempt
-    //any other task if it has the earliest absolute deadline
-    uint8_t cnt;
-    int8_t v;
-
-    printf( "Task3 PID=%d\r\n",nrk_get_pid());
-    cnt=0;
-    while(1) {
-	nrk_led_toggle(ORANGE_LED);
-	printf( "Task1 cnt=%d\r\n",cnt );
-	nrk_kprintf( PSTR("Task3 STARTED\r\n"));
-	//v = nrk_sem_pend(my_semaphore);
-	if(v==NRK_ERROR) nrk_kprintf( PSTR("T2 error pend\r\n"));
-	nrk_kprintf( PSTR("Task3 is running...\r\n"));
-	// wait some time inside semaphore to show the effect
-	nrk_wait_until_next_period();
-	//v = nrk_sem_post(my_semaphore);
-	if(v==NRK_ERROR) nrk_kprintf( PSTR("T2 error post\r\n"));
-	nrk_kprintf( PSTR("Task3 FINISHED\r\n"));
-	nrk_wait_until_next_period();
-	cnt++;
-    }
-
-
-
-}
-
-    void
-nrk_create_taskset()
-{
-    TaskOne.task = Task1;
-    TaskOne.Ptos = (void *) &Stack1[NRK_APP_STACKSIZE];
-    TaskOne.Pbos = (void *) &Stack1[0];
-    TaskOne.prio = 1;
-    TaskOne.FirstActivation = TRUE;
-    TaskOne.Type = BASIC_TASK;
-    TaskOne.SchType = PREEMPTIVE;
-    TaskOne.period.secs = 0;
-    TaskOne.period.nano_secs = 350*NANOS_PER_MS;
-    TaskOne.cpu_reserve.secs = 0;
-    TaskOne.cpu_reserve.nano_secs =  50*NANOS_PER_MS;
-    TaskOne.offset.secs = 0;
-    TaskOne.offset.nano_secs= 0;
-    nrk_activate_task (&TaskOne);
-
-    TaskTwo.task = Task2;
-    TaskTwo.Ptos = (void *) &Stack2[NRK_APP_STACKSIZE];
-    TaskTwo.Pbos = (void *) &Stack2[0];
-    TaskTwo.prio = 2;
-    TaskTwo.FirstActivation = TRUE;
-    TaskTwo.Type = BASIC_TASK;
-    TaskTwo.SchType = PREEMPTIVE;
-    TaskTwo.period.secs = 3;
-    TaskTwo.period.nano_secs = 0;
-    TaskTwo.cpu_reserve.secs = 0;
-    TaskTwo.cpu_reserve.nano_secs = 100*NANOS_PER_MS;
-    TaskTwo.offset.secs = 0;
-    TaskTwo.offset.nano_secs= 0;
-    nrk_activate_task (&TaskTwo);
-
-    TaskThree.task = Task3;
-    TaskThree.Ptos = (void *) &Stack3[NRK_APP_STACKSIZE];
-    TaskThree.Pbos = (void *) &Stack3[0];
-    TaskThree.prio = 2;
-    TaskThree.FirstActivation = TRUE;
-    TaskThree.Type = BASIC_TASK;
-    TaskThree.SchType = PREEMPTIVE;
-    TaskThree.period.secs = 0;
-    TaskThree.period.nano_secs = 200*NANOS_PER_MS;
-    TaskThree.cpu_reserve.secs = 0;
-    TaskThree.cpu_reserve.nano_secs = 10*NANOS_PER_MS;
-    TaskThree.offset.secs = 0;
-    TaskThree.offset.nano_secs= 0;
-    nrk_activate_task (&TaskThree);
-
-
 }
