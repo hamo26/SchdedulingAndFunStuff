@@ -1,0 +1,40 @@
+10
+
+dir
+1390
+svn://nanork.org/srv/svn/repos/nano-RK/projects/experimental/pcf-MARS/MARS-clients
+svn://nanork.org/srv/svn/repos
+
+
+
+2012-03-19T19:45:00.237528Z
+1275
+frankmokaya
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+d5223eb8-5f29-0410-a7c7-974caa64965b
+
+plug-client
+dir
+
+gpio-read
+dir
+
+sensor-basic
+dir
+
+MARS-sensors
+dir
+

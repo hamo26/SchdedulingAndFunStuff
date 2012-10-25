@@ -99,6 +99,7 @@ void nrk_add_to_readyQ (int8_t task_ID)
 			//
 			//printf("%d\n",&NextNode->task_ID);
 			//printf("task id: %d", &task_ID);
+
 	    if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
 			nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period &&
 			1/nrk_task_TCB[task_ID].next_period > systemceiling) {break;}	//Small absolute deadline = larger preemption level
