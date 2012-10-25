@@ -237,6 +237,8 @@ int8_t nrk_sem_pend(nrk_sem_t *rsrc )
 	if ( nrk_cur_task_TCB->period < systemceiling)
 		// set new system ceiling
 		systemceiling =  nrk_cur_task_TCB->period;
+	//This is not the right way to evaluate system ceiling, is it?
+	//ie. What happens if a task with P=10 asks for a semaphore, but the R_ceil for that semaphore is P=2? --cary
 
 	nrk_cur_task_TCB->task_prio_ceil=nrk_sem_list[id].resource_ceiling;
 	nrk_cur_task_TCB->elevated_prio_flag=1;
