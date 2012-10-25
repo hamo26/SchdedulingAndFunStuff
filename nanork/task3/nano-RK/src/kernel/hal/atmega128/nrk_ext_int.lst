@@ -190,16 +190,16 @@
  265               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_ext_int.c
-     /tmp/ccPXntgd.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccPXntgd.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccPXntgd.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccPXntgd.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccPXntgd.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccPXntgd.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccPXntgd.s:123    .text:00000000 nrk_ext_int_enable
-     /tmp/ccPXntgd.s:145    .text:00000004 nrk_ext_int_disable
-     /tmp/ccPXntgd.s:169    .text:00000008 nrk_ext_int_configure
-     /tmp/ccPXntgd.s:190    .text:0000000c __vector_1
+     /tmp/ccBF355i.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccBF355i.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccBF355i.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccBF355i.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccBF355i.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccBF355i.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccBF355i.s:123    .text:00000000 nrk_ext_int_enable
+     /tmp/ccBF355i.s:145    .text:00000004 nrk_ext_int_disable
+     /tmp/ccBF355i.s:169    .text:00000008 nrk_ext_int_configure
+     /tmp/ccBF355i.s:190    .text:0000000c __vector_1
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000002 ext_int0_callback
                             *COM*:00000002 ext_int1_callback

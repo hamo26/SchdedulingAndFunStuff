@@ -1036,25 +1036,26 @@
  968               		.comm _nrk_resource_cnt,1,1
  969               		.comm nrk_system_time,8,1
  970               		.comm nrk_sem_list,15,1
- 971               		.comm _nrk_cpu_state,1,1
- 972               		.comm next_next_wakeup,2,1
- 973               		.comm error_task,1,1
- 974               		.comm error_num,1,1
- 975               		.comm nrk_task_init_cnt,1,1
- 997               	.Letext0:
- 998               	.global __do_clear_bss
+ 971               		.comm systemceiling,1,1
+ 972               		.comm _nrk_cpu_state,1,1
+ 973               		.comm next_next_wakeup,2,1
+ 974               		.comm error_task,1,1
+ 975               		.comm error_num,1,1
+ 976               		.comm nrk_task_init_cnt,1,1
+ 999               	.Letext0:
+ 1000               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk.c
-     /tmp/cc1TvYL3.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc1TvYL3.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc1TvYL3.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc1TvYL3.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc1TvYL3.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc1TvYL3.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc1TvYL3.s:133    .text:00000000 nrk_int_disable
-     /tmp/cc1TvYL3.s:161    .text:00000004 nrk_int_enable
-     /tmp/cc1TvYL3.s:189    .text:00000008 nrk_halt
-     /tmp/cc1TvYL3.s:210    .text:0000000e nrk_init
+     /tmp/cc8oWK58.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc8oWK58.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc8oWK58.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc8oWK58.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc8oWK58.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc8oWK58.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc8oWK58.s:133    .text:00000000 nrk_int_disable
+     /tmp/cc8oWK58.s:161    .text:00000004 nrk_int_enable
+     /tmp/cc8oWK58.s:189    .text:00000008 nrk_halt
+     /tmp/cc8oWK58.s:210    .text:0000000e nrk_init
                             *COM*:00000001 nrk_wakeup_signal
                             *COM*:00000001 nrk_cur_task_prio
                             *COM*:00000002 nrk_cur_task_TCB
@@ -1067,14 +1068,15 @@ DEFINED SYMBOLS
                             *COM*:00000002 _head_node
                             *COM*:00000002 _free_node
                             *COM*:00000080 nrk_idle_task_stk
-     /tmp/cc1TvYL3.s:503    .text:0000019a nrk_start
-     /tmp/cc1TvYL3.s:639    .text:00000242 nrk_TCB_init
+     /tmp/cc8oWK58.s:503    .text:0000019a nrk_start
+     /tmp/cc8oWK58.s:639    .text:00000242 nrk_TCB_init
                             *COM*:00000001 nrk_task_init_cnt
-     /tmp/cc1TvYL3.s:914    .text:000003ec _nrk_timer_tick
-     /tmp/cc1TvYL3.s:937    .text:000003f2 nrk_version
+     /tmp/cc8oWK58.s:914    .text:000003ec _nrk_timer_tick
+     /tmp/cc8oWK58.s:937    .text:000003f2 nrk_version
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000002 nrk_kernel_stk_ptr
                             *COM*:00000008 nrk_system_time
+                            *COM*:00000001 systemceiling
                             *COM*:00000001 _nrk_cpu_state
                             *COM*:00000002 next_next_wakeup
                             *COM*:00000001 error_task

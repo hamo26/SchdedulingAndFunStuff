@@ -893,20 +893,20 @@
  747               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 DS2401.c
-     /tmp/ccoyujnL.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccoyujnL.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccoyujnL.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccoyujnL.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccoyujnL.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccoyujnL.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccoyujnL.s:136    .text:00000000 Maxim_1Wire_ResetPulse
-     /tmp/ccoyujnL.s:256    .text:00000048 Maxim_1Wire_WriteBit
-     /tmp/ccoyujnL.s:349    .text:0000007e Maxim_1Wire_ReadBit
-     /tmp/ccoyujnL.s:435    .text:000000b2 Maxim_1Wire_WriteByte
-     /tmp/ccoyujnL.s:493    .text:000000f0 Maxim_1Wire_ReadByte
-     /tmp/ccoyujnL.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
-     /tmp/ccoyujnL.s:573    .text:0000012c DS2401_init
-     /tmp/ccoyujnL.s:616    .text:0000013e DS2401_getSerialNumber
+     /tmp/cccIfZKP.s:2      *ABS*:0000003f __SREG__
+     /tmp/cccIfZKP.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cccIfZKP.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cccIfZKP.s:5      *ABS*:00000034 __CCP__
+     /tmp/cccIfZKP.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cccIfZKP.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cccIfZKP.s:136    .text:00000000 Maxim_1Wire_ResetPulse
+     /tmp/cccIfZKP.s:256    .text:00000048 Maxim_1Wire_WriteBit
+     /tmp/cccIfZKP.s:349    .text:0000007e Maxim_1Wire_ReadBit
+     /tmp/cccIfZKP.s:435    .text:000000b2 Maxim_1Wire_WriteByte
+     /tmp/cccIfZKP.s:493    .text:000000f0 Maxim_1Wire_ReadByte
+     /tmp/cccIfZKP.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
+     /tmp/cccIfZKP.s:573    .text:0000012c DS2401_init
+     /tmp/cccIfZKP.s:616    .text:0000013e DS2401_getSerialNumber
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

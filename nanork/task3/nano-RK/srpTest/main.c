@@ -44,33 +44,36 @@
 	nrk_task_type task_##n;                                                 \
 	uint32_t task_##n##_period = taskPeriod;                               	\
 	uint32_t task_##n##_execution = taskExecution;                         	\
-	void task_##n##_activity()                                              \
+	void task_##n##_activity(void)                                              \
 	{									\
 	    uint16_t cnt;                                                       \
 	    int8_t v;								\
 	    printf( "My node's address is %d\r\n",NODE_ADDR );			\
-	    printf( "Task##n PID=%d\r\n", nrk_get_pid());			\
+	    printf( "Task%d PID=%d\r\n", n, nrk_get_pid());			\
 	    cnt=0;								\
 	    while(1) {								\
-		printf( "Task##n cnt=%d\r\n", cnt );				\
-		printf("Task##n accessing semaphore\r\n");			\
+		printf( "Task%d has held resource %d times\r\n", n, cnt );	\
+		printf("Task%d attempting to access semaphore\r\n", n);		\
 		v = nrk_sem_pend(my_semaphore);					\
 		if(v==NRK_ERROR) printf("T##n error pend\r\n");			\
-		printf("Task##n holding semaphore\r\n");			\
+		printf("Task%d holding semaphore\r\n", n);			\
 		nrk_wait_until_next_period();					\
 		v = nrk_sem_post(my_semaphore);					\
 		if(v==NRK_ERROR) printf("T%d error post\r\n", n);		\
-		printf("Task##n released semaphore\r\n");			\
+		printf("Task%d released semaphore\r\n", n);			\
 		nrk_wait_until_next_period();					\
-		cnt;								\
+		cnt++;								\
 	    }									\
 	}									\
 
 /*"Instantiate" the task*/
-#define INITIALIZE_TASK(n)						\
+#define INITIALIZE_TASK(n, total_tasks)						\
     task_##n.FirstActivation = TRUE;                                    \
+task_##n.Ptos = (void *) &stack_##n[NRK_APP_STACKSIZE];			\
+task_##n.Pbos = (void *) &stack_##n[0];					\
 task_##n.Type = BASIC_TASK;                                             \
-task_##n.prio = n;							\
+task_##n.task = task_##n##_activity;						\
+task_##n.prio = total_tasks - n;							\
 task_##n.SchType = PREEMPTIVE;                                          \
 task_##n.period.secs = task_##n##_period;                               \
 task_##n.period.nano_secs = 0;                                          \
@@ -78,17 +81,15 @@ task_##n.cpu_reserve.secs = task_##n##_execution;                       \
 task_##n.cpu_reserve.nano_secs = 0;                                     \
 task_##n.offset.secs = 0;                                               \
 task_##n.offset.nano_secs = 0;                                          \
-nrk_task_set_entry_function(&task_##n, task_##n##_activity);            \
-nrk_task_set_stk(&task_##n, stack_##n, NRK_APP_STACKSIZE);              \
 nrk_activate_task(&task_##n)				
 
 //Semaphore shared among resources.
 nrk_sem_t *my_semaphore;
 
 //"Instantiate" tasks.
-TASK(1, 4, 2);
-TASK(2, 7, 3);
-TASK(3, 5, 4);
+TASK(1, 2, 0.5);
+TASK(2, 3, 0.5);
+TASK(3, 5, 0.5);
 
 int main ()
 {
@@ -102,13 +103,13 @@ int main ()
     nrk_time_set(0,0);
 
     //Initialize tasks 
-    INITIALIZE_TASK(1);
-    INITIALIZE_TASK(2);
-    INITIALIZE_TASK(3);
-
+    INITIALIZE_TASK(1, 3);
+    INITIALIZE_TASK(2, 3);
+    INITIALIZE_TASK(3, 3);
+    	
     //instead of passing the ceiling priority, the task with the shortest period that accesses the semaphore is given
     //in this case, task1 which has a period 350*NANOS_PER_MS
-    my_semaphore = nrk_sem_create(1,350*NANOS_PER_MS);
+    my_semaphore = nrk_sem_create(1, 2);
     if(my_semaphore==NULL) nrk_kprintf( PSTR("Error creating sem\r\n" ));
     nrk_start();
 

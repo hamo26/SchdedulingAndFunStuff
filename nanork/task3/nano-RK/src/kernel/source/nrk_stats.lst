@@ -22,18 +22,19 @@
  146               		.comm _nrk_resource_cnt,1,1
  147               		.comm nrk_system_time,8,1
  148               		.comm nrk_sem_list,15,1
- 149               		.comm error_task,1,1
- 150               		.comm error_num,1,1
- 169               	.Letext0:
- 170               	.global __do_clear_bss
+ 149               		.comm systemceiling,1,1
+ 150               		.comm error_task,1,1
+ 151               		.comm error_num,1,1
+ 171               	.Letext0:
+ 172               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_stats.c
-     /tmp/cc5QhDOa.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc5QhDOa.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc5QhDOa.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc5QhDOa.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc5QhDOa.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc5QhDOa.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccXnZBgd.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccXnZBgd.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccXnZBgd.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccXnZBgd.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccXnZBgd.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccXnZBgd.s:7      *ABS*:00000001 __zero_reg__
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr
@@ -49,6 +50,7 @@ DEFINED SYMBOLS
                             *COM*:00000001 _nrk_resource_cnt
                             *COM*:00000008 nrk_system_time
                             *COM*:0000000f nrk_sem_list
+                            *COM*:00000001 systemceiling
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num
 

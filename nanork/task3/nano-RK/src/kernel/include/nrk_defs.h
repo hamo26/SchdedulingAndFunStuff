@@ -78,7 +78,8 @@ extern NRK_STK	nrk_idle_task_stk[NRK_TASK_IDLE_STK_SIZE];  /* Idle task stack   
 	extern NRK_STK  nrk_kernel_stk[NRK_KERNEL_STACKSIZE];
 #endif
 extern NRK_STK *nrk_kernel_stk_ptr;
-extern int systemceiling;
+uint8_t systemceiling;
 
+#define SRP
 
 #endif

@@ -1099,26 +1099,27 @@
  915               		.comm _nrk_resource_cnt,1,1
  916               		.comm nrk_system_time,8,1
  917               		.comm nrk_sem_list,15,1
- 918               		.comm error_task,1,1
- 919               		.comm error_num,1,1
- 920               		.comm _nrk_cpu_state,1,1
- 921               		.comm next_next_wakeup,2,1
- 922               		.comm _nrk_prev_timer_val,1,1
- 923               		.comm _nrk_time_trigger,1,1
- 924               		.comm app_timer0_callback,2,1
- 925               		.comm app_timer0_prescale,1,1
- 926               		.comm t,1,1
- 952               	.Letext0:
- 953               	.global __do_clear_bss
+ 918               		.comm systemceiling,1,1
+ 919               		.comm error_task,1,1
+ 920               		.comm error_num,1,1
+ 921               		.comm _nrk_cpu_state,1,1
+ 922               		.comm next_next_wakeup,2,1
+ 923               		.comm _nrk_prev_timer_val,1,1
+ 924               		.comm _nrk_time_trigger,1,1
+ 925               		.comm app_timer0_callback,2,1
+ 926               		.comm app_timer0_prescale,1,1
+ 927               		.comm t,1,1
+ 954               	.Letext0:
+ 955               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_scheduler.c
-     /tmp/ccXlaE5W.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccXlaE5W.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccXlaE5W.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccXlaE5W.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccXlaE5W.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccXlaE5W.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccXlaE5W.s:140    .text:00000000 _nrk_scheduler
+     /tmp/cc3ifv91.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc3ifv91.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc3ifv91.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc3ifv91.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc3ifv91.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc3ifv91.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc3ifv91.s:140    .text:00000000 _nrk_scheduler
                             *COM*:00000001 _nrk_prev_timer_val
                             *COM*:00000008 nrk_system_time
                             *COM*:00000002 nrk_cur_task_TCB
@@ -1136,6 +1137,7 @@ DEFINED SYMBOLS
                             *COM*:00000002 _head_node
                             *COM*:00000001 _nrk_resource_cnt
                             *COM*:0000000f nrk_sem_list
+                            *COM*:00000001 systemceiling
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num
                             *COM*:00000002 next_next_wakeup

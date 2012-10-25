@@ -512,30 +512,31 @@
  535               		.comm error_task,1,1
  536               		.comm error_num,1,1
  537               		.comm nrk_sem_list,15,1
- 538               		.comm _nrk_prev_timer_val,1,1
- 539               		.comm _nrk_time_trigger,1,1
- 540               		.comm app_timer0_callback,2,1
- 541               		.comm app_timer0_prescale,1,1
- 564               	.Letext0:
- 565               	.global __do_clear_bss
+ 538               		.comm systemceiling,1,1
+ 539               		.comm _nrk_prev_timer_val,1,1
+ 540               		.comm _nrk_time_trigger,1,1
+ 541               		.comm app_timer0_callback,2,1
+ 542               		.comm app_timer0_prescale,1,1
+ 566               	.Letext0:
+ 567               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_cpu.c
-     /tmp/ccA3PWOi.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccA3PWOi.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccA3PWOi.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccA3PWOi.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccA3PWOi.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccA3PWOi.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccA3PWOi.s:138    .text:00000000 nrk_battery_save
-     /tmp/ccA3PWOi.s:160    .text:00000002 nrk_task_set_entry_function
-     /tmp/ccA3PWOi.s:185    .text:0000000a nrk_sleep
-     /tmp/ccA3PWOi.s:225    .text:00000022 nrk_idle
-     /tmp/ccA3PWOi.s:265    .text:00000038 nrk_task_stk_init
-     /tmp/ccA3PWOi.s:374    .text:0000008e nrk_task_set_stk
-     /tmp/ccA3PWOi.s:432    .text:000000cc nrk_stack_pointer_restore
-     /tmp/ccA3PWOi.s:460    .text:000000da nrk_stack_pointer_init
+     /tmp/ccBjYVop.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccBjYVop.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccBjYVop.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccBjYVop.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccBjYVop.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccBjYVop.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccBjYVop.s:138    .text:00000000 nrk_battery_save
+     /tmp/ccBjYVop.s:160    .text:00000002 nrk_task_set_entry_function
+     /tmp/ccBjYVop.s:185    .text:0000000a nrk_sleep
+     /tmp/ccBjYVop.s:225    .text:00000022 nrk_idle
+     /tmp/ccBjYVop.s:265    .text:00000038 nrk_task_stk_init
+     /tmp/ccBjYVop.s:374    .text:0000008e nrk_task_set_stk
+     /tmp/ccBjYVop.s:432    .text:000000cc nrk_stack_pointer_restore
+     /tmp/ccBjYVop.s:460    .text:000000da nrk_stack_pointer_init
                             *COM*:00000002 nrk_kernel_stk_ptr
-     /tmp/ccA3PWOi.s:498    .text:000000f8 nrk_target_start
+     /tmp/ccBjYVop.s:498    .text:000000f8 nrk_target_start
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:000000a5 nrk_task_TCB
@@ -552,6 +553,7 @@ DEFINED SYMBOLS
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num
                             *COM*:0000000f nrk_sem_list
+                            *COM*:00000001 systemceiling
                             *COM*:00000001 _nrk_prev_timer_val
                             *COM*:00000001 _nrk_time_trigger
                             *COM*:00000002 app_timer0_callback
