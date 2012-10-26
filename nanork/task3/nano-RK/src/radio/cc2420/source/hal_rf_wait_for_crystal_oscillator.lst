@@ -106,13 +106,13 @@
  177               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 hal_rf_wait_for_crystal_oscillator.c
-     /tmp/cccnW6Mh.s:2      *ABS*:0000003f __SREG__
-     /tmp/cccnW6Mh.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cccnW6Mh.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cccnW6Mh.s:5      *ABS*:00000034 __CCP__
-     /tmp/cccnW6Mh.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cccnW6Mh.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cccnW6Mh.s:119    .text:00000000 halRfWaitForCrystalOscillator
+     /tmp/ccvBs1KA.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccvBs1KA.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccvBs1KA.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccvBs1KA.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccvBs1KA.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccvBs1KA.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccvBs1KA.s:119    .text:00000000 halRfWaitForCrystalOscillator
                             *COM*:00000004 _nrk_signal_list
 
 UNDEFINED SYMBOLS

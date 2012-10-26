@@ -60,7 +60,7 @@
 		nrk_wait_until_next_period();					\
 		v = nrk_sem_post(my_semaphore);					\
 		if(v==NRK_ERROR) printf("T%d error post\r\n", n);		\
-		printf("Task%d released semaphore\r\n", n);			\
+		printf("Task%d released semaphore\r\n\n", n);			\
 		nrk_wait_until_next_period();					\
 		cnt++;								\
 	    }									\
@@ -72,9 +72,9 @@
 task_##n.Ptos = (void *) &stack_##n[NRK_APP_STACKSIZE];			\
 task_##n.Pbos = (void *) &stack_##n[0];					\
 task_##n.Type = BASIC_TASK;                                             \
-task_##n.task = task_##n##_activity;						\
-task_##n.prio = total_tasks - n;							\
+task_##n.task = task_##n##_activity;					\
 task_##n.SchType = PREEMPTIVE;                                          \
+task_##n.prio = 1;							\
 task_##n.period.secs = task_##n##_period;                               \
 task_##n.period.nano_secs = 0;                                          \
 task_##n.cpu_reserve.secs = task_##n##_execution;                       \
