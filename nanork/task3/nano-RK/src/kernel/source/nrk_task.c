@@ -82,15 +82,15 @@ void nrk_add_to_readyQ (int8_t task_ID)
 
 		while (NextNode != NULL)
 		{
-#ifdef NRK_EDF
+//#ifdef NRK_EDF
 			//
 			//printf("%d\n",&NextNode->task_ID);
 			//printf("task id: %d", &task_ID);
 
-			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
-				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period {break;}	//Small absolute deadline = larger preemption level
+//			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
+//				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period {break;}	//Small absolute deadline = larger preemption level
 
-#elseif SRP
+#ifdef SRP
 			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
 				(nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period &&
 				nrk_task_TCB[task_ID].next_period < systemceiling)) {break;}	//Small absolute deadline = larger preemption level
