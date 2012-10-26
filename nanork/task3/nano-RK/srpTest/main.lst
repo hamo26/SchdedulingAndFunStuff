@@ -1076,30 +1076,30 @@
  1131               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccOdHNpq.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccOdHNpq.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccOdHNpq.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccOdHNpq.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccOdHNpq.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccOdHNpq.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccOdHNpq.s:158    .text:00000000 task_3_activity
+     /tmp/ccPaRGR3.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccPaRGR3.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccPaRGR3.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccPaRGR3.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccPaRGR3.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccPaRGR3.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccPaRGR3.s:158    .text:00000000 task_3_activity
                             *COM*:00000002 my_semaphore
-     /tmp/ccOdHNpq.s:374    .text:0000018e task_2_activity
-     /tmp/ccOdHNpq.s:590    .text:0000031c task_1_activity
-     /tmp/ccOdHNpq.s:810    .text:000004aa main
+     /tmp/ccPaRGR3.s:374    .text:0000018e task_2_activity
+     /tmp/ccPaRGR3.s:590    .text:0000031c task_1_activity
+     /tmp/ccPaRGR3.s:810    .text:000004aa main
                             *COM*:00000023 task_1
                             *COM*:00000080 stack_1
-     /tmp/ccOdHNpq.s:1040   .data:000000e0 task_1_period
-     /tmp/ccOdHNpq.s:1050   .bss:00000000 task_1_execution
+     /tmp/ccPaRGR3.s:1040   .data:000000e0 task_1_period
+     /tmp/ccPaRGR3.s:1050   .bss:00000000 task_1_execution
                             *COM*:00000023 task_2
                             *COM*:00000080 stack_2
-     /tmp/ccOdHNpq.s:1056   .data:000000e4 task_2_period
-     /tmp/ccOdHNpq.s:1066   .bss:00000004 task_2_execution
+     /tmp/ccPaRGR3.s:1056   .data:000000e4 task_2_period
+     /tmp/ccPaRGR3.s:1066   .bss:00000004 task_2_execution
                             *COM*:00000023 task_3
                             *COM*:00000080 stack_3
-     /tmp/ccOdHNpq.s:1072   .data:000000e8 task_3_period
-     /tmp/ccOdHNpq.s:1082   .bss:00000008 task_3_execution
-     /tmp/ccOdHNpq.s:1103   .progmem.data:00000000 __c.2130
+     /tmp/ccPaRGR3.s:1072   .data:000000e8 task_3_period
+     /tmp/ccPaRGR3.s:1082   .bss:00000008 task_3_execution
+     /tmp/ccPaRGR3.s:1103   .progmem.data:00000000 __c.2130
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

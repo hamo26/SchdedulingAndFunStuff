@@ -5089,60 +5089,60 @@
  5133               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 basic_rf.c
-     /tmp/ccMThsUF.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccMThsUF.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccMThsUF.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccMThsUF.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccMThsUF.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccMThsUF.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccMThsUF.s:138    .text:00000000 cc259x_rx
-     /tmp/ccMThsUF.s:166    .text:00000012 cc259x_tx
-     /tmp/ccMThsUF.s:194    .text:00000024 rf_power_down
-     /tmp/ccMThsUF.s:256    .text:00000042 rf_power_up
-     /tmp/ccMThsUF.s:310    .text:0000005c rf_security_last_pkt_status
+     /tmp/ccrIbsZg.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccrIbsZg.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccrIbsZg.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccrIbsZg.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccrIbsZg.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccrIbsZg.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccrIbsZg.s:138    .text:00000000 cc259x_rx
+     /tmp/ccrIbsZg.s:166    .text:00000012 cc259x_tx
+     /tmp/ccrIbsZg.s:194    .text:00000024 rf_power_down
+     /tmp/ccrIbsZg.s:256    .text:00000042 rf_power_up
+     /tmp/ccrIbsZg.s:310    .text:0000005c rf_security_last_pkt_status
                             *COM*:00000001 last_pkt_encrypted
-     /tmp/ccMThsUF.s:332    .text:00000062 rf_security_set_ctr_counter
+     /tmp/ccrIbsZg.s:332    .text:00000062 rf_security_set_ctr_counter
                             *COM*:00000004 tx_ctr
-     /tmp/ccMThsUF.s:453    .text:000000d6 rf_security_set_key
-     /tmp/ccMThsUF.s:810    .text:0000026c rf_security_enable
+     /tmp/ccrIbsZg.s:453    .text:000000d6 rf_security_set_key
+     /tmp/ccrIbsZg.s:810    .text:0000026c rf_security_enable
                             *COM*:00000001 security_enable
-     /tmp/ccMThsUF.s:896    .text:000002ac rf_security_disable
-     /tmp/ccMThsUF.s:950    .text:000002ce rf_get_sem
+     /tmp/ccrIbsZg.s:896    .text:000002ac rf_security_disable
+     /tmp/ccrIbsZg.s:950    .text:000002ce rf_get_sem
                             *COM*:00000002 radio_sem
-     /tmp/ccMThsUF.s:973    .text:000002d8 rf_tx_power
-     /tmp/ccMThsUF.s:1033   .text:000002fc rf_set_channel
-     /tmp/ccMThsUF.s:1056   .text:00000302 rf_addr_decode_enable
+     /tmp/ccrIbsZg.s:973    .text:000002d8 rf_tx_power
+     /tmp/ccrIbsZg.s:1033   .text:000002fc rf_set_channel
+     /tmp/ccrIbsZg.s:1056   .text:00000302 rf_addr_decode_enable
                             *COM*:00000002 mdmctrl0
-     /tmp/ccMThsUF.s:1114   .text:00000336 rf_addr_decode_disable
-     /tmp/ccMThsUF.s:1172   .text:0000036a rf_auto_ack_enable
+     /tmp/ccrIbsZg.s:1114   .text:00000336 rf_addr_decode_disable
+     /tmp/ccrIbsZg.s:1172   .text:0000036a rf_auto_ack_enable
                             *COM*:00000001 auto_ack_enable
-     /tmp/ccMThsUF.s:1234   .text:000003a4 rf_auto_ack_disable
-     /tmp/ccMThsUF.s:1296   .text:000003dc rf_addr_decode_set_my_mac
+     /tmp/ccrIbsZg.s:1234   .text:000003a4 rf_auto_ack_disable
+     /tmp/ccrIbsZg.s:1296   .text:000003dc rf_addr_decode_set_my_mac
                             *COM*:00000009 rfSettings
-     /tmp/ccMThsUF.s:1388   .text:00000436 rf_set_rx
-     /tmp/ccMThsUF.s:1451   .text:00000468 rf_init
-     /tmp/ccMThsUF.s:1806   .text:000005d6 rf_rx_on
+     /tmp/ccrIbsZg.s:1388   .text:00000436 rf_set_rx
+     /tmp/ccrIbsZg.s:1451   .text:00000468 rf_init
+     /tmp/ccrIbsZg.s:1806   .text:000005d6 rf_rx_on
                             *COM*:00000001 rx_ready
-     /tmp/ccMThsUF.s:1859   .text:000005fa rf_polling_rx_on
-     /tmp/ccMThsUF.s:1912   .text:0000061e rf_rx_off
-     /tmp/ccMThsUF.s:1954   .text:00000634 rf_tx_tdma_packet
-     /tmp/ccMThsUF.s:2659   .text:000008e0 rf_tx_packet
-     /tmp/ccMThsUF.s:3440   .text:00000bc2 rf_busy
-     /tmp/ccMThsUF.s:3465   .text:00000bca rf_rx_check_fifop
-     /tmp/ccMThsUF.s:3490   .text:00000bd2 rf_rx_check_sfd
-     /tmp/ccMThsUF.s:3515   .text:00000bda rf_polling_rx_packet
+     /tmp/ccrIbsZg.s:1859   .text:000005fa rf_polling_rx_on
+     /tmp/ccrIbsZg.s:1912   .text:0000061e rf_rx_off
+     /tmp/ccrIbsZg.s:1954   .text:00000634 rf_tx_tdma_packet
+     /tmp/ccrIbsZg.s:2659   .text:000008e0 rf_tx_packet
+     /tmp/ccrIbsZg.s:3440   .text:00000bc2 rf_busy
+     /tmp/ccrIbsZg.s:3465   .text:00000bca rf_rx_check_fifop
+     /tmp/ccrIbsZg.s:3490   .text:00000bd2 rf_rx_check_sfd
+     /tmp/ccrIbsZg.s:3515   .text:00000bda rf_polling_rx_packet
                             *COM*:00000004 rx_ctr
-     /tmp/ccMThsUF.s:4430   .text:00000f88 rf_rx_packet
-     /tmp/ccMThsUF.s:4470   .text:00000f9e rf_flush_rx_fifo
-     /tmp/ccMThsUF.s:4517   .text:00000fb8 rf_set_cca_thresh
-     /tmp/ccMThsUF.s:4577   .text:00000fde rf_test_mode
-     /tmp/ccMThsUF.s:4674   .text:00001026 rf_data_mode
-     /tmp/ccMThsUF.s:4769   .text:0000106a rf_rx_set_serial
-     /tmp/ccMThsUF.s:4836   .text:00001098 rf_tx_set_serial
-     /tmp/ccMThsUF.s:4891   .text:000010ba rf_set_preamble_length
-     /tmp/ccMThsUF.s:4959   .text:000010f8 rf_set_cca_mode
-     /tmp/ccMThsUF.s:5030   .text:0000113e rf_carrier_on
-     /tmp/ccMThsUF.s:5063   .text:0000114c rf_carrier_off
+     /tmp/ccrIbsZg.s:4430   .text:00000f88 rf_rx_packet
+     /tmp/ccrIbsZg.s:4470   .text:00000f9e rf_flush_rx_fifo
+     /tmp/ccrIbsZg.s:4517   .text:00000fb8 rf_set_cca_thresh
+     /tmp/ccrIbsZg.s:4577   .text:00000fde rf_test_mode
+     /tmp/ccrIbsZg.s:4674   .text:00001026 rf_data_mode
+     /tmp/ccrIbsZg.s:4769   .text:0000106a rf_rx_set_serial
+     /tmp/ccrIbsZg.s:4836   .text:00001098 rf_tx_set_serial
+     /tmp/ccrIbsZg.s:4891   .text:000010ba rf_set_preamble_length
+     /tmp/ccrIbsZg.s:4959   .text:000010f8 rf_set_cca_mode
+     /tmp/ccrIbsZg.s:5030   .text:0000113e rf_carrier_on
+     /tmp/ccrIbsZg.s:5063   .text:0000114c rf_carrier_off
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

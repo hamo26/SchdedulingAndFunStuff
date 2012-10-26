@@ -239,7 +239,6 @@ int8_t nrk_sem_pend(nrk_sem_t *rsrc )
     //systemceiling =  nrk_cur_task_TCB->period;
     systemceiling = 64;
     for (sem_ID = 0; sem_ID < NRK_MAX_RESOURCE_CNT; sem_ID++){
-
 	if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
 	    systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
     }

@@ -1195,41 +1195,41 @@
  1181               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_timer.c
-     /tmp/ccExkouz.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccExkouz.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccExkouz.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccExkouz.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccExkouz.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccExkouz.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccExkouz.s:139    .text:00000000 nrk_spin_wait_us
-     /tmp/ccExkouz.s:190    .text:0000000e _nrk_high_speed_timer_stop
-     /tmp/ccExkouz.s:213    .text:00000012 _nrk_high_speed_timer_start
-     /tmp/ccExkouz.s:237    .text:00000018 _nrk_high_speed_timer_reset
-     /tmp/ccExkouz.s:266    .text:00000024 _nrk_high_speed_timer_get
-     /tmp/ccExkouz.s:311    .text:00000046 nrk_high_speed_timer_wait
-     /tmp/ccExkouz.s:403    .text:000000b6 _nrk_os_timer_set
-     /tmp/ccExkouz.s:426    .text:000000ba _nrk_os_timer_stop
-     /tmp/ccExkouz.s:459    .text:000000ca _nrk_os_timer_start
-     /tmp/ccExkouz.s:488    .text:000000d6 _nrk_os_timer_reset
+     /tmp/cc1tXGQ0.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc1tXGQ0.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc1tXGQ0.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc1tXGQ0.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc1tXGQ0.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc1tXGQ0.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc1tXGQ0.s:139    .text:00000000 nrk_spin_wait_us
+     /tmp/cc1tXGQ0.s:190    .text:0000000e _nrk_high_speed_timer_stop
+     /tmp/cc1tXGQ0.s:213    .text:00000012 _nrk_high_speed_timer_start
+     /tmp/cc1tXGQ0.s:237    .text:00000018 _nrk_high_speed_timer_reset
+     /tmp/cc1tXGQ0.s:266    .text:00000024 _nrk_high_speed_timer_get
+     /tmp/cc1tXGQ0.s:311    .text:00000046 nrk_high_speed_timer_wait
+     /tmp/cc1tXGQ0.s:403    .text:000000b6 _nrk_os_timer_set
+     /tmp/cc1tXGQ0.s:426    .text:000000ba _nrk_os_timer_stop
+     /tmp/cc1tXGQ0.s:459    .text:000000ca _nrk_os_timer_start
+     /tmp/cc1tXGQ0.s:488    .text:000000d6 _nrk_os_timer_reset
                             *COM*:00000001 _nrk_time_trigger
                             *COM*:00000001 _nrk_prev_timer_val
-     /tmp/ccExkouz.s:522    .text:000000e8 _nrk_setup_timer
-     /tmp/ccExkouz.s:591    .text:00000120 _nrk_precision_os_timer_reset
-     /tmp/ccExkouz.s:611    .text:00000122 _nrk_get_next_wakeup
-     /tmp/ccExkouz.s:636    .text:00000128 _nrk_set_next_wakeup
-     /tmp/ccExkouz.s:660    .text:0000012e _nrk_os_timer_get
-     /tmp/ccExkouz.s:683    .text:00000132 __vector_default
-     /tmp/ccExkouz.s:745    .text:00000186 __vector_16
-     /tmp/ccExkouz.s:764    .text:00000186 __vector_15
+     /tmp/cc1tXGQ0.s:522    .text:000000e8 _nrk_setup_timer
+     /tmp/cc1tXGQ0.s:591    .text:00000120 _nrk_precision_os_timer_reset
+     /tmp/cc1tXGQ0.s:611    .text:00000122 _nrk_get_next_wakeup
+     /tmp/cc1tXGQ0.s:636    .text:00000128 _nrk_set_next_wakeup
+     /tmp/cc1tXGQ0.s:660    .text:0000012e _nrk_os_timer_get
+     /tmp/cc1tXGQ0.s:683    .text:00000132 __vector_default
+     /tmp/cc1tXGQ0.s:745    .text:00000186 __vector_16
+     /tmp/cc1tXGQ0.s:764    .text:00000186 __vector_15
                             *COM*:00000002 nrk_kernel_stk_ptr
-     /tmp/ccExkouz.s:838    .text:000001ec nrk_timer_int_stop
-     /tmp/ccExkouz.s:870    .text:000001fa nrk_timer_int_reset
-     /tmp/ccExkouz.s:905    .text:00000208 nrk_timer_int_read
-     /tmp/ccExkouz.s:942    .text:0000021a nrk_timer_int_start
-     /tmp/ccExkouz.s:981    .text:0000022c nrk_timer_int_configure
+     /tmp/cc1tXGQ0.s:838    .text:000001ec nrk_timer_int_stop
+     /tmp/cc1tXGQ0.s:870    .text:000001fa nrk_timer_int_reset
+     /tmp/cc1tXGQ0.s:905    .text:00000208 nrk_timer_int_read
+     /tmp/cc1tXGQ0.s:942    .text:0000021a nrk_timer_int_start
+     /tmp/cc1tXGQ0.s:981    .text:0000022c nrk_timer_int_configure
                             *COM*:00000001 app_timer0_prescale
                             *COM*:00000002 app_timer0_callback
-     /tmp/ccExkouz.s:1090   .text:0000028e __vector_9
+     /tmp/cc1tXGQ0.s:1090   .text:0000028e __vector_9
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000001 error_task

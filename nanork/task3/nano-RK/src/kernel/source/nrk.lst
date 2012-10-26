@@ -1046,16 +1046,16 @@
  1000               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk.c
-     /tmp/ccA3Kepz.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccA3Kepz.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccA3Kepz.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccA3Kepz.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccA3Kepz.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccA3Kepz.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccA3Kepz.s:133    .text:00000000 nrk_int_disable
-     /tmp/ccA3Kepz.s:161    .text:00000004 nrk_int_enable
-     /tmp/ccA3Kepz.s:189    .text:00000008 nrk_halt
-     /tmp/ccA3Kepz.s:210    .text:0000000e nrk_init
+     /tmp/ccx8rYX1.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccx8rYX1.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccx8rYX1.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccx8rYX1.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccx8rYX1.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccx8rYX1.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccx8rYX1.s:133    .text:00000000 nrk_int_disable
+     /tmp/ccx8rYX1.s:161    .text:00000004 nrk_int_enable
+     /tmp/ccx8rYX1.s:189    .text:00000008 nrk_halt
+     /tmp/ccx8rYX1.s:210    .text:0000000e nrk_init
                             *COM*:00000001 nrk_wakeup_signal
                             *COM*:00000001 nrk_cur_task_prio
                             *COM*:00000002 nrk_cur_task_TCB
@@ -1068,11 +1068,11 @@ DEFINED SYMBOLS
                             *COM*:00000002 _head_node
                             *COM*:00000002 _free_node
                             *COM*:00000080 nrk_idle_task_stk
-     /tmp/ccA3Kepz.s:503    .text:0000019a nrk_start
-     /tmp/ccA3Kepz.s:639    .text:00000242 nrk_TCB_init
+     /tmp/ccx8rYX1.s:503    .text:0000019a nrk_start
+     /tmp/ccx8rYX1.s:639    .text:00000242 nrk_TCB_init
                             *COM*:00000001 nrk_task_init_cnt
-     /tmp/ccA3Kepz.s:914    .text:000003ec _nrk_timer_tick
-     /tmp/ccA3Kepz.s:937    .text:000003f2 nrk_version
+     /tmp/ccx8rYX1.s:914    .text:000003ec _nrk_timer_tick
+     /tmp/ccx8rYX1.s:937    .text:000003f2 nrk_version
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000002 nrk_kernel_stk_ptr
                             *COM*:00000008 nrk_system_time

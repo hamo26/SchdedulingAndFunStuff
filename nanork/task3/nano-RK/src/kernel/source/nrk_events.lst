@@ -893,87 +893,86 @@
  239:..//src/kernel/source/nrk_events.c ****     //systemceiling =  nrk_cur_task_TCB->period;
  240:..//src/kernel/source/nrk_events.c ****     systemceiling = 64;
  241:..//src/kernel/source/nrk_events.c ****     for (sem_ID = 0; sem_ID < NRK_MAX_RESOURCE_CNT; sem_ID++){
- 242:..//src/kernel/source/nrk_events.c **** 
- 243:..//src/kernel/source/nrk_events.c **** 	if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
- 244:..//src/kernel/source/nrk_events.c **** 	    systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
- 245:..//src/kernel/source/nrk_events.c ****     }
+ 242:..//src/kernel/source/nrk_events.c **** 	if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
+ 243:..//src/kernel/source/nrk_events.c **** 	    systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
+ 244:..//src/kernel/source/nrk_events.c ****     }
+ 245:..//src/kernel/source/nrk_events.c **** 
  246:..//src/kernel/source/nrk_events.c **** 
- 247:..//src/kernel/source/nrk_events.c **** 
- 248:..//src/kernel/source/nrk_events.c ****     nrk_cur_task_TCB->task_prio_ceil=nrk_sem_list[id].resource_ceiling;
- 249:..//src/kernel/source/nrk_events.c ****     nrk_cur_task_TCB->elevated_prio_flag=1;
- 250:..//src/kernel/source/nrk_events.c ****     nrk_int_enable();
- 251:..//src/kernel/source/nrk_events.c **** 
- 252:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
- 253:..//src/kernel/source/nrk_events.c **** }
+ 247:..//src/kernel/source/nrk_events.c ****     nrk_cur_task_TCB->task_prio_ceil=nrk_sem_list[id].resource_ceiling;
+ 248:..//src/kernel/source/nrk_events.c ****     nrk_cur_task_TCB->elevated_prio_flag=1;
+ 249:..//src/kernel/source/nrk_events.c ****     nrk_int_enable();
+ 250:..//src/kernel/source/nrk_events.c **** 
+ 251:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
+ 252:..//src/kernel/source/nrk_events.c **** }
+ 253:..//src/kernel/source/nrk_events.c **** 
  254:..//src/kernel/source/nrk_events.c **** 
  255:..//src/kernel/source/nrk_events.c **** 
- 256:..//src/kernel/source/nrk_events.c **** 
- 257:..//src/kernel/source/nrk_events.c **** int8_t nrk_sem_post(nrk_sem_t *rsrc)
- 258:..//src/kernel/source/nrk_events.c **** {
- 259:..//src/kernel/source/nrk_events.c ****     int8_t id=nrk_get_resource_index(rsrc);	
- 260:..//src/kernel/source/nrk_events.c ****     int8_t task_ID;
- 261:..//src/kernel/source/nrk_events.c ****     int8_t sem_ID;
- 262:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
- 263:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
- 264:..//src/kernel/source/nrk_events.c **** 
- 265:..//src/kernel/source/nrk_events.c ****     if(nrk_sem_list[id].value<nrk_sem_list[id].count)
- 266:..//src/kernel/source/nrk_events.c ****     {
- 267:..//src/kernel/source/nrk_events.c **** 	// Signal RSRC Event		
- 268:..//src/kernel/source/nrk_events.c **** 	nrk_int_disable();
- 269:..//src/kernel/source/nrk_events.c **** 
- 270:..//src/kernel/source/nrk_events.c **** 	nrk_sem_list[id].value++;
- 271:..//src/kernel/source/nrk_events.c **** 	nrk_cur_task_TCB->elevated_prio_flag=0;
- 272:..//src/kernel/source/nrk_events.c **** 
- 273:..//src/kernel/source/nrk_events.c **** 	// Increasing value increases availability of the semaphore
- 274:..//src/kernel/source/nrk_events.c **** 	// Reset system ceiling to lowest priority and iterate through the global semaphore array nrk_sem_
- 275:..//src/kernel/source/nrk_events.c **** 	systemceiling = 64;
- 276:..//src/kernel/source/nrk_events.c **** 	for (sem_ID = 0; sem_ID < NRK_MAX_RESOURCE_CNT; sem_ID++){
- 277:..//src/kernel/source/nrk_events.c **** 
- 278:..//src/kernel/source/nrk_events.c **** 	    if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
- 279:..//src/kernel/source/nrk_events.c **** 		systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
- 280:..//src/kernel/source/nrk_events.c **** 	}
- 281:..//src/kernel/source/nrk_events.c **** 
- 282:..//src/kernel/source/nrk_events.c **** 	for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++){
- 283:..//src/kernel/source/nrk_events.c **** 	    if(nrk_task_TCB[task_ID].event_suspend==RSRC_EVENT_SUSPENDED)
- 284:..//src/kernel/source/nrk_events.c **** 		if((nrk_task_TCB[task_ID].active_signal_mask == id))
- 285:..//src/kernel/source/nrk_events.c **** 		{
- 286:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].task_state=SUSPENDED;
- 287:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].next_wakeup=0;
- 288:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].event_suspend=0;
- 289:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].active_signal_mask=0;
- 290:..//src/kernel/source/nrk_events.c **** 		}   
- 291:..//src/kernel/source/nrk_events.c **** 
- 292:..//src/kernel/source/nrk_events.c **** 	}
- 293:..//src/kernel/source/nrk_events.c **** 	nrk_int_enable();
- 294:..//src/kernel/source/nrk_events.c ****     }
- 295:..//src/kernel/source/nrk_events.c **** 
- 296:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
- 297:..//src/kernel/source/nrk_events.c **** }
- 298:..//src/kernel/source/nrk_events.c **** 
- 299:..//src/kernel/source/nrk_events.c **** int8_t  nrk_sem_delete(nrk_sem_t *rsrc)
- 300:..//src/kernel/source/nrk_events.c **** {
- 301:..//src/kernel/source/nrk_events.c ****     int8_t id=nrk_get_resource_index(rsrc);	
- 302:..//src/kernel/source/nrk_events.c ****     int8_t task_ID;
- 303:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
- 304:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
- 305:..//src/kernel/source/nrk_events.c **** 
- 306:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].count=-1;
- 307:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].value=-1;
- 308:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].resource_ceiling=-1;
- 309:..//src/kernel/source/nrk_events.c ****     _nrk_resource_cnt--;
- 310:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
- 311:..//src/kernel/source/nrk_events.c **** }
- 312:..//src/kernel/source/nrk_events.c **** 
- 313:..//src/kernel/source/nrk_events.c **** nrk_sem_t* nrk_sem_create(uint8_t count,uint8_t ceiling_prio)
- 314:..//src/kernel/source/nrk_events.c **** {
+ 256:..//src/kernel/source/nrk_events.c **** int8_t nrk_sem_post(nrk_sem_t *rsrc)
+ 257:..//src/kernel/source/nrk_events.c **** {
+ 258:..//src/kernel/source/nrk_events.c ****     int8_t id=nrk_get_resource_index(rsrc);	
+ 259:..//src/kernel/source/nrk_events.c ****     int8_t task_ID;
+ 260:..//src/kernel/source/nrk_events.c ****     int8_t sem_ID;
+ 261:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
+ 262:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
+ 263:..//src/kernel/source/nrk_events.c **** 
+ 264:..//src/kernel/source/nrk_events.c ****     if(nrk_sem_list[id].value<nrk_sem_list[id].count)
+ 265:..//src/kernel/source/nrk_events.c ****     {
+ 266:..//src/kernel/source/nrk_events.c **** 	// Signal RSRC Event		
+ 267:..//src/kernel/source/nrk_events.c **** 	nrk_int_disable();
+ 268:..//src/kernel/source/nrk_events.c **** 
+ 269:..//src/kernel/source/nrk_events.c **** 	nrk_sem_list[id].value++;
+ 270:..//src/kernel/source/nrk_events.c **** 	nrk_cur_task_TCB->elevated_prio_flag=0;
+ 271:..//src/kernel/source/nrk_events.c **** 
+ 272:..//src/kernel/source/nrk_events.c **** 	// Increasing value increases availability of the semaphore
+ 273:..//src/kernel/source/nrk_events.c **** 	// Reset system ceiling to lowest priority and iterate through the global semaphore array nrk_sem_
+ 274:..//src/kernel/source/nrk_events.c **** 	systemceiling = 64;
+ 275:..//src/kernel/source/nrk_events.c **** 	for (sem_ID = 0; sem_ID < NRK_MAX_RESOURCE_CNT; sem_ID++){
+ 276:..//src/kernel/source/nrk_events.c **** 
+ 277:..//src/kernel/source/nrk_events.c **** 	    if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
+ 278:..//src/kernel/source/nrk_events.c **** 		systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
+ 279:..//src/kernel/source/nrk_events.c **** 	}
+ 280:..//src/kernel/source/nrk_events.c **** 
+ 281:..//src/kernel/source/nrk_events.c **** 	for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++){
+ 282:..//src/kernel/source/nrk_events.c **** 	    if(nrk_task_TCB[task_ID].event_suspend==RSRC_EVENT_SUSPENDED)
+ 283:..//src/kernel/source/nrk_events.c **** 		if((nrk_task_TCB[task_ID].active_signal_mask == id))
+ 284:..//src/kernel/source/nrk_events.c **** 		{
+ 285:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].task_state=SUSPENDED;
+ 286:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].next_wakeup=0;
+ 287:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].event_suspend=0;
+ 288:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].active_signal_mask=0;
+ 289:..//src/kernel/source/nrk_events.c **** 		}   
+ 290:..//src/kernel/source/nrk_events.c **** 
+ 291:..//src/kernel/source/nrk_events.c **** 	}
+ 292:..//src/kernel/source/nrk_events.c **** 	nrk_int_enable();
+ 293:..//src/kernel/source/nrk_events.c ****     }
+ 294:..//src/kernel/source/nrk_events.c **** 
+ 295:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
+ 296:..//src/kernel/source/nrk_events.c **** }
+ 297:..//src/kernel/source/nrk_events.c **** 
+ 298:..//src/kernel/source/nrk_events.c **** int8_t  nrk_sem_delete(nrk_sem_t *rsrc)
+ 299:..//src/kernel/source/nrk_events.c **** {
+ 300:..//src/kernel/source/nrk_events.c ****     int8_t id=nrk_get_resource_index(rsrc);	
+ 301:..//src/kernel/source/nrk_events.c ****     int8_t task_ID;
+ 302:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
+ 303:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
+ 304:..//src/kernel/source/nrk_events.c **** 
+ 305:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].count=-1;
+ 306:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].value=-1;
+ 307:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].resource_ceiling=-1;
+ 308:..//src/kernel/source/nrk_events.c ****     _nrk_resource_cnt--;
+ 309:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
+ 310:..//src/kernel/source/nrk_events.c **** }
+ 311:..//src/kernel/source/nrk_events.c **** 
+ 312:..//src/kernel/source/nrk_events.c **** nrk_sem_t* nrk_sem_create(uint8_t count,uint8_t ceiling_prio)
+ 313:..//src/kernel/source/nrk_events.c **** {
  898               	.LM83:
  899               	.LFBB8:
  900               	/* prologue: function */
  901               	/* frame size = 0 */
  902               	/* stack size = 0 */
  903               	.L__stack_usage = 0
- 315:..//src/kernel/source/nrk_events.c ****     uint8_t i;
- 316:..//src/kernel/source/nrk_events.c ****     if(_nrk_resource_cnt>=(NRK_MAX_RESOURCE_CNT-1))
+ 314:..//src/kernel/source/nrk_events.c ****     uint8_t i;
+ 315:..//src/kernel/source/nrk_events.c ****     if(_nrk_resource_cnt>=(NRK_MAX_RESOURCE_CNT-1))
  905               	.LM84:
  906 03d6 9091 0000 		lds r25,_nrk_resource_cnt
  907 03da 9430      		cpi r25,lo8(4)
@@ -982,24 +981,24 @@
  910 03e0 F0E0      		ldi r31,hi8(nrk_sem_list)
  911 03e2 20E0      		ldi r18,lo8(0)
  912               	.L37:
- 317:..//src/kernel/source/nrk_events.c **** 	return NULL;  
- 318:..//src/kernel/source/nrk_events.c ****     for(i=0; i<NRK_MAX_RESOURCE_CNT; i++ )
- 319:..//src/kernel/source/nrk_events.c ****     {
- 320:..//src/kernel/source/nrk_events.c **** 	if(nrk_sem_list[i].count==-1) break;
+ 316:..//src/kernel/source/nrk_events.c **** 	return NULL;  
+ 317:..//src/kernel/source/nrk_events.c ****     for(i=0; i<NRK_MAX_RESOURCE_CNT; i++ )
+ 318:..//src/kernel/source/nrk_events.c ****     {
+ 319:..//src/kernel/source/nrk_events.c **** 	if(nrk_sem_list[i].count==-1) break;
  914               	.LM85:
  915 03e4 3081      		ld r19,Z
  916 03e6 3F3F      		cpi r19,lo8(-1)
  917 03e8 01F0      		breq .L36
- 318:..//src/kernel/source/nrk_events.c ****     for(i=0; i<NRK_MAX_RESOURCE_CNT; i++ )
+ 317:..//src/kernel/source/nrk_events.c ****     for(i=0; i<NRK_MAX_RESOURCE_CNT; i++ )
  919               	.LM86:
  920 03ea 2F5F      		subi r18,lo8(-(1))
  921 03ec 3396      		adiw r30,3
  922 03ee 2530      		cpi r18,lo8(5)
  923 03f0 01F4      		brne .L37
  924               	.L36:
- 321:..//src/kernel/source/nrk_events.c ****     }
- 322:..//src/kernel/source/nrk_events.c **** 
- 323:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[i].value=count;
+ 320:..//src/kernel/source/nrk_events.c ****     }
+ 321:..//src/kernel/source/nrk_events.c **** 
+ 322:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[i].value=count;
  926               	.LM87:
  927 03f2 30E0      		ldi r19,lo8(0)
  928 03f4 F901      		movw r30,r18
@@ -1010,27 +1009,27 @@
  933 03fe E050      		subi r30,lo8(-(nrk_sem_list))
  934 0400 F040      		sbci r31,hi8(-(nrk_sem_list))
  935 0402 8283      		std Z+2,r24
- 324:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[i].count=count;
+ 323:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[i].count=count;
  937               	.LM88:
  938 0404 8083      		st Z,r24
- 325:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[i].resource_ceiling=ceiling_prio;
+ 324:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[i].resource_ceiling=ceiling_prio;
  940               	.LM89:
  941 0406 6183      		std Z+1,r22
- 326:..//src/kernel/source/nrk_events.c ****     _nrk_resource_cnt++;
+ 325:..//src/kernel/source/nrk_events.c ****     _nrk_resource_cnt++;
  943               	.LM90:
  944 0408 9F5F      		subi r25,lo8(-(1))
  945 040a 9093 0000 		sts _nrk_resource_cnt,r25
- 327:..//src/kernel/source/nrk_events.c ****     return	&nrk_sem_list[i];
+ 326:..//src/kernel/source/nrk_events.c ****     return	&nrk_sem_list[i];
  947               	.LM91:
  948 040e 9F01      		movw r18,r30
  949 0410 00C0      		rjmp .L35
  950               	.L38:
- 317:..//src/kernel/source/nrk_events.c **** 	return NULL;  
+ 316:..//src/kernel/source/nrk_events.c **** 	return NULL;  
  952               	.LM92:
  953 0412 20E0      		ldi r18,lo8(0)
  954 0414 30E0      		ldi r19,hi8(0)
  955               	.L35:
- 328:..//src/kernel/source/nrk_events.c **** }
+ 327:..//src/kernel/source/nrk_events.c **** }
  957               	.LM93:
  958 0416 C901      		movw r24,r18
  959               	/* epilogue start */
@@ -1040,9 +1039,9 @@
  970               	.global	nrk_get_resource_index
  972               	nrk_get_resource_index:
  973               		.stabd	46,0,0
- 329:..//src/kernel/source/nrk_events.c **** 
- 330:..//src/kernel/source/nrk_events.c **** int8_t nrk_get_resource_index(nrk_sem_t *resrc)
- 331:..//src/kernel/source/nrk_events.c **** {
+ 328:..//src/kernel/source/nrk_events.c **** 
+ 329:..//src/kernel/source/nrk_events.c **** int8_t nrk_get_resource_index(nrk_sem_t *resrc)
+ 330:..//src/kernel/source/nrk_events.c **** {
  975               	.LM94:
  976               	.LFBB9:
  977               	/* prologue: function */
@@ -1054,14 +1053,14 @@
  984 041c 20E0      		ldi r18,lo8(0)
  985 041e 30E0      		ldi r19,hi8(0)
  986               	.L42:
- 332:..//src/kernel/source/nrk_events.c ****     int8_t id;
- 333:..//src/kernel/source/nrk_events.c ****     for(id=0;id<NRK_MAX_RESOURCE_CNT;id++)
- 334:..//src/kernel/source/nrk_events.c **** 	if((nrk_sem_t *)(&nrk_sem_list[id])==(nrk_sem_t*)resrc)
- 335:..//src/kernel/source/nrk_events.c **** 	    return id;
- 336:..//src/kernel/source/nrk_events.c ****     return NRK_ERROR;
+ 331:..//src/kernel/source/nrk_events.c ****     int8_t id;
+ 332:..//src/kernel/source/nrk_events.c ****     for(id=0;id<NRK_MAX_RESOURCE_CNT;id++)
+ 333:..//src/kernel/source/nrk_events.c **** 	if((nrk_sem_t *)(&nrk_sem_list[id])==(nrk_sem_t*)resrc)
+ 334:..//src/kernel/source/nrk_events.c **** 	    return id;
+ 335:..//src/kernel/source/nrk_events.c ****     return NRK_ERROR;
  988               	.LM96:
  989 0420 822F      		mov r24,r18
- 334:..//src/kernel/source/nrk_events.c **** 	if((nrk_sem_t *)(&nrk_sem_list[id])==(nrk_sem_t*)resrc)
+ 333:..//src/kernel/source/nrk_events.c **** 	if((nrk_sem_t *)(&nrk_sem_list[id])==(nrk_sem_t*)resrc)
  991               	.LM97:
  992 0422 A901      		movw r20,r18
  993 0424 440F      		lsl r20
@@ -1075,7 +1074,7 @@
  1001 0434 01F0      		breq .L41
  1002 0436 2F5F      		subi r18,lo8(-(1))
  1003 0438 3F4F      		sbci r19,hi8(-(1))
- 333:..//src/kernel/source/nrk_events.c ****     for(id=0;id<NRK_MAX_RESOURCE_CNT;id++)
+ 332:..//src/kernel/source/nrk_events.c ****     for(id=0;id<NRK_MAX_RESOURCE_CNT;id++)
  1005               	.LM98:
  1006 043a 2530      		cpi r18,5
  1007 043c 3105      		cpc r19,__zero_reg__
@@ -1083,7 +1082,7 @@
  1010               	.LM99:
  1011 0440 8FEF      		ldi r24,lo8(-1)
  1012               	.L41:
- 337:..//src/kernel/source/nrk_events.c **** }
+ 336:..//src/kernel/source/nrk_events.c **** }
  1014               	.LM100:
  1015 0442 0895      		ret
  1020               	.Lscope9:
@@ -1091,30 +1090,30 @@
  1025               	.global	nrk_sem_delete
  1027               	nrk_sem_delete:
  1028               		.stabd	46,0,0
- 300:..//src/kernel/source/nrk_events.c **** {
+ 299:..//src/kernel/source/nrk_events.c **** {
  1030               	.LM101:
  1031               	.LFBB10:
  1032               	/* prologue: function */
  1033               	/* frame size = 0 */
  1034               	/* stack size = 0 */
  1035               	.L__stack_usage = 0
- 301:..//src/kernel/source/nrk_events.c ****     int8_t id=nrk_get_resource_index(rsrc);	
+ 300:..//src/kernel/source/nrk_events.c ****     int8_t id=nrk_get_resource_index(rsrc);	
  1037               	.LM102:
  1038 0444 0E94 0000 		call nrk_get_resource_index
- 303:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
+ 302:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
  1040               	.LM103:
  1041 0448 8F3F      		cpi r24,lo8(-1)
  1042 044a 01F4      		brne .L45
- 303:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
+ 302:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
  1044               	.LM104:
  1045 044c 81E0      		ldi r24,lo8(1)
  1046 044e 00C0      		rjmp .L48
  1047               	.L45:
- 304:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
+ 303:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
  1049               	.LM105:
  1050 0450 8530      		cpi r24,lo8(5)
  1051 0452 01F4      		brne .L47
- 304:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
+ 303:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
  1053               	.LM106:
  1054 0454 82E0      		ldi r24,lo8(2)
  1055               	.L48:
@@ -1122,7 +1121,7 @@
  1057 045a 8FEF      		ldi r24,lo8(-1)
  1058 045c 0895      		ret
  1059               	.L47:
- 306:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].count=-1;
+ 305:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].count=-1;
  1061               	.LM107:
  1062 045e 9927      		clr r25
  1063 0460 87FD      		sbrc r24,7
@@ -1136,21 +1135,21 @@
  1071 0470 F040      		sbci r31,hi8(-(nrk_sem_list))
  1072 0472 8FEF      		ldi r24,lo8(-1)
  1073 0474 8083      		st Z,r24
- 307:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].value=-1;
+ 306:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].value=-1;
  1075               	.LM108:
  1076 0476 8283      		std Z+2,r24
- 308:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].resource_ceiling=-1;
+ 307:..//src/kernel/source/nrk_events.c ****     nrk_sem_list[id].resource_ceiling=-1;
  1078               	.LM109:
  1079 0478 8183      		std Z+1,r24
- 309:..//src/kernel/source/nrk_events.c ****     _nrk_resource_cnt--;
+ 308:..//src/kernel/source/nrk_events.c ****     _nrk_resource_cnt--;
  1081               	.LM110:
  1082 047a 8091 0000 		lds r24,_nrk_resource_cnt
  1083 047e 8150      		subi r24,lo8(-(-1))
  1084 0480 8093 0000 		sts _nrk_resource_cnt,r24
- 310:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
+ 309:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
  1086               	.LM111:
  1087 0484 81E0      		ldi r24,lo8(1)
- 311:..//src/kernel/source/nrk_events.c **** }
+ 310:..//src/kernel/source/nrk_events.c **** }
  1089               	.LM112:
  1090 0486 0895      		ret
  1095               	.Lscope10:
@@ -1158,7 +1157,7 @@
  1100               	.global	nrk_sem_post
  1102               	nrk_sem_post:
  1103               		.stabd	46,0,0
- 258:..//src/kernel/source/nrk_events.c **** {
+ 257:..//src/kernel/source/nrk_events.c **** {
  1105               	.LM113:
  1106               	.LFBB11:
  1107 0488 0F93      		push r16
@@ -1172,23 +1171,23 @@
  1115               	/* frame size = 1 */
  1116               	/* stack size = 5 */
  1117               	.L__stack_usage = 5
- 259:..//src/kernel/source/nrk_events.c ****     int8_t id=nrk_get_resource_index(rsrc);	
+ 258:..//src/kernel/source/nrk_events.c ****     int8_t id=nrk_get_resource_index(rsrc);	
  1119               	.LM114:
  1120 0496 0E94 0000 		call nrk_get_resource_index
- 262:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
+ 261:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
  1122               	.LM115:
  1123 049a 8F3F      		cpi r24,lo8(-1)
  1124 049c 01F4      		brne .L50
- 262:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
+ 261:..//src/kernel/source/nrk_events.c ****     if(id==-1) { _nrk_errno_set(1); return NRK_ERROR;}
  1126               	.LM116:
  1127 049e 81E0      		ldi r24,lo8(1)
  1128 04a0 00C0      		rjmp .L60
  1129               	.L50:
- 263:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
+ 262:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
  1131               	.LM117:
  1132 04a2 8530      		cpi r24,lo8(5)
  1133 04a4 01F4      		brne .L52
- 263:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
+ 262:..//src/kernel/source/nrk_events.c ****     if(id==NRK_MAX_RESOURCE_CNT) { _nrk_errno_set(2); return NRK_ERROR; }
  1135               	.LM118:
  1136 04a6 82E0      		ldi r24,lo8(2)
  1137               	.L60:
@@ -1196,7 +1195,7 @@
  1139 04ac 8FEF      		ldi r24,lo8(-1)
  1140 04ae 00C0      		rjmp .L51
  1141               	.L52:
- 265:..//src/kernel/source/nrk_events.c ****     if(nrk_sem_list[id].value<nrk_sem_list[id].count)
+ 264:..//src/kernel/source/nrk_events.c ****     if(nrk_sem_list[id].value<nrk_sem_list[id].count)
  1143               	.LM119:
  1144 04b0 282F      		mov r18,r24
  1145 04b2 3327      		clr r19
@@ -1217,31 +1216,31 @@
  1160 04d0 2917      		cp r18,r25
  1161 04d2 04F0      		brlt .+2
  1162 04d4 00C0      		rjmp .L57
- 268:..//src/kernel/source/nrk_events.c **** 	nrk_int_disable();
+ 267:..//src/kernel/source/nrk_events.c **** 	nrk_int_disable();
  1164               	.LM120:
  1165 04d6 8983      		std Y+1,r24
  1166 04d8 0E94 0000 		call nrk_int_disable
- 270:..//src/kernel/source/nrk_events.c **** 	nrk_sem_list[id].value++;
+ 269:..//src/kernel/source/nrk_events.c **** 	nrk_sem_list[id].value++;
  1168               	.LM121:
  1169 04dc F801      		movw r30,r16
  1170 04de 9281      		ldd r25,Z+2
  1171 04e0 9F5F      		subi r25,lo8(-(1))
  1172 04e2 9283      		std Z+2,r25
- 271:..//src/kernel/source/nrk_events.c **** 	nrk_cur_task_TCB->elevated_prio_flag=0;
+ 270:..//src/kernel/source/nrk_events.c **** 	nrk_cur_task_TCB->elevated_prio_flag=0;
  1174               	.LM122:
  1175 04e4 E091 0000 		lds r30,nrk_cur_task_TCB
  1176 04e8 F091 0000 		lds r31,nrk_cur_task_TCB+1
  1177 04ec 1482      		std Z+4,__zero_reg__
- 275:..//src/kernel/source/nrk_events.c **** 	systemceiling = 64;
+ 274:..//src/kernel/source/nrk_events.c **** 	systemceiling = 64;
  1179               	.LM123:
  1180 04ee E0E0      		ldi r30,lo8(nrk_sem_list+1)
  1181 04f0 F0E0      		ldi r31,hi8(nrk_sem_list+1)
- 257:..//src/kernel/source/nrk_events.c **** int8_t nrk_sem_post(nrk_sem_t *rsrc)
+ 256:..//src/kernel/source/nrk_events.c **** int8_t nrk_sem_post(nrk_sem_t *rsrc)
  1183               	.LM124:
  1184 04f2 90E4      		ldi r25,lo8(64)
  1185 04f4 8981      		ldd r24,Y+1
  1186               	.L54:
- 278:..//src/kernel/source/nrk_events.c **** 	    if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
+ 277:..//src/kernel/source/nrk_events.c **** 	    if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
  1188               	.LM125:
  1189 04f6 6081      		ld r22,Z
  1190 04f8 462F      		mov r20,r22
@@ -1253,17 +1252,17 @@
  1196 0504 4217      		cp r20,r18
  1197 0506 5307      		cpc r21,r19
  1198 0508 04F4      		brge .L53
- 278:..//src/kernel/source/nrk_events.c **** 	    if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
+ 277:..//src/kernel/source/nrk_events.c **** 	    if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
  1200               	.LM126:
  1201 050a 2181      		ldd r18,Z+1
  1202 050c 2223      		tst r18
  1203 050e 01F4      		brne .L53
- 279:..//src/kernel/source/nrk_events.c **** 		systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
+ 278:..//src/kernel/source/nrk_events.c **** 		systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
  1205               	.LM127:
  1206 0510 962F      		mov r25,r22
  1207               	.L53:
  1208 0512 3396      		adiw r30,3
- 276:..//src/kernel/source/nrk_events.c **** 	for (sem_ID = 0; sem_ID < NRK_MAX_RESOURCE_CNT; sem_ID++){
+ 275:..//src/kernel/source/nrk_events.c **** 	for (sem_ID = 0; sem_ID < NRK_MAX_RESOURCE_CNT; sem_ID++){
  1210               	.LM128:
  1211 0514 20E0      		ldi r18,hi8(nrk_sem_list+16)
  1212 0516 E030      		cpi r30,lo8(nrk_sem_list+16)
@@ -1272,23 +1271,23 @@
  1215 051c 9093 0000 		sts systemceiling,r25
  1216 0520 E0E0      		ldi r30,lo8(nrk_task_TCB+7)
  1217 0522 F0E0      		ldi r31,hi8(nrk_task_TCB+7)
- 284:..//src/kernel/source/nrk_events.c **** 		if((nrk_task_TCB[task_ID].active_signal_mask == id))
+ 283:..//src/kernel/source/nrk_events.c **** 		if((nrk_task_TCB[task_ID].active_signal_mask == id))
  1219               	.LM129:
  1220 0524 9927      		clr r25
  1221 0526 87FD      		sbrc r24,7
  1222 0528 9095      		com r25
  1223 052a A92F      		mov r26,r25
  1224 052c B92F      		mov r27,r25
- 286:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].task_state=SUSPENDED;
+ 285:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].task_state=SUSPENDED;
  1226               	.LM130:
  1227 052e 63E0      		ldi r22,lo8(3)
  1228               	.L56:
- 283:..//src/kernel/source/nrk_events.c **** 	    if(nrk_task_TCB[task_ID].event_suspend==RSRC_EVENT_SUSPENDED)
+ 282:..//src/kernel/source/nrk_events.c **** 	    if(nrk_task_TCB[task_ID].event_suspend==RSRC_EVENT_SUSPENDED)
  1230               	.LM131:
  1231 0530 2081      		ld r18,Z
  1232 0532 2230      		cpi r18,lo8(2)
  1233 0534 01F4      		brne .L55
- 284:..//src/kernel/source/nrk_events.c **** 		if((nrk_task_TCB[task_ID].active_signal_mask == id))
+ 283:..//src/kernel/source/nrk_events.c **** 		if((nrk_task_TCB[task_ID].active_signal_mask == id))
  1235               	.LM132:
  1236 0536 2285      		ldd r18,Z+10
  1237 0538 3385      		ldd r19,Z+11
@@ -1299,17 +1298,17 @@
  1242 0542 4A07      		cpc r20,r26
  1243 0544 5B07      		cpc r21,r27
  1244 0546 01F4      		brne .L55
- 286:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].task_state=SUSPENDED;
+ 285:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].task_state=SUSPENDED;
  1246               	.LM133:
  1247 0548 6283      		std Z+2,r22
- 287:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].next_wakeup=0;
+ 286:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].next_wakeup=0;
  1249               	.LM134:
  1250 054a 1786      		std Z+15,__zero_reg__
  1251 054c 1686      		std Z+14,__zero_reg__
- 288:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].event_suspend=0;
+ 287:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].event_suspend=0;
  1253               	.LM135:
  1254 054e 1082      		st Z,__zero_reg__
- 289:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].active_signal_mask=0;
+ 288:..//src/kernel/source/nrk_events.c **** 		    nrk_task_TCB[task_ID].active_signal_mask=0;
  1256               	.LM136:
  1257 0550 1286      		std Z+10,__zero_reg__
  1258 0552 1386      		std Z+11,__zero_reg__
@@ -1317,22 +1316,22 @@
  1260 0556 1586      		std Z+13,__zero_reg__
  1261               	.L55:
  1262 0558 B196      		adiw r30,33
- 282:..//src/kernel/source/nrk_events.c **** 	for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++){
+ 281:..//src/kernel/source/nrk_events.c **** 	for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++){
  1264               	.LM137:
  1265 055a 20E0      		ldi r18,hi8(nrk_task_TCB+172)
  1266 055c E030      		cpi r30,lo8(nrk_task_TCB+172)
  1267 055e F207      		cpc r31,r18
  1268 0560 01F4      		brne .L56
- 293:..//src/kernel/source/nrk_events.c **** 	nrk_int_enable();
+ 292:..//src/kernel/source/nrk_events.c **** 	nrk_int_enable();
  1270               	.LM138:
  1271 0562 0E94 0000 		call nrk_int_enable
  1272               	.L57:
- 296:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
+ 295:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
  1274               	.LM139:
  1275 0566 81E0      		ldi r24,lo8(1)
  1276               	.L51:
  1277               	/* epilogue start */
- 297:..//src/kernel/source/nrk_events.c **** }
+ 296:..//src/kernel/source/nrk_events.c **** }
  1279               	.LM140:
  1280 0568 0F90      		pop __tmp_reg__
  1281 056a CF91      		pop r28
@@ -1451,7 +1450,7 @@
  1402               	.LM155:
  1403 0604 40E4      		ldi r20,lo8(64)
  1404               	.L67:
- 243:..//src/kernel/source/nrk_events.c **** 	if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
+ 242:..//src/kernel/source/nrk_events.c **** 	if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
  1406               	.LM156:
  1407 0606 5081      		ld r21,Z
  1408 0608 252F      		mov r18,r21
@@ -1463,12 +1462,12 @@
  1414 0614 2817      		cp r18,r24
  1415 0616 3907      		cpc r19,r25
  1416 0618 04F4      		brge .L66
- 243:..//src/kernel/source/nrk_events.c **** 	if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
+ 242:..//src/kernel/source/nrk_events.c **** 	if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
  1418               	.LM157:
  1419 061a 8181      		ldd r24,Z+1
  1420 061c 8823      		tst r24
  1421 061e 01F4      		brne .L66
- 244:..//src/kernel/source/nrk_events.c **** 	    systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
+ 243:..//src/kernel/source/nrk_events.c **** 	    systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
  1423               	.LM158:
  1424 0620 452F      		mov r20,r21
  1425               	.L66:
@@ -1480,7 +1479,7 @@
  1431 0628 F807      		cpc r31,r24
  1432 062a 01F4      		brne .L67
  1433 062c 4093 0000 		sts systemceiling,r20
- 248:..//src/kernel/source/nrk_events.c ****     nrk_cur_task_TCB->task_prio_ceil=nrk_sem_list[id].resource_ceiling;
+ 247:..//src/kernel/source/nrk_events.c ****     nrk_cur_task_TCB->task_prio_ceil=nrk_sem_list[id].resource_ceiling;
  1435               	.LM160:
  1436 0630 A091 0000 		lds r26,nrk_cur_task_TCB
  1437 0634 B091 0000 		lds r27,nrk_cur_task_TCB+1
@@ -1495,20 +1494,20 @@
  1446 0648 1B96      		adiw r26,11
  1447 064a 8C93      		st X,r24
  1448 064c 1B97      		sbiw r26,11
- 249:..//src/kernel/source/nrk_events.c ****     nrk_cur_task_TCB->elevated_prio_flag=1;
+ 248:..//src/kernel/source/nrk_events.c ****     nrk_cur_task_TCB->elevated_prio_flag=1;
  1450               	.LM161:
  1451 064e 81E0      		ldi r24,lo8(1)
  1452 0650 1496      		adiw r26,4
  1453 0652 8C93      		st X,r24
- 250:..//src/kernel/source/nrk_events.c ****     nrk_int_enable();
+ 249:..//src/kernel/source/nrk_events.c ****     nrk_int_enable();
  1455               	.LM162:
  1456 0654 0E94 0000 		call nrk_int_enable
- 252:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
+ 251:..//src/kernel/source/nrk_events.c ****     return NRK_OK;
  1458               	.LM163:
  1459 0658 81E0      		ldi r24,lo8(1)
  1460               	.L63:
  1461               	/* epilogue start */
- 253:..//src/kernel/source/nrk_events.c **** }
+ 252:..//src/kernel/source/nrk_events.c **** }
  1463               	.LM164:
  1464 065a 0F90      		pop __tmp_reg__
  1465 065c CF91      		pop r28
@@ -1598,32 +1597,32 @@
  1587               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_events.c
-     /tmp/cceCwjlM.s:2      *ABS*:0000003f __SREG__
-     /tmp/cceCwjlM.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cceCwjlM.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cceCwjlM.s:5      *ABS*:00000034 __CCP__
-     /tmp/cceCwjlM.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cceCwjlM.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cceCwjlM.s:140    .text:00000000 nrk_signal_create
+     /tmp/ccd2jX3o.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccd2jX3o.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccd2jX3o.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccd2jX3o.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccd2jX3o.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccd2jX3o.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccd2jX3o.s:140    .text:00000000 nrk_signal_create
                             *COM*:00000004 _nrk_signal_list
-     /tmp/cceCwjlM.s:219    .text:0000006c nrk_signal_get_registered_mask
+     /tmp/ccd2jX3o.s:219    .text:0000006c nrk_signal_get_registered_mask
                             *COM*:00000002 nrk_cur_task_TCB
-     /tmp/cceCwjlM.s:250    .text:0000007e nrk_signal_delete
+     /tmp/ccd2jX3o.s:250    .text:0000007e nrk_signal_delete
                             *COM*:000000a5 nrk_task_TCB
-     /tmp/cceCwjlM.s:434    .text:0000018e nrk_signal_unregister
-     /tmp/cceCwjlM.s:535    .text:00000212 nrk_signal_register
-     /tmp/cceCwjlM.s:609    .text:0000027a nrk_event_signal
-     /tmp/cceCwjlM.s:802    .text:00000360 nrk_event_wait
+     /tmp/ccd2jX3o.s:434    .text:0000018e nrk_signal_unregister
+     /tmp/ccd2jX3o.s:535    .text:00000212 nrk_signal_register
+     /tmp/ccd2jX3o.s:609    .text:0000027a nrk_event_signal
+     /tmp/ccd2jX3o.s:802    .text:00000360 nrk_event_wait
                             *COM*:00000001 nrk_wakeup_signal
-     /tmp/cceCwjlM.s:895    .text:000003d6 nrk_sem_create
+     /tmp/ccd2jX3o.s:895    .text:000003d6 nrk_sem_create
                             *COM*:00000001 _nrk_resource_cnt
                             *COM*:0000000f nrk_sem_list
-     /tmp/cceCwjlM.s:972    .text:0000041a nrk_get_resource_index
-     /tmp/cceCwjlM.s:1027   .text:00000444 nrk_sem_delete
-     /tmp/cceCwjlM.s:1102   .text:00000488 nrk_sem_post
+     /tmp/ccd2jX3o.s:972    .text:0000041a nrk_get_resource_index
+     /tmp/ccd2jX3o.s:1027   .text:00000444 nrk_sem_delete
+     /tmp/ccd2jX3o.s:1102   .text:00000488 nrk_sem_post
                             *COM*:00000001 systemceiling
-     /tmp/cceCwjlM.s:1297   .text:00000574 nrk_sem_pend
-     /tmp/cceCwjlM.s:1481   .text:00000666 nrk_sem_query
+     /tmp/ccd2jX3o.s:1297   .text:00000574 nrk_sem_pend
+     /tmp/ccd2jX3o.s:1481   .text:00000666 nrk_sem_query
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr
                             *COM*:0000001e _nrk_readyQ
