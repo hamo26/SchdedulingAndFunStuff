@@ -383,20 +383,20 @@
  407               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 i2c_driver.c
-     /tmp/ccKvXHr9.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccKvXHr9.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccKvXHr9.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccKvXHr9.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccKvXHr9.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccKvXHr9.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccKvXHr9.s:74     .text:00000000 i2c_init
-     /tmp/ccKvXHr9.s:108    .text:00000016 i2c_waitForInterruptFlag
-     /tmp/ccKvXHr9.s:134    .text:00000020 i2c_actionStart
-     /tmp/ccKvXHr9.s:161    .text:0000002c i2c_start
-     /tmp/ccKvXHr9.s:203    .text:0000004e i2c_stop
-     /tmp/ccKvXHr9.s:238    .text:00000066 i2c_send
-     /tmp/ccKvXHr9.s:287    .text:00000090 i2c_receive
-     /tmp/ccKvXHr9.s:333    .text:000000b4 i2c_controlByte_RX
-     /tmp/ccKvXHr9.s:372    .text:000000d6 i2c_controlByte_TX
+     /tmp/ccIIIOAI.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccIIIOAI.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccIIIOAI.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccIIIOAI.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccIIIOAI.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccIIIOAI.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccIIIOAI.s:74     .text:00000000 i2c_init
+     /tmp/ccIIIOAI.s:108    .text:00000016 i2c_waitForInterruptFlag
+     /tmp/ccIIIOAI.s:134    .text:00000020 i2c_actionStart
+     /tmp/ccIIIOAI.s:161    .text:0000002c i2c_start
+     /tmp/ccIIIOAI.s:203    .text:0000004e i2c_stop
+     /tmp/ccIIIOAI.s:238    .text:00000066 i2c_send
+     /tmp/ccIIIOAI.s:287    .text:00000090 i2c_receive
+     /tmp/ccIIIOAI.s:333    .text:000000b4 i2c_controlByte_RX
+     /tmp/ccIIIOAI.s:372    .text:000000d6 i2c_controlByte_TX
 
 NO UNDEFINED SYMBOLS
