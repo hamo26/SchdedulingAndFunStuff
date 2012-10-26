@@ -230,10 +230,10 @@ int8_t nrk_sem_pend(nrk_sem_t *rsrc )
 	nrk_int_enable();
 	nrk_wait_until_ticks(0);
     }
-    
-    printf("Task %d locked resource %d.\n", nrk_cur_task_TCB->task_ID, id);
+
+    printf("Task %d holds resource %d.\n", nrk_cur_task_TCB->task_ID, id);
     nrk_sem_list[id].value--;
-    printf("The resource value is %d\n", nrk_sem_list[id].value);	
+    //printf("The resource value is %d\n", nrk_sem_list[id].value);	
     // SRP - a task can be preempted if the preemption level is higher than system ceiling
     // Bigger relative deadline means smaller priority - Smaller the value for system ceiling means higher the priority
     // Compare and see if current_task_TCB period is smaller than the current system ceiling, if it is set new system ceiling
@@ -241,9 +241,13 @@ int8_t nrk_sem_pend(nrk_sem_t *rsrc )
     //systemceiling =  nrk_cur_task_TCB->period;
     systemceiling = 64;
     for (sem_ID = 0; sem_ID < NRK_MAX_RESOURCE_CNT; sem_ID++){
-	if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
-	    systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
+	//printf("sem_list id: %d \n\n",&nrk_sem_list[sem_ID]);
+	if(&nrk_sem_list[sem_ID] != NULL){
+	    if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
+		systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
+	}
     }
+    printf("System Ceiling:%d\n", systemceiling);
 
 
     nrk_cur_task_TCB->task_prio_ceil=nrk_sem_list[id].resource_ceiling;
@@ -269,7 +273,7 @@ int8_t nrk_sem_post(nrk_sem_t *rsrc)
 	nrk_int_disable();
 
 	printf("Task %d released resource %d.\n", nrk_cur_task_TCB->task_ID, id);
-    
+
 	nrk_sem_list[id].value++;
 	nrk_cur_task_TCB->elevated_prio_flag=0;
 
@@ -278,8 +282,10 @@ int8_t nrk_sem_post(nrk_sem_t *rsrc)
 	systemceiling = 64;
 	for (sem_ID = 0; sem_ID < NRK_MAX_RESOURCE_CNT; sem_ID++){
 
-	    if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
-		systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
+	    if(&nrk_sem_list[sem_ID] != NULL){
+		if (nrk_sem_list[sem_ID].resource_ceiling < systemceiling && nrk_sem_list[sem_ID].value == 0)
+		    systemceiling = nrk_sem_list[sem_ID].resource_ceiling;
+	    }
 	}
 
 	for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++){

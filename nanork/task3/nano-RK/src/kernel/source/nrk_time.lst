@@ -1133,20 +1133,20 @@
  1157               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_time.c
-     /tmp/ccpsY0DL.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccpsY0DL.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccpsY0DL.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccpsY0DL.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccpsY0DL.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccpsY0DL.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccpsY0DL.s:141    .text:00000000 nrk_time_get
-     /tmp/ccpsY0DL.s:265    .text:000000bc nrk_time_sub
-     /tmp/ccpsY0DL.s:462    .text:000001da nrk_time_compact_nanos
-     /tmp/ccpsY0DL.s:529    .text:00000220 nrk_time_add
-     /tmp/ccpsY0DL.s:646    .text:000002d6 nrk_time_set
-     /tmp/ccpsY0DL.s:679    .text:000002f8 _nrk_time_to_ticks
-     /tmp/ccpsY0DL.s:874    .text:00000416 _nrk_ticks_to_time
-     /tmp/ccpsY0DL.s:958    .text:00000488 _nrk_time_to_ticks_long
+     /tmp/ccoHyoBR.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccoHyoBR.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccoHyoBR.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccoHyoBR.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccoHyoBR.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccoHyoBR.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccoHyoBR.s:141    .text:00000000 nrk_time_get
+     /tmp/ccoHyoBR.s:265    .text:000000bc nrk_time_sub
+     /tmp/ccoHyoBR.s:462    .text:000001da nrk_time_compact_nanos
+     /tmp/ccoHyoBR.s:529    .text:00000220 nrk_time_add
+     /tmp/ccoHyoBR.s:646    .text:000002d6 nrk_time_set
+     /tmp/ccoHyoBR.s:679    .text:000002f8 _nrk_time_to_ticks
+     /tmp/ccoHyoBR.s:874    .text:00000416 _nrk_ticks_to_time
+     /tmp/ccoHyoBR.s:958    .text:00000488 _nrk_time_to_ticks_long
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

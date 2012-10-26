@@ -484,21 +484,21 @@
  499               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 mda100_driver.c
-     /tmp/ccZnbvMz.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccZnbvMz.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccZnbvMz.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccZnbvMz.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccZnbvMz.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccZnbvMz.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccZnbvMz.s:78     .text:00000000 mda100_init
-     /tmp/ccZnbvMz.s:493    .bss:00000000 mda100_initDone
-     /tmp/ccZnbvMz.s:105    .text:0000000c mda100_Powersave
-     /tmp/ccZnbvMz.s:138    .text:0000001e mda100_LightSensor_Power
-     /tmp/ccZnbvMz.s:203    .text:00000052 mda100_TemperatureSensor_Power
-     /tmp/ccZnbvMz.s:267    .text:00000086 mda100_LightSensor_GetCounts
-     /tmp/ccZnbvMz.s:304    .text:000000a0 mda100_TemperatureSensor_GetCounts
-     /tmp/ccZnbvMz.s:341    .text:000000ba mda100_TemperatureSensor_GetKelvin
-     /tmp/ccZnbvMz.s:463    .text:0000018a mda100_TemperatureSensor_GetDegreeCelsius
+     /tmp/cccs4bCJ.s:2      *ABS*:0000003f __SREG__
+     /tmp/cccs4bCJ.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cccs4bCJ.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cccs4bCJ.s:5      *ABS*:00000034 __CCP__
+     /tmp/cccs4bCJ.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cccs4bCJ.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cccs4bCJ.s:78     .text:00000000 mda100_init
+     /tmp/cccs4bCJ.s:493    .bss:00000000 mda100_initDone
+     /tmp/cccs4bCJ.s:105    .text:0000000c mda100_Powersave
+     /tmp/cccs4bCJ.s:138    .text:0000001e mda100_LightSensor_Power
+     /tmp/cccs4bCJ.s:203    .text:00000052 mda100_TemperatureSensor_Power
+     /tmp/cccs4bCJ.s:267    .text:00000086 mda100_LightSensor_GetCounts
+     /tmp/cccs4bCJ.s:304    .text:000000a0 mda100_TemperatureSensor_GetCounts
+     /tmp/cccs4bCJ.s:341    .text:000000ba mda100_TemperatureSensor_GetKelvin
+     /tmp/cccs4bCJ.s:463    .text:0000018a mda100_TemperatureSensor_GetDegreeCelsius
 
 UNDEFINED SYMBOLS
 adc_init

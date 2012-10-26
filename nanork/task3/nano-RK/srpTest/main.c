@@ -32,18 +32,13 @@
 #include <nrk_error.h>
 #include <nrk_events.h>
 #include <nrk_timer.h>
-//printf("Task%d has held resource %d times\r\n", n, cnt);	\
-		printf("Task%d attempting to access semaphore %d\r\n", n, nrk_get_resource_index(semaphore));	
-//printf("Task%d holding semaphore %d\r\n", n, nrk_get_resource_index(semaphore));			\
-			\
-//printf("Task%d released semaphore %d\r\n\n", n, nrk_get_resource_index(semaphore));			\
 		
 /*
    To stay inline (no pun intended) with the nano-rk direction of using guards for 
    optimization and potential performance, we use macros rather than methods.
    We could have created a method, but the call may be expensive and impede the performance of the kernel.
  */
-#define TASK(n, taskPeriod, taskExecution, semaphore)                                      \
+#define TASK(n, taskPeriod, taskExecution)                                      \
     	NRK_STK stack_##n[NRK_APP_STACKSIZE];                               	\
 	nrk_task_type task_##n;                                                 \
 	uint32_t task_##n##_period = taskPeriod;                               	\
@@ -52,19 +47,16 @@
 	{									\
 	    uint16_t cnt;                                                       \
 	    int8_t v;								\
-	    printf( "My node's address is %d\r\n",NODE_ADDR );			\
-	    printf( "Task%d PID=%d\r\n", n, nrk_get_pid());			\
+	    int i;								\
 	    while(1) {								\
-		v = nrk_sem_pend(semaphore);					\
-		if(v==NRK_ERROR) printf("T##n error pend\r\n");			\
+		v = nrk_sem_pend(semaphoreA);					\
+		v = nrk_sem_post(semaphoreA);					\
 		nrk_wait_until_next_period();					\
-		v = nrk_sem_post(semaphore);					\
-		if(v==NRK_ERROR) printf("T%d error post\r\n", n);		\
-		nrk_wait_until_next_period();					\
+		printf("\n");					\
 	    }									\
-	}									\
+	}									
 
-/*"Instantiate" the task*/
+
 #define INITIALIZE_TASK(n, total_tasks)						\
     task_##n.FirstActivation = TRUE;                                    \
 task_##n.Ptos = (void *) &stack_##n[NRK_APP_STACKSIZE];			\
@@ -81,18 +73,11 @@ task_##n.offset.secs = 0;                                               \
 task_##n.offset.nano_secs = 0;                                          \
 nrk_activate_task(&task_##n)				
 
-//Semaphore shared among resources.
 nrk_sem_t *semaphoreA;
 //nrk_sem_t *semaphoreB;
 
-//"Instantiate" tasks.
-TASK(1, 20, 5, semaphoreA);
-TASK(2, 30, 5, semaphoreA);
-TASK(3, 50, 5, semaphoreA);
-
-//TASK(1, 11, 2, semaphoreA);
-//TASK(2, 6, 3, semaphoreB);
-
+TASK(1, 4, 2);
+TASK(2, 7, 3);
 
 int main ()
 {
@@ -108,15 +93,15 @@ int main ()
     //Initialize tasks 
     INITIALIZE_TASK(1, 3);
     INITIALIZE_TASK(2, 3);
-    INITIALIZE_TASK(3, 3);
+    //INITIALIZE_TASK(3, 3);
     
     //INITIALIZE_TASK(1, 2);
     //INITIALIZE_TASK(2, 2);
 
     //instead of passing the ceiling priority, the task with the shortest period that accesses the semaphore is given
     //in this case, task1 which has a period 350*NANOS_PER_MS
-    semaphoreA = nrk_sem_create(1, 20);
-    //semaphoreB = nrk_sem_create(1, 3);
+    semaphoreA = nrk_sem_create(1, 4);
+//    semaphoreB = nrk_sem_create(1, 16);
 
     if(semaphoreA==NULL) nrk_kprintf( PSTR("Error creating sem\r\n" ));
     nrk_start();

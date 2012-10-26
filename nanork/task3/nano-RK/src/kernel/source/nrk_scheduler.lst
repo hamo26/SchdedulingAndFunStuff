@@ -1113,13 +1113,13 @@
  955               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_scheduler.c
-     /tmp/cczjtFeX.s:2      *ABS*:0000003f __SREG__
-     /tmp/cczjtFeX.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cczjtFeX.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cczjtFeX.s:5      *ABS*:00000034 __CCP__
-     /tmp/cczjtFeX.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cczjtFeX.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cczjtFeX.s:140    .text:00000000 _nrk_scheduler
+     /tmp/ccCo2A8Y.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccCo2A8Y.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccCo2A8Y.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccCo2A8Y.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccCo2A8Y.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccCo2A8Y.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccCo2A8Y.s:140    .text:00000000 _nrk_scheduler
                             *COM*:00000001 _nrk_prev_timer_val
                             *COM*:00000008 nrk_system_time
                             *COM*:00000002 nrk_cur_task_TCB

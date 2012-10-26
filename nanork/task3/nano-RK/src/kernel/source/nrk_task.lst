@@ -171,17 +171,18 @@
   62:..//src/kernel/source/nrk_task.c **** {
  263               	.LM13:
  264               	.LFBB3:
- 265 007a DF92      		push r13
- 266 007c EF92      		push r14
- 267 007e FF92      		push r15
- 268 0080 0F93      		push r16
- 269 0082 1F93      		push r17
- 270 0084 CF93      		push r28
- 271 0086 DF93      		push r29
- 272               	/* prologue: function */
- 273               	/* frame size = 0 */
- 274               	/* stack size = 7 */
- 275               	.L__stack_usage = 7
+ 265 007a CF92      		push r12
+ 266 007c DF92      		push r13
+ 267 007e EF92      		push r14
+ 268 0080 FF92      		push r15
+ 269 0082 0F93      		push r16
+ 270 0084 1F93      		push r17
+ 271 0086 CF93      		push r28
+ 272 0088 DF93      		push r29
+ 273               	/* prologue: function */
+ 274               	/* frame size = 0 */
+ 275               	/* stack size = 8 */
+ 276               	.L__stack_usage = 8
   63:..//src/kernel/source/nrk_task.c **** 	//printf("passed in task period: %d\n", &nrk_task_TCB[task_ID].next_period);
   64:..//src/kernel/source/nrk_task.c **** 
   65:..//src/kernel/source/nrk_task.c **** 	nrk_queue *NextNode;
@@ -191,171 +192,133 @@
   69:..//src/kernel/source/nrk_task.c **** 	//nrk_print_readyQ();
   70:..//src/kernel/source/nrk_task.c **** 	// nrk_queue full
   71:..//src/kernel/source/nrk_task.c **** 	if (_free_node == NULL)
- 277               	.LM14:
- 278 0088 E091 0000 		lds r30,_free_node
- 279 008c F091 0000 		lds r31,_free_node+1
- 280 0090 3097      		sbiw r30,0
- 281 0092 01F4      		brne .+2
- 282 0094 00C0      		rjmp .L5
+ 278               	.LM14:
+ 279 008a E091 0000 		lds r30,_free_node
+ 280 008e F091 0000 		lds r31,_free_node+1
+ 281 0092 3097      		sbiw r30,0
+ 282 0094 01F4      		brne .+2
+ 283 0096 00C0      		rjmp .L5
   72:..//src/kernel/source/nrk_task.c **** 	{
   73:..//src/kernel/source/nrk_task.c **** 		return;
   74:..//src/kernel/source/nrk_task.c **** 	}
   75:..//src/kernel/source/nrk_task.c **** 
   76:..//src/kernel/source/nrk_task.c **** 
   77:..//src/kernel/source/nrk_task.c **** 	NextNode = _head_node;
- 284               	.LM15:
- 285 0096 4091 0000 		lds r20,_head_node
- 286 009a 5091 0000 		lds r21,_head_node+1
+ 285               	.LM15:
+ 286 0098 4091 0000 		lds r20,_head_node
+ 287 009c 5091 0000 		lds r21,_head_node+1
   78:..//src/kernel/source/nrk_task.c **** 	CurNode = _free_node;
   79:..//src/kernel/source/nrk_task.c **** 
   80:..//src/kernel/source/nrk_task.c **** 	if (_head_node != NULL)
- 288               	.LM16:
- 289 009e 4115      		cp r20,__zero_reg__
- 290 00a0 5105      		cpc r21,__zero_reg__
- 291 00a2 01F4      		brne .+2
- 292 00a4 00C0      		rjmp .L15
- 293 00a6 DA01      		movw r26,r20
+ 289               	.LM16:
+ 290 00a0 4115      		cp r20,__zero_reg__
+ 291 00a2 5105      		cpc r21,__zero_reg__
+ 292 00a4 01F0      		breq .L14
   81:..//src/kernel/source/nrk_task.c **** 	{
   82:..//src/kernel/source/nrk_task.c **** 
   83:..//src/kernel/source/nrk_task.c **** 		while (NextNode != NULL)
   84:..//src/kernel/source/nrk_task.c **** 		{
-  85:..//src/kernel/source/nrk_task.c **** #ifdef NRK_EDF
+  85:..//src/kernel/source/nrk_task.c **** //#ifdef NRK_EDF
   86:..//src/kernel/source/nrk_task.c **** 			//
   87:..//src/kernel/source/nrk_task.c **** 			//printf("%d\n",&NextNode->task_ID);
   88:..//src/kernel/source/nrk_task.c **** 			//printf("task id: %d", &task_ID);
   89:..//src/kernel/source/nrk_task.c **** 
-  90:..//src/kernel/source/nrk_task.c **** 			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
-  91:..//src/kernel/source/nrk_task.c **** 				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period {break;}	//Smal
+  90:..//src/kernel/source/nrk_task.c **** //			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
+  91:..//src/kernel/source/nrk_task.c **** //				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period {break;}	//Sm
   92:..//src/kernel/source/nrk_task.c **** 
-  93:..//src/kernel/source/nrk_task.c **** #elseif SRP
+  93:..//src/kernel/source/nrk_task.c **** #ifdef SRP
   94:..//src/kernel/source/nrk_task.c **** 			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
   95:..//src/kernel/source/nrk_task.c **** 				(nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period &&
   96:..//src/kernel/source/nrk_task.c **** 				nrk_task_TCB[task_ID].next_period < systemceiling)) {break;}	//Small absolute deadline = larger
+ 294               	.LM17:
+ 295 00a6 E090 0000 		lds r14,systemceiling
+ 296 00aa FF24      		clr r15
+ 297 00ac DA01      		movw r26,r20
+  95:..//src/kernel/source/nrk_task.c **** 				(nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period &&
+ 299               	.LM18:
+ 300 00ae 282F      		mov r18,r24
+ 301 00b0 3327      		clr r19
+ 302 00b2 27FD      		sbrc r18,7
+ 303 00b4 3095      		com r19
+ 304 00b6 6901      		movw r12,r18
+ 305 00b8 65E0      		ldi r22,5
+ 306 00ba CC0C      	1:	lsl r12
+ 307 00bc DD1C      		rol r13
+ 308 00be 6A95      		dec r22
+ 309 00c0 01F4      		brne 1b
+ 310 00c2 C20E      		add r12,r18
+ 311 00c4 D31E      		adc r13,r19
+ 312 00c6 20E0      		ldi r18,lo8(nrk_task_TCB+23)
+ 313 00c8 30E0      		ldi r19,hi8(nrk_task_TCB+23)
+ 314 00ca C20E      		add r12,r18
+ 315 00cc D31E      		adc r13,r19
+ 316               	.L9:
+  94:..//src/kernel/source/nrk_task.c **** 			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
+ 318               	.LM19:
+ 319 00ce 0C91      		ld r16,X
+ 320 00d0 0023      		tst r16
+ 321 00d2 01F0      		breq .L7
+  95:..//src/kernel/source/nrk_task.c **** 				(nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period &&
+ 323               	.LM20:
+ 324 00d4 E601      		movw r28,r12
+ 325 00d6 6881      		ld r22,Y
+ 326 00d8 7981      		ldd r23,Y+1
+ 327 00da 10E0      		ldi r17,lo8(0)
+ 328 00dc 9801      		movw r18,r16
+ 329 00de 95E0      		ldi r25,5
+ 330 00e0 220F      	1:	lsl r18
+ 331 00e2 331F      		rol r19
+ 332 00e4 9A95      		dec r25
+ 333 00e6 01F4      		brne 1b
+ 334 00e8 200F      		add r18,r16
+ 335 00ea 311F      		adc r19,r17
+ 336 00ec 2050      		subi r18,lo8(-(nrk_task_TCB))
+ 337 00ee 3040      		sbci r19,hi8(-(nrk_task_TCB))
+  94:..//src/kernel/source/nrk_task.c **** 			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
+ 339               	.LM21:
+ 340 00f0 E901      		movw r28,r18
+ 341 00f2 2F89      		ldd r18,Y+23
+ 342 00f4 388D      		ldd r19,Y+24
+ 343 00f6 6217      		cp r22,r18
+ 344 00f8 7307      		cpc r23,r19
+ 345 00fa 00F4      		brsh .L8
+  95:..//src/kernel/source/nrk_task.c **** 				(nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period &&
+ 347               	.LM22:
+ 348 00fc 6E15      		cp r22,r14
+ 349 00fe 7F05      		cpc r23,r15
+ 350 0100 00F0      		brlo .L7
+ 351               	.L8:
   97:..//src/kernel/source/nrk_task.c **** 
   98:..//src/kernel/source/nrk_task.c **** #else
   99:..//src/kernel/source/nrk_task.c **** 			if (nrk_task_TCB[NextNode->task_ID].elevated_prio_flag)
  100:..//src/kernel/source/nrk_task.c **** 				if (nrk_task_TCB[NextNode->task_ID].task_prio_ceil <
  101:..//src/kernel/source/nrk_task.c **** 					nrk_task_TCB[task_ID].task_prio)
- 295               	.LM17:
- 296 00a8 682F      		mov r22,r24
- 297 00aa 7727      		clr r23
- 298 00ac 67FD      		sbrc r22,7
- 299 00ae 7095      		com r23
- 300 00b0 9B01      		movw r18,r22
- 301 00b2 15E0      		ldi r17,5
- 302 00b4 220F      	1:	lsl r18
- 303 00b6 331F      		rol r19
- 304 00b8 1A95      		dec r17
- 305 00ba 01F4      		brne 1b
- 306 00bc 260F      		add r18,r22
- 307 00be 371F      		adc r19,r23
- 308 00c0 2050      		subi r18,lo8(-(nrk_task_TCB))
- 309 00c2 3040      		sbci r19,hi8(-(nrk_task_TCB))
- 310 00c4 B901      		movw r22,r18
- 311 00c6 665F      		subi r22,lo8(-(10))
- 312 00c8 7F4F      		sbci r23,hi8(-(10))
  102:..//src/kernel/source/nrk_task.c **** 					break;
  103:..//src/kernel/source/nrk_task.c **** 			if (nrk_task_TCB[task_ID].elevated_prio_flag)
- 314               	.LM18:
- 315 00ca 8901      		movw r16,r18
- 316 00cc 0C5F      		subi r16,lo8(-(4))
- 317 00ce 1F4F      		sbci r17,hi8(-(4))
  104:..//src/kernel/source/nrk_task.c **** 				if (nrk_task_TCB[NextNode->task_ID].task_prio <
  105:..//src/kernel/source/nrk_task.c **** 					nrk_task_TCB[task_ID].task_prio_ceil)
- 319               	.LM19:
- 320 00d0 9BE0      		ldi r25,lo8(11)
- 321 00d2 E92E      		mov r14,r25
- 322 00d4 F12C      		mov r15,__zero_reg__
- 323 00d6 E20E      		add r14,r18
- 324 00d8 F31E      		adc r15,r19
- 325               	.L10:
-  99:..//src/kernel/source/nrk_task.c **** 			if (nrk_task_TCB[NextNode->task_ID].elevated_prio_flag)
- 327               	.LM20:
- 328 00da 2C91      		ld r18,X
- 329 00dc 30E0      		ldi r19,lo8(0)
- 330 00de E901      		movw r28,r18
- 331 00e0 95E0      		ldi r25,5
- 332 00e2 CC0F      	1:	lsl r28
- 333 00e4 DD1F      		rol r29
- 334 00e6 9A95      		dec r25
- 335 00e8 01F4      		brne 1b
- 336 00ea C20F      		add r28,r18
- 337 00ec D31F      		adc r29,r19
- 338 00ee C050      		subi r28,lo8(-(nrk_task_TCB))
- 339 00f0 D040      		sbci r29,hi8(-(nrk_task_TCB))
- 340 00f2 9C81      		ldd r25,Y+4
- 341 00f4 9923      		tst r25
- 342 00f6 01F0      		breq .L8
- 100:..//src/kernel/source/nrk_task.c **** 				if (nrk_task_TCB[NextNode->task_ID].task_prio_ceil <
- 344               	.LM21:
- 345 00f8 DB84      		ldd r13,Y+11
- 346 00fa EB01      		movw r28,r22
- 347 00fc 9881      		ld r25,Y
- 348 00fe D916      		cp r13,r25
- 349 0100 00F0      		brlo .L7
- 350               	.L8:
- 103:..//src/kernel/source/nrk_task.c **** 			if (nrk_task_TCB[task_ID].elevated_prio_flag)
- 352               	.LM22:
- 353 0102 E801      		movw r28,r16
- 354 0104 9881      		ld r25,Y
- 355 0106 9923      		tst r25
- 356 0108 01F0      		breq .L9
- 104:..//src/kernel/source/nrk_task.c **** 				if (nrk_task_TCB[NextNode->task_ID].task_prio <
- 358               	.LM23:
- 359 010a E901      		movw r28,r18
- 360 010c 95E0      		ldi r25,5
- 361 010e CC0F      	1:	lsl r28
- 362 0110 DD1F      		rol r29
- 363 0112 9A95      		dec r25
- 364 0114 01F4      		brne 1b
- 365 0116 C20F      		add r28,r18
- 366 0118 D31F      		adc r29,r19
- 367 011a C050      		subi r28,lo8(-(nrk_task_TCB))
- 368 011c D040      		sbci r29,hi8(-(nrk_task_TCB))
- 369 011e DA84      		ldd r13,Y+10
- 370 0120 E701      		movw r28,r14
- 371 0122 9881      		ld r25,Y
- 372 0124 D916      		cp r13,r25
- 373 0126 00F0      		brlo .L7
- 374               	.L9:
  106:..//src/kernel/source/nrk_task.c **** 					break;
  107:..//src/kernel/source/nrk_task.c **** 			if (nrk_task_TCB[NextNode->task_ID].task_prio <
- 376               	.LM24:
- 377 0128 E901      		movw r28,r18
- 378 012a 95E0      		ldi r25,5
- 379 012c CC0F      	1:	lsl r28
- 380 012e DD1F      		rol r29
- 381 0130 9A95      		dec r25
- 382 0132 01F4      		brne 1b
- 383 0134 C20F      		add r28,r18
- 384 0136 D31F      		adc r29,r19
- 385 0138 C050      		subi r28,lo8(-(nrk_task_TCB))
- 386 013a D040      		sbci r29,hi8(-(nrk_task_TCB))
- 387 013c 2A85      		ldd r18,Y+10
- 388 013e EB01      		movw r28,r22
- 389 0140 9881      		ld r25,Y
- 390 0142 2917      		cp r18,r25
- 391 0144 00F0      		brlo .L7
  108:..//src/kernel/source/nrk_task.c **** 				nrk_task_TCB[task_ID].task_prio)
  109:..//src/kernel/source/nrk_task.c **** 				break; 
  110:..//src/kernel/source/nrk_task.c **** #endif    
  111:..//src/kernel/source/nrk_task.c **** 			NextNode = NextNode->Next;
- 393               	.LM25:
- 394 0146 1396      		adiw r26,3
- 395 0148 0D90      		ld __tmp_reg__,X+
- 396 014a BC91      		ld r27,X
- 397 014c A02D      		mov r26,__tmp_reg__
+ 353               	.LM23:
+ 354 0102 1396      		adiw r26,3
+ 355 0104 0D90      		ld __tmp_reg__,X+
+ 356 0106 BC91      		ld r27,X
+ 357 0108 A02D      		mov r26,__tmp_reg__
   83:..//src/kernel/source/nrk_task.c **** 		while (NextNode != NULL)
- 399               	.LM26:
- 400 014e 1097      		sbiw r26,0
- 401 0150 01F4      		brne .L10
- 402 0152 00C0      		rjmp .L7
- 403               	.L15:
+ 359               	.LM24:
+ 360 010a 1097      		sbiw r26,0
+ 361 010c 01F4      		brne .L9
+ 362 010e 00C0      		rjmp .L7
+ 363               	.L14:
   80:..//src/kernel/source/nrk_task.c **** 	if (_head_node != NULL)
- 405               	.LM27:
- 406 0154 A0E0      		ldi r26,lo8(0)
- 407 0156 B0E0      		ldi r27,hi8(0)
- 408               	.L7:
+ 365               	.LM25:
+ 366 0110 A0E0      		ldi r26,lo8(0)
+ 367 0112 B0E0      		ldi r27,hi8(0)
+ 368               	.L7:
  112:..//src/kernel/source/nrk_task.c **** 		}
  113:..//src/kernel/source/nrk_task.c **** 
  114:..//src/kernel/source/nrk_task.c **** 
@@ -368,123 +331,123 @@
  121:..//src/kernel/source/nrk_task.c **** 	}
  122:..//src/kernel/source/nrk_task.c **** 
  123:..//src/kernel/source/nrk_task.c **** 	CurNode->task_ID = task_ID;
- 410               	.LM28:
- 411 0158 8083      		st Z,r24
+ 370               	.LM26:
+ 371 0114 8083      		st Z,r24
  124:..//src/kernel/source/nrk_task.c **** 	_free_node = _free_node->Next;
- 413               	.LM29:
- 414 015a C381      		ldd r28,Z+3
- 415 015c D481      		ldd r29,Z+4
- 416 015e D093 0000 		sts _free_node+1,r29
- 417 0162 C093 0000 		sts _free_node,r28
+ 373               	.LM27:
+ 374 0116 C381      		ldd r28,Z+3
+ 375 0118 D481      		ldd r29,Z+4
+ 376 011a D093 0000 		sts _free_node+1,r29
+ 377 011e C093 0000 		sts _free_node,r28
  125:..//src/kernel/source/nrk_task.c **** 
  126:..//src/kernel/source/nrk_task.c **** 
  127:..//src/kernel/source/nrk_task.c **** 	if (NextNode == _head_node)
- 419               	.LM30:
- 420 0166 A417      		cp r26,r20
- 421 0168 B507      		cpc r27,r21
- 422 016a 01F4      		brne .L11
+ 379               	.LM28:
+ 380 0122 A417      		cp r26,r20
+ 381 0124 B507      		cpc r27,r21
+ 382 0126 01F4      		brne .L10
  128:..//src/kernel/source/nrk_task.c **** 	{
  129:..//src/kernel/source/nrk_task.c **** 		//at start
  130:..//src/kernel/source/nrk_task.c **** 		if (_head_node != NULL)
- 424               	.LM31:
- 425 016c 1097      		sbiw r26,0
- 426 016e 01F0      		breq .L12
+ 384               	.LM29:
+ 385 0128 1097      		sbiw r26,0
+ 386 012a 01F0      		breq .L11
  131:..//src/kernel/source/nrk_task.c **** 		{
  132:..//src/kernel/source/nrk_task.c **** 			CurNode->Next = _head_node;
- 428               	.LM32:
- 429 0170 B483      		std Z+4,r27
- 430 0172 A383      		std Z+3,r26
+ 388               	.LM30:
+ 389 012c B483      		std Z+4,r27
+ 390 012e A383      		std Z+3,r26
  133:..//src/kernel/source/nrk_task.c **** 			CurNode->Prev = NULL;
- 432               	.LM33:
- 433 0174 1282      		std Z+2,__zero_reg__
- 434 0176 1182      		std Z+1,__zero_reg__
+ 392               	.LM31:
+ 393 0130 1282      		std Z+2,__zero_reg__
+ 394 0132 1182      		std Z+1,__zero_reg__
  134:..//src/kernel/source/nrk_task.c **** 			_head_node->Prev = CurNode;
- 436               	.LM34:
- 437 0178 1296      		adiw r26,1+1
- 438 017a FC93      		st X,r31
- 439 017c EE93      		st -X,r30
- 440 017e 1197      		sbiw r26,1
- 441 0180 00C0      		rjmp .L13
- 442               	.L12:
+ 396               	.LM32:
+ 397 0134 1296      		adiw r26,1+1
+ 398 0136 FC93      		st X,r31
+ 399 0138 EE93      		st -X,r30
+ 400 013a 1197      		sbiw r26,1
+ 401 013c 00C0      		rjmp .L12
+ 402               	.L11:
  135:..//src/kernel/source/nrk_task.c **** 		}
  136:..//src/kernel/source/nrk_task.c **** 		else
  137:..//src/kernel/source/nrk_task.c **** 		{
  138:..//src/kernel/source/nrk_task.c **** 			CurNode->Next = NULL;
- 444               	.LM35:
- 445 0182 1482      		std Z+4,__zero_reg__
- 446 0184 1382      		std Z+3,__zero_reg__
+ 404               	.LM33:
+ 405 013e 1482      		std Z+4,__zero_reg__
+ 406 0140 1382      		std Z+3,__zero_reg__
  139:..//src/kernel/source/nrk_task.c **** 			CurNode->Prev = NULL;
- 448               	.LM36:
- 449 0186 1282      		std Z+2,__zero_reg__
- 450 0188 1182      		std Z+1,__zero_reg__
+ 408               	.LM34:
+ 409 0142 1282      		std Z+2,__zero_reg__
+ 410 0144 1182      		std Z+1,__zero_reg__
  140:..//src/kernel/source/nrk_task.c **** 			_free_node->Prev = CurNode;
- 452               	.LM37:
- 453 018a FA83      		std Y+2,r31
- 454 018c E983      		std Y+1,r30
- 455               	.L13:
+ 412               	.LM35:
+ 413 0146 FA83      		std Y+2,r31
+ 414 0148 E983      		std Y+1,r30
+ 415               	.L12:
  141:..//src/kernel/source/nrk_task.c **** 		}
  142:..//src/kernel/source/nrk_task.c **** 		_head_node = CurNode;
- 457               	.LM38:
- 458 018e F093 0000 		sts _head_node+1,r31
- 459 0192 E093 0000 		sts _head_node,r30
- 460 0196 00C0      		rjmp .L5
- 461               	.L11:
- 462 0198 1196      		adiw r26,1
- 463 019a 8D91      		ld r24,X+
- 464 019c 9C91      		ld r25,X
- 465 019e 1297      		sbiw r26,1+1
+ 417               	.LM36:
+ 418 014a F093 0000 		sts _head_node+1,r31
+ 419 014e E093 0000 		sts _head_node,r30
+ 420 0152 00C0      		rjmp .L5
+ 421               	.L10:
+ 422 0154 1196      		adiw r26,1
+ 423 0156 8D91      		ld r24,X+
+ 424 0158 9C91      		ld r25,X
+ 425 015a 1297      		sbiw r26,1+1
  143:..//src/kernel/source/nrk_task.c **** 		//	printf("Fucking head node period: %d\n", &nrk_task_TCB[_head_node->task_ID].next_period);
  144:..//src/kernel/source/nrk_task.c **** 	}
  145:..//src/kernel/source/nrk_task.c **** 	else
  146:..//src/kernel/source/nrk_task.c **** 	{
  147:..//src/kernel/source/nrk_task.c **** 		if (NextNode != _free_node)
- 467               	.LM39:
- 468 01a0 AC17      		cp r26,r28
- 469 01a2 BD07      		cpc r27,r29
- 470 01a4 01F0      		breq .L14
+ 427               	.LM37:
+ 428 015c AC17      		cp r26,r28
+ 429 015e BD07      		cpc r27,r29
+ 430 0160 01F0      		breq .L13
  148:..//src/kernel/source/nrk_task.c **** 		{
  149:..//src/kernel/source/nrk_task.c **** 			// Insert  in middle
  150:..//src/kernel/source/nrk_task.c **** 
  151:..//src/kernel/source/nrk_task.c **** 			CurNode->Prev = NextNode->Prev;
- 472               	.LM40:
- 473 01a6 9283      		std Z+2,r25
- 474 01a8 8183      		std Z+1,r24
+ 432               	.LM38:
+ 433 0162 9283      		std Z+2,r25
+ 434 0164 8183      		std Z+1,r24
  152:..//src/kernel/source/nrk_task.c **** 			CurNode->Next = NextNode;
- 476               	.LM41:
- 477 01aa B483      		std Z+4,r27
- 478 01ac A383      		std Z+3,r26
+ 436               	.LM39:
+ 437 0166 B483      		std Z+4,r27
+ 438 0168 A383      		std Z+3,r26
  153:..//src/kernel/source/nrk_task.c **** 			(NextNode->Prev)->Next = CurNode;
- 480               	.LM42:
- 481 01ae 1196      		adiw r26,1
- 482 01b0 CD91      		ld r28,X+
- 483 01b2 DC91      		ld r29,X
- 484 01b4 1297      		sbiw r26,1+1
- 485 01b6 FC83      		std Y+4,r31
- 486 01b8 EB83      		std Y+3,r30
- 487 01ba 00C0      		rjmp .L17
- 488               	.L14:
+ 440               	.LM40:
+ 441 016a 1196      		adiw r26,1
+ 442 016c CD91      		ld r28,X+
+ 443 016e DC91      		ld r29,X
+ 444 0170 1297      		sbiw r26,1+1
+ 445 0172 FC83      		std Y+4,r31
+ 446 0174 EB83      		std Y+3,r30
+ 447 0176 00C0      		rjmp .L16
+ 448               	.L13:
  154:..//src/kernel/source/nrk_task.c **** 			NextNode->Prev = CurNode;
  155:..//src/kernel/source/nrk_task.c **** 		}
  156:..//src/kernel/source/nrk_task.c **** 		else
  157:..//src/kernel/source/nrk_task.c **** 		{
  158:..//src/kernel/source/nrk_task.c **** 			//insert at end
  159:..//src/kernel/source/nrk_task.c **** 			CurNode->Next = NULL;
- 490               	.LM43:
- 491 01bc 1482      		std Z+4,__zero_reg__
- 492 01be 1382      		std Z+3,__zero_reg__
+ 450               	.LM41:
+ 451 0178 1482      		std Z+4,__zero_reg__
+ 452 017a 1382      		std Z+3,__zero_reg__
  160:..//src/kernel/source/nrk_task.c **** 			CurNode->Prev = _free_node->Prev;
- 494               	.LM44:
- 495 01c0 9283      		std Z+2,r25
- 496 01c2 8183      		std Z+1,r24
- 497               	.L17:
+ 454               	.LM42:
+ 455 017c 9283      		std Z+2,r25
+ 456 017e 8183      		std Z+1,r24
+ 457               	.L16:
  161:..//src/kernel/source/nrk_task.c **** 			_free_node->Prev = CurNode;
- 499               	.LM45:
- 500 01c4 1296      		adiw r26,1+1
- 501 01c6 FC93      		st X,r31
- 502 01c8 EE93      		st -X,r30
- 503 01ca 1197      		sbiw r26,1
- 504               	.L5:
- 505               	/* epilogue start */
+ 459               	.LM43:
+ 460 0180 1296      		adiw r26,1+1
+ 461 0182 FC93      		st X,r31
+ 462 0184 EE93      		st -X,r30
+ 463 0186 1197      		sbiw r26,1
+ 464               	.L5:
+ 465               	/* epilogue start */
  162:..//src/kernel/source/nrk_task.c **** 		}
  163:..//src/kernel/source/nrk_task.c **** 
  164:..//src/kernel/source/nrk_task.c **** 	}
@@ -492,32 +455,33 @@
  166:..//src/kernel/source/nrk_task.c **** 	//printf("Im out of the method\n");
  167:..//src/kernel/source/nrk_task.c **** 
  168:..//src/kernel/source/nrk_task.c **** }
- 507               	.LM46:
- 508 01cc DF91      		pop r29
- 509 01ce CF91      		pop r28
- 510 01d0 1F91      		pop r17
- 511 01d2 0F91      		pop r16
- 512 01d4 FF90      		pop r15
- 513 01d6 EF90      		pop r14
- 514 01d8 DF90      		pop r13
- 515 01da 0895      		ret
- 517               	.Lscope3:
- 519               		.stabd	78,0,0
- 522               	.global	nrk_rem_from_readyQ
- 524               	nrk_rem_from_readyQ:
- 525               		.stabd	46,0,0
+ 467               	.LM44:
+ 468 0188 DF91      		pop r29
+ 469 018a CF91      		pop r28
+ 470 018c 1F91      		pop r17
+ 471 018e 0F91      		pop r16
+ 472 0190 FF90      		pop r15
+ 473 0192 EF90      		pop r14
+ 474 0194 DF90      		pop r13
+ 475 0196 CF90      		pop r12
+ 476 0198 0895      		ret
+ 478               	.Lscope3:
+ 480               		.stabd	78,0,0
+ 483               	.global	nrk_rem_from_readyQ
+ 485               	nrk_rem_from_readyQ:
+ 486               		.stabd	46,0,0
  169:..//src/kernel/source/nrk_task.c **** 
  170:..//src/kernel/source/nrk_task.c **** 
  171:..//src/kernel/source/nrk_task.c **** void nrk_rem_from_readyQ (int8_t task_ID)
  172:..//src/kernel/source/nrk_task.c **** {
- 527               	.LM47:
- 528               	.LFBB4:
- 529 01dc CF93      		push r28
- 530 01de DF93      		push r29
- 531               	/* prologue: function */
- 532               	/* frame size = 0 */
- 533               	/* stack size = 2 */
- 534               	.L__stack_usage = 2
+ 488               	.LM45:
+ 489               	.LFBB4:
+ 490 019a CF93      		push r28
+ 491 019c DF93      		push r29
+ 492               	/* prologue: function */
+ 493               	/* frame size = 0 */
+ 494               	/* stack size = 2 */
+ 495               	.L__stack_usage = 2
  173:..//src/kernel/source/nrk_task.c **** 
  174:..//src/kernel/source/nrk_task.c **** 	nrk_queue *CurNode;
  175:..//src/kernel/source/nrk_task.c **** 	//      nrk_queue       *tempNode;
@@ -549,88 +513,88 @@
  201:..//src/kernel/source/nrk_task.c **** 	//      printf("nrk_rem_from_readyQ_nrk_queue %d\n",task_ID);
  202:..//src/kernel/source/nrk_task.c **** 
  203:..//src/kernel/source/nrk_task.c **** 	if (_head_node == NULL)
- 536               	.LM48:
- 537 01e0 E091 0000 		lds r30,_head_node
- 538 01e4 F091 0000 		lds r31,_head_node+1
- 539 01e8 3097      		sbiw r30,0
- 540 01ea 01F4      		brne .+2
- 541 01ec 00C0      		rjmp .L18
+ 497               	.LM46:
+ 498 019e E091 0000 		lds r30,_head_node
+ 499 01a2 F091 0000 		lds r31,_head_node+1
+ 500 01a6 3097      		sbiw r30,0
+ 501 01a8 01F4      		brne .+2
+ 502 01aa 00C0      		rjmp .L17
  204:..//src/kernel/source/nrk_task.c **** 		return;
  205:..//src/kernel/source/nrk_task.c **** 
  206:..//src/kernel/source/nrk_task.c **** 	CurNode = _head_node;
  207:..//src/kernel/source/nrk_task.c **** 
  208:..//src/kernel/source/nrk_task.c **** 	if (_head_node->task_ID == task_ID)
- 543               	.LM49:
- 544 01ee 9927      		clr r25
- 545 01f0 87FD      		sbrc r24,7
- 546 01f2 9095      		com r25
- 547 01f4 2081      		ld r18,Z
- 548 01f6 30E0      		ldi r19,lo8(0)
- 549 01f8 2817      		cp r18,r24
- 550 01fa 3907      		cpc r19,r25
- 551 01fc 01F4      		brne .L28
+ 504               	.LM47:
+ 505 01ac 9927      		clr r25
+ 506 01ae 87FD      		sbrc r24,7
+ 507 01b0 9095      		com r25
+ 508 01b2 2081      		ld r18,Z
+ 509 01b4 30E0      		ldi r19,lo8(0)
+ 510 01b6 2817      		cp r18,r24
+ 511 01b8 3907      		cpc r19,r25
+ 512 01ba 01F4      		brne .L27
  209:..//src/kernel/source/nrk_task.c **** 	{
  210:..//src/kernel/source/nrk_task.c **** 		//REmove from start
  211:..//src/kernel/source/nrk_task.c **** 		_head_node = _head_node->Next;
- 553               	.LM50:
- 554 01fe A381      		ldd r26,Z+3
- 555 0200 B481      		ldd r27,Z+4
- 556 0202 B093 0000 		sts _head_node+1,r27
- 557 0206 A093 0000 		sts _head_node,r26
+ 514               	.LM48:
+ 515 01bc A381      		ldd r26,Z+3
+ 516 01be B481      		ldd r27,Z+4
+ 517 01c0 B093 0000 		sts _head_node+1,r27
+ 518 01c4 A093 0000 		sts _head_node,r26
  212:..//src/kernel/source/nrk_task.c **** 		_head_node->Prev = NULL;
- 559               	.LM51:
- 560 020a 1296      		adiw r26,1+1
- 561 020c 1C92      		st X,__zero_reg__
- 562 020e 1E92      		st -X,__zero_reg__
- 563 0210 1197      		sbiw r26,1
- 564 0212 00C0      		rjmp .L21
- 565               	.L23:
+ 520               	.LM49:
+ 521 01c8 1296      		adiw r26,1+1
+ 522 01ca 1C92      		st X,__zero_reg__
+ 523 01cc 1E92      		st -X,__zero_reg__
+ 524 01ce 1197      		sbiw r26,1
+ 525 01d0 00C0      		rjmp .L20
+ 526               	.L22:
  213:..//src/kernel/source/nrk_task.c **** 	}
  214:..//src/kernel/source/nrk_task.c **** 	else
  215:..//src/kernel/source/nrk_task.c **** 	{
  216:..//src/kernel/source/nrk_task.c **** 		while ((CurNode != NULL) && (CurNode->task_ID != task_ID))
  217:..//src/kernel/source/nrk_task.c **** 			CurNode = CurNode->Next;
- 567               	.LM52:
- 568 0214 0380      		ldd __tmp_reg__,Z+3
- 569 0216 F481      		ldd r31,Z+4
- 570 0218 E02D      		mov r30,__tmp_reg__
+ 528               	.LM50:
+ 529 01d2 0380      		ldd __tmp_reg__,Z+3
+ 530 01d4 F481      		ldd r31,Z+4
+ 531 01d6 E02D      		mov r30,__tmp_reg__
  216:..//src/kernel/source/nrk_task.c **** 		while ((CurNode != NULL) && (CurNode->task_ID != task_ID))
- 572               	.LM53:
- 573 021a 3097      		sbiw r30,0
- 574 021c 01F0      		breq .L18
- 575               	.L28:
+ 533               	.LM51:
+ 534 01d8 3097      		sbiw r30,0
+ 535 01da 01F0      		breq .L17
+ 536               	.L27:
  216:..//src/kernel/source/nrk_task.c **** 		while ((CurNode != NULL) && (CurNode->task_ID != task_ID))
- 577               	.LM54:
- 578 021e 2081      		ld r18,Z
- 579 0220 30E0      		ldi r19,lo8(0)
- 580 0222 2817      		cp r18,r24
- 581 0224 3907      		cpc r19,r25
- 582 0226 01F4      		brne .L23
+ 538               	.LM52:
+ 539 01dc 2081      		ld r18,Z
+ 540 01de 30E0      		ldi r19,lo8(0)
+ 541 01e0 2817      		cp r18,r24
+ 542 01e2 3907      		cpc r19,r25
+ 543 01e4 01F4      		brne .L22
  218:..//src/kernel/source/nrk_task.c **** 		if (CurNode == NULL)
  219:..//src/kernel/source/nrk_task.c **** 			return;
  220:..//src/kernel/source/nrk_task.c **** 
  221:..//src/kernel/source/nrk_task.c **** 
  222:..//src/kernel/source/nrk_task.c **** 		(CurNode->Prev)->Next = CurNode->Next;      //Both for middle and end
- 584               	.LM55:
- 585 0228 C181      		ldd r28,Z+1
- 586 022a D281      		ldd r29,Z+2
- 587 022c 8381      		ldd r24,Z+3
- 588 022e 9481      		ldd r25,Z+4
- 589 0230 9C83      		std Y+4,r25
- 590 0232 8B83      		std Y+3,r24
+ 545               	.LM53:
+ 546 01e6 C181      		ldd r28,Z+1
+ 547 01e8 D281      		ldd r29,Z+2
+ 548 01ea 8381      		ldd r24,Z+3
+ 549 01ec 9481      		ldd r25,Z+4
+ 550 01ee 9C83      		std Y+4,r25
+ 551 01f0 8B83      		std Y+3,r24
  223:..//src/kernel/source/nrk_task.c **** 		if (CurNode->Next != NULL)
- 592               	.LM56:
- 593 0234 A381      		ldd r26,Z+3
- 594 0236 B481      		ldd r27,Z+4
- 595 0238 1097      		sbiw r26,0
- 596 023a 01F0      		breq .L21
+ 553               	.LM54:
+ 554 01f2 A381      		ldd r26,Z+3
+ 555 01f4 B481      		ldd r27,Z+4
+ 556 01f6 1097      		sbiw r26,0
+ 557 01f8 01F0      		breq .L20
  224:..//src/kernel/source/nrk_task.c **** 			(CurNode->Next)->Prev = CurNode->Prev;    // Only for middle
- 598               	.LM57:
- 599 023c 1296      		adiw r26,1+1
- 600 023e DC93      		st X,r29
- 601 0240 CE93      		st -X,r28
- 602 0242 1197      		sbiw r26,1
- 603               	.L21:
+ 559               	.LM55:
+ 560 01fa 1296      		adiw r26,1+1
+ 561 01fc DC93      		st X,r29
+ 562 01fe CE93      		st -X,r28
+ 563 0200 1197      		sbiw r26,1
+ 564               	.L20:
  225:..//src/kernel/source/nrk_task.c **** 
  226:..//src/kernel/source/nrk_task.c **** 	}
  227:..//src/kernel/source/nrk_task.c **** 
@@ -638,57 +602,57 @@
  229:..//src/kernel/source/nrk_task.c **** 
  230:..//src/kernel/source/nrk_task.c **** 	// Add to free list
  231:..//src/kernel/source/nrk_task.c **** 	if (_free_node == NULL)
- 605               	.LM58:
- 606 0244 A091 0000 		lds r26,_free_node
- 607 0248 B091 0000 		lds r27,_free_node+1
- 608 024c 1097      		sbiw r26,0
- 609 024e 01F4      		brne .L25
+ 566               	.LM56:
+ 567 0202 A091 0000 		lds r26,_free_node
+ 568 0206 B091 0000 		lds r27,_free_node+1
+ 569 020a 1097      		sbiw r26,0
+ 570 020c 01F4      		brne .L24
  232:..//src/kernel/source/nrk_task.c **** 	{
  233:..//src/kernel/source/nrk_task.c **** 		_free_node = CurNode;
- 611               	.LM59:
- 612 0250 F093 0000 		sts _free_node+1,r31
- 613 0254 E093 0000 		sts _free_node,r30
+ 572               	.LM57:
+ 573 020e F093 0000 		sts _free_node+1,r31
+ 574 0212 E093 0000 		sts _free_node,r30
  234:..//src/kernel/source/nrk_task.c **** 		_free_node->Next = NULL;
- 615               	.LM60:
- 616 0258 1482      		std Z+4,__zero_reg__
- 617 025a 1382      		std Z+3,__zero_reg__
- 618 025c 00C0      		rjmp .L26
- 619               	.L25:
+ 576               	.LM58:
+ 577 0216 1482      		std Z+4,__zero_reg__
+ 578 0218 1382      		std Z+3,__zero_reg__
+ 579 021a 00C0      		rjmp .L25
+ 580               	.L24:
  235:..//src/kernel/source/nrk_task.c **** 	}
  236:..//src/kernel/source/nrk_task.c **** 	else
  237:..//src/kernel/source/nrk_task.c **** 	{
  238:..//src/kernel/source/nrk_task.c **** 		CurNode->Next = _free_node;
- 621               	.LM61:
- 622 025e B483      		std Z+4,r27
- 623 0260 A383      		std Z+3,r26
+ 582               	.LM59:
+ 583 021c B483      		std Z+4,r27
+ 584 021e A383      		std Z+3,r26
  239:..//src/kernel/source/nrk_task.c **** 		_free_node->Prev = CurNode;
- 625               	.LM62:
- 626 0262 1296      		adiw r26,1+1
- 627 0264 FC93      		st X,r31
- 628 0266 EE93      		st -X,r30
- 629 0268 1197      		sbiw r26,1
+ 586               	.LM60:
+ 587 0220 1296      		adiw r26,1+1
+ 588 0222 FC93      		st X,r31
+ 589 0224 EE93      		st -X,r30
+ 590 0226 1197      		sbiw r26,1
  240:..//src/kernel/source/nrk_task.c **** 		_free_node = CurNode;
- 631               	.LM63:
- 632 026a F093 0000 		sts _free_node+1,r31
- 633 026e E093 0000 		sts _free_node,r30
- 634               	.L26:
+ 592               	.LM61:
+ 593 0228 F093 0000 		sts _free_node+1,r31
+ 594 022c E093 0000 		sts _free_node,r30
+ 595               	.L25:
  241:..//src/kernel/source/nrk_task.c **** 	}
  242:..//src/kernel/source/nrk_task.c **** 	_free_node->Prev = NULL;
- 636               	.LM64:
- 637 0272 1282      		std Z+2,__zero_reg__
- 638 0274 1182      		std Z+1,__zero_reg__
- 639               	.L18:
- 640               	/* epilogue start */
+ 597               	.LM62:
+ 598 0230 1282      		std Z+2,__zero_reg__
+ 599 0232 1182      		std Z+1,__zero_reg__
+ 600               	.L17:
+ 601               	/* epilogue start */
  243:..//src/kernel/source/nrk_task.c **** }
- 642               	.LM65:
- 643 0276 DF91      		pop r29
- 644 0278 CF91      		pop r28
- 645 027a 0895      		ret
- 647               	.Lscope4:
- 649               		.stabd	78,0,0
- 652               	.global	nrk_activate_task
- 654               	nrk_activate_task:
- 655               		.stabd	46,0,0
+ 603               	.LM63:
+ 604 0234 DF91      		pop r29
+ 605 0236 CF91      		pop r28
+ 606 0238 0895      		ret
+ 608               	.Lscope4:
+ 610               		.stabd	78,0,0
+ 613               	.global	nrk_activate_task
+ 615               	nrk_activate_task:
+ 616               		.stabd	46,0,0
  244:..//src/kernel/source/nrk_task.c **** 
  245:..//src/kernel/source/nrk_task.c **** 
  246:..//src/kernel/source/nrk_task.c **** 
@@ -696,89 +660,89 @@
  248:..//src/kernel/source/nrk_task.c **** 
  249:..//src/kernel/source/nrk_task.c **** nrk_status_t nrk_activate_task (nrk_task_type * Task)
  250:..//src/kernel/source/nrk_task.c **** {
- 657               	.LM66:
- 658               	.LFBB5:
- 659 027c EF92      		push r14
- 660 027e FF92      		push r15
- 661 0280 0F93      		push r16
- 662 0282 1F93      		push r17
- 663 0284 CF93      		push r28
- 664 0286 DF93      		push r29
- 665               	/* prologue: function */
- 666               	/* frame size = 0 */
- 667               	/* stack size = 6 */
- 668               	.L__stack_usage = 6
- 669 0288 EC01      		movw r28,r24
+ 618               	.LM64:
+ 619               	.LFBB5:
+ 620 023a EF92      		push r14
+ 621 023c FF92      		push r15
+ 622 023e 0F93      		push r16
+ 623 0240 1F93      		push r17
+ 624 0242 CF93      		push r28
+ 625 0244 DF93      		push r29
+ 626               	/* prologue: function */
+ 627               	/* frame size = 0 */
+ 628               	/* stack size = 6 */
+ 629               	.L__stack_usage = 6
+ 630 0246 EC01      		movw r28,r24
  251:..//src/kernel/source/nrk_task.c **** 	uint8_t rtype;
  252:..//src/kernel/source/nrk_task.c **** 	void *topOfStackPtr;
  253:..//src/kernel/source/nrk_task.c **** 
  254:..//src/kernel/source/nrk_task.c **** 	topOfStackPtr =
- 671               	.LM67:
- 672 028a 6981      		ldd r22,Y+1
- 673 028c 7A81      		ldd r23,Y+2
- 674 028e 4B81      		ldd r20,Y+3
- 675 0290 5C81      		ldd r21,Y+4
- 676 0292 8D81      		ldd r24,Y+5
- 677 0294 9E81      		ldd r25,Y+6
- 678 0296 0E94 0000 		call nrk_task_stk_init
- 679 029a BC01      		movw r22,r24
+ 632               	.LM65:
+ 633 0248 6981      		ldd r22,Y+1
+ 634 024a 7A81      		ldd r23,Y+2
+ 635 024c 4B81      		ldd r20,Y+3
+ 636 024e 5C81      		ldd r21,Y+4
+ 637 0250 8D81      		ldd r24,Y+5
+ 638 0252 9E81      		ldd r25,Y+6
+ 639 0254 0E94 0000 		call nrk_task_stk_init
+ 640 0258 BC01      		movw r22,r24
  255:..//src/kernel/source/nrk_task.c **** 		(void *) nrk_task_stk_init (Task->task, Task->Ptos, Task->Pbos);
  256:..//src/kernel/source/nrk_task.c **** 
  257:..//src/kernel/source/nrk_task.c **** 	//printf("activate %d\n",(int)Task.task_ID);
  258:..//src/kernel/source/nrk_task.c **** 	if (Task->FirstActivation == TRUE)
- 681               	.LM68:
- 682 029c 8F81      		ldd r24,Y+7
- 683 029e 8823      		tst r24
- 684 02a0 01F0      		breq .L31
+ 642               	.LM66:
+ 643 025a 8F81      		ldd r24,Y+7
+ 644 025c 8823      		tst r24
+ 645 025e 01F0      		breq .L30
  259:..//src/kernel/source/nrk_task.c **** 	{
  260:..//src/kernel/source/nrk_task.c **** 		rtype = nrk_TCB_init (Task, topOfStackPtr, Task->Pbos, 0, (void *) 0, 0);
- 686               	.LM69:
- 687 02a2 4B81      		ldd r20,Y+3
- 688 02a4 5C81      		ldd r21,Y+4
- 689 02a6 CE01      		movw r24,r28
- 690 02a8 20E0      		ldi r18,lo8(0)
- 691 02aa 30E0      		ldi r19,hi8(0)
- 692 02ac 00E0      		ldi r16,lo8(0)
- 693 02ae 10E0      		ldi r17,hi8(0)
- 694 02b0 EE24      		clr r14
- 695 02b2 FF24      		clr r15
- 696 02b4 0E94 0000 		call nrk_TCB_init
+ 647               	.LM67:
+ 648 0260 4B81      		ldd r20,Y+3
+ 649 0262 5C81      		ldd r21,Y+4
+ 650 0264 CE01      		movw r24,r28
+ 651 0266 20E0      		ldi r18,lo8(0)
+ 652 0268 30E0      		ldi r19,hi8(0)
+ 653 026a 00E0      		ldi r16,lo8(0)
+ 654 026c 10E0      		ldi r17,hi8(0)
+ 655 026e EE24      		clr r14
+ 656 0270 FF24      		clr r15
+ 657 0272 0E94 0000 		call nrk_TCB_init
  261:..//src/kernel/source/nrk_task.c **** 		Task->FirstActivation = FALSE;
- 698               	.LM70:
- 699 02b8 1F82      		std Y+7,__zero_reg__
- 700 02ba 00C0      		rjmp .L32
- 701               	.L31:
+ 659               	.LM68:
+ 660 0276 1F82      		std Y+7,__zero_reg__
+ 661 0278 00C0      		rjmp .L31
+ 662               	.L30:
  262:..//src/kernel/source/nrk_task.c **** 
  263:..//src/kernel/source/nrk_task.c **** 	}
  264:..//src/kernel/source/nrk_task.c **** 	else
  265:..//src/kernel/source/nrk_task.c **** 	{
  266:..//src/kernel/source/nrk_task.c **** 		if (nrk_task_TCB[Task->task_ID].task_state != SUSPENDED)
- 703               	.LM71:
- 704 02bc 8881      		ld r24,Y
- 705 02be 9927      		clr r25
- 706 02c0 87FD      		sbrc r24,7
- 707 02c2 9095      		com r25
- 708 02c4 FC01      		movw r30,r24
- 709 02c6 25E0      		ldi r18,5
- 710 02c8 EE0F      	1:	lsl r30
- 711 02ca FF1F      		rol r31
- 712 02cc 2A95      		dec r18
- 713 02ce 01F4      		brne 1b
- 714 02d0 E80F      		add r30,r24
- 715 02d2 F91F      		adc r31,r25
- 716 02d4 E050      		subi r30,lo8(-(nrk_task_TCB))
- 717 02d6 F040      		sbci r31,hi8(-(nrk_task_TCB))
- 718 02d8 8185      		ldd r24,Z+9
- 719 02da 8330      		cpi r24,lo8(3)
- 720 02dc 01F4      		brne .L34
+ 664               	.LM69:
+ 665 027a 8881      		ld r24,Y
+ 666 027c 9927      		clr r25
+ 667 027e 87FD      		sbrc r24,7
+ 668 0280 9095      		com r25
+ 669 0282 FC01      		movw r30,r24
+ 670 0284 A5E0      		ldi r26,5
+ 671 0286 EE0F      	1:	lsl r30
+ 672 0288 FF1F      		rol r31
+ 673 028a AA95      		dec r26
+ 674 028c 01F4      		brne 1b
+ 675 028e E80F      		add r30,r24
+ 676 0290 F91F      		adc r31,r25
+ 677 0292 E050      		subi r30,lo8(-(nrk_task_TCB))
+ 678 0294 F040      		sbci r31,hi8(-(nrk_task_TCB))
+ 679 0296 8185      		ldd r24,Z+9
+ 680 0298 8330      		cpi r24,lo8(3)
+ 681 029a 01F4      		brne .L33
  267:..//src/kernel/source/nrk_task.c **** 			return NRK_ERROR;
  268:..//src/kernel/source/nrk_task.c **** 		//Re-init some parts of TCB
  269:..//src/kernel/source/nrk_task.c **** 
  270:..//src/kernel/source/nrk_task.c **** 		nrk_task_TCB[Task->task_ID].OSTaskStkPtr = (NRK_STK *) topOfStackPtr;
- 722               	.LM72:
- 723 02de 7183      		std Z+1,r23
- 724 02e0 6083      		st Z,r22
- 725               	.L32:
+ 683               	.LM70:
+ 684 029c 7183      		std Z+1,r23
+ 685 029e 6083      		st Z,r22
+ 686               	.L31:
  271:..//src/kernel/source/nrk_task.c **** 
  272:..//src/kernel/source/nrk_task.c **** 
  273:..//src/kernel/source/nrk_task.c **** 
@@ -797,62 +761,62 @@
  286:..//src/kernel/source/nrk_task.c **** 	//printf( "task %d nw %d \r\n",Task->task_ID,nrk_task_TCB[Task->task_ID].next_wakeup);
  287:..//src/kernel/source/nrk_task.c **** 	//printf( "task %d nw %d \r\n",Task->task_ID,Task->offset.secs);
  288:..//src/kernel/source/nrk_task.c **** 	if (nrk_task_TCB[Task->task_ID].next_wakeup == 0)
- 727               	.LM73:
- 728 02e2 8881      		ld r24,Y
- 729 02e4 9927      		clr r25
- 730 02e6 87FD      		sbrc r24,7
- 731 02e8 9095      		com r25
- 732 02ea FC01      		movw r30,r24
- 733 02ec 05E0      		ldi r16,5
- 734 02ee EE0F      	1:	lsl r30
- 735 02f0 FF1F      		rol r31
- 736 02f2 0A95      		dec r16
- 737 02f4 01F4      		brne 1b
- 738 02f6 E80F      		add r30,r24
- 739 02f8 F91F      		adc r31,r25
- 740 02fa E050      		subi r30,lo8(-(nrk_task_TCB))
- 741 02fc F040      		sbci r31,hi8(-(nrk_task_TCB))
- 742 02fe 8589      		ldd r24,Z+21
- 743 0300 9689      		ldd r25,Z+22
- 744 0302 0097      		sbiw r24,0
- 745 0304 01F4      		brne .L35
+ 688               	.LM71:
+ 689 02a0 8881      		ld r24,Y
+ 690 02a2 9927      		clr r25
+ 691 02a4 87FD      		sbrc r24,7
+ 692 02a6 9095      		com r25
+ 693 02a8 FC01      		movw r30,r24
+ 694 02aa 75E0      		ldi r23,5
+ 695 02ac EE0F      	1:	lsl r30
+ 696 02ae FF1F      		rol r31
+ 697 02b0 7A95      		dec r23
+ 698 02b2 01F4      		brne 1b
+ 699 02b4 E80F      		add r30,r24
+ 700 02b6 F91F      		adc r31,r25
+ 701 02b8 E050      		subi r30,lo8(-(nrk_task_TCB))
+ 702 02ba F040      		sbci r31,hi8(-(nrk_task_TCB))
+ 703 02bc 8589      		ldd r24,Z+21
+ 704 02be 9689      		ldd r25,Z+22
+ 705 02c0 0097      		sbiw r24,0
+ 706 02c2 01F4      		brne .L34
  289:..//src/kernel/source/nrk_task.c **** 	{
  290:..//src/kernel/source/nrk_task.c **** 		nrk_task_TCB[Task->task_ID].task_state = READY;
- 747               	.LM74:
- 748 0306 82E0      		ldi r24,lo8(2)
- 749 0308 8187      		std Z+9,r24
+ 708               	.LM72:
+ 709 02c4 82E0      		ldi r24,lo8(2)
+ 710 02c6 8187      		std Z+9,r24
  291:..//src/kernel/source/nrk_task.c **** 		nrk_add_to_readyQ (Task->task_ID);
- 751               	.LM75:
- 752 030a 8881      		ld r24,Y
- 753 030c 0E94 0000 		call nrk_add_to_readyQ
- 754 0310 00C0      		rjmp .L35
- 755               	.L34:
+ 712               	.LM73:
+ 713 02c8 8881      		ld r24,Y
+ 714 02ca 0E94 0000 		call nrk_add_to_readyQ
+ 715 02ce 00C0      		rjmp .L34
+ 716               	.L33:
  267:..//src/kernel/source/nrk_task.c **** 			return NRK_ERROR;
- 757               	.LM76:
- 758 0312 8FEF      		ldi r24,lo8(-1)
- 759 0314 00C0      		rjmp .L33
- 760               	.L35:
+ 718               	.LM74:
+ 719 02d0 8FEF      		ldi r24,lo8(-1)
+ 720 02d2 00C0      		rjmp .L32
+ 721               	.L34:
  292:..//src/kernel/source/nrk_task.c **** 	}
  293:..//src/kernel/source/nrk_task.c **** 
  294:..//src/kernel/source/nrk_task.c **** 	return NRK_OK;
- 762               	.LM77:
- 763 0316 81E0      		ldi r24,lo8(1)
- 764               	.L33:
- 765               	/* epilogue start */
+ 723               	.LM75:
+ 724 02d4 81E0      		ldi r24,lo8(1)
+ 725               	.L32:
+ 726               	/* epilogue start */
  295:..//src/kernel/source/nrk_task.c **** }
- 767               	.LM78:
- 768 0318 DF91      		pop r29
- 769 031a CF91      		pop r28
- 770 031c 1F91      		pop r17
- 771 031e 0F91      		pop r16
- 772 0320 FF90      		pop r15
- 773 0322 EF90      		pop r14
- 774 0324 0895      		ret
- 779               	.Lscope5:
- 781               		.stabd	78,0,0
- 784               	.global	nrk_set_next_wakeup
- 786               	nrk_set_next_wakeup:
- 787               		.stabd	46,0,0
+ 728               	.LM76:
+ 729 02d6 DF91      		pop r29
+ 730 02d8 CF91      		pop r28
+ 731 02da 1F91      		pop r17
+ 732 02dc 0F91      		pop r16
+ 733 02de FF90      		pop r15
+ 734 02e0 EF90      		pop r14
+ 735 02e2 0895      		ret
+ 740               	.Lscope5:
+ 742               		.stabd	78,0,0
+ 745               	.global	nrk_set_next_wakeup
+ 747               	nrk_set_next_wakeup:
+ 748               		.stabd	46,0,0
  296:..//src/kernel/source/nrk_task.c **** 
  297:..//src/kernel/source/nrk_task.c **** 
  298:..//src/kernel/source/nrk_task.c **** 
@@ -988,60 +952,60 @@
  428:..//src/kernel/source/nrk_task.c **** 
  429:..//src/kernel/source/nrk_task.c **** int8_t nrk_set_next_wakeup (nrk_time_t t)
  430:..//src/kernel/source/nrk_task.c **** {
- 789               	.LM79:
- 790               	.LFBB6:
- 791 0326 1F93      		push r17
- 792 0328 DF93      		push r29
- 793 032a CF93      		push r28
- 794 032c CDB7      		in r28,__SP_L__
- 795 032e DEB7      		in r29,__SP_H__
- 796 0330 2897      		sbiw r28,8
- 797 0332 0FB6      		in __tmp_reg__,__SREG__
- 798 0334 F894      		cli
- 799 0336 DEBF      		out __SP_H__,r29
- 800 0338 0FBE      		out __SREG__,__tmp_reg__
- 801 033a CDBF      		out __SP_L__,r28
- 802               	/* prologue: function */
- 803               	/* frame size = 8 */
- 804               	/* stack size = 11 */
- 805               	.L__stack_usage = 11
- 806 033c 2983      		std Y+1,r18
- 807 033e 3A83      		std Y+2,r19
- 808 0340 4B83      		std Y+3,r20
- 809 0342 5C83      		std Y+4,r21
- 810 0344 6D83      		std Y+5,r22
- 811 0346 7E83      		std Y+6,r23
- 812 0348 8F83      		std Y+7,r24
- 813 034a 9887      		std Y+8,r25
+ 750               	.LM77:
+ 751               	.LFBB6:
+ 752 02e4 1F93      		push r17
+ 753 02e6 DF93      		push r29
+ 754 02e8 CF93      		push r28
+ 755 02ea CDB7      		in r28,__SP_L__
+ 756 02ec DEB7      		in r29,__SP_H__
+ 757 02ee 2897      		sbiw r28,8
+ 758 02f0 0FB6      		in __tmp_reg__,__SREG__
+ 759 02f2 F894      		cli
+ 760 02f4 DEBF      		out __SP_H__,r29
+ 761 02f6 0FBE      		out __SREG__,__tmp_reg__
+ 762 02f8 CDBF      		out __SP_L__,r28
+ 763               	/* prologue: function */
+ 764               	/* frame size = 8 */
+ 765               	/* stack size = 11 */
+ 766               	.L__stack_usage = 11
+ 767 02fa 2983      		std Y+1,r18
+ 768 02fc 3A83      		std Y+2,r19
+ 769 02fe 4B83      		std Y+3,r20
+ 770 0300 5C83      		std Y+4,r21
+ 771 0302 6D83      		std Y+5,r22
+ 772 0304 7E83      		std Y+6,r23
+ 773 0306 8F83      		std Y+7,r24
+ 774 0308 9887      		std Y+8,r25
  431:..//src/kernel/source/nrk_task.c **** 	uint8_t timer;
  432:..//src/kernel/source/nrk_task.c **** 	uint16_t nw;
  433:..//src/kernel/source/nrk_task.c **** 	nrk_int_disable ();
- 815               	.LM80:
- 816 034c 0E94 0000 		call nrk_int_disable
+ 776               	.LM78:
+ 777 030a 0E94 0000 		call nrk_int_disable
  434:..//src/kernel/source/nrk_task.c **** 	timer = _nrk_os_timer_get ();
- 818               	.LM81:
- 819 0350 0E94 0000 		call _nrk_os_timer_get
- 820 0354 182F      		mov r17,r24
+ 779               	.LM79:
+ 780 030e 0E94 0000 		call _nrk_os_timer_get
+ 781 0312 182F      		mov r17,r24
  435:..//src/kernel/source/nrk_task.c **** 	nw = _nrk_time_to_ticks (&t);
- 822               	.LM82:
- 823 0356 CE01      		movw r24,r28
- 824 0358 0196      		adiw r24,1
- 825 035a 0E94 0000 		call _nrk_time_to_ticks
- 826 035e 9C01      		movw r18,r24
+ 783               	.LM80:
+ 784 0314 CE01      		movw r24,r28
+ 785 0316 0196      		adiw r24,1
+ 786 0318 0E94 0000 		call _nrk_time_to_ticks
+ 787 031c 9C01      		movw r18,r24
  436:..//src/kernel/source/nrk_task.c **** 	if (nw <= TIME_PAD)
- 828               	.LM83:
- 829 0360 8330      		cpi r24,3
- 830 0362 9105      		cpc r25,__zero_reg__
- 831 0364 00F0      		brlo .L38
+ 789               	.LM81:
+ 790 031e 8330      		cpi r24,3
+ 791 0320 9105      		cpc r25,__zero_reg__
+ 792 0322 00F0      		brlo .L37
  437:..//src/kernel/source/nrk_task.c **** 		return NRK_ERROR;
  438:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->next_wakeup = nw + timer;
- 833               	.LM84:
- 834 0366 E091 0000 		lds r30,nrk_cur_task_TCB
- 835 036a F091 0000 		lds r31,nrk_cur_task_TCB+1
- 836 036e 210F      		add r18,r17
- 837 0370 311D      		adc r19,__zero_reg__
- 838 0372 368B      		std Z+22,r19
- 839 0374 258B      		std Z+21,r18
+ 794               	.LM82:
+ 795 0324 E091 0000 		lds r30,nrk_cur_task_TCB
+ 796 0328 F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 797 032c 210F      		add r18,r17
+ 798 032e 311D      		adc r19,__zero_reg__
+ 799 0330 368B      		std Z+22,r19
+ 800 0332 258B      		std Z+21,r18
  439:..//src/kernel/source/nrk_task.c **** 	/*	if(timer<(254-TIME_PAD))
  440:..//src/kernel/source/nrk_task.c **** 	if((timer+TIME_PAD)<=_nrk_get_next_wakeup())
  441:..//src/kernel/source/nrk_task.c **** 	{
@@ -1052,36 +1016,36 @@
  446:..//src/kernel/source/nrk_task.c **** 	*/
  447:..//src/kernel/source/nrk_task.c **** 	//      nrk_cur_task_TCB->nw_flag=1;
  448:..//src/kernel/source/nrk_task.c **** 	nrk_int_enable ();
- 841               	.LM85:
- 842 0376 0E94 0000 		call nrk_int_enable
+ 802               	.LM83:
+ 803 0334 0E94 0000 		call nrk_int_enable
  449:..//src/kernel/source/nrk_task.c **** 
  450:..//src/kernel/source/nrk_task.c **** 	return NRK_OK;
- 844               	.LM86:
- 845 037a 81E0      		ldi r24,lo8(1)
- 846 037c 00C0      		rjmp .L37
- 847               	.L38:
+ 805               	.LM84:
+ 806 0338 81E0      		ldi r24,lo8(1)
+ 807 033a 00C0      		rjmp .L36
+ 808               	.L37:
  437:..//src/kernel/source/nrk_task.c **** 		return NRK_ERROR;
- 849               	.LM87:
- 850 037e 8FEF      		ldi r24,lo8(-1)
- 851               	.L37:
- 852               	/* epilogue start */
+ 810               	.LM85:
+ 811 033c 8FEF      		ldi r24,lo8(-1)
+ 812               	.L36:
+ 813               	/* epilogue start */
  451:..//src/kernel/source/nrk_task.c **** }
- 854               	.LM88:
- 855 0380 2896      		adiw r28,8
- 856 0382 0FB6      		in __tmp_reg__,__SREG__
- 857 0384 F894      		cli
- 858 0386 DEBF      		out __SP_H__,r29
- 859 0388 0FBE      		out __SREG__,__tmp_reg__
- 860 038a CDBF      		out __SP_L__,r28
- 861 038c CF91      		pop r28
- 862 038e DF91      		pop r29
- 863 0390 1F91      		pop r17
- 864 0392 0895      		ret
- 870               	.Lscope6:
- 872               		.stabd	78,0,0
- 874               	.global	_nrk_wait_for_scheduler
- 876               	_nrk_wait_for_scheduler:
- 877               		.stabd	46,0,0
+ 815               	.LM86:
+ 816 033e 2896      		adiw r28,8
+ 817 0340 0FB6      		in __tmp_reg__,__SREG__
+ 818 0342 F894      		cli
+ 819 0344 DEBF      		out __SP_H__,r29
+ 820 0346 0FBE      		out __SREG__,__tmp_reg__
+ 821 0348 CDBF      		out __SP_L__,r28
+ 822 034a CF91      		pop r28
+ 823 034c DF91      		pop r29
+ 824 034e 1F91      		pop r17
+ 825 0350 0895      		ret
+ 831               	.Lscope6:
+ 833               		.stabd	78,0,0
+ 835               	.global	_nrk_wait_for_scheduler
+ 837               	_nrk_wait_for_scheduler:
+ 838               		.stabd	46,0,0
  452:..//src/kernel/source/nrk_task.c **** 
  453:..//src/kernel/source/nrk_task.c **** /*
  454:..//src/kernel/source/nrk_task.c **** * nrk_wait_until_nw()
@@ -1152,620 +1116,620 @@
  519:..//src/kernel/source/nrk_task.c **** 
  520:..//src/kernel/source/nrk_task.c **** inline void _nrk_wait_for_scheduler ()
  521:..//src/kernel/source/nrk_task.c **** {
- 879               	.LM89:
- 880               	.LFBB7:
- 881               	/* prologue: function */
- 882               	/* frame size = 0 */
- 883               	/* stack size = 0 */
- 884               	.L__stack_usage = 0
- 885               	.L40:
+ 840               	.LM87:
+ 841               	.LFBB7:
+ 842               	/* prologue: function */
+ 843               	/* frame size = 0 */
+ 844               	/* stack size = 0 */
+ 845               	.L__stack_usage = 0
+ 846               	.L39:
  522:..//src/kernel/source/nrk_task.c **** 
  523:..//src/kernel/source/nrk_task.c **** 	//TIMSK = BM (OCIE1A);
  524:..//src/kernel/source/nrk_task.c **** 	do
  525:..//src/kernel/source/nrk_task.c **** 	{
  526:..//src/kernel/source/nrk_task.c **** 		nrk_idle ();                // wait for the interrupt to tick... // pdiener: halt CPU here until 
- 887               	.LM90:
- 888 0394 0E94 0000 		call nrk_idle
+ 848               	.LM88:
+ 849 0352 0E94 0000 		call nrk_idle
  527:..//src/kernel/source/nrk_task.c **** 	}
  528:..//src/kernel/source/nrk_task.c **** 	while ((volatile uint8_t) nrk_cur_task_TCB->suspend_flag == 1); // pdiener: make shure that was th
- 890               	.LM91:
- 891 0398 E091 0000 		lds r30,nrk_cur_task_TCB
- 892 039c F091 0000 		lds r31,nrk_cur_task_TCB+1
- 893 03a0 8581      		ldd r24,Z+5
- 894 03a2 8823      		tst r24
- 895 03a4 01F4      		brne .L40
- 896               	/* epilogue start */
+ 851               	.LM89:
+ 852 0356 E091 0000 		lds r30,nrk_cur_task_TCB
+ 853 035a F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 854 035e 8581      		ldd r24,Z+5
+ 855 0360 8823      		tst r24
+ 856 0362 01F4      		brne .L39
+ 857               	/* epilogue start */
  529:..//src/kernel/source/nrk_task.c **** 
  530:..//src/kernel/source/nrk_task.c **** 	//TIMSK = BM (OCIE1A) | BM(OCIE0);
  531:..//src/kernel/source/nrk_task.c **** }
- 898               	.LM92:
- 899 03a6 0895      		ret
- 901               	.Lscope7:
- 903               		.stabd	78,0,0
- 906               	.global	nrk_wait
- 908               	nrk_wait:
- 909               		.stabd	46,0,0
+ 859               	.LM90:
+ 860 0364 0895      		ret
+ 862               	.Lscope7:
+ 864               		.stabd	78,0,0
+ 867               	.global	nrk_wait
+ 869               	nrk_wait:
+ 870               		.stabd	46,0,0
  487:..//src/kernel/source/nrk_task.c **** {
- 911               	.LM93:
- 912               	.LFBB8:
- 913 03a8 FF92      		push r15
- 914 03aa 0F93      		push r16
- 915 03ac 1F93      		push r17
- 916 03ae DF93      		push r29
- 917 03b0 CF93      		push r28
- 918 03b2 CDB7      		in r28,__SP_L__
- 919 03b4 DEB7      		in r29,__SP_H__
- 920 03b6 2897      		sbiw r28,8
- 921 03b8 0FB6      		in __tmp_reg__,__SREG__
- 922 03ba F894      		cli
- 923 03bc DEBF      		out __SP_H__,r29
- 924 03be 0FBE      		out __SREG__,__tmp_reg__
- 925 03c0 CDBF      		out __SP_L__,r28
- 926               	/* prologue: function */
- 927               	/* frame size = 8 */
- 928               	/* stack size = 13 */
- 929               	.L__stack_usage = 13
- 930 03c2 2983      		std Y+1,r18
- 931 03c4 3A83      		std Y+2,r19
- 932 03c6 4B83      		std Y+3,r20
- 933 03c8 5C83      		std Y+4,r21
- 934 03ca 6D83      		std Y+5,r22
- 935 03cc 7E83      		std Y+6,r23
- 936 03ce 8F83      		std Y+7,r24
- 937 03d0 9887      		std Y+8,r25
+ 872               	.LM91:
+ 873               	.LFBB8:
+ 874 0366 FF92      		push r15
+ 875 0368 0F93      		push r16
+ 876 036a 1F93      		push r17
+ 877 036c DF93      		push r29
+ 878 036e CF93      		push r28
+ 879 0370 CDB7      		in r28,__SP_L__
+ 880 0372 DEB7      		in r29,__SP_H__
+ 881 0374 2897      		sbiw r28,8
+ 882 0376 0FB6      		in __tmp_reg__,__SREG__
+ 883 0378 F894      		cli
+ 884 037a DEBF      		out __SP_H__,r29
+ 885 037c 0FBE      		out __SREG__,__tmp_reg__
+ 886 037e CDBF      		out __SP_L__,r28
+ 887               	/* prologue: function */
+ 888               	/* frame size = 8 */
+ 889               	/* stack size = 13 */
+ 890               	.L__stack_usage = 13
+ 891 0380 2983      		std Y+1,r18
+ 892 0382 3A83      		std Y+2,r19
+ 893 0384 4B83      		std Y+3,r20
+ 894 0386 5C83      		std Y+4,r21
+ 895 0388 6D83      		std Y+5,r22
+ 896 038a 7E83      		std Y+6,r23
+ 897 038c 8F83      		std Y+7,r24
+ 898 038e 9887      		std Y+8,r25
  491:..//src/kernel/source/nrk_task.c **** 	nrk_stack_check ();
- 939               	.LM94:
- 940 03d2 0E94 0000 		call nrk_stack_check
+ 900               	.LM92:
+ 901 0390 0E94 0000 		call nrk_stack_check
  493:..//src/kernel/source/nrk_task.c **** 	nrk_int_disable ();
- 942               	.LM95:
- 943 03d6 0E94 0000 		call nrk_int_disable
+ 903               	.LM93:
+ 904 0394 0E94 0000 		call nrk_int_disable
  494:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->suspend_flag = 1;
- 945               	.LM96:
- 946 03da E091 0000 		lds r30,nrk_cur_task_TCB
- 947 03de F091 0000 		lds r31,nrk_cur_task_TCB+1
- 948 03e2 81E0      		ldi r24,lo8(1)
- 949 03e4 8583      		std Z+5,r24
+ 906               	.LM94:
+ 907 0398 E091 0000 		lds r30,nrk_cur_task_TCB
+ 908 039c F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 909 03a0 81E0      		ldi r24,lo8(1)
+ 910 03a2 8583      		std Z+5,r24
  495:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->num_periods = 1;
- 951               	.LM97:
- 952 03e6 81E0      		ldi r24,lo8(1)
- 953 03e8 90E0      		ldi r25,hi8(1)
- 954 03ea 90A3      		std Z+32,r25
- 955 03ec 878F      		std Z+31,r24
+ 912               	.LM95:
+ 913 03a4 81E0      		ldi r24,lo8(1)
+ 914 03a6 90E0      		ldi r25,hi8(1)
+ 915 03a8 90A3      		std Z+32,r25
+ 916 03aa 878F      		std Z+31,r24
  496:..//src/kernel/source/nrk_task.c **** 	timer = _nrk_os_timer_get ();
- 957               	.LM98:
- 958 03ee 0E94 0000 		call _nrk_os_timer_get
- 959 03f2 F82E      		mov r15,r24
+ 918               	.LM96:
+ 919 03ac 0E94 0000 		call _nrk_os_timer_get
+ 920 03b0 F82E      		mov r15,r24
  500:..//src/kernel/source/nrk_task.c **** 	nw = _nrk_time_to_ticks (&t);
- 961               	.LM99:
- 962 03f4 CE01      		movw r24,r28
- 963 03f6 0196      		adiw r24,1
- 964 03f8 0E94 0000 		call _nrk_time_to_ticks
+ 922               	.LM97:
+ 923 03b2 CE01      		movw r24,r28
+ 924 03b4 0196      		adiw r24,1
+ 925 03b6 0E94 0000 		call _nrk_time_to_ticks
  502:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->next_wakeup = nw + timer;
- 966               	.LM100:
- 967 03fc E091 0000 		lds r30,nrk_cur_task_TCB
- 968 0400 F091 0000 		lds r31,nrk_cur_task_TCB+1
- 969 0404 0F2D      		mov r16,r15
- 970 0406 10E0      		ldi r17,lo8(0)
- 971 0408 9801      		movw r18,r16
- 972 040a 280F      		add r18,r24
- 973 040c 391F      		adc r19,r25
- 974 040e 368B      		std Z+22,r19
- 975 0410 258B      		std Z+21,r18
+ 927               	.LM98:
+ 928 03ba E091 0000 		lds r30,nrk_cur_task_TCB
+ 929 03be F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 930 03c2 0F2D      		mov r16,r15
+ 931 03c4 10E0      		ldi r17,lo8(0)
+ 932 03c6 9801      		movw r18,r16
+ 933 03c8 280F      		add r18,r24
+ 934 03ca 391F      		adc r19,r25
+ 935 03cc 368B      		std Z+22,r19
+ 936 03ce 258B      		std Z+21,r18
  504:..//src/kernel/source/nrk_task.c **** 	if (timer < (MAX_SCHED_WAKEUP_TIME - TIME_PAD))
- 977               	.LM101:
- 978 0412 8F2D      		mov r24,r15
- 979 0414 883F      		cpi r24,lo8(-8)
- 980 0416 00F4      		brsh .L43
+ 938               	.LM99:
+ 939 03d0 8F2D      		mov r24,r15
+ 940 03d2 883F      		cpi r24,lo8(-8)
+ 941 03d4 00F4      		brsh .L42
  506:..//src/kernel/source/nrk_task.c **** 		if ((timer + TIME_PAD) <= _nrk_get_next_wakeup ())
- 982               	.LM102:
- 983 0418 0E94 0000 		call _nrk_get_next_wakeup
- 984 041c 0F5F      		subi r16,lo8(-(1))
- 985 041e 1F4F      		sbci r17,hi8(-(1))
- 986 0420 282F      		mov r18,r24
- 987 0422 30E0      		ldi r19,lo8(0)
- 988 0424 0217      		cp r16,r18
- 989 0426 1307      		cpc r17,r19
- 990 0428 04F4      		brge .L43
+ 943               	.LM100:
+ 944 03d6 0E94 0000 		call _nrk_get_next_wakeup
+ 945 03da 0F5F      		subi r16,lo8(-(1))
+ 946 03dc 1F4F      		sbci r17,hi8(-(1))
+ 947 03de 282F      		mov r18,r24
+ 948 03e0 30E0      		ldi r19,lo8(0)
+ 949 03e2 0217      		cp r16,r18
+ 950 03e4 1307      		cpc r17,r19
+ 951 03e6 04F4      		brge .L42
  508:..//src/kernel/source/nrk_task.c **** 			timer += TIME_PAD;
- 992               	.LM103:
- 993 042a 8F2D      		mov r24,r15
- 994 042c 8E5F      		subi r24,lo8(-(2))
+ 953               	.LM101:
+ 954 03e8 8F2D      		mov r24,r15
+ 955 03ea 8E5F      		subi r24,lo8(-(2))
  509:..//src/kernel/source/nrk_task.c **** 			_nrk_prev_timer_val = timer;
- 996               	.LM104:
- 997 042e 8093 0000 		sts _nrk_prev_timer_val,r24
+ 957               	.LM102:
+ 958 03ec 8093 0000 		sts _nrk_prev_timer_val,r24
  510:..//src/kernel/source/nrk_task.c **** 			_nrk_set_next_wakeup (timer);
- 999               	.LM105:
- 1000 0432 0E94 0000 		call _nrk_set_next_wakeup
- 1001               	.L43:
+ 960               	.LM103:
+ 961 03f0 0E94 0000 		call _nrk_set_next_wakeup
+ 962               	.L42:
  513:..//src/kernel/source/nrk_task.c **** 	nrk_int_enable ();
- 1003               	.LM106:
- 1004 0436 0E94 0000 		call nrk_int_enable
+ 964               	.LM104:
+ 965 03f4 0E94 0000 		call nrk_int_enable
  515:..//src/kernel/source/nrk_task.c **** 	_nrk_wait_for_scheduler ();
- 1006               	.LM107:
- 1007 043a 0E94 0000 		call _nrk_wait_for_scheduler
+ 967               	.LM105:
+ 968 03f8 0E94 0000 		call _nrk_wait_for_scheduler
  517:..//src/kernel/source/nrk_task.c **** }
- 1009               	.LM108:
- 1010 043e 81E0      		ldi r24,lo8(1)
- 1011               	/* epilogue start */
- 1012 0440 2896      		adiw r28,8
- 1013 0442 0FB6      		in __tmp_reg__,__SREG__
- 1014 0444 F894      		cli
- 1015 0446 DEBF      		out __SP_H__,r29
- 1016 0448 0FBE      		out __SREG__,__tmp_reg__
- 1017 044a CDBF      		out __SP_L__,r28
- 1018 044c CF91      		pop r28
- 1019 044e DF91      		pop r29
- 1020 0450 1F91      		pop r17
- 1021 0452 0F91      		pop r16
- 1022 0454 FF90      		pop r15
- 1023 0456 0895      		ret
- 1025               	.Lscope8:
- 1027               		.stabd	78,0,0
- 1029               	.global	nrk_wait_until_nw
- 1031               	nrk_wait_until_nw:
- 1032               		.stabd	46,0,0
+ 970               	.LM106:
+ 971 03fc 81E0      		ldi r24,lo8(1)
+ 972               	/* epilogue start */
+ 973 03fe 2896      		adiw r28,8
+ 974 0400 0FB6      		in __tmp_reg__,__SREG__
+ 975 0402 F894      		cli
+ 976 0404 DEBF      		out __SP_H__,r29
+ 977 0406 0FBE      		out __SREG__,__tmp_reg__
+ 978 0408 CDBF      		out __SP_L__,r28
+ 979 040a CF91      		pop r28
+ 980 040c DF91      		pop r29
+ 981 040e 1F91      		pop r17
+ 982 0410 0F91      		pop r16
+ 983 0412 FF90      		pop r15
+ 984 0414 0895      		ret
+ 986               	.Lscope8:
+ 988               		.stabd	78,0,0
+ 990               	.global	nrk_wait_until_nw
+ 992               	nrk_wait_until_nw:
+ 993               		.stabd	46,0,0
  464:..//src/kernel/source/nrk_task.c **** {
- 1034               	.LM109:
- 1035               	.LFBB9:
- 1036 0458 1F93      		push r17
- 1037               	/* prologue: function */
- 1038               	/* frame size = 0 */
- 1039               	/* stack size = 1 */
- 1040               	.L__stack_usage = 1
+ 995               	.LM107:
+ 996               	.LFBB9:
+ 997 0416 1F93      		push r17
+ 998               	/* prologue: function */
+ 999               	/* frame size = 0 */
+ 1000               	/* stack size = 1 */
+ 1001               	.L__stack_usage = 1
  466:..//src/kernel/source/nrk_task.c **** 	nrk_int_disable ();
- 1042               	.LM110:
- 1043 045a 0E94 0000 		call nrk_int_disable
+ 1003               	.LM108:
+ 1004 0418 0E94 0000 		call nrk_int_disable
  467:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->suspend_flag = 1;
- 1045               	.LM111:
- 1046 045e E091 0000 		lds r30,nrk_cur_task_TCB
- 1047 0462 F091 0000 		lds r31,nrk_cur_task_TCB+1
- 1048 0466 81E0      		ldi r24,lo8(1)
- 1049 0468 8583      		std Z+5,r24
+ 1006               	.LM109:
+ 1007 041c E091 0000 		lds r30,nrk_cur_task_TCB
+ 1008 0420 F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 1009 0424 81E0      		ldi r24,lo8(1)
+ 1010 0426 8583      		std Z+5,r24
  468:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->nw_flag = 1;
- 1051               	.LM112:
- 1052 046a 8683      		std Z+6,r24
+ 1012               	.LM110:
+ 1013 0428 8683      		std Z+6,r24
  469:..//src/kernel/source/nrk_task.c **** 	timer = _nrk_os_timer_get ();
- 1054               	.LM113:
- 1055 046c 0E94 0000 		call _nrk_os_timer_get
- 1056 0470 182F      		mov r17,r24
+ 1015               	.LM111:
+ 1016 042a 0E94 0000 		call _nrk_os_timer_get
+ 1017 042e 182F      		mov r17,r24
  471:..//src/kernel/source/nrk_task.c **** 	if (timer < MAX_SCHED_WAKEUP_TIME - TIME_PAD)
- 1058               	.LM114:
- 1059 0472 883F      		cpi r24,lo8(-8)
- 1060 0474 00F4      		brsh .L45
+ 1019               	.LM112:
+ 1020 0430 883F      		cpi r24,lo8(-8)
+ 1021 0432 00F4      		brsh .L44
  472:..//src/kernel/source/nrk_task.c **** 		if ((timer + TIME_PAD) <= _nrk_get_next_wakeup ())
- 1062               	.LM115:
- 1063 0476 0E94 0000 		call _nrk_get_next_wakeup
- 1064 047a 212F      		mov r18,r17
- 1065 047c 30E0      		ldi r19,lo8(0)
- 1066 047e 2F5F      		subi r18,lo8(-(1))
- 1067 0480 3F4F      		sbci r19,hi8(-(1))
- 1068 0482 482F      		mov r20,r24
- 1069 0484 50E0      		ldi r21,lo8(0)
- 1070 0486 2417      		cp r18,r20
- 1071 0488 3507      		cpc r19,r21
- 1072 048a 04F4      		brge .L45
+ 1023               	.LM113:
+ 1024 0434 0E94 0000 		call _nrk_get_next_wakeup
+ 1025 0438 212F      		mov r18,r17
+ 1026 043a 30E0      		ldi r19,lo8(0)
+ 1027 043c 2F5F      		subi r18,lo8(-(1))
+ 1028 043e 3F4F      		sbci r19,hi8(-(1))
+ 1029 0440 482F      		mov r20,r24
+ 1030 0442 50E0      		ldi r21,lo8(0)
+ 1031 0444 2417      		cp r18,r20
+ 1032 0446 3507      		cpc r19,r21
+ 1033 0448 04F4      		brge .L44
  474:..//src/kernel/source/nrk_task.c **** 			timer += TIME_PAD;
- 1074               	.LM116:
- 1075 048c 812F      		mov r24,r17
- 1076 048e 8E5F      		subi r24,lo8(-(2))
+ 1035               	.LM114:
+ 1036 044a 812F      		mov r24,r17
+ 1037 044c 8E5F      		subi r24,lo8(-(2))
  475:..//src/kernel/source/nrk_task.c **** 			_nrk_prev_timer_val = timer;
- 1078               	.LM117:
- 1079 0490 8093 0000 		sts _nrk_prev_timer_val,r24
+ 1039               	.LM115:
+ 1040 044e 8093 0000 		sts _nrk_prev_timer_val,r24
  476:..//src/kernel/source/nrk_task.c **** 			_nrk_set_next_wakeup (timer);
- 1081               	.LM118:
- 1082 0494 0E94 0000 		call _nrk_set_next_wakeup
- 1083               	.L45:
+ 1042               	.LM116:
+ 1043 0452 0E94 0000 		call _nrk_set_next_wakeup
+ 1044               	.L44:
  479:..//src/kernel/source/nrk_task.c **** 		nrk_int_enable ();
- 1085               	.LM119:
- 1086 0498 0E94 0000 		call nrk_int_enable
+ 1046               	.LM117:
+ 1047 0456 0E94 0000 		call nrk_int_enable
  481:..//src/kernel/source/nrk_task.c **** 		_nrk_wait_for_scheduler ();
- 1088               	.LM120:
- 1089 049c 0E94 0000 		call _nrk_wait_for_scheduler
+ 1049               	.LM118:
+ 1050 045a 0E94 0000 		call _nrk_wait_for_scheduler
  483:..//src/kernel/source/nrk_task.c **** }
- 1091               	.LM121:
- 1092 04a0 81E0      		ldi r24,lo8(1)
- 1093               	/* epilogue start */
- 1094 04a2 1F91      		pop r17
- 1095 04a4 0895      		ret
- 1097               	.Lscope9:
- 1099               		.stabd	78,0,0
- 1102               	.global	nrk_wait_until_ticks
- 1104               	nrk_wait_until_ticks:
- 1105               		.stabd	46,0,0
+ 1052               	.LM119:
+ 1053 045e 81E0      		ldi r24,lo8(1)
+ 1054               	/* epilogue start */
+ 1055 0460 1F91      		pop r17
+ 1056 0462 0895      		ret
+ 1058               	.Lscope9:
+ 1060               		.stabd	78,0,0
+ 1063               	.global	nrk_wait_until_ticks
+ 1065               	nrk_wait_until_ticks:
+ 1066               		.stabd	46,0,0
  407:..//src/kernel/source/nrk_task.c **** {
- 1107               	.LM122:
- 1108               	.LFBB10:
- 1109 04a6 1F93      		push r17
- 1110 04a8 CF93      		push r28
- 1111 04aa DF93      		push r29
- 1112               	/* prologue: function */
- 1113               	/* frame size = 0 */
- 1114               	/* stack size = 3 */
- 1115               	.L__stack_usage = 3
- 1116 04ac EC01      		movw r28,r24
+ 1068               	.LM120:
+ 1069               	.LFBB10:
+ 1070 0464 1F93      		push r17
+ 1071 0466 CF93      		push r28
+ 1072 0468 DF93      		push r29
+ 1073               	/* prologue: function */
+ 1074               	/* frame size = 0 */
+ 1075               	/* stack size = 3 */
+ 1076               	.L__stack_usage = 3
+ 1077 046a EC01      		movw r28,r24
  409:..//src/kernel/source/nrk_task.c **** 	nrk_int_disable ();
- 1118               	.LM123:
- 1119 04ae 0E94 0000 		call nrk_int_disable
+ 1079               	.LM121:
+ 1080 046c 0E94 0000 		call nrk_int_disable
  410:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->suspend_flag = 1;
- 1121               	.LM124:
- 1122 04b2 E091 0000 		lds r30,nrk_cur_task_TCB
- 1123 04b6 F091 0000 		lds r31,nrk_cur_task_TCB+1
- 1124 04ba 81E0      		ldi r24,lo8(1)
- 1125 04bc 8583      		std Z+5,r24
+ 1082               	.LM122:
+ 1083 0470 E091 0000 		lds r30,nrk_cur_task_TCB
+ 1084 0474 F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 1085 0478 81E0      		ldi r24,lo8(1)
+ 1086 047a 8583      		std Z+5,r24
  411:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->next_wakeup = ticks;
- 1127               	.LM125:
- 1128 04be D68B      		std Z+22,r29
- 1129 04c0 C58B      		std Z+21,r28
+ 1088               	.LM123:
+ 1089 047c D68B      		std Z+22,r29
+ 1090 047e C58B      		std Z+21,r28
  413:..//src/kernel/source/nrk_task.c **** 	timer = _nrk_os_timer_get ();
- 1131               	.LM126:
- 1132 04c2 0E94 0000 		call _nrk_os_timer_get
- 1133 04c6 182F      		mov r17,r24
+ 1092               	.LM124:
+ 1093 0480 0E94 0000 		call _nrk_os_timer_get
+ 1094 0484 182F      		mov r17,r24
  415:..//src/kernel/source/nrk_task.c **** 	if (timer < MAX_SCHED_WAKEUP_TIME - TIME_PAD)
- 1135               	.LM127:
- 1136 04c8 883F      		cpi r24,lo8(-8)
- 1137 04ca 00F4      		brsh .L47
+ 1096               	.LM125:
+ 1097 0486 883F      		cpi r24,lo8(-8)
+ 1098 0488 00F4      		brsh .L46
  416:..//src/kernel/source/nrk_task.c **** 		if ((timer + TIME_PAD) <= _nrk_get_next_wakeup ())
- 1139               	.LM128:
- 1140 04cc 0E94 0000 		call _nrk_get_next_wakeup
- 1141 04d0 212F      		mov r18,r17
- 1142 04d2 30E0      		ldi r19,lo8(0)
- 1143 04d4 2F5F      		subi r18,lo8(-(1))
- 1144 04d6 3F4F      		sbci r19,hi8(-(1))
- 1145 04d8 482F      		mov r20,r24
- 1146 04da 50E0      		ldi r21,lo8(0)
- 1147 04dc 2417      		cp r18,r20
- 1148 04de 3507      		cpc r19,r21
- 1149 04e0 04F4      		brge .L47
+ 1100               	.LM126:
+ 1101 048a 0E94 0000 		call _nrk_get_next_wakeup
+ 1102 048e 212F      		mov r18,r17
+ 1103 0490 30E0      		ldi r19,lo8(0)
+ 1104 0492 2F5F      		subi r18,lo8(-(1))
+ 1105 0494 3F4F      		sbci r19,hi8(-(1))
+ 1106 0496 482F      		mov r20,r24
+ 1107 0498 50E0      		ldi r21,lo8(0)
+ 1108 049a 2417      		cp r18,r20
+ 1109 049c 3507      		cpc r19,r21
+ 1110 049e 04F4      		brge .L46
  418:..//src/kernel/source/nrk_task.c **** 			timer += TIME_PAD;
- 1151               	.LM129:
- 1152 04e2 812F      		mov r24,r17
- 1153 04e4 8E5F      		subi r24,lo8(-(2))
+ 1112               	.LM127:
+ 1113 04a0 812F      		mov r24,r17
+ 1114 04a2 8E5F      		subi r24,lo8(-(2))
  419:..//src/kernel/source/nrk_task.c **** 			_nrk_prev_timer_val = timer;
- 1155               	.LM130:
- 1156 04e6 8093 0000 		sts _nrk_prev_timer_val,r24
+ 1116               	.LM128:
+ 1117 04a4 8093 0000 		sts _nrk_prev_timer_val,r24
  420:..//src/kernel/source/nrk_task.c **** 			_nrk_set_next_wakeup (timer);
- 1158               	.LM131:
- 1159 04ea 0E94 0000 		call _nrk_set_next_wakeup
- 1160               	.L47:
+ 1119               	.LM129:
+ 1120 04a8 0E94 0000 		call _nrk_set_next_wakeup
+ 1121               	.L46:
  423:..//src/kernel/source/nrk_task.c **** 		nrk_int_enable ();
- 1162               	.LM132:
- 1163 04ee 0E94 0000 		call nrk_int_enable
+ 1123               	.LM130:
+ 1124 04ac 0E94 0000 		call nrk_int_enable
  425:..//src/kernel/source/nrk_task.c **** 		_nrk_wait_for_scheduler ();
- 1165               	.LM133:
- 1166 04f2 0E94 0000 		call _nrk_wait_for_scheduler
+ 1126               	.LM131:
+ 1127 04b0 0E94 0000 		call _nrk_wait_for_scheduler
  427:..//src/kernel/source/nrk_task.c **** }
- 1168               	.LM134:
- 1169 04f6 81E0      		ldi r24,lo8(1)
- 1170               	/* epilogue start */
- 1171 04f8 DF91      		pop r29
- 1172 04fa CF91      		pop r28
- 1173 04fc 1F91      		pop r17
- 1174 04fe 0895      		ret
- 1176               	.Lscope10:
- 1178               		.stabd	78,0,0
- 1181               	.global	nrk_wait_ticks
- 1183               	nrk_wait_ticks:
- 1184               		.stabd	46,0,0
+ 1129               	.LM132:
+ 1130 04b4 81E0      		ldi r24,lo8(1)
+ 1131               	/* epilogue start */
+ 1132 04b6 DF91      		pop r29
+ 1133 04b8 CF91      		pop r28
+ 1134 04ba 1F91      		pop r17
+ 1135 04bc 0895      		ret
+ 1137               	.Lscope10:
+ 1139               		.stabd	78,0,0
+ 1142               	.global	nrk_wait_ticks
+ 1144               	nrk_wait_ticks:
+ 1145               		.stabd	46,0,0
  374:..//src/kernel/source/nrk_task.c **** {
- 1186               	.LM135:
- 1187               	.LFBB11:
- 1188 0500 EF92      		push r14
- 1189 0502 FF92      		push r15
- 1190 0504 0F93      		push r16
- 1191 0506 1F93      		push r17
- 1192 0508 DF93      		push r29
- 1193 050a CF93      		push r28
- 1194 050c 0F92      		push __tmp_reg__
- 1195 050e CDB7      		in r28,__SP_L__
- 1196 0510 DEB7      		in r29,__SP_H__
- 1197               	/* prologue: function */
- 1198               	/* frame size = 1 */
- 1199               	/* stack size = 7 */
- 1200               	.L__stack_usage = 7
- 1201 0512 8C01      		movw r16,r24
+ 1147               	.LM133:
+ 1148               	.LFBB11:
+ 1149 04be EF92      		push r14
+ 1150 04c0 FF92      		push r15
+ 1151 04c2 0F93      		push r16
+ 1152 04c4 1F93      		push r17
+ 1153 04c6 DF93      		push r29
+ 1154 04c8 CF93      		push r28
+ 1155 04ca 0F92      		push __tmp_reg__
+ 1156 04cc CDB7      		in r28,__SP_L__
+ 1157 04ce DEB7      		in r29,__SP_H__
+ 1158               	/* prologue: function */
+ 1159               	/* frame size = 1 */
+ 1160               	/* stack size = 7 */
+ 1161               	.L__stack_usage = 7
+ 1162 04d0 8C01      		movw r16,r24
  376:..//src/kernel/source/nrk_task.c **** 	nrk_int_disable ();
- 1203               	.LM136:
- 1204 0514 0E94 0000 		call nrk_int_disable
+ 1164               	.LM134:
+ 1165 04d2 0E94 0000 		call nrk_int_disable
  377:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->suspend_flag = 1;
- 1206               	.LM137:
- 1207 0518 E091 0000 		lds r30,nrk_cur_task_TCB
- 1208 051c F091 0000 		lds r31,nrk_cur_task_TCB+1
- 1209 0520 81E0      		ldi r24,lo8(1)
- 1210 0522 8583      		std Z+5,r24
+ 1167               	.LM135:
+ 1168 04d6 E091 0000 		lds r30,nrk_cur_task_TCB
+ 1169 04da F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 1170 04de 81E0      		ldi r24,lo8(1)
+ 1171 04e0 8583      		std Z+5,r24
  378:..//src/kernel/source/nrk_task.c **** 	timer = _nrk_os_timer_get ();
- 1212               	.LM138:
- 1213 0524 0E94 0000 		call _nrk_os_timer_get
+ 1173               	.LM136:
+ 1174 04e2 0E94 0000 		call _nrk_os_timer_get
  379:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->next_wakeup = ticks + timer;
- 1215               	.LM139:
- 1216 0528 E091 0000 		lds r30,nrk_cur_task_TCB
- 1217 052c F091 0000 		lds r31,nrk_cur_task_TCB+1
- 1218 0530 E82E      		mov r14,r24
- 1219 0532 FF24      		clr r15
- 1220 0534 0E0D      		add r16,r14
- 1221 0536 1F1D      		adc r17,r15
- 1222 0538 168B      		std Z+22,r17
- 1223 053a 058B      		std Z+21,r16
+ 1176               	.LM137:
+ 1177 04e6 E091 0000 		lds r30,nrk_cur_task_TCB
+ 1178 04ea F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 1179 04ee E82E      		mov r14,r24
+ 1180 04f0 FF24      		clr r15
+ 1181 04f2 0E0D      		add r16,r14
+ 1182 04f4 1F1D      		adc r17,r15
+ 1183 04f6 168B      		std Z+22,r17
+ 1184 04f8 058B      		std Z+21,r16
  381:..//src/kernel/source/nrk_task.c **** 	if (timer < MAX_SCHED_WAKEUP_TIME - TIME_PAD)
- 1225               	.LM140:
- 1226 053c 883F      		cpi r24,lo8(-8)
- 1227 053e 00F4      		brsh .L49
+ 1186               	.LM138:
+ 1187 04fa 883F      		cpi r24,lo8(-8)
+ 1188 04fc 00F4      		brsh .L48
  382:..//src/kernel/source/nrk_task.c **** 		if ((timer + TIME_PAD) <= _nrk_get_next_wakeup ())
- 1229               	.LM141:
- 1230 0540 8983      		std Y+1,r24
- 1231 0542 0E94 0000 		call _nrk_get_next_wakeup
- 1232 0546 0894      		sec
- 1233 0548 E11C      		adc r14,__zero_reg__
- 1234 054a F11C      		adc r15,__zero_reg__
- 1235 054c 282F      		mov r18,r24
- 1236 054e 30E0      		ldi r19,lo8(0)
- 1237 0550 9981      		ldd r25,Y+1
- 1238 0552 E216      		cp r14,r18
- 1239 0554 F306      		cpc r15,r19
- 1240 0556 04F4      		brge .L49
+ 1190               	.LM139:
+ 1191 04fe 8983      		std Y+1,r24
+ 1192 0500 0E94 0000 		call _nrk_get_next_wakeup
+ 1193 0504 0894      		sec
+ 1194 0506 E11C      		adc r14,__zero_reg__
+ 1195 0508 F11C      		adc r15,__zero_reg__
+ 1196 050a 282F      		mov r18,r24
+ 1197 050c 30E0      		ldi r19,lo8(0)
+ 1198 050e 9981      		ldd r25,Y+1
+ 1199 0510 E216      		cp r14,r18
+ 1200 0512 F306      		cpc r15,r19
+ 1201 0514 04F4      		brge .L48
  384:..//src/kernel/source/nrk_task.c **** 			timer += TIME_PAD;
- 1242               	.LM142:
- 1243 0558 892F      		mov r24,r25
- 1244 055a 8E5F      		subi r24,lo8(-(2))
+ 1203               	.LM140:
+ 1204 0516 892F      		mov r24,r25
+ 1205 0518 8E5F      		subi r24,lo8(-(2))
  385:..//src/kernel/source/nrk_task.c **** 			_nrk_prev_timer_val = timer;
- 1246               	.LM143:
- 1247 055c 8093 0000 		sts _nrk_prev_timer_val,r24
+ 1207               	.LM141:
+ 1208 051a 8093 0000 		sts _nrk_prev_timer_val,r24
  386:..//src/kernel/source/nrk_task.c **** 			_nrk_set_next_wakeup (timer);
- 1249               	.LM144:
- 1250 0560 0E94 0000 		call _nrk_set_next_wakeup
- 1251               	.L49:
+ 1210               	.LM142:
+ 1211 051e 0E94 0000 		call _nrk_set_next_wakeup
+ 1212               	.L48:
  389:..//src/kernel/source/nrk_task.c **** 		nrk_int_enable ();
- 1253               	.LM145:
- 1254 0564 0E94 0000 		call nrk_int_enable
+ 1214               	.LM143:
+ 1215 0522 0E94 0000 		call nrk_int_enable
  391:..//src/kernel/source/nrk_task.c **** 		_nrk_wait_for_scheduler ();
- 1256               	.LM146:
- 1257 0568 0E94 0000 		call _nrk_wait_for_scheduler
+ 1217               	.LM144:
+ 1218 0526 0E94 0000 		call _nrk_wait_for_scheduler
  393:..//src/kernel/source/nrk_task.c **** }
- 1259               	.LM147:
- 1260 056c 81E0      		ldi r24,lo8(1)
- 1261               	/* epilogue start */
- 1262 056e 0F90      		pop __tmp_reg__
- 1263 0570 CF91      		pop r28
- 1264 0572 DF91      		pop r29
- 1265 0574 1F91      		pop r17
- 1266 0576 0F91      		pop r16
- 1267 0578 FF90      		pop r15
- 1268 057a EF90      		pop r14
- 1269 057c 0895      		ret
- 1271               	.Lscope11:
- 1273               		.stabd	78,0,0
- 1276               	.global	nrk_wait_until_next_n_periods
- 1278               	nrk_wait_until_next_n_periods:
- 1279               		.stabd	46,0,0
+ 1220               	.LM145:
+ 1221 052a 81E0      		ldi r24,lo8(1)
+ 1222               	/* epilogue start */
+ 1223 052c 0F90      		pop __tmp_reg__
+ 1224 052e CF91      		pop r28
+ 1225 0530 DF91      		pop r29
+ 1226 0532 1F91      		pop r17
+ 1227 0534 0F91      		pop r16
+ 1228 0536 FF90      		pop r15
+ 1229 0538 EF90      		pop r14
+ 1230 053a 0895      		ret
+ 1232               	.Lscope11:
+ 1234               		.stabd	78,0,0
+ 1237               	.global	nrk_wait_until_next_n_periods
+ 1239               	nrk_wait_until_next_n_periods:
+ 1240               		.stabd	46,0,0
  336:..//src/kernel/source/nrk_task.c **** {
- 1281               	.LM148:
- 1282               	.LFBB12:
- 1283 057e 1F93      		push r17
- 1284 0580 CF93      		push r28
- 1285 0582 DF93      		push r29
- 1286               	/* prologue: function */
- 1287               	/* frame size = 0 */
- 1288               	/* stack size = 3 */
- 1289               	.L__stack_usage = 3
- 1290 0584 EC01      		movw r28,r24
+ 1242               	.LM146:
+ 1243               	.LFBB12:
+ 1244 053c 1F93      		push r17
+ 1245 053e CF93      		push r28
+ 1246 0540 DF93      		push r29
+ 1247               	/* prologue: function */
+ 1248               	/* frame size = 0 */
+ 1249               	/* stack size = 3 */
+ 1250               	.L__stack_usage = 3
+ 1251 0542 EC01      		movw r28,r24
  339:..//src/kernel/source/nrk_task.c **** 	nrk_stack_check ();
- 1292               	.LM149:
- 1293 0586 0E94 0000 		call nrk_stack_check
+ 1253               	.LM147:
+ 1254 0544 0E94 0000 		call nrk_stack_check
  341:..//src/kernel/source/nrk_task.c **** 	if (p == 0)
- 1295               	.LM150:
- 1296 058a 2097      		sbiw r28,0
- 1297 058c 01F4      		brne .L51
+ 1256               	.LM148:
+ 1257 0548 2097      		sbiw r28,0
+ 1258 054a 01F4      		brne .L50
  342:..//src/kernel/source/nrk_task.c **** 		p = 1;
- 1299               	.LM151:
- 1300 058e C1E0      		ldi r28,lo8(1)
- 1301 0590 D0E0      		ldi r29,hi8(1)
- 1302               	.L51:
+ 1260               	.LM149:
+ 1261 054c C1E0      		ldi r28,lo8(1)
+ 1262 054e D0E0      		ldi r29,hi8(1)
+ 1263               	.L50:
  344:..//src/kernel/source/nrk_task.c **** 	nrk_int_disable ();
- 1304               	.LM152:
- 1305 0592 0E94 0000 		call nrk_int_disable
+ 1265               	.LM150:
+ 1266 0550 0E94 0000 		call nrk_int_disable
  345:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->suspend_flag = 1;
- 1307               	.LM153:
- 1308 0596 E091 0000 		lds r30,nrk_cur_task_TCB
- 1309 059a F091 0000 		lds r31,nrk_cur_task_TCB+1
- 1310 059e 81E0      		ldi r24,lo8(1)
- 1311 05a0 8583      		std Z+5,r24
+ 1268               	.LM151:
+ 1269 0554 E091 0000 		lds r30,nrk_cur_task_TCB
+ 1270 0558 F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 1271 055c 81E0      		ldi r24,lo8(1)
+ 1272 055e 8583      		std Z+5,r24
  346:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->num_periods = p;
- 1313               	.LM154:
- 1314 05a2 D0A3      		std Z+32,r29
- 1315 05a4 C78F      		std Z+31,r28
+ 1274               	.LM152:
+ 1275 0560 D0A3      		std Z+32,r29
+ 1276 0562 C78F      		std Z+31,r28
  347:..//src/kernel/source/nrk_task.c **** 	timer = _nrk_os_timer_get ();
- 1317               	.LM155:
- 1318 05a6 0E94 0000 		call _nrk_os_timer_get
- 1319 05aa 182F      		mov r17,r24
+ 1278               	.LM153:
+ 1279 0564 0E94 0000 		call _nrk_os_timer_get
+ 1280 0568 182F      		mov r17,r24
  352:..//src/kernel/source/nrk_task.c **** 	if (timer < (MAX_SCHED_WAKEUP_TIME - TIME_PAD))       // 254 8bit overflow point - 2
- 1321               	.LM156:
- 1322 05ac 883F      		cpi r24,lo8(-8)
- 1323 05ae 00F4      		brsh .L52
+ 1282               	.LM154:
+ 1283 056a 883F      		cpi r24,lo8(-8)
+ 1284 056c 00F4      		brsh .L51
  353:..//src/kernel/source/nrk_task.c **** 		if ((timer + TIME_PAD) <= _nrk_get_next_wakeup ())
- 1325               	.LM157:
- 1326 05b0 0E94 0000 		call _nrk_get_next_wakeup
- 1327 05b4 212F      		mov r18,r17
- 1328 05b6 30E0      		ldi r19,lo8(0)
- 1329 05b8 2F5F      		subi r18,lo8(-(1))
- 1330 05ba 3F4F      		sbci r19,hi8(-(1))
- 1331 05bc 482F      		mov r20,r24
- 1332 05be 50E0      		ldi r21,lo8(0)
- 1333 05c0 2417      		cp r18,r20
- 1334 05c2 3507      		cpc r19,r21
- 1335 05c4 04F4      		brge .L52
+ 1286               	.LM155:
+ 1287 056e 0E94 0000 		call _nrk_get_next_wakeup
+ 1288 0572 212F      		mov r18,r17
+ 1289 0574 30E0      		ldi r19,lo8(0)
+ 1290 0576 2F5F      		subi r18,lo8(-(1))
+ 1291 0578 3F4F      		sbci r19,hi8(-(1))
+ 1292 057a 482F      		mov r20,r24
+ 1293 057c 50E0      		ldi r21,lo8(0)
+ 1294 057e 2417      		cp r18,r20
+ 1295 0580 3507      		cpc r19,r21
+ 1296 0582 04F4      		brge .L51
  355:..//src/kernel/source/nrk_task.c **** 			timer += TIME_PAD;
- 1337               	.LM158:
- 1338 05c6 812F      		mov r24,r17
- 1339 05c8 8E5F      		subi r24,lo8(-(2))
+ 1298               	.LM156:
+ 1299 0584 812F      		mov r24,r17
+ 1300 0586 8E5F      		subi r24,lo8(-(2))
  356:..//src/kernel/source/nrk_task.c **** 			_nrk_prev_timer_val = timer;
- 1341               	.LM159:
- 1342 05ca 8093 0000 		sts _nrk_prev_timer_val,r24
+ 1302               	.LM157:
+ 1303 0588 8093 0000 		sts _nrk_prev_timer_val,r24
  357:..//src/kernel/source/nrk_task.c **** 			_nrk_set_next_wakeup (timer);                 // pdiener: Set next wakeup to NOW
- 1344               	.LM160:
- 1345 05ce 0E94 0000 		call _nrk_set_next_wakeup
- 1346               	.L52:
+ 1305               	.LM158:
+ 1306 058c 0E94 0000 		call _nrk_set_next_wakeup
+ 1307               	.L51:
  360:..//src/kernel/source/nrk_task.c **** 		nrk_int_enable ();
- 1348               	.LM161:
- 1349 05d2 0E94 0000 		call nrk_int_enable
+ 1309               	.LM159:
+ 1310 0590 0E94 0000 		call nrk_int_enable
  361:..//src/kernel/source/nrk_task.c **** 		_nrk_wait_for_scheduler ();
- 1351               	.LM162:
- 1352 05d6 0E94 0000 		call _nrk_wait_for_scheduler
+ 1312               	.LM160:
+ 1313 0594 0E94 0000 		call _nrk_wait_for_scheduler
  363:..//src/kernel/source/nrk_task.c **** }
- 1354               	.LM163:
- 1355 05da 81E0      		ldi r24,lo8(1)
- 1356               	/* epilogue start */
- 1357 05dc DF91      		pop r29
- 1358 05de CF91      		pop r28
- 1359 05e0 1F91      		pop r17
- 1360 05e2 0895      		ret
- 1362               	.Lscope12:
- 1364               		.stabd	78,0,0
- 1366               	.global	nrk_wait_until_next_period
- 1368               	nrk_wait_until_next_period:
- 1369               		.stabd	46,0,0
+ 1315               	.LM161:
+ 1316 0598 81E0      		ldi r24,lo8(1)
+ 1317               	/* epilogue start */
+ 1318 059a DF91      		pop r29
+ 1319 059c CF91      		pop r28
+ 1320 059e 1F91      		pop r17
+ 1321 05a0 0895      		ret
+ 1323               	.Lscope12:
+ 1325               		.stabd	78,0,0
+ 1327               	.global	nrk_wait_until_next_period
+ 1329               	nrk_wait_until_next_period:
+ 1330               		.stabd	46,0,0
  310:..//src/kernel/source/nrk_task.c **** {
- 1371               	.LM164:
- 1372               	.LFBB13:
- 1373 05e4 1F93      		push r17
- 1374               	/* prologue: function */
- 1375               	/* frame size = 0 */
- 1376               	/* stack size = 1 */
- 1377               	.L__stack_usage = 1
+ 1332               	.LM162:
+ 1333               	.LFBB13:
+ 1334 05a2 1F93      		push r17
+ 1335               	/* prologue: function */
+ 1336               	/* frame size = 0 */
+ 1337               	/* stack size = 1 */
+ 1338               	.L__stack_usage = 1
  313:..//src/kernel/source/nrk_task.c **** 	nrk_stack_check ();
- 1379               	.LM165:
- 1380 05e6 0E94 0000 		call nrk_stack_check
+ 1340               	.LM163:
+ 1341 05a4 0E94 0000 		call nrk_stack_check
  315:..//src/kernel/source/nrk_task.c **** 	nrk_int_disable ();
- 1382               	.LM166:
- 1383 05ea 0E94 0000 		call nrk_int_disable
+ 1343               	.LM164:
+ 1344 05a8 0E94 0000 		call nrk_int_disable
  316:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->num_periods = 1;
- 1385               	.LM167:
- 1386 05ee E091 0000 		lds r30,nrk_cur_task_TCB
- 1387 05f2 F091 0000 		lds r31,nrk_cur_task_TCB+1
- 1388 05f6 81E0      		ldi r24,lo8(1)
- 1389 05f8 90E0      		ldi r25,hi8(1)
- 1390 05fa 90A3      		std Z+32,r25
- 1391 05fc 878F      		std Z+31,r24
+ 1346               	.LM165:
+ 1347 05ac E091 0000 		lds r30,nrk_cur_task_TCB
+ 1348 05b0 F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 1349 05b4 81E0      		ldi r24,lo8(1)
+ 1350 05b6 90E0      		ldi r25,hi8(1)
+ 1351 05b8 90A3      		std Z+32,r25
+ 1352 05ba 878F      		std Z+31,r24
  317:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->suspend_flag = 1;
- 1393               	.LM168:
- 1394 05fe 81E0      		ldi r24,lo8(1)
- 1395 0600 8583      		std Z+5,r24
+ 1354               	.LM166:
+ 1355 05bc 81E0      		ldi r24,lo8(1)
+ 1356 05be 8583      		std Z+5,r24
  318:..//src/kernel/source/nrk_task.c **** 	timer = _nrk_os_timer_get ();
- 1397               	.LM169:
- 1398 0602 0E94 0000 		call _nrk_os_timer_get
- 1399 0606 182F      		mov r17,r24
+ 1358               	.LM167:
+ 1359 05c0 0E94 0000 		call _nrk_os_timer_get
+ 1360 05c4 182F      		mov r17,r24
  322:..//src/kernel/source/nrk_task.c **** 	if (timer < (MAX_SCHED_WAKEUP_TIME - TIME_PAD))
- 1401               	.LM170:
- 1402 0608 883F      		cpi r24,lo8(-8)
- 1403 060a 00F4      		brsh .L55
+ 1362               	.LM168:
+ 1363 05c6 883F      		cpi r24,lo8(-8)
+ 1364 05c8 00F4      		brsh .L54
  323:..//src/kernel/source/nrk_task.c **** 		if ((timer + TIME_PAD) <= _nrk_get_next_wakeup ())
- 1405               	.LM171:
- 1406 060c 0E94 0000 		call _nrk_get_next_wakeup
- 1407 0610 212F      		mov r18,r17
- 1408 0612 30E0      		ldi r19,lo8(0)
- 1409 0614 2F5F      		subi r18,lo8(-(1))
- 1410 0616 3F4F      		sbci r19,hi8(-(1))
- 1411 0618 482F      		mov r20,r24
- 1412 061a 50E0      		ldi r21,lo8(0)
- 1413 061c 2417      		cp r18,r20
- 1414 061e 3507      		cpc r19,r21
- 1415 0620 04F4      		brge .L55
+ 1366               	.LM169:
+ 1367 05ca 0E94 0000 		call _nrk_get_next_wakeup
+ 1368 05ce 212F      		mov r18,r17
+ 1369 05d0 30E0      		ldi r19,lo8(0)
+ 1370 05d2 2F5F      		subi r18,lo8(-(1))
+ 1371 05d4 3F4F      		sbci r19,hi8(-(1))
+ 1372 05d6 482F      		mov r20,r24
+ 1373 05d8 50E0      		ldi r21,lo8(0)
+ 1374 05da 2417      		cp r18,r20
+ 1375 05dc 3507      		cpc r19,r21
+ 1376 05de 04F4      		brge .L54
  325:..//src/kernel/source/nrk_task.c **** 			timer += TIME_PAD;
- 1417               	.LM172:
- 1418 0622 812F      		mov r24,r17
- 1419 0624 8E5F      		subi r24,lo8(-(2))
+ 1378               	.LM170:
+ 1379 05e0 812F      		mov r24,r17
+ 1380 05e2 8E5F      		subi r24,lo8(-(2))
  326:..//src/kernel/source/nrk_task.c **** 			_nrk_prev_timer_val = timer;                  // pdiener: why is this only set in this special c
- 1421               	.LM173:
- 1422 0626 8093 0000 		sts _nrk_prev_timer_val,r24
+ 1382               	.LM171:
+ 1383 05e4 8093 0000 		sts _nrk_prev_timer_val,r24
  327:..//src/kernel/source/nrk_task.c **** 			_nrk_set_next_wakeup (timer);                 // pdiener: Set next wakeup to NOW
- 1424               	.LM174:
- 1425 062a 0E94 0000 		call _nrk_set_next_wakeup
- 1426               	.L55:
+ 1385               	.LM172:
+ 1386 05e8 0E94 0000 		call _nrk_set_next_wakeup
+ 1387               	.L54:
  330:..//src/kernel/source/nrk_task.c **** 		nrk_int_enable ();
- 1428               	.LM175:
- 1429 062e 0E94 0000 		call nrk_int_enable
+ 1389               	.LM173:
+ 1390 05ec 0E94 0000 		call nrk_int_enable
  331:..//src/kernel/source/nrk_task.c **** 		_nrk_wait_for_scheduler ();
- 1431               	.LM176:
- 1432 0632 0E94 0000 		call _nrk_wait_for_scheduler
+ 1392               	.LM174:
+ 1393 05f0 0E94 0000 		call _nrk_wait_for_scheduler
  333:..//src/kernel/source/nrk_task.c **** }
- 1434               	.LM177:
- 1435 0636 81E0      		ldi r24,lo8(1)
- 1436               	/* epilogue start */
- 1437 0638 1F91      		pop r17
- 1438 063a 0895      		ret
- 1440               	.Lscope13:
- 1442               		.stabd	78,0,0
- 1444               	.global	nrk_terminate_task
- 1446               	nrk_terminate_task:
- 1447               		.stabd	46,0,0
+ 1395               	.LM175:
+ 1396 05f4 81E0      		ldi r24,lo8(1)
+ 1397               	/* epilogue start */
+ 1398 05f6 1F91      		pop r17
+ 1399 05f8 0895      		ret
+ 1401               	.Lscope13:
+ 1403               		.stabd	78,0,0
+ 1405               	.global	nrk_terminate_task
+ 1407               	nrk_terminate_task:
+ 1408               		.stabd	46,0,0
  300:..//src/kernel/source/nrk_task.c **** {
- 1449               	.LM178:
- 1450               	.LFBB14:
- 1451               	/* prologue: function */
- 1452               	/* frame size = 0 */
- 1453               	/* stack size = 0 */
- 1454               	.L__stack_usage = 0
+ 1410               	.LM176:
+ 1411               	.LFBB14:
+ 1412               	/* prologue: function */
+ 1413               	/* frame size = 0 */
+ 1414               	/* stack size = 0 */
+ 1415               	.L__stack_usage = 0
  301:..//src/kernel/source/nrk_task.c **** 	nrk_rem_from_readyQ (nrk_cur_task_TCB->task_ID);
- 1456               	.LM179:
- 1457 063c E091 0000 		lds r30,nrk_cur_task_TCB
- 1458 0640 F091 0000 		lds r31,nrk_cur_task_TCB+1
- 1459 0644 8085      		ldd r24,Z+8
- 1460 0646 0E94 0000 		call nrk_rem_from_readyQ
+ 1417               	.LM177:
+ 1418 05fa E091 0000 		lds r30,nrk_cur_task_TCB
+ 1419 05fe F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 1420 0602 8085      		ldd r24,Z+8
+ 1421 0604 0E94 0000 		call nrk_rem_from_readyQ
  302:..//src/kernel/source/nrk_task.c **** 	nrk_cur_task_TCB->task_state = FINISHED;
- 1462               	.LM180:
- 1463 064a E091 0000 		lds r30,nrk_cur_task_TCB
- 1464 064e F091 0000 		lds r31,nrk_cur_task_TCB+1
- 1465 0652 84E0      		ldi r24,lo8(4)
- 1466 0654 8187      		std Z+9,r24
+ 1423               	.LM178:
+ 1424 0608 E091 0000 		lds r30,nrk_cur_task_TCB
+ 1425 060c F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 1426 0610 84E0      		ldi r24,lo8(4)
+ 1427 0612 8187      		std Z+9,r24
  305:..//src/kernel/source/nrk_task.c **** 	nrk_wait_until_next_period ();
- 1468               	.LM181:
- 1469 0656 0E94 0000 		call nrk_wait_until_next_period
+ 1429               	.LM179:
+ 1430 0614 0E94 0000 		call nrk_wait_until_next_period
  307:..//src/kernel/source/nrk_task.c **** }
- 1471               	.LM182:
- 1472 065a 81E0      		ldi r24,lo8(1)
- 1473               	/* epilogue start */
- 1474 065c 0895      		ret
- 1476               	.Lscope14:
- 1478               		.stabd	78,0,0
- 1481               	.global	nrk_wait_until
- 1483               	nrk_wait_until:
- 1484               		.stabd	46,0,0
+ 1432               	.LM180:
+ 1433 0618 81E0      		ldi r24,lo8(1)
+ 1434               	/* epilogue start */
+ 1435 061a 0895      		ret
+ 1437               	.Lscope14:
+ 1439               		.stabd	78,0,0
+ 1442               	.global	nrk_wait_until
+ 1444               	nrk_wait_until:
+ 1445               		.stabd	46,0,0
  532:..//src/kernel/source/nrk_task.c **** 
  533:..//src/kernel/source/nrk_task.c **** 
  534:..//src/kernel/source/nrk_task.c **** int8_t nrk_wait_until (nrk_time_t t)
  535:..//src/kernel/source/nrk_task.c **** {
- 1486               	.LM183:
- 1487               	.LFBB15:
- 1488 065e 8F92      		push r8
- 1489 0660 9F92      		push r9
- 1490 0662 AF92      		push r10
- 1491 0664 BF92      		push r11
- 1492 0666 CF92      		push r12
- 1493 0668 DF92      		push r13
- 1494 066a EF92      		push r14
- 1495 066c FF92      		push r15
- 1496 066e 0F93      		push r16
- 1497 0670 1F93      		push r17
- 1498 0672 DF93      		push r29
- 1499 0674 CF93      		push r28
- 1500 0676 CDB7      		in r28,__SP_L__
- 1501 0678 DEB7      		in r29,__SP_H__
- 1502 067a 6097      		sbiw r28,16
- 1503 067c 0FB6      		in __tmp_reg__,__SREG__
- 1504 067e F894      		cli
- 1505 0680 DEBF      		out __SP_H__,r29
- 1506 0682 0FBE      		out __SREG__,__tmp_reg__
- 1507 0684 CDBF      		out __SP_L__,r28
- 1508               	/* prologue: function */
- 1509               	/* frame size = 16 */
- 1510               	/* stack size = 28 */
- 1511               	.L__stack_usage = 28
- 1512 0686 2987      		std Y+9,r18
- 1513 0688 3A87      		std Y+10,r19
- 1514 068a 4B87      		std Y+11,r20
- 1515 068c 5C87      		std Y+12,r21
- 1516 068e 6D87      		std Y+13,r22
- 1517 0690 7E87      		std Y+14,r23
- 1518 0692 8F87      		std Y+15,r24
- 1519 0694 988B      		std Y+16,r25
+ 1447               	.LM181:
+ 1448               	.LFBB15:
+ 1449 061c 8F92      		push r8
+ 1450 061e 9F92      		push r9
+ 1451 0620 AF92      		push r10
+ 1452 0622 BF92      		push r11
+ 1453 0624 CF92      		push r12
+ 1454 0626 DF92      		push r13
+ 1455 0628 EF92      		push r14
+ 1456 062a FF92      		push r15
+ 1457 062c 0F93      		push r16
+ 1458 062e 1F93      		push r17
+ 1459 0630 DF93      		push r29
+ 1460 0632 CF93      		push r28
+ 1461 0634 CDB7      		in r28,__SP_L__
+ 1462 0636 DEB7      		in r29,__SP_H__
+ 1463 0638 6097      		sbiw r28,16
+ 1464 063a 0FB6      		in __tmp_reg__,__SREG__
+ 1465 063c F894      		cli
+ 1466 063e DEBF      		out __SP_H__,r29
+ 1467 0640 0FBE      		out __SREG__,__tmp_reg__
+ 1468 0642 CDBF      		out __SP_L__,r28
+ 1469               	/* prologue: function */
+ 1470               	/* frame size = 16 */
+ 1471               	/* stack size = 28 */
+ 1472               	.L__stack_usage = 28
+ 1473 0644 2987      		std Y+9,r18
+ 1474 0646 3A87      		std Y+10,r19
+ 1475 0648 4B87      		std Y+11,r20
+ 1476 064a 5C87      		std Y+12,r21
+ 1477 064c 6D87      		std Y+13,r22
+ 1478 064e 7E87      		std Y+14,r23
+ 1479 0650 8F87      		std Y+15,r24
+ 1480 0652 988B      		std Y+16,r25
  536:..//src/kernel/source/nrk_task.c **** 	nrk_time_t ct;
  537:..//src/kernel/source/nrk_task.c **** 	int8_t v;
  538:..//src/kernel/source/nrk_task.c **** 	//    uint8_t c;
@@ -1776,37 +1740,37 @@
  543:..//src/kernel/source/nrk_task.c **** 
  544:..//src/kernel/source/nrk_task.c **** 	//ttt=c+1;
  545:..//src/kernel/source/nrk_task.c **** 	nrk_time_get (&ct);
- 1521               	.LM184:
- 1522 0696 CE01      		movw r24,r28
- 1523 0698 0196      		adiw r24,1
- 1524 069a 0E94 0000 		call nrk_time_get
+ 1482               	.LM182:
+ 1483 0654 CE01      		movw r24,r28
+ 1484 0656 0196      		adiw r24,1
+ 1485 0658 0E94 0000 		call nrk_time_get
  546:..//src/kernel/source/nrk_task.c **** 
  547:..//src/kernel/source/nrk_task.c **** 	v = nrk_time_sub (&t, t, ct);
- 1526               	.LM185:
- 1527 069e CE01      		movw r24,r28
- 1528 06a0 0996      		adiw r24,9
- 1529 06a2 0985      		ldd r16,Y+9
- 1530 06a4 1A85      		ldd r17,Y+10
- 1531 06a6 2B85      		ldd r18,Y+11
- 1532 06a8 3C85      		ldd r19,Y+12
- 1533 06aa 4D85      		ldd r20,Y+13
- 1534 06ac 5E85      		ldd r21,Y+14
- 1535 06ae 6F85      		ldd r22,Y+15
- 1536 06b0 7889      		ldd r23,Y+16
- 1537 06b2 8980      		ldd r8,Y+1
- 1538 06b4 9A80      		ldd r9,Y+2
- 1539 06b6 AB80      		ldd r10,Y+3
- 1540 06b8 BC80      		ldd r11,Y+4
- 1541 06ba CD80      		ldd r12,Y+5
- 1542 06bc DE80      		ldd r13,Y+6
- 1543 06be EF80      		ldd r14,Y+7
- 1544 06c0 F884      		ldd r15,Y+8
- 1545 06c2 0E94 0000 		call nrk_time_sub
+ 1487               	.LM183:
+ 1488 065c CE01      		movw r24,r28
+ 1489 065e 0996      		adiw r24,9
+ 1490 0660 0985      		ldd r16,Y+9
+ 1491 0662 1A85      		ldd r17,Y+10
+ 1492 0664 2B85      		ldd r18,Y+11
+ 1493 0666 3C85      		ldd r19,Y+12
+ 1494 0668 4D85      		ldd r20,Y+13
+ 1495 066a 5E85      		ldd r21,Y+14
+ 1496 066c 6F85      		ldd r22,Y+15
+ 1497 066e 7889      		ldd r23,Y+16
+ 1498 0670 8980      		ldd r8,Y+1
+ 1499 0672 9A80      		ldd r9,Y+2
+ 1500 0674 AB80      		ldd r10,Y+3
+ 1501 0676 BC80      		ldd r11,Y+4
+ 1502 0678 CD80      		ldd r12,Y+5
+ 1503 067a DE80      		ldd r13,Y+6
+ 1504 067c EF80      		ldd r14,Y+7
+ 1505 067e F884      		ldd r15,Y+8
+ 1506 0680 0E94 0000 		call nrk_time_sub
  548:..//src/kernel/source/nrk_task.c **** 	//nrk_time_compact_nanos(&t);
  549:..//src/kernel/source/nrk_task.c **** 	if (v == NRK_ERROR)
- 1547               	.LM186:
- 1548 06c6 8F3F      		cpi r24,lo8(-1)
- 1549 06c8 01F0      		breq .L59
+ 1508               	.LM184:
+ 1509 0684 8F3F      		cpi r24,lo8(-1)
+ 1510 0686 01F0      		breq .L58
  550:..//src/kernel/source/nrk_task.c **** 	{
  551:..//src/kernel/source/nrk_task.c **** 		return NRK_ERROR;
  552:..//src/kernel/source/nrk_task.c **** 	}
@@ -1817,140 +1781,141 @@
  557:..//src/kernel/source/nrk_task.c **** 	//t.nano_secs-=ct.nano_secs;
  558:..//src/kernel/source/nrk_task.c **** 	//
  559:..//src/kernel/source/nrk_task.c **** 	nrk_wait (t);
- 1551               	.LM187:
- 1552 06ca 2985      		ldd r18,Y+9
- 1553 06cc 3A85      		ldd r19,Y+10
- 1554 06ce 4B85      		ldd r20,Y+11
- 1555 06d0 5C85      		ldd r21,Y+12
- 1556 06d2 6D85      		ldd r22,Y+13
- 1557 06d4 7E85      		ldd r23,Y+14
- 1558 06d6 8F85      		ldd r24,Y+15
- 1559 06d8 9889      		ldd r25,Y+16
- 1560 06da 0E94 0000 		call nrk_wait
+ 1512               	.LM185:
+ 1513 0688 2985      		ldd r18,Y+9
+ 1514 068a 3A85      		ldd r19,Y+10
+ 1515 068c 4B85      		ldd r20,Y+11
+ 1516 068e 5C85      		ldd r21,Y+12
+ 1517 0690 6D85      		ldd r22,Y+13
+ 1518 0692 7E85      		ldd r23,Y+14
+ 1519 0694 8F85      		ldd r24,Y+15
+ 1520 0696 9889      		ldd r25,Y+16
+ 1521 0698 0E94 0000 		call nrk_wait
  560:..//src/kernel/source/nrk_task.c **** 
  561:..//src/kernel/source/nrk_task.c **** 	return NRK_OK;
- 1562               	.LM188:
- 1563 06de 81E0      		ldi r24,lo8(1)
- 1564 06e0 00C0      		rjmp .L58
- 1565               	.L59:
+ 1523               	.LM186:
+ 1524 069c 81E0      		ldi r24,lo8(1)
+ 1525 069e 00C0      		rjmp .L57
+ 1526               	.L58:
  551:..//src/kernel/source/nrk_task.c **** 		return NRK_ERROR;
- 1567               	.LM189:
- 1568 06e2 8FEF      		ldi r24,lo8(-1)
- 1569               	.L58:
- 1570               	/* epilogue start */
+ 1528               	.LM187:
+ 1529 06a0 8FEF      		ldi r24,lo8(-1)
+ 1530               	.L57:
+ 1531               	/* epilogue start */
  562:..//src/kernel/source/nrk_task.c **** }
- 1572               	.LM190:
- 1573 06e4 6096      		adiw r28,16
- 1574 06e6 0FB6      		in __tmp_reg__,__SREG__
- 1575 06e8 F894      		cli
- 1576 06ea DEBF      		out __SP_H__,r29
- 1577 06ec 0FBE      		out __SREG__,__tmp_reg__
- 1578 06ee CDBF      		out __SP_L__,r28
- 1579 06f0 CF91      		pop r28
- 1580 06f2 DF91      		pop r29
- 1581 06f4 1F91      		pop r17
- 1582 06f6 0F91      		pop r16
- 1583 06f8 FF90      		pop r15
- 1584 06fa EF90      		pop r14
- 1585 06fc DF90      		pop r13
- 1586 06fe CF90      		pop r12
- 1587 0700 BF90      		pop r11
- 1588 0702 AF90      		pop r10
- 1589 0704 9F90      		pop r9
- 1590 0706 8F90      		pop r8
- 1591 0708 0895      		ret
- 1596               	.Lscope15:
- 1598               		.stabd	78,0,0
- 1600               	.global	nrk_get_pid
- 1602               	nrk_get_pid:
- 1603               		.stabd	46,0,0
+ 1533               	.LM188:
+ 1534 06a2 6096      		adiw r28,16
+ 1535 06a4 0FB6      		in __tmp_reg__,__SREG__
+ 1536 06a6 F894      		cli
+ 1537 06a8 DEBF      		out __SP_H__,r29
+ 1538 06aa 0FBE      		out __SREG__,__tmp_reg__
+ 1539 06ac CDBF      		out __SP_L__,r28
+ 1540 06ae CF91      		pop r28
+ 1541 06b0 DF91      		pop r29
+ 1542 06b2 1F91      		pop r17
+ 1543 06b4 0F91      		pop r16
+ 1544 06b6 FF90      		pop r15
+ 1545 06b8 EF90      		pop r14
+ 1546 06ba DF90      		pop r13
+ 1547 06bc CF90      		pop r12
+ 1548 06be BF90      		pop r11
+ 1549 06c0 AF90      		pop r10
+ 1550 06c2 9F90      		pop r9
+ 1551 06c4 8F90      		pop r8
+ 1552 06c6 0895      		ret
+ 1557               	.Lscope15:
+ 1559               		.stabd	78,0,0
+ 1561               	.global	nrk_get_pid
+ 1563               	nrk_get_pid:
+ 1564               		.stabd	46,0,0
  563:..//src/kernel/source/nrk_task.c **** 
  564:..//src/kernel/source/nrk_task.c **** 
  565:..//src/kernel/source/nrk_task.c **** uint8_t nrk_get_pid ()
  566:..//src/kernel/source/nrk_task.c **** {
- 1605               	.LM191:
- 1606               	.LFBB16:
- 1607               	/* prologue: function */
- 1608               	/* frame size = 0 */
- 1609               	/* stack size = 0 */
- 1610               	.L__stack_usage = 0
+ 1566               	.LM189:
+ 1567               	.LFBB16:
+ 1568               	/* prologue: function */
+ 1569               	/* frame size = 0 */
+ 1570               	/* stack size = 0 */
+ 1571               	.L__stack_usage = 0
  567:..//src/kernel/source/nrk_task.c **** 	return nrk_cur_task_TCB->task_ID;
- 1612               	.LM192:
- 1613 070a E091 0000 		lds r30,nrk_cur_task_TCB
- 1614 070e F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 1573               	.LM190:
+ 1574 06c8 E091 0000 		lds r30,nrk_cur_task_TCB
+ 1575 06cc F091 0000 		lds r31,nrk_cur_task_TCB+1
  568:..//src/kernel/source/nrk_task.c **** }
- 1616               	.LM193:
- 1617 0712 8085      		ldd r24,Z+8
- 1618               	/* epilogue start */
- 1619 0714 0895      		ret
- 1621               	.Lscope16:
- 1623               		.stabd	78,0,0
- 1624               		.comm _nrk_signal_list,4,1
- 1625               		.comm nrk_idle_task_stk,128,1
- 1626               		.comm nrk_kernel_stk_ptr,2,1
- 1627               		.comm nrk_task_TCB,165,1
- 1628               		.comm nrk_wakeup_signal,1,1
- 1629               		.comm _nrk_readyQ,30,1
- 1630               		.comm _free_node,2,1
- 1631               		.comm _head_node,2,1
- 1632               		.comm nrk_cur_task_prio,1,1
- 1633               		.comm nrk_cur_task_TCB,2,1
- 1634               		.comm nrk_high_ready_prio,1,1
- 1635               		.comm nrk_high_ready_TCB,2,1
- 1636               		.comm _nrk_resource_cnt,1,1
- 1637               		.comm nrk_system_time,8,1
- 1638               		.comm _nrk_prev_timer_val,1,1
- 1639               		.comm _nrk_time_trigger,1,1
- 1640               		.comm app_timer0_callback,2,1
- 1641               		.comm app_timer0_prescale,1,1
- 1642               		.comm _nrk_cpu_state,1,1
- 1643               		.comm next_next_wakeup,2,1
- 1644               		.comm error_task,1,1
- 1645               		.comm error_num,1,1
- 1646               		.comm nrk_sem_list,15,1
- 1647               		.comm systemceiling,1,1
- 1648               		.section	.progmem.data,"a",@progbits
- 1651               	__c.2133:
- 1652 0000 0A0D 00   		.string	"\n\r"
- 1655               	__c.2128:
- 1656 0003 6E72 6B5F 		.string	"nrk_queue: "
- 1656      7175 6575 
- 1656      653A 2000 
- 1681               		.text
- 1683               	.Letext0:
- 1684               	.global __do_copy_data
- 1685               	.global __do_clear_bss
+ 1577               	.LM191:
+ 1578 06d0 8085      		ldd r24,Z+8
+ 1579               	/* epilogue start */
+ 1580 06d2 0895      		ret
+ 1582               	.Lscope16:
+ 1584               		.stabd	78,0,0
+ 1585               		.comm _nrk_signal_list,4,1
+ 1586               		.comm nrk_idle_task_stk,128,1
+ 1587               		.comm nrk_kernel_stk_ptr,2,1
+ 1588               		.comm nrk_task_TCB,165,1
+ 1589               		.comm nrk_wakeup_signal,1,1
+ 1590               		.comm _nrk_readyQ,30,1
+ 1591               		.comm _free_node,2,1
+ 1592               		.comm _head_node,2,1
+ 1593               		.comm nrk_cur_task_prio,1,1
+ 1594               		.comm nrk_cur_task_TCB,2,1
+ 1595               		.comm nrk_high_ready_prio,1,1
+ 1596               		.comm nrk_high_ready_TCB,2,1
+ 1597               		.comm _nrk_resource_cnt,1,1
+ 1598               		.comm nrk_system_time,8,1
+ 1599               		.comm _nrk_prev_timer_val,1,1
+ 1600               		.comm _nrk_time_trigger,1,1
+ 1601               		.comm app_timer0_callback,2,1
+ 1602               		.comm app_timer0_prescale,1,1
+ 1603               		.comm _nrk_cpu_state,1,1
+ 1604               		.comm next_next_wakeup,2,1
+ 1605               		.comm error_task,1,1
+ 1606               		.comm error_num,1,1
+ 1607               		.comm nrk_sem_list,15,1
+ 1608               		.comm systemceiling,1,1
+ 1609               		.section	.progmem.data,"a",@progbits
+ 1612               	__c.2133:
+ 1613 0000 0A0D 00   		.string	"\n\r"
+ 1616               	__c.2128:
+ 1617 0003 6E72 6B5F 		.string	"nrk_queue: "
+ 1617      7175 6575 
+ 1617      653A 2000 
+ 1642               		.text
+ 1644               	.Letext0:
+ 1645               	.global __do_copy_data
+ 1646               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_task.c
-     /tmp/cc5UQ49C.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc5UQ49C.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc5UQ49C.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc5UQ49C.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc5UQ49C.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc5UQ49C.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc5UQ49C.s:140    .text:00000000 nrk_get_high_ready_task_ID
+     /tmp/ccJmqmwP.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccJmqmwP.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccJmqmwP.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccJmqmwP.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccJmqmwP.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccJmqmwP.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccJmqmwP.s:140    .text:00000000 nrk_get_high_ready_task_ID
                             *COM*:00000002 _head_node
-     /tmp/cc5UQ49C.s:169    .text:0000000c nrk_print_readyQ
-     /tmp/cc5UQ49C.s:1655   .progmem.data:00000003 __c.2128
+     /tmp/ccJmqmwP.s:169    .text:0000000c nrk_print_readyQ
+     /tmp/ccJmqmwP.s:1616   .progmem.data:00000003 __c.2128
                             *COM*:000000a5 nrk_task_TCB
-     /tmp/cc5UQ49C.s:1651   .progmem.data:00000000 __c.2133
-     /tmp/cc5UQ49C.s:260    .text:0000007a nrk_add_to_readyQ
+     /tmp/ccJmqmwP.s:1612   .progmem.data:00000000 __c.2133
+     /tmp/ccJmqmwP.s:260    .text:0000007a nrk_add_to_readyQ
                             *COM*:00000002 _free_node
-     /tmp/cc5UQ49C.s:524    .text:000001dc nrk_rem_from_readyQ
-     /tmp/cc5UQ49C.s:654    .text:0000027c nrk_activate_task
-     /tmp/cc5UQ49C.s:786    .text:00000326 nrk_set_next_wakeup
+                            *COM*:00000001 systemceiling
+     /tmp/ccJmqmwP.s:485    .text:0000019a nrk_rem_from_readyQ
+     /tmp/ccJmqmwP.s:615    .text:0000023a nrk_activate_task
+     /tmp/ccJmqmwP.s:747    .text:000002e4 nrk_set_next_wakeup
                             *COM*:00000002 nrk_cur_task_TCB
-     /tmp/cc5UQ49C.s:876    .text:00000394 _nrk_wait_for_scheduler
-     /tmp/cc5UQ49C.s:908    .text:000003a8 nrk_wait
+     /tmp/ccJmqmwP.s:837    .text:00000352 _nrk_wait_for_scheduler
+     /tmp/ccJmqmwP.s:869    .text:00000366 nrk_wait
                             *COM*:00000001 _nrk_prev_timer_val
-     /tmp/cc5UQ49C.s:1031   .text:00000458 nrk_wait_until_nw
-     /tmp/cc5UQ49C.s:1104   .text:000004a6 nrk_wait_until_ticks
-     /tmp/cc5UQ49C.s:1183   .text:00000500 nrk_wait_ticks
-     /tmp/cc5UQ49C.s:1278   .text:0000057e nrk_wait_until_next_n_periods
-     /tmp/cc5UQ49C.s:1368   .text:000005e4 nrk_wait_until_next_period
-     /tmp/cc5UQ49C.s:1446   .text:0000063c nrk_terminate_task
-     /tmp/cc5UQ49C.s:1483   .text:0000065e nrk_wait_until
-     /tmp/cc5UQ49C.s:1602   .text:0000070a nrk_get_pid
+     /tmp/ccJmqmwP.s:992    .text:00000416 nrk_wait_until_nw
+     /tmp/ccJmqmwP.s:1065   .text:00000464 nrk_wait_until_ticks
+     /tmp/ccJmqmwP.s:1144   .text:000004be nrk_wait_ticks
+     /tmp/ccJmqmwP.s:1239   .text:0000053c nrk_wait_until_next_n_periods
+     /tmp/ccJmqmwP.s:1329   .text:000005a2 nrk_wait_until_next_period
+     /tmp/ccJmqmwP.s:1407   .text:000005fa nrk_terminate_task
+     /tmp/ccJmqmwP.s:1444   .text:0000061c nrk_wait_until
+     /tmp/ccJmqmwP.s:1563   .text:000006c8 nrk_get_pid
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr
@@ -1969,7 +1934,6 @@ DEFINED SYMBOLS
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num
                             *COM*:0000000f nrk_sem_list
-                            *COM*:00000001 systemceiling
 
 UNDEFINED SYMBOLS
 nrk_kprintf
