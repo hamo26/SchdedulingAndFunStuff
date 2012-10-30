@@ -1,0 +1,2155 @@
+   1               		.file	"DOGM128-6_Graphicdisplay_driver.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+  93               	.global	DOGM128_6_usart1_sendByte
+  95               	DOGM128_6_usart1_sendByte:
+  96               		.stabd	46,0,0
+   1:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** /******************************************************************************
+   2:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  Nano-RK, a real-time operating system for sensor networks.
+   3:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  Copyright (C) 2011 Technische Universität München (www.vmi.ei.tum.de)
+   4:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  All rights reserved.
+   5:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *
+   6:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  This is the Open Source Version of Nano-RK included as part of a Dual
+   7:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  Licensing Model. If you are unsure which license to use please refer to:
+   8:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  http://www.nanork.org/nano-RK/wiki/Licensing
+   9:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *
+  10:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  This program is free software: you can redistribute it and/or modify
+  11:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  it under the terms of the GNU General Public License as published by
+  12:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  the Free Software Foundation, version 2.0 of the License.
+  13:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *
+  14:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  This program is distributed in the hope that it will be useful,
+  15:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  17:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  GNU General Public License for more details.
+  18:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *
+  19:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  You should have received a copy of the GNU General Public License
+  20:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  21:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *
+  22:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *
+  23:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  Driver for Electronic Assembly DOGM128-6 Full Graphic Display
+  24:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *
+  25:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  Contributing Authors (specific to this file):
+  26:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *  Author: Peter Diener
+  27:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** *
+  28:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** ***************************************************************************************/
+  29:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  30:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** /*
+  31:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  32:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  33:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** Author: 	P. Diener
+  34:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** Target: 	AtMega128(L)
+  35:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  36:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** The display has to be connected to usart1 spi
+  37:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** chipselect is
+  38:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** A0 is
+  39:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  40:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** example of usage: 	    LCD_print("Peter Diener", 5*6, 0);
+  41:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  42:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** ***************************************
+  43:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  44:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** copyright 2008 - 2009
+  45:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  46:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** */
+  47:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  48:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define F_CPU 7372800
+  49:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #include "avr/io.h"
+  50:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #include "util/delay.h"
+  51:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #include <avr/pgmspace.h>
+  52:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  53:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #include "DOGM128-6_Graphicdisplay_driver.h"
+  54:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  55:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #include <font5x7.h>
+  56:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** //Always read this font with pgm_read_byte(&(font5x7[character][i]))
+  57:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  58:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  59:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisA0low		do {PORTC &= ~(1<<0);} while(0)
+  60:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisA0high		do {PORTC |=  (1<<0);} while(0)
+  61:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisCSlow		do {PORTC &= ~(1<<2);} while(0)
+  62:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisCShigh		do {PORTC |=  (1<<2);} while(0)
+  63:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisRESETlow		do {PORTC &= ~(1<<1);} while(0)
+  64:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisRESEThigh	do {PORTC |=  (1<<1);} while(0)
+  65:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisBLIGHTon		do {PORTB |=  (1<<4);} while(0)
+  66:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisBLIGHToff	do {PORTB &= ~(1<<4);} while(0)
+  67:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  68:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisSCLlow		do {PORTD &= ~(1<<5);} while(0)
+  69:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisSCLhigh		do {PORTD |=  (1<<5);} while(0)
+  70:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisSOlow		do {PORTD &= ~(1<<3);} while(0)
+  71:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** #define DisSOhigh		do {PORTD |=  (1<<3);} while(0)
+  72:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  73:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  74:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  75:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** /* We are using software spi at the moment
+  76:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** void usart1_init(void)
+  77:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** {
+  78:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	//crystal oscillator @ 7.3728 MHz
+  79:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	#define FOSC 7372800
+  80:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	// Set the baud rate registers
+  81:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	UBRR1H = 0;
+  82:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	UBRR1L = 0;
+  83:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	// Enable receiver and transmitter
+  84:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	UCSR1B = ((1<<RXEN) | (1<<TXEN));
+  85:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	// Set synchronous operation, set frame format: 8data bits, clock polarity: data is changed at t
+  86:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	UCSR1C = ((1<<UMSEL1) | (3<<UCSZ0) | (1<<UCPOL));
+  87:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	UBRR1H = 0;
+  88:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	UBRR1L = 8;
+  89:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  90:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** }
+  91:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** */
+  92:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  93:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+  94:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** void DOGM128_6_usart1_sendByte(unsigned char ch)
+  95:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** {
+  98               	.LM0:
+  99               	.LFBB1:
+ 100               	/* prologue: function */
+ 101               	/* frame size = 0 */
+ 102               	/* stack size = 0 */
+ 103               	.L__stack_usage = 0
+  96:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** /*	volatile unsigned char garb;
+  97:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisCSlow;
+  98:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	//clear TXC1 here by writing a 1 to it? Is that necessary? yes it is!
+  99:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	//UCSR1A |= (1<<TXC1);
+ 100:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	UDR1 = ch;
+ 101:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	while ((UCSR1A & (1<<TXC1)) == 0);	//wait for complete transmition
+ 102:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	garb = UDR1;
+ 103:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisCShigh;
+ 104:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** */
+ 105:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 106:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 107:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisCSlow;
+ 105               	.LM1:
+ 106 0000 AA98      		cbi 53-32,2
+ 108:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLlow;
+ 108               	.LM2:
+ 109 0002 9598      		cbi 50-32,5
+ 109:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	if (ch & 0x80) DisSOhigh; else DisSOlow;
+ 111               	.LM3:
+ 112 0004 87FF      		sbrs r24,7
+ 113 0006 00C0      		rjmp .L2
+ 115               	.LM4:
+ 116 0008 939A      		sbi 50-32,3
+ 117 000a 00C0      		rjmp .L3
+ 118               	.L2:
+ 120               	.LM5:
+ 121 000c 9398      		cbi 50-32,3
+ 122               	.L3:
+ 110:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLhigh;
+ 124               	.LM6:
+ 125 000e 959A      		sbi 50-32,5
+ 111:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLlow;
+ 127               	.LM7:
+ 128 0010 9598      		cbi 50-32,5
+ 112:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	if (ch & 0x40) DisSOhigh; else DisSOlow;
+ 130               	.LM8:
+ 131 0012 86FF      		sbrs r24,6
+ 132 0014 00C0      		rjmp .L4
+ 134               	.LM9:
+ 135 0016 939A      		sbi 50-32,3
+ 136 0018 00C0      		rjmp .L5
+ 137               	.L4:
+ 139               	.LM10:
+ 140 001a 9398      		cbi 50-32,3
+ 141               	.L5:
+ 113:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLhigh;
+ 143               	.LM11:
+ 144 001c 959A      		sbi 50-32,5
+ 114:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLlow;
+ 146               	.LM12:
+ 147 001e 9598      		cbi 50-32,5
+ 115:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	if (ch & 0x20) DisSOhigh; else DisSOlow;
+ 149               	.LM13:
+ 150 0020 85FF      		sbrs r24,5
+ 151 0022 00C0      		rjmp .L6
+ 153               	.LM14:
+ 154 0024 939A      		sbi 50-32,3
+ 155 0026 00C0      		rjmp .L7
+ 156               	.L6:
+ 158               	.LM15:
+ 159 0028 9398      		cbi 50-32,3
+ 160               	.L7:
+ 116:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLhigh;
+ 162               	.LM16:
+ 163 002a 959A      		sbi 50-32,5
+ 117:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLlow;
+ 165               	.LM17:
+ 166 002c 9598      		cbi 50-32,5
+ 118:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	if (ch & 0x10) DisSOhigh; else DisSOlow;
+ 168               	.LM18:
+ 169 002e 84FF      		sbrs r24,4
+ 170 0030 00C0      		rjmp .L8
+ 172               	.LM19:
+ 173 0032 939A      		sbi 50-32,3
+ 174 0034 00C0      		rjmp .L9
+ 175               	.L8:
+ 177               	.LM20:
+ 178 0036 9398      		cbi 50-32,3
+ 179               	.L9:
+ 119:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLhigh;
+ 181               	.LM21:
+ 182 0038 959A      		sbi 50-32,5
+ 120:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLlow;
+ 184               	.LM22:
+ 185 003a 9598      		cbi 50-32,5
+ 121:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	if (ch & 0x08) DisSOhigh; else DisSOlow;
+ 187               	.LM23:
+ 188 003c 83FF      		sbrs r24,3
+ 189 003e 00C0      		rjmp .L10
+ 191               	.LM24:
+ 192 0040 939A      		sbi 50-32,3
+ 193 0042 00C0      		rjmp .L11
+ 194               	.L10:
+ 196               	.LM25:
+ 197 0044 9398      		cbi 50-32,3
+ 198               	.L11:
+ 122:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLhigh;
+ 200               	.LM26:
+ 201 0046 959A      		sbi 50-32,5
+ 123:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLlow;
+ 203               	.LM27:
+ 204 0048 9598      		cbi 50-32,5
+ 124:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	if (ch & 0x04) DisSOhigh; else DisSOlow;
+ 206               	.LM28:
+ 207 004a 82FF      		sbrs r24,2
+ 208 004c 00C0      		rjmp .L12
+ 210               	.LM29:
+ 211 004e 939A      		sbi 50-32,3
+ 212 0050 00C0      		rjmp .L13
+ 213               	.L12:
+ 215               	.LM30:
+ 216 0052 9398      		cbi 50-32,3
+ 217               	.L13:
+ 125:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLhigh;
+ 219               	.LM31:
+ 220 0054 959A      		sbi 50-32,5
+ 126:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLlow;
+ 222               	.LM32:
+ 223 0056 9598      		cbi 50-32,5
+ 127:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	if (ch & 0x02) DisSOhigh; else DisSOlow;
+ 225               	.LM33:
+ 226 0058 81FF      		sbrs r24,1
+ 227 005a 00C0      		rjmp .L14
+ 229               	.LM34:
+ 230 005c 939A      		sbi 50-32,3
+ 231 005e 00C0      		rjmp .L15
+ 232               	.L14:
+ 234               	.LM35:
+ 235 0060 9398      		cbi 50-32,3
+ 236               	.L15:
+ 128:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLhigh;
+ 238               	.LM36:
+ 239 0062 959A      		sbi 50-32,5
+ 129:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLlow;
+ 241               	.LM37:
+ 242 0064 9598      		cbi 50-32,5
+ 130:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	if (ch & 0x01) DisSOhigh; else DisSOlow;
+ 244               	.LM38:
+ 245 0066 80FF      		sbrs r24,0
+ 246 0068 00C0      		rjmp .L16
+ 248               	.LM39:
+ 249 006a 939A      		sbi 50-32,3
+ 250 006c 00C0      		rjmp .L17
+ 251               	.L16:
+ 253               	.LM40:
+ 254 006e 9398      		cbi 50-32,3
+ 255               	.L17:
+ 131:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLhigh;
+ 257               	.LM41:
+ 258 0070 959A      		sbi 50-32,5
+ 132:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisSCLhigh;	//short delay (repeating the last command)
+ 260               	.LM42:
+ 261 0072 959A      		sbi 50-32,5
+ 133:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 134:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisCShigh;
+ 263               	.LM43:
+ 264 0074 AA9A      		sbi 53-32,2
+ 265               	/* epilogue start */
+ 135:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** }
+ 267               	.LM44:
+ 268 0076 0895      		ret
+ 270               	.Lscope1:
+ 272               		.stabd	78,0,0
+ 274               	.global	DOGM128_6_clear_display
+ 276               	DOGM128_6_clear_display:
+ 277               		.stabd	46,0,0
+ 136:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 137:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 138:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 139:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** void DOGM128_6_clear_display(void)
+ 140:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** {
+ 279               	.LM45:
+ 280               	.LFBB2:
+ 281 0078 DF93      		push r29
+ 282 007a CF93      		push r28
+ 283 007c 00D0      		rcall .
+ 284 007e 0F92      		push __tmp_reg__
+ 285 0080 CDB7      		in r28,__SP_L__
+ 286 0082 DEB7      		in r29,__SP_H__
+ 287               	/* prologue: function */
+ 288               	/* frame size = 3 */
+ 289               	/* stack size = 5 */
+ 290               	.L__stack_usage = 5
+ 141:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   volatile int i;
+ 142:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   volatile char j;
+ 143:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 144:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   DisA0high;
+ 292               	.LM46:
+ 293 0084 A89A      		sbi 53-32,0
+ 145:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 146:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   for(j=0; j<8; j++)
+ 295               	.LM47:
+ 296 0086 1982      		std Y+1,__zero_reg__
+ 297 0088 00C0      		rjmp .L19
+ 298               	.L22:
+ 147:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   {
+ 148:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisA0low;
+ 300               	.LM48:
+ 301 008a A898      		cbi 53-32,0
+ 149:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     DOGM128_6_usart1_sendByte(0xB0 + j);						//Set Page Address
+ 303               	.LM49:
+ 304 008c 8981      		ldd r24,Y+1
+ 305 008e 8055      		subi r24,lo8(-(-80))
+ 306 0090 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 150:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     DOGM128_6_usart1_sendByte(0x10);							//Set Column Address upper nibble to 0
+ 308               	.LM50:
+ 309 0094 80E1      		ldi r24,lo8(16)
+ 310 0096 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 151:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     DOGM128_6_usart1_sendByte(0x00);							//Set Column Address lower nibble to 0
+ 312               	.LM51:
+ 313 009a 80E0      		ldi r24,lo8(0)
+ 314 009c 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 152:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     DisA0high;
+ 316               	.LM52:
+ 317 00a0 A89A      		sbi 53-32,0
+ 153:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 154:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     for(i=0; i<128; i++)
+ 319               	.LM53:
+ 320 00a2 1B82      		std Y+3,__zero_reg__
+ 321 00a4 1A82      		std Y+2,__zero_reg__
+ 322 00a6 00C0      		rjmp .L20
+ 323               	.L21:
+ 155:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     {
+ 156:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****       DOGM128_6_usart1_sendByte(0x00);							//Write white bytes to the display
+ 325               	.LM54:
+ 326 00a8 80E0      		ldi r24,lo8(0)
+ 327 00aa 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 154:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     for(i=0; i<128; i++)
+ 329               	.LM55:
+ 330 00ae 8A81      		ldd r24,Y+2
+ 331 00b0 9B81      		ldd r25,Y+3
+ 332 00b2 0196      		adiw r24,1
+ 333 00b4 9B83      		std Y+3,r25
+ 334 00b6 8A83      		std Y+2,r24
+ 335               	.L20:
+ 154:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     for(i=0; i<128; i++)
+ 337               	.LM56:
+ 338 00b8 8A81      		ldd r24,Y+2
+ 339 00ba 9B81      		ldd r25,Y+3
+ 340 00bc 8038      		cpi r24,128
+ 341 00be 9105      		cpc r25,__zero_reg__
+ 342 00c0 04F0      		brlt .L21
+ 146:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   for(j=0; j<8; j++)
+ 344               	.LM57:
+ 345 00c2 8981      		ldd r24,Y+1
+ 346 00c4 8F5F      		subi r24,lo8(-(1))
+ 347 00c6 8983      		std Y+1,r24
+ 348               	.L19:
+ 146:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   for(j=0; j<8; j++)
+ 350               	.LM58:
+ 351 00c8 8981      		ldd r24,Y+1
+ 352 00ca 8830      		cpi r24,lo8(8)
+ 353 00cc 00F0      		brlo .L22
+ 354               	/* epilogue start */
+ 157:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     }
+ 158:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   }
+ 159:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** }
+ 356               	.LM59:
+ 357 00ce 0F90      		pop __tmp_reg__
+ 358 00d0 0F90      		pop __tmp_reg__
+ 359 00d2 0F90      		pop __tmp_reg__
+ 360 00d4 CF91      		pop r28
+ 361 00d6 DF91      		pop r29
+ 362 00d8 0895      		ret
+ 368               	.Lscope2:
+ 370               		.stabd	78,0,0
+ 372               	.global	DOGM128_6_display_init
+ 374               	DOGM128_6_display_init:
+ 375               		.stabd	46,0,0
+ 160:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 161:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 162:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 163:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** void DOGM128_6_display_init(void)
+ 164:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** {
+ 377               	.LM60:
+ 378               	.LFBB3:
+ 379               	/* prologue: function */
+ 380               	/* frame size = 0 */
+ 381               	/* stack size = 0 */
+ 382               	.L__stack_usage = 0
+ 165:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 166:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	PORTB &= b11101111;		//LED backlight at Port B4
+ 384               	.LM61:
+ 385 00da C498      		cbi 56-32,4
+ 167:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DDRB  |= b00010000;
+ 387               	.LM62:
+ 388 00dc BC9A      		sbi 55-32,4
+ 168:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 169:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	PORTC |= b00000111;		//A0, Chip select and Reset at Port C0..C2
+ 390               	.LM63:
+ 391 00de 85B3      		in r24,53-32
+ 392 00e0 8760      		ori r24,lo8(7)
+ 393 00e2 85BB      		out 53-32,r24
+ 170:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DDRC  |= b00000111;
+ 395               	.LM64:
+ 396 00e4 84B3      		in r24,52-32
+ 397 00e6 8760      		ori r24,lo8(7)
+ 398 00e8 84BB      		out 52-32,r24
+ 171:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 172:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DDRD  |= b00101000;		//PD5 is XCK output, PD3 is serial data output
+ 400               	.LM65:
+ 401 00ea 81B3      		in r24,49-32
+ 402 00ec 8862      		ori r24,lo8(40)
+ 403 00ee 81BB      		out 49-32,r24
+ 173:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	PORTD |= b00001000;
+ 405               	.LM66:
+ 406 00f0 939A      		sbi 50-32,3
+ 174:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 175:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	PORTC = b01111000;		//enable pullups for push-buttons
+ 408               	.LM67:
+ 409 00f2 88E7      		ldi r24,lo8(120)
+ 410 00f4 85BB      		out 53-32,r24
+ 176:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DDRC &= b10000111;		//pins to push-buttons are inputs
+ 412               	.LM68:
+ 413 00f6 84B3      		in r24,52-32
+ 414 00f8 8778      		andi r24,lo8(-121)
+ 415 00fa 84BB      		out 52-32,r24
+ 177:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 178:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** //usart doesn't work, so we use an SPI in software
+ 179:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** //	usart1_init();
+ 180:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 181:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DisA0low;
+ 417               	.LM69:
+ 418 00fc A898      		cbi 53-32,0
+ 182:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 183:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DisRESETlow;
+ 420               	.LM70:
+ 421 00fe A998      		cbi 53-32,1
+ 422               	.LBB6:
+ 423               	.LBB7:
+ 425               	.Ltext1:
+   1:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** /* Copyright (c) 2002, Marek Michalkiewicz
+   2:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    Copyright (c) 2004,2005,2007 Joerg Wunsch
+   3:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    Copyright (c) 2007  Florin-Viorel Petrov
+   4:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    All rights reserved.
+   5:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+   6:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    Redistribution and use in source and binary forms, with or without
+   7:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    modification, are permitted provided that the following conditions are met:
+   8:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+   9:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    * Redistributions of source code must retain the above copyright
+  10:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer.
+  11:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  12:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    * Redistributions in binary form must reproduce the above copyright
+  13:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****      notice, this list of conditions and the following disclaimer in
+  14:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****      the documentation and/or other materials provided with the
+  15:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****      distribution.
+  16:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  17:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    * Neither the name of the copyright holders nor the names of
+  18:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****      contributors may be used to endorse or promote products derived
+  19:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****      from this software without specific prior written permission.
+  20:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  21:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS "AS IS"
+  22:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE
+  23:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE
+  24:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE
+  25:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR
+  26:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF
+  27:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS
+  28:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN
+  29:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE)
+  30:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+  31:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****   POSSIBILITY OF SUCH DAMAGE. */
+  32:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  33:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** /* $Id: delay.h.in 2189 2010-10-13 09:39:34Z aboyapati $ */
+  34:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  35:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #ifndef _UTIL_DELAY_H_
+  36:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #define _UTIL_DELAY_H_ 1
+  37:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  38:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #ifndef __HAS_DELAY_CYCLES
+  39:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #define __HAS_DELAY_CYCLES 1
+  40:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #endif
+  41:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  42:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #include <inttypes.h>
+  43:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #include <util/delay_basic.h>
+  44:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #include <math.h>
+  45:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  46:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** /** \file */
+  47:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** /** \defgroup util_delay <util/delay.h>: Convenience functions for busy-wait delay loops
+  48:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     \code
+  49:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     #define F_CPU 1000000UL  // 1 MHz
+  50:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     //#define F_CPU 14.7456E6
+  51:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     #include <util/delay.h>
+  52:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     \endcode
+  53:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  54:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     \note As an alternative method, it is possible to pass the
+  55:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     F_CPU macro down to the compiler from the Makefile.
+  56:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     Obviously, in that case, no \c \#define statement should be
+  57:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     used.
+  58:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  59:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     The functions in this header file are wrappers around the basic
+  60:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     busy-wait functions from <util/delay_basic.h>.  They are meant as
+  61:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     convenience functions where actual time values can be specified
+  62:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     rather than a number of cycles to wait for.  The idea behind is
+  63:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     that compile-time constant expressions will be eliminated by
+  64:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     compiler optimization so floating-point expressions can be used
+  65:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     to calculate the number of delay cycles needed based on the CPU
+  66:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     frequency passed by the macro F_CPU.
+  67:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  68:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     \note In order for these functions to work as intended, compiler
+  69:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     optimizations <em>must</em> be enabled, and the delay time
+  70:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     <em>must</em> be an expression that is a known constant at
+  71:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     compile-time.  If these requirements are not met, the resulting
+  72:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     delay will be much longer (and basically unpredictable), and
+  73:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     applications that otherwise do not use floating-point calculations
+  74:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     will experience severe code bloat by the floating-point library
+  75:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     routines linked into the application.
+  76:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  77:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     The functions available allow the specification of microsecond, and
+  78:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     millisecond delays directly, using the application-supplied macro
+  79:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     F_CPU as the CPU clock frequency (in Hertz).
+  80:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  81:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** */
+  82:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  83:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #if !defined(__DOXYGEN__)
+  84:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** static inline void _delay_us(double __us) __attribute__((always_inline));
+  85:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** static inline void _delay_ms(double __ms) __attribute__((always_inline));
+  86:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #endif
+  87:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  88:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #ifndef F_CPU
+  89:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** /* prevent compiler error by supplying a default */
+  90:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** # warning "F_CPU not defined for <util/delay.h>"
+  91:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** # define F_CPU 1000000UL
+  92:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #endif
+  93:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  94:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #ifndef __OPTIMIZE__
+  95:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** # warning "Compiler optimizations disabled; functions from <util/delay.h> won't work as designed"
+  96:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #endif
+  97:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+  98:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** /**
+  99:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    \ingroup util_delay
+ 100:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 101:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    Perform a delay of \c __ms milliseconds, using _delay_loop_2().
+ 102:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 103:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    The macro F_CPU is supposed to be defined to a
+ 104:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    constant defining the CPU clock frequency (in Hertz).
+ 105:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 106:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    The maximal possible delay is 262.14 ms / F_CPU in MHz.
+ 107:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 108:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    When the user request delay which exceed the maximum possible one,
+ 109:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    _delay_ms() provides a decreased resolution functionality. In this
+ 110:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    mode _delay_ms() will work with a resolution of 1/10 ms, providing
+ 111:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    delays up to 6.5535 seconds (independent from CPU frequency).  The
+ 112:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    user will not be informed about decreased resolution.
+ 113:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 114:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    If the avr-gcc toolchain has __builtin_avr_delay_cycles(unsigned long)
+ 115:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    support, maximal possible delay is 4294967.295 ms/ F_CPU in MHz. For
+ 116:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    values greater than the maximal possible delay, overflows results in
+ 117:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    no delay i.e., 0ms.
+ 118:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 119:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    Conversion of __us into clock cycles may not always result in integer.
+ 120:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    By default, the clock cycles rounded up to next integer. This ensures that
+ 121:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    the user gets atleast __us microseconds of delay.
+ 122:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 123:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    Alternatively, user can define __DELAY_ROUND_DOWN__ and __DELAY_ROUND_CLOSEST__
+ 124:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    to round down and round to closest integer.
+ 125:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 126:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    Note: The new implementation of _delay_ms(double __ms) with 
+ 127:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****     __builtin_avr_delay_cycles(unsigned long) support is not backward compatible. 
+ 128:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    User can define __DELAY_BACKWARD_COMPATIBLE__ to get a backward compatible delay
+ 129:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****    although this will be deprecated in future.
+ 130:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 131:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h ****  */
+ 132:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** void
+ 133:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** _delay_ms(double __ms)
+ 134:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** {
+ 135:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	uint16_t __ticks;
+ 136:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	double __tmp ; 
+ 137:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** #if __HAS_DELAY_CYCLES && defined(__OPTIMIZE__) && !defined(__DELAY_BACKWARD_COMPATIBLE__)
+ 138:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	uint32_t __ticks_dc;
+ 139:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	extern void __builtin_avr_delay_cycles(unsigned long);
+ 140:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	__tmp = ((F_CPU) / 1e3) * __ms;
+ 141:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 142:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	#if defined(__DELAY_ROUND_DOWN__)
+ 143:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)fabs(__tmp);
+ 144:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 145:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	#elif defined(__DELAY_ROUND_CLOSEST__)
+ 146:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(fabs(__tmp)+0.5);
+ 147:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 148:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	#else
+ 149:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 		//round up by default
+ 150:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 		__ticks_dc = (uint32_t)(ceil(fabs(__tmp)));
+ 151:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	#endif
+ 152:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 
+ 153:/usr/lib/gcc/avr/4.5.3/../../../avr/include/util/delay.h **** 	__builtin_avr_delay_cycles(__ticks_dc);
+ 427               	.LM71:
+ 428 0100 8FEF      		 ldi r24,lo8(147455)
+ 429 0102 9FE3      	    ldi r25,hi8(147455)
+ 430 0104 A2E0      	    ldi r26,hlo8(147455)
+ 431 0106 8150      	    1:subi r24,1
+ 432 0108 9040      	    sbci r25,0
+ 433 010a A040      	    sbci r26,0
+ 434 010c 01F4      	    brne 1b
+ 435 010e 00C0      		rjmp .
+ 436 0110 0000      		nop
+ 437               	.LBE7:
+ 438               	.LBE6:
+ 440               	.Ltext2:
+ 184:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	_delay_ms(100);
+ 185:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DisRESEThigh;
+ 442               	.LM72:
+ 443 0112 A99A      		sbi 53-32,1
+ 444               	.LBB8:
+ 445               	.LBB9:
+ 447               	.Ltext3:
+ 449               	.LM73:
+ 450 0114 8FEF      		 ldi r24,lo8(147455)
+ 451 0116 9FE3      	    ldi r25,hi8(147455)
+ 452 0118 A2E0      	    ldi r26,hlo8(147455)
+ 453 011a 8150      	    1:subi r24,1
+ 454 011c 9040      	    sbci r25,0
+ 455 011e A040      	    sbci r26,0
+ 456 0120 01F4      	    brne 1b
+ 457 0122 00C0      		rjmp .
+ 458 0124 0000      		nop
+ 459               	.LBE9:
+ 460               	.LBE8:
+ 462               	.Ltext4:
+ 186:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	_delay_ms(100);
+ 187:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 188:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DOGM128_6_usart1_sendByte (0x40);
+ 464               	.LM74:
+ 465 0126 80E4      		ldi r24,lo8(64)
+ 466 0128 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 189:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DOGM128_6_usart1_sendByte (0xA1);
+ 468               	.LM75:
+ 469 012c 81EA      		ldi r24,lo8(-95)
+ 470 012e 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 190:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DOGM128_6_usart1_sendByte (0xC0);
+ 472               	.LM76:
+ 473 0132 80EC      		ldi r24,lo8(-64)
+ 474 0134 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 191:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DOGM128_6_usart1_sendByte (0xA6);
+ 476               	.LM77:
+ 477 0138 86EA      		ldi r24,lo8(-90)
+ 478 013a 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 192:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DOGM128_6_usart1_sendByte (0xA2);
+ 480               	.LM78:
+ 481 013e 82EA      		ldi r24,lo8(-94)
+ 482 0140 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 193:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	DOGM128_6_usart1_sendByte (0x2F);
+ 484               	.LM79:
+ 485 0144 8FE2      		ldi r24,lo8(47)
+ 486 0146 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 194:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0xF8);
+ 488               	.LM80:
+ 489 014a 88EF      		ldi r24,lo8(-8)
+ 490 014c 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 195:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0x00);
+ 492               	.LM81:
+ 493 0150 80E0      		ldi r24,lo8(0)
+ 494 0152 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 196:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0x27);
+ 496               	.LM82:
+ 497 0156 87E2      		ldi r24,lo8(39)
+ 498 0158 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 197:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0x81);							//Display contrast
+ 500               	.LM83:
+ 501 015c 81E8      		ldi r24,lo8(-127)
+ 502 015e 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 198:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0x10);//was 16
+ 504               	.LM84:
+ 505 0162 80E1      		ldi r24,lo8(16)
+ 506 0164 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 199:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0xAC);
+ 508               	.LM85:
+ 509 0168 8CEA      		ldi r24,lo8(-84)
+ 510 016a 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 200:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0x00);
+ 512               	.LM86:
+ 513 016e 80E0      		ldi r24,lo8(0)
+ 514 0170 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 201:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0xAF);
+ 516               	.LM87:
+ 517 0174 8FEA      		ldi r24,lo8(-81)
+ 518 0176 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 202:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 203:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_clear_display();
+ 520               	.LM88:
+ 521 017a 0E94 0000 		call DOGM128_6_clear_display
+ 522               	/* epilogue start */
+ 204:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** }
+ 524               	.LM89:
+ 525 017e 0895      		ret
+ 527               	.Lscope3:
+ 529               		.stabd	78,0,0
+ 532               	.global	DOGM128_6_display_backlight
+ 534               	DOGM128_6_display_backlight:
+ 535               		.stabd	46,0,0
+ 205:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 206:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 207:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 208:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** void DOGM128_6_display_backlight(type_ON_OFF backlight)
+ 209:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** {
+ 537               	.LM90:
+ 538               	.LFBB4:
+ 539               	/* prologue: function */
+ 540               	/* frame size = 0 */
+ 541               	/* stack size = 0 */
+ 542               	.L__stack_usage = 0
+ 210:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	if (backlight == ON) DisBLIGHTon;
+ 544               	.LM91:
+ 545 0180 8130      		cpi r24,lo8(1)
+ 546 0182 01F4      		brne .L25
+ 548               	.LM92:
+ 549 0184 C49A      		sbi 56-32,4
+ 550 0186 0895      		ret
+ 551               	.L25:
+ 211:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	else DisBLIGHToff;
+ 553               	.LM93:
+ 554 0188 C498      		cbi 56-32,4
+ 555 018a 0895      		ret
+ 557               	.Lscope4:
+ 559               		.stabd	78,0,0
+ 563               	.global	DOGM128_6_LCD_print
+ 565               	DOGM128_6_LCD_print:
+ 566               		.stabd	46,0,0
+ 212:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** }
+ 213:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 214:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 215:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 216:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** void DOGM128_6_LCD_print(char text[], unsigned char x, unsigned char y)
+ 217:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** {
+ 568               	.LM94:
+ 569               	.LFBB5:
+ 570 018c EF92      		push r14
+ 571 018e FF92      		push r15
+ 572 0190 0F93      		push r16
+ 573 0192 1F93      		push r17
+ 574 0194 DF93      		push r29
+ 575 0196 CF93      		push r28
+ 576 0198 0F92      		push __tmp_reg__
+ 577 019a CDB7      		in r28,__SP_L__
+ 578 019c DEB7      		in r29,__SP_H__
+ 579               	/* prologue: function */
+ 580               	/* frame size = 1 */
+ 581               	/* stack size = 7 */
+ 582               	.L__stack_usage = 7
+ 583 019e 082F      		mov r16,r24
+ 584 01a0 162F      		mov r17,r22
+ 218:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	int charnumber = 0, pixelcolumn;
+ 219:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 220:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisA0low;
+ 586               	.LM95:
+ 587 01a2 A898      		cbi 53-32,0
+ 221:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 222:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0xB0 + y);					//Set Page Address
+ 589               	.LM96:
+ 590 01a4 842F      		mov r24,r20
+ 591 01a6 8055      		subi r24,lo8(-(-80))
+ 592 01a8 9983      		std Y+1,r25
+ 593 01aa 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 223:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (0x10 | (x >> 4));		//Set Column Address upper nibble to 0
+ 595               	.LM97:
+ 596 01ae 812F      		mov r24,r17
+ 597 01b0 8295      		swap r24
+ 598 01b2 8F70      		andi r24,lo8(15)
+ 599 01b4 8061      		ori r24,lo8(16)
+ 600 01b6 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 224:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DOGM128_6_usart1_sendByte (x & 0x0F);					//Set Column Address lower nibble to 0
+ 602               	.LM98:
+ 603 01ba 812F      		mov r24,r17
+ 604 01bc 8F70      		andi r24,lo8(15)
+ 605 01be 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 225:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 226:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	DisA0high;
+ 607               	.LM99:
+ 608 01c2 A89A      		sbi 53-32,0
+ 609 01c4 9981      		ldd r25,Y+1
+ 610 01c6 602F      		mov r22,r16
+ 611 01c8 792F      		mov r23,r25
+ 612 01ca 7B01      		movw r14,r22
+ 227:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 
+ 228:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	while (text[charnumber])
+ 614               	.LM100:
+ 615 01cc 00C0      		rjmp .L28
+ 616               	.L30:
+ 618               	.LM101:
+ 619 01ce 00E0      		ldi r16,lo8(0)
+ 620 01d0 10E0      		ldi r17,hi8(0)
+ 621               	.L29:
+ 622               	.LBB10:
+ 229:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	{
+ 230:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     	for (pixelcolumn = 0; pixelcolumn < 5 ; pixelcolumn++)
+ 231:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	  	{
+ 232:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****       		DOGM128_6_usart1_sendByte ( pgm_read_byte(&(font5x7 [(unsigned char)text[charnumber]] [pixe
+ 624               	.LM102:
+ 625 01d2 D701      		movw r26,r14
+ 626 01d4 EC91      		ld r30,X
+ 627 01d6 B5E0      		ldi r27,lo8(5)
+ 628 01d8 EB9F      		mul r30,r27
+ 629 01da F001      		movw r30,r0
+ 630 01dc 1124      		clr r1
+ 631 01de E00F      		add r30,r16
+ 632 01e0 F11F      		adc r31,r17
+ 633 01e2 E050      		subi r30,lo8(-(font5x7))
+ 634 01e4 F040      		sbci r31,hi8(-(font5x7))
+ 635               	/* #APP */
+ 636               	 ;  232 "..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c" 1
+ 637 01e6 8491      		lpm r24, Z
+ 638               		
+ 639               	 ;  0 "" 2
+ 640               	/* #NOAPP */
+ 641               	.LBE10:
+ 642 01e8 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 230:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     	for (pixelcolumn = 0; pixelcolumn < 5 ; pixelcolumn++)
+ 644               	.LM103:
+ 645 01ec 0F5F      		subi r16,lo8(-(1))
+ 646 01ee 1F4F      		sbci r17,hi8(-(1))
+ 647 01f0 0530      		cpi r16,5
+ 648 01f2 1105      		cpc r17,__zero_reg__
+ 649 01f4 01F4      		brne .L29
+ 233:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 	  	}
+ 234:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****     	DOGM128_6_usart1_sendByte (0x00);														//Write white space pixels between chars to the
+ 651               	.LM104:
+ 652 01f6 80E0      		ldi r24,lo8(0)
+ 653 01f8 0E94 0000 		call DOGM128_6_usart1_sendByte
+ 654 01fc 0894      		sec
+ 655 01fe E11C      		adc r14,__zero_reg__
+ 656 0200 F11C      		adc r15,__zero_reg__
+ 657               	.L28:
+ 228:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	while (text[charnumber])
+ 659               	.LM105:
+ 660 0202 F701      		movw r30,r14
+ 661 0204 8081      		ld r24,Z
+ 662 0206 8823      		tst r24
+ 663 0208 01F4      		brne .L30
+ 664               	/* epilogue start */
+ 235:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** 		charnumber++;
+ 236:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c ****   	}
+ 237:..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.c **** }
+ 666               	.LM106:
+ 667 020a 0F90      		pop __tmp_reg__
+ 668 020c CF91      		pop r28
+ 669 020e DF91      		pop r29
+ 670 0210 1F91      		pop r17
+ 671 0212 0F91      		pop r16
+ 672 0214 FF90      		pop r15
+ 673 0216 EF90      		pop r14
+ 674 0218 0895      		ret
+ 679               	.Lscope5:
+ 681               		.stabd	78,0,0
+ 682               	.global	font5x7
+ 683               		.section	.progmem.data,"a",@progbits
+ 686               	font5x7:
+ 687 0000 08        		.byte	8
+ 688 0001 08        		.byte	8
+ 689 0002 2A        		.byte	42
+ 690 0003 1C        		.byte	28
+ 691 0004 08        		.byte	8
+ 692 0005 08        		.byte	8
+ 693 0006 1C        		.byte	28
+ 694 0007 2A        		.byte	42
+ 695 0008 08        		.byte	8
+ 696 0009 08        		.byte	8
+ 697 000a 40        		.byte	64
+ 698 000b 44        		.byte	68
+ 699 000c 4A        		.byte	74
+ 700 000d 51        		.byte	81
+ 701 000e 40        		.byte	64
+ 702 000f 40        		.byte	64
+ 703 0010 51        		.byte	81
+ 704 0011 4A        		.byte	74
+ 705 0012 44        		.byte	68
+ 706 0013 40        		.byte	64
+ 707 0014 14        		.byte	20
+ 708 0015 74        		.byte	116
+ 709 0016 1C        		.byte	28
+ 710 0017 17        		.byte	23
+ 711 0018 14        		.byte	20
+ 712 0019 10        		.byte	16
+ 713 001a 20        		.byte	32
+ 714 001b 7F        		.byte	127
+ 715 001c 01        		.byte	1
+ 716 001d 01        		.byte	1
+ 717 001e 00        		.byte	0
+ 718 001f 00        		.byte	0
+ 719 0020 00        		.byte	0
+ 720 0021 00        		.byte	0
+ 721 0022 00        		.byte	0
+ 722 0023 00        		.byte	0
+ 723 0024 00        		.byte	0
+ 724 0025 00        		.byte	0
+ 725 0026 00        		.byte	0
+ 726 0027 00        		.byte	0
+ 727 0028 08        		.byte	8
+ 728 0029 1C        		.byte	28
+ 729 002a 2C        		.byte	44
+ 730 002b 08        		.byte	8
+ 731 002c 08        		.byte	8
+ 732 002d 7F        		.byte	127
+ 733 002e 01        		.byte	1
+ 734 002f 01        		.byte	1
+ 735 0030 01        		.byte	1
+ 736 0031 01        		.byte	1
+ 737 0032 01        		.byte	1
+ 738 0033 01        		.byte	1
+ 739 0034 01        		.byte	1
+ 740 0035 01        		.byte	1
+ 741 0036 7F        		.byte	127
+ 742 0037 7F        		.byte	127
+ 743 0038 40        		.byte	64
+ 744 0039 40        		.byte	64
+ 745 003a 40        		.byte	64
+ 746 003b 40        		.byte	64
+ 747 003c 40        		.byte	64
+ 748 003d 40        		.byte	64
+ 749 003e 40        		.byte	64
+ 750 003f 40        		.byte	64
+ 751 0040 7F        		.byte	127
+ 752 0041 00        		.byte	0
+ 753 0042 00        		.byte	0
+ 754 0043 00        		.byte	0
+ 755 0044 00        		.byte	0
+ 756 0045 00        		.byte	0
+ 757 0046 00        		.byte	0
+ 758 0047 00        		.byte	0
+ 759 0048 00        		.byte	0
+ 760 0049 00        		.byte	0
+ 761 004a 00        		.byte	0
+ 762 004b 00        		.byte	0
+ 763 004c 00        		.byte	0
+ 764 004d 00        		.byte	0
+ 765 004e 00        		.byte	0
+ 766 004f 00        		.byte	0
+ 767 0050 79        		.byte	121
+ 768 0051 11        		.byte	17
+ 769 0052 27        		.byte	39
+ 770 0053 11        		.byte	17
+ 771 0054 79        		.byte	121
+ 772 0055 00        		.byte	0
+ 773 0056 00        		.byte	0
+ 774 0057 00        		.byte	0
+ 775 0058 00        		.byte	0
+ 776 0059 00        		.byte	0
+ 777 005a 00        		.byte	0
+ 778 005b 00        		.byte	0
+ 779 005c 00        		.byte	0
+ 780 005d 00        		.byte	0
+ 781 005e 00        		.byte	0
+ 782 005f 00        		.byte	0
+ 783 0060 00        		.byte	0
+ 784 0061 00        		.byte	0
+ 785 0062 00        		.byte	0
+ 786 0063 00        		.byte	0
+ 787 0064 7F        		.byte	127
+ 788 0065 01        		.byte	1
+ 789 0066 01        		.byte	1
+ 790 0067 01        		.byte	1
+ 791 0068 03        		.byte	3
+ 792 0069 60        		.byte	96
+ 793 006a 50        		.byte	80
+ 794 006b 48        		.byte	72
+ 795 006c 44        		.byte	68
+ 796 006d 7E        		.byte	126
+ 797 006e 3E        		.byte	62
+ 798 006f 49        		.byte	73
+ 799 0070 49        		.byte	73
+ 800 0071 49        		.byte	73
+ 801 0072 3E        		.byte	62
+ 802 0073 70        		.byte	112
+ 803 0074 0C        		.byte	12
+ 804 0075 03        		.byte	3
+ 805 0076 0C        		.byte	12
+ 806 0077 70        		.byte	112
+ 807 0078 63        		.byte	99
+ 808 0079 49        		.byte	73
+ 809 007a 49        		.byte	73
+ 810 007b 49        		.byte	73
+ 811 007c 63        		.byte	99
+ 812 007d 01        		.byte	1
+ 813 007e 7F        		.byte	127
+ 814 007f 01        		.byte	1
+ 815 0080 7F        		.byte	127
+ 816 0081 01        		.byte	1
+ 817 0082 63        		.byte	99
+ 818 0083 55        		.byte	85
+ 819 0084 49        		.byte	73
+ 820 0085 41        		.byte	65
+ 821 0086 41        		.byte	65
+ 822 0087 06        		.byte	6
+ 823 0088 01        		.byte	1
+ 824 0089 7E        		.byte	126
+ 825 008a 01        		.byte	1
+ 826 008b 06        		.byte	6
+ 827 008c 08        		.byte	8
+ 828 008d 55        		.byte	85
+ 829 008e 7F        		.byte	127
+ 830 008f 55        		.byte	85
+ 831 0090 08        		.byte	8
+ 832 0091 0F        		.byte	15
+ 833 0092 10        		.byte	16
+ 834 0093 7F        		.byte	127
+ 835 0094 10        		.byte	16
+ 836 0095 0F        		.byte	15
+ 837 0096 4E        		.byte	78
+ 838 0097 71        		.byte	113
+ 839 0098 01        		.byte	1
+ 840 0099 71        		.byte	113
+ 841 009a 4E        		.byte	78
+ 842 009b 38        		.byte	56
+ 843 009c 44        		.byte	68
+ 844 009d 44        		.byte	68
+ 845 009e 38        		.byte	56
+ 846 009f 44        		.byte	68
+ 847 00a0 00        		.byte	0
+ 848 00a1 00        		.byte	0
+ 849 00a2 00        		.byte	0
+ 850 00a3 00        		.byte	0
+ 851 00a4 00        		.byte	0
+ 852 00a5 00        		.byte	0
+ 853 00a6 00        		.byte	0
+ 854 00a7 5F        		.byte	95
+ 855 00a8 00        		.byte	0
+ 856 00a9 00        		.byte	0
+ 857 00aa 03        		.byte	3
+ 858 00ab 00        		.byte	0
+ 859 00ac 03        		.byte	3
+ 860 00ad 00        		.byte	0
+ 861 00ae 00        		.byte	0
+ 862 00af 14        		.byte	20
+ 863 00b0 3E        		.byte	62
+ 864 00b1 14        		.byte	20
+ 865 00b2 3E        		.byte	62
+ 866 00b3 14        		.byte	20
+ 867 00b4 26        		.byte	38
+ 868 00b5 49        		.byte	73
+ 869 00b6 7F        		.byte	127
+ 870 00b7 49        		.byte	73
+ 871 00b8 32        		.byte	50
+ 872 00b9 62        		.byte	98
+ 873 00ba 15        		.byte	21
+ 874 00bb 2A        		.byte	42
+ 875 00bc 54        		.byte	84
+ 876 00bd 23        		.byte	35
+ 877 00be 36        		.byte	54
+ 878 00bf 49        		.byte	73
+ 879 00c0 56        		.byte	86
+ 880 00c1 20        		.byte	32
+ 881 00c2 50        		.byte	80
+ 882 00c3 00        		.byte	0
+ 883 00c4 03        		.byte	3
+ 884 00c5 00        		.byte	0
+ 885 00c6 00        		.byte	0
+ 886 00c7 00        		.byte	0
+ 887 00c8 00        		.byte	0
+ 888 00c9 1C        		.byte	28
+ 889 00ca 22        		.byte	34
+ 890 00cb 41        		.byte	65
+ 891 00cc 00        		.byte	0
+ 892 00cd 00        		.byte	0
+ 893 00ce 41        		.byte	65
+ 894 00cf 22        		.byte	34
+ 895 00d0 1C        		.byte	28
+ 896 00d1 00        		.byte	0
+ 897 00d2 00        		.byte	0
+ 898 00d3 14        		.byte	20
+ 899 00d4 0E        		.byte	14
+ 900 00d5 14        		.byte	20
+ 901 00d6 00        		.byte	0
+ 902 00d7 08        		.byte	8
+ 903 00d8 08        		.byte	8
+ 904 00d9 3E        		.byte	62
+ 905 00da 08        		.byte	8
+ 906 00db 08        		.byte	8
+ 907 00dc 00        		.byte	0
+ 908 00dd 60        		.byte	96
+ 909 00de 00        		.byte	0
+ 910 00df 00        		.byte	0
+ 911 00e0 00        		.byte	0
+ 912 00e1 08        		.byte	8
+ 913 00e2 08        		.byte	8
+ 914 00e3 08        		.byte	8
+ 915 00e4 08        		.byte	8
+ 916 00e5 00        		.byte	0
+ 917 00e6 00        		.byte	0
+ 918 00e7 40        		.byte	64
+ 919 00e8 00        		.byte	0
+ 920 00e9 00        		.byte	0
+ 921 00ea 00        		.byte	0
+ 922 00eb 60        		.byte	96
+ 923 00ec 10        		.byte	16
+ 924 00ed 08        		.byte	8
+ 925 00ee 04        		.byte	4
+ 926 00ef 03        		.byte	3
+ 927 00f0 3E        		.byte	62
+ 928 00f1 41        		.byte	65
+ 929 00f2 41        		.byte	65
+ 930 00f3 41        		.byte	65
+ 931 00f4 3E        		.byte	62
+ 932 00f5 04        		.byte	4
+ 933 00f6 02        		.byte	2
+ 934 00f7 7F        		.byte	127
+ 935 00f8 00        		.byte	0
+ 936 00f9 00        		.byte	0
+ 937 00fa 62        		.byte	98
+ 938 00fb 51        		.byte	81
+ 939 00fc 49        		.byte	73
+ 940 00fd 45        		.byte	69
+ 941 00fe 42        		.byte	66
+ 942 00ff 22        		.byte	34
+ 943 0100 41        		.byte	65
+ 944 0101 49        		.byte	73
+ 945 0102 49        		.byte	73
+ 946 0103 36        		.byte	54
+ 947 0104 0C        		.byte	12
+ 948 0105 0B        		.byte	11
+ 949 0106 08        		.byte	8
+ 950 0107 7E        		.byte	126
+ 951 0108 08        		.byte	8
+ 952 0109 4F        		.byte	79
+ 953 010a 49        		.byte	73
+ 954 010b 49        		.byte	73
+ 955 010c 49        		.byte	73
+ 956 010d 31        		.byte	49
+ 957 010e 3E        		.byte	62
+ 958 010f 49        		.byte	73
+ 959 0110 49        		.byte	73
+ 960 0111 49        		.byte	73
+ 961 0112 32        		.byte	50
+ 962 0113 61        		.byte	97
+ 963 0114 11        		.byte	17
+ 964 0115 09        		.byte	9
+ 965 0116 05        		.byte	5
+ 966 0117 03        		.byte	3
+ 967 0118 36        		.byte	54
+ 968 0119 49        		.byte	73
+ 969 011a 49        		.byte	73
+ 970 011b 49        		.byte	73
+ 971 011c 36        		.byte	54
+ 972 011d 26        		.byte	38
+ 973 011e 49        		.byte	73
+ 974 011f 49        		.byte	73
+ 975 0120 49        		.byte	73
+ 976 0121 3E        		.byte	62
+ 977 0122 00        		.byte	0
+ 978 0123 22        		.byte	34
+ 979 0124 00        		.byte	0
+ 980 0125 00        		.byte	0
+ 981 0126 00        		.byte	0
+ 982 0127 00        		.byte	0
+ 983 0128 61        		.byte	97
+ 984 0129 00        		.byte	0
+ 985 012a 00        		.byte	0
+ 986 012b 00        		.byte	0
+ 987 012c 08        		.byte	8
+ 988 012d 14        		.byte	20
+ 989 012e 14        		.byte	20
+ 990 012f 22        		.byte	34
+ 991 0130 22        		.byte	34
+ 992 0131 14        		.byte	20
+ 993 0132 14        		.byte	20
+ 994 0133 14        		.byte	20
+ 995 0134 14        		.byte	20
+ 996 0135 14        		.byte	20
+ 997 0136 22        		.byte	34
+ 998 0137 22        		.byte	34
+ 999 0138 14        		.byte	20
+ 1000 0139 14        		.byte	20
+ 1001 013a 08        		.byte	8
+ 1002 013b 06        		.byte	6
+ 1003 013c 01        		.byte	1
+ 1004 013d 59        		.byte	89
+ 1005 013e 05        		.byte	5
+ 1006 013f 02        		.byte	2
+ 1007 0140 3E        		.byte	62
+ 1008 0141 41        		.byte	65
+ 1009 0142 5D        		.byte	93
+ 1010 0143 55        		.byte	85
+ 1011 0144 5E        		.byte	94
+ 1012 0145 7E        		.byte	126
+ 1013 0146 09        		.byte	9
+ 1014 0147 09        		.byte	9
+ 1015 0148 09        		.byte	9
+ 1016 0149 7E        		.byte	126
+ 1017 014a 7F        		.byte	127
+ 1018 014b 49        		.byte	73
+ 1019 014c 49        		.byte	73
+ 1020 014d 49        		.byte	73
+ 1021 014e 36        		.byte	54
+ 1022 014f 3E        		.byte	62
+ 1023 0150 41        		.byte	65
+ 1024 0151 41        		.byte	65
+ 1025 0152 41        		.byte	65
+ 1026 0153 22        		.byte	34
+ 1027 0154 7F        		.byte	127
+ 1028 0155 41        		.byte	65
+ 1029 0156 41        		.byte	65
+ 1030 0157 41        		.byte	65
+ 1031 0158 3E        		.byte	62
+ 1032 0159 7F        		.byte	127
+ 1033 015a 49        		.byte	73
+ 1034 015b 49        		.byte	73
+ 1035 015c 49        		.byte	73
+ 1036 015d 41        		.byte	65
+ 1037 015e 7F        		.byte	127
+ 1038 015f 09        		.byte	9
+ 1039 0160 09        		.byte	9
+ 1040 0161 09        		.byte	9
+ 1041 0162 01        		.byte	1
+ 1042 0163 3E        		.byte	62
+ 1043 0164 41        		.byte	65
+ 1044 0165 49        		.byte	73
+ 1045 0166 49        		.byte	73
+ 1046 0167 32        		.byte	50
+ 1047 0168 7F        		.byte	127
+ 1048 0169 08        		.byte	8
+ 1049 016a 08        		.byte	8
+ 1050 016b 08        		.byte	8
+ 1051 016c 7F        		.byte	127
+ 1052 016d 00        		.byte	0
+ 1053 016e 00        		.byte	0
+ 1054 016f 7F        		.byte	127
+ 1055 0170 00        		.byte	0
+ 1056 0171 00        		.byte	0
+ 1057 0172 20        		.byte	32
+ 1058 0173 40        		.byte	64
+ 1059 0174 40        		.byte	64
+ 1060 0175 40        		.byte	64
+ 1061 0176 3F        		.byte	63
+ 1062 0177 7F        		.byte	127
+ 1063 0178 08        		.byte	8
+ 1064 0179 14        		.byte	20
+ 1065 017a 22        		.byte	34
+ 1066 017b 41        		.byte	65
+ 1067 017c 7F        		.byte	127
+ 1068 017d 40        		.byte	64
+ 1069 017e 40        		.byte	64
+ 1070 017f 40        		.byte	64
+ 1071 0180 00        		.byte	0
+ 1072 0181 7F        		.byte	127
+ 1073 0182 02        		.byte	2
+ 1074 0183 04        		.byte	4
+ 1075 0184 02        		.byte	2
+ 1076 0185 7F        		.byte	127
+ 1077 0186 7F        		.byte	127
+ 1078 0187 02        		.byte	2
+ 1079 0188 1C        		.byte	28
+ 1080 0189 20        		.byte	32
+ 1081 018a 7F        		.byte	127
+ 1082 018b 3E        		.byte	62
+ 1083 018c 41        		.byte	65
+ 1084 018d 41        		.byte	65
+ 1085 018e 41        		.byte	65
+ 1086 018f 3E        		.byte	62
+ 1087 0190 7F        		.byte	127
+ 1088 0191 09        		.byte	9
+ 1089 0192 09        		.byte	9
+ 1090 0193 09        		.byte	9
+ 1091 0194 06        		.byte	6
+ 1092 0195 3E        		.byte	62
+ 1093 0196 41        		.byte	65
+ 1094 0197 51        		.byte	81
+ 1095 0198 61        		.byte	97
+ 1096 0199 7E        		.byte	126
+ 1097 019a 7F        		.byte	127
+ 1098 019b 09        		.byte	9
+ 1099 019c 19        		.byte	25
+ 1100 019d 29        		.byte	41
+ 1101 019e 46        		.byte	70
+ 1102 019f 26        		.byte	38
+ 1103 01a0 49        		.byte	73
+ 1104 01a1 49        		.byte	73
+ 1105 01a2 49        		.byte	73
+ 1106 01a3 32        		.byte	50
+ 1107 01a4 01        		.byte	1
+ 1108 01a5 01        		.byte	1
+ 1109 01a6 7F        		.byte	127
+ 1110 01a7 01        		.byte	1
+ 1111 01a8 01        		.byte	1
+ 1112 01a9 3F        		.byte	63
+ 1113 01aa 40        		.byte	64
+ 1114 01ab 40        		.byte	64
+ 1115 01ac 40        		.byte	64
+ 1116 01ad 3F        		.byte	63
+ 1117 01ae 1F        		.byte	31
+ 1118 01af 20        		.byte	32
+ 1119 01b0 40        		.byte	64
+ 1120 01b1 20        		.byte	32
+ 1121 01b2 1F        		.byte	31
+ 1122 01b3 3F        		.byte	63
+ 1123 01b4 40        		.byte	64
+ 1124 01b5 30        		.byte	48
+ 1125 01b6 40        		.byte	64
+ 1126 01b7 3F        		.byte	63
+ 1127 01b8 63        		.byte	99
+ 1128 01b9 14        		.byte	20
+ 1129 01ba 08        		.byte	8
+ 1130 01bb 14        		.byte	20
+ 1131 01bc 63        		.byte	99
+ 1132 01bd 03        		.byte	3
+ 1133 01be 04        		.byte	4
+ 1134 01bf 78        		.byte	120
+ 1135 01c0 04        		.byte	4
+ 1136 01c1 03        		.byte	3
+ 1137 01c2 61        		.byte	97
+ 1138 01c3 51        		.byte	81
+ 1139 01c4 49        		.byte	73
+ 1140 01c5 45        		.byte	69
+ 1141 01c6 43        		.byte	67
+ 1142 01c7 7F        		.byte	127
+ 1143 01c8 41        		.byte	65
+ 1144 01c9 00        		.byte	0
+ 1145 01ca 00        		.byte	0
+ 1146 01cb 00        		.byte	0
+ 1147 01cc 00        		.byte	0
+ 1148 01cd 00        		.byte	0
+ 1149 01ce 00        		.byte	0
+ 1150 01cf 00        		.byte	0
+ 1151 01d0 00        		.byte	0
+ 1152 01d1 00        		.byte	0
+ 1153 01d2 00        		.byte	0
+ 1154 01d3 00        		.byte	0
+ 1155 01d4 41        		.byte	65
+ 1156 01d5 7F        		.byte	127
+ 1157 01d6 06        		.byte	6
+ 1158 01d7 01        		.byte	1
+ 1159 01d8 06        		.byte	6
+ 1160 01d9 00        		.byte	0
+ 1161 01da 00        		.byte	0
+ 1162 01db 40        		.byte	64
+ 1163 01dc 40        		.byte	64
+ 1164 01dd 40        		.byte	64
+ 1165 01de 40        		.byte	64
+ 1166 01df 40        		.byte	64
+ 1167 01e0 01        		.byte	1
+ 1168 01e1 02        		.byte	2
+ 1169 01e2 00        		.byte	0
+ 1170 01e3 00        		.byte	0
+ 1171 01e4 00        		.byte	0
+ 1172 01e5 20        		.byte	32
+ 1173 01e6 54        		.byte	84
+ 1174 01e7 54        		.byte	84
+ 1175 01e8 54        		.byte	84
+ 1176 01e9 78        		.byte	120
+ 1177 01ea 7F        		.byte	127
+ 1178 01eb 48        		.byte	72
+ 1179 01ec 48        		.byte	72
+ 1180 01ed 48        		.byte	72
+ 1181 01ee 30        		.byte	48
+ 1182 01ef 38        		.byte	56
+ 1183 01f0 44        		.byte	68
+ 1184 01f1 44        		.byte	68
+ 1185 01f2 44        		.byte	68
+ 1186 01f3 28        		.byte	40
+ 1187 01f4 38        		.byte	56
+ 1188 01f5 44        		.byte	68
+ 1189 01f6 44        		.byte	68
+ 1190 01f7 44        		.byte	68
+ 1191 01f8 7F        		.byte	127
+ 1192 01f9 38        		.byte	56
+ 1193 01fa 54        		.byte	84
+ 1194 01fb 54        		.byte	84
+ 1195 01fc 54        		.byte	84
+ 1196 01fd 18        		.byte	24
+ 1197 01fe 08        		.byte	8
+ 1198 01ff 7E        		.byte	126
+ 1199 0200 09        		.byte	9
+ 1200 0201 09        		.byte	9
+ 1201 0202 01        		.byte	1
+ 1202 0203 0C        		.byte	12
+ 1203 0204 52        		.byte	82
+ 1204 0205 52        		.byte	82
+ 1205 0206 52        		.byte	82
+ 1206 0207 3E        		.byte	62
+ 1207 0208 7F        		.byte	127
+ 1208 0209 04        		.byte	4
+ 1209 020a 04        		.byte	4
+ 1210 020b 04        		.byte	4
+ 1211 020c 78        		.byte	120
+ 1212 020d 04        		.byte	4
+ 1213 020e 7D        		.byte	125
+ 1214 020f 40        		.byte	64
+ 1215 0210 40        		.byte	64
+ 1216 0211 20        		.byte	32
+ 1217 0212 20        		.byte	32
+ 1218 0213 40        		.byte	64
+ 1219 0214 40        		.byte	64
+ 1220 0215 44        		.byte	68
+ 1221 0216 3D        		.byte	61
+ 1222 0217 00        		.byte	0
+ 1223 0218 7F        		.byte	127
+ 1224 0219 10        		.byte	16
+ 1225 021a 28        		.byte	40
+ 1226 021b 44        		.byte	68
+ 1227 021c 20        		.byte	32
+ 1228 021d 3E        		.byte	62
+ 1229 021e 51        		.byte	81
+ 1230 021f 49        		.byte	73
+ 1231 0220 46        		.byte	70
+ 1232 0221 7C        		.byte	124
+ 1233 0222 04        		.byte	4
+ 1234 0223 7C        		.byte	124
+ 1235 0224 04        		.byte	4
+ 1236 0225 78        		.byte	120
+ 1237 0226 7C        		.byte	124
+ 1238 0227 08        		.byte	8
+ 1239 0228 04        		.byte	4
+ 1240 0229 04        		.byte	4
+ 1241 022a 78        		.byte	120
+ 1242 022b 38        		.byte	56
+ 1243 022c 44        		.byte	68
+ 1244 022d 44        		.byte	68
+ 1245 022e 44        		.byte	68
+ 1246 022f 38        		.byte	56
+ 1247 0230 7E        		.byte	126
+ 1248 0231 12        		.byte	18
+ 1249 0232 12        		.byte	18
+ 1250 0233 12        		.byte	18
+ 1251 0234 0C        		.byte	12
+ 1252 0235 0C        		.byte	12
+ 1253 0236 12        		.byte	18
+ 1254 0237 12        		.byte	18
+ 1255 0238 12        		.byte	18
+ 1256 0239 7E        		.byte	126
+ 1257 023a 04        		.byte	4
+ 1258 023b 78        		.byte	120
+ 1259 023c 04        		.byte	4
+ 1260 023d 04        		.byte	4
+ 1261 023e 08        		.byte	8
+ 1262 023f 48        		.byte	72
+ 1263 0240 54        		.byte	84
+ 1264 0241 54        		.byte	84
+ 1265 0242 54        		.byte	84
+ 1266 0243 24        		.byte	36
+ 1267 0244 04        		.byte	4
+ 1268 0245 3F        		.byte	63
+ 1269 0246 44        		.byte	68
+ 1270 0247 44        		.byte	68
+ 1271 0248 40        		.byte	64
+ 1272 0249 3C        		.byte	60
+ 1273 024a 40        		.byte	64
+ 1274 024b 40        		.byte	64
+ 1275 024c 3C        		.byte	60
+ 1276 024d 40        		.byte	64
+ 1277 024e 1C        		.byte	28
+ 1278 024f 20        		.byte	32
+ 1279 0250 40        		.byte	64
+ 1280 0251 20        		.byte	32
+ 1281 0252 1C        		.byte	28
+ 1282 0253 3C        		.byte	60
+ 1283 0254 40        		.byte	64
+ 1284 0255 30        		.byte	48
+ 1285 0256 40        		.byte	64
+ 1286 0257 3C        		.byte	60
+ 1287 0258 44        		.byte	68
+ 1288 0259 28        		.byte	40
+ 1289 025a 10        		.byte	16
+ 1290 025b 28        		.byte	40
+ 1291 025c 44        		.byte	68
+ 1292 025d 26        		.byte	38
+ 1293 025e 48        		.byte	72
+ 1294 025f 48        		.byte	72
+ 1295 0260 48        		.byte	72
+ 1296 0261 3E        		.byte	62
+ 1297 0262 44        		.byte	68
+ 1298 0263 64        		.byte	100
+ 1299 0264 54        		.byte	84
+ 1300 0265 4C        		.byte	76
+ 1301 0266 44        		.byte	68
+ 1302 0267 00        		.byte	0
+ 1303 0268 08        		.byte	8
+ 1304 0269 3E        		.byte	62
+ 1305 026a 41        		.byte	65
+ 1306 026b 00        		.byte	0
+ 1307 026c 00        		.byte	0
+ 1308 026d 00        		.byte	0
+ 1309 026e 7F        		.byte	127
+ 1310 026f 00        		.byte	0
+ 1311 0270 00        		.byte	0
+ 1312 0271 00        		.byte	0
+ 1313 0272 41        		.byte	65
+ 1314 0273 3E        		.byte	62
+ 1315 0274 08        		.byte	8
+ 1316 0275 00        		.byte	0
+ 1317 0276 00        		.byte	0
+ 1318 0277 00        		.byte	0
+ 1319 0278 00        		.byte	0
+ 1320 0279 00        		.byte	0
+ 1321 027a 00        		.byte	0
+ 1322 027b 00        		.byte	0
+ 1323 027c 00        		.byte	0
+ 1324 027d 00        		.byte	0
+ 1325 027e 00        		.byte	0
+ 1326 027f 00        		.byte	0
+ 1327 0280 00        		.byte	0
+ 1328 0281 00        		.byte	0
+ 1329 0282 00        		.byte	0
+ 1330 0283 00        		.byte	0
+ 1331 0284 00        		.byte	0
+ 1332 0285 00        		.byte	0
+ 1333 0286 00        		.byte	0
+ 1334 0287 00        		.byte	0
+ 1335 0288 00        		.byte	0
+ 1336 0289 00        		.byte	0
+ 1337 028a 00        		.byte	0
+ 1338 028b 00        		.byte	0
+ 1339 028c 00        		.byte	0
+ 1340 028d 00        		.byte	0
+ 1341 028e 00        		.byte	0
+ 1342 028f 20        		.byte	32
+ 1343 0290 48        		.byte	72
+ 1344 0291 3E        		.byte	62
+ 1345 0292 09        		.byte	9
+ 1346 0293 02        		.byte	2
+ 1347 0294 00        		.byte	0
+ 1348 0295 00        		.byte	0
+ 1349 0296 00        		.byte	0
+ 1350 0297 00        		.byte	0
+ 1351 0298 00        		.byte	0
+ 1352 0299 00        		.byte	0
+ 1353 029a 00        		.byte	0
+ 1354 029b 00        		.byte	0
+ 1355 029c 00        		.byte	0
+ 1356 029d 00        		.byte	0
+ 1357 029e 04        		.byte	4
+ 1358 029f 04        		.byte	4
+ 1359 02a0 7F        		.byte	127
+ 1360 02a1 04        		.byte	4
+ 1361 02a2 04        		.byte	4
+ 1362 02a3 00        		.byte	0
+ 1363 02a4 00        		.byte	0
+ 1364 02a5 00        		.byte	0
+ 1365 02a6 00        		.byte	0
+ 1366 02a7 00        		.byte	0
+ 1367 02a8 00        		.byte	0
+ 1368 02a9 00        		.byte	0
+ 1369 02aa 00        		.byte	0
+ 1370 02ab 00        		.byte	0
+ 1371 02ac 00        		.byte	0
+ 1372 02ad 00        		.byte	0
+ 1373 02ae 00        		.byte	0
+ 1374 02af 00        		.byte	0
+ 1375 02b0 00        		.byte	0
+ 1376 02b1 00        		.byte	0
+ 1377 02b2 00        		.byte	0
+ 1378 02b3 00        		.byte	0
+ 1379 02b4 00        		.byte	0
+ 1380 02b5 00        		.byte	0
+ 1381 02b6 00        		.byte	0
+ 1382 02b7 00        		.byte	0
+ 1383 02b8 00        		.byte	0
+ 1384 02b9 00        		.byte	0
+ 1385 02ba 00        		.byte	0
+ 1386 02bb 00        		.byte	0
+ 1387 02bc 00        		.byte	0
+ 1388 02bd 00        		.byte	0
+ 1389 02be 00        		.byte	0
+ 1390 02bf 00        		.byte	0
+ 1391 02c0 00        		.byte	0
+ 1392 02c1 00        		.byte	0
+ 1393 02c2 00        		.byte	0
+ 1394 02c3 00        		.byte	0
+ 1395 02c4 00        		.byte	0
+ 1396 02c5 00        		.byte	0
+ 1397 02c6 00        		.byte	0
+ 1398 02c7 00        		.byte	0
+ 1399 02c8 00        		.byte	0
+ 1400 02c9 00        		.byte	0
+ 1401 02ca 00        		.byte	0
+ 1402 02cb 00        		.byte	0
+ 1403 02cc 00        		.byte	0
+ 1404 02cd 00        		.byte	0
+ 1405 02ce 00        		.byte	0
+ 1406 02cf 00        		.byte	0
+ 1407 02d0 00        		.byte	0
+ 1408 02d1 00        		.byte	0
+ 1409 02d2 00        		.byte	0
+ 1410 02d3 00        		.byte	0
+ 1411 02d4 00        		.byte	0
+ 1412 02d5 00        		.byte	0
+ 1413 02d6 00        		.byte	0
+ 1414 02d7 00        		.byte	0
+ 1415 02d8 00        		.byte	0
+ 1416 02d9 00        		.byte	0
+ 1417 02da 00        		.byte	0
+ 1418 02db 00        		.byte	0
+ 1419 02dc 00        		.byte	0
+ 1420 02dd 00        		.byte	0
+ 1421 02de 00        		.byte	0
+ 1422 02df 02        		.byte	2
+ 1423 02e0 04        		.byte	4
+ 1424 02e1 01        		.byte	1
+ 1425 02e2 02        		.byte	2
+ 1426 02e3 00        		.byte	0
+ 1427 02e4 00        		.byte	0
+ 1428 02e5 00        		.byte	0
+ 1429 02e6 00        		.byte	0
+ 1430 02e7 00        		.byte	0
+ 1431 02e8 00        		.byte	0
+ 1432 02e9 00        		.byte	0
+ 1433 02ea 18        		.byte	24
+ 1434 02eb 18        		.byte	24
+ 1435 02ec 00        		.byte	0
+ 1436 02ed 00        		.byte	0
+ 1437 02ee 00        		.byte	0
+ 1438 02ef 00        		.byte	0
+ 1439 02f0 00        		.byte	0
+ 1440 02f1 00        		.byte	0
+ 1441 02f2 00        		.byte	0
+ 1442 02f3 00        		.byte	0
+ 1443 02f4 00        		.byte	0
+ 1444 02f5 00        		.byte	0
+ 1445 02f6 00        		.byte	0
+ 1446 02f7 00        		.byte	0
+ 1447 02f8 00        		.byte	0
+ 1448 02f9 00        		.byte	0
+ 1449 02fa 00        		.byte	0
+ 1450 02fb 00        		.byte	0
+ 1451 02fc 00        		.byte	0
+ 1452 02fd 00        		.byte	0
+ 1453 02fe 00        		.byte	0
+ 1454 02ff 00        		.byte	0
+ 1455 0300 00        		.byte	0
+ 1456 0301 00        		.byte	0
+ 1457 0302 00        		.byte	0
+ 1458 0303 00        		.byte	0
+ 1459 0304 00        		.byte	0
+ 1460 0305 00        		.byte	0
+ 1461 0306 00        		.byte	0
+ 1462 0307 00        		.byte	0
+ 1463 0308 00        		.byte	0
+ 1464 0309 00        		.byte	0
+ 1465 030a 00        		.byte	0
+ 1466 030b 00        		.byte	0
+ 1467 030c 00        		.byte	0
+ 1468 030d 00        		.byte	0
+ 1469 030e 00        		.byte	0
+ 1470 030f 00        		.byte	0
+ 1471 0310 00        		.byte	0
+ 1472 0311 00        		.byte	0
+ 1473 0312 00        		.byte	0
+ 1474 0313 00        		.byte	0
+ 1475 0314 00        		.byte	0
+ 1476 0315 00        		.byte	0
+ 1477 0316 00        		.byte	0
+ 1478 0317 00        		.byte	0
+ 1479 0318 00        		.byte	0
+ 1480 0319 00        		.byte	0
+ 1481 031a 00        		.byte	0
+ 1482 031b 00        		.byte	0
+ 1483 031c 00        		.byte	0
+ 1484 031d 00        		.byte	0
+ 1485 031e 00        		.byte	0
+ 1486 031f 00        		.byte	0
+ 1487 0320 00        		.byte	0
+ 1488 0321 00        		.byte	0
+ 1489 0322 00        		.byte	0
+ 1490 0323 00        		.byte	0
+ 1491 0324 00        		.byte	0
+ 1492 0325 00        		.byte	0
+ 1493 0326 00        		.byte	0
+ 1494 0327 79        		.byte	121
+ 1495 0328 00        		.byte	0
+ 1496 0329 00        		.byte	0
+ 1497 032a 00        		.byte	0
+ 1498 032b 00        		.byte	0
+ 1499 032c 00        		.byte	0
+ 1500 032d 00        		.byte	0
+ 1501 032e 00        		.byte	0
+ 1502 032f 48        		.byte	72
+ 1503 0330 7E        		.byte	126
+ 1504 0331 49        		.byte	73
+ 1505 0332 49        		.byte	73
+ 1506 0333 42        		.byte	66
+ 1507 0334 00        		.byte	0
+ 1508 0335 00        		.byte	0
+ 1509 0336 00        		.byte	0
+ 1510 0337 00        		.byte	0
+ 1511 0338 00        		.byte	0
+ 1512 0339 15        		.byte	21
+ 1513 033a 16        		.byte	22
+ 1514 033b 7C        		.byte	124
+ 1515 033c 16        		.byte	22
+ 1516 033d 15        		.byte	21
+ 1517 033e 00        		.byte	0
+ 1518 033f 00        		.byte	0
+ 1519 0340 00        		.byte	0
+ 1520 0341 00        		.byte	0
+ 1521 0342 00        		.byte	0
+ 1522 0343 0A        		.byte	10
+ 1523 0344 55        		.byte	85
+ 1524 0345 55        		.byte	85
+ 1525 0346 55        		.byte	85
+ 1526 0347 28        		.byte	40
+ 1527 0348 00        		.byte	0
+ 1528 0349 01        		.byte	1
+ 1529 034a 00        		.byte	0
+ 1530 034b 01        		.byte	1
+ 1531 034c 00        		.byte	0
+ 1532 034d 3E        		.byte	62
+ 1533 034e 63        		.byte	99
+ 1534 034f 5D        		.byte	93
+ 1535 0350 6B        		.byte	107
+ 1536 0351 3E        		.byte	62
+ 1537 0352 00        		.byte	0
+ 1538 0353 00        		.byte	0
+ 1539 0354 00        		.byte	0
+ 1540 0355 00        		.byte	0
+ 1541 0356 00        		.byte	0
+ 1542 0357 08        		.byte	8
+ 1543 0358 14        		.byte	20
+ 1544 0359 2A        		.byte	42
+ 1545 035a 14        		.byte	20
+ 1546 035b 22        		.byte	34
+ 1547 035c 00        		.byte	0
+ 1548 035d 00        		.byte	0
+ 1549 035e 00        		.byte	0
+ 1550 035f 00        		.byte	0
+ 1551 0360 00        		.byte	0
+ 1552 0361 00        		.byte	0
+ 1553 0362 00        		.byte	0
+ 1554 0363 00        		.byte	0
+ 1555 0364 00        		.byte	0
+ 1556 0365 00        		.byte	0
+ 1557 0366 3E        		.byte	62
+ 1558 0367 41        		.byte	65
+ 1559 0368 75        		.byte	117
+ 1560 0369 4B        		.byte	75
+ 1561 036a 3E        		.byte	62
+ 1562 036b 01        		.byte	1
+ 1563 036c 01        		.byte	1
+ 1564 036d 01        		.byte	1
+ 1565 036e 01        		.byte	1
+ 1566 036f 01        		.byte	1
+ 1567 0370 00        		.byte	0
+ 1568 0371 02        		.byte	2
+ 1569 0372 05        		.byte	5
+ 1570 0373 02        		.byte	2
+ 1571 0374 00        		.byte	0
+ 1572 0375 00        		.byte	0
+ 1573 0376 00        		.byte	0
+ 1574 0377 00        		.byte	0
+ 1575 0378 00        		.byte	0
+ 1576 0379 00        		.byte	0
+ 1577 037a 00        		.byte	0
+ 1578 037b 00        		.byte	0
+ 1579 037c 00        		.byte	0
+ 1580 037d 00        		.byte	0
+ 1581 037e 00        		.byte	0
+ 1582 037f 00        		.byte	0
+ 1583 0380 00        		.byte	0
+ 1584 0381 00        		.byte	0
+ 1585 0382 00        		.byte	0
+ 1586 0383 00        		.byte	0
+ 1587 0384 00        		.byte	0
+ 1588 0385 00        		.byte	0
+ 1589 0386 00        		.byte	0
+ 1590 0387 00        		.byte	0
+ 1591 0388 00        		.byte	0
+ 1592 0389 00        		.byte	0
+ 1593 038a 00        		.byte	0
+ 1594 038b 00        		.byte	0
+ 1595 038c 00        		.byte	0
+ 1596 038d 00        		.byte	0
+ 1597 038e 06        		.byte	6
+ 1598 038f 0F        		.byte	15
+ 1599 0390 7F        		.byte	127
+ 1600 0391 01        		.byte	1
+ 1601 0392 7F        		.byte	127
+ 1602 0393 00        		.byte	0
+ 1603 0394 00        		.byte	0
+ 1604 0395 00        		.byte	0
+ 1605 0396 00        		.byte	0
+ 1606 0397 00        		.byte	0
+ 1607 0398 00        		.byte	0
+ 1608 0399 00        		.byte	0
+ 1609 039a 00        		.byte	0
+ 1610 039b 00        		.byte	0
+ 1611 039c 00        		.byte	0
+ 1612 039d 00        		.byte	0
+ 1613 039e 00        		.byte	0
+ 1614 039f 00        		.byte	0
+ 1615 03a0 00        		.byte	0
+ 1616 03a1 00        		.byte	0
+ 1617 03a2 07        		.byte	7
+ 1618 03a3 05        		.byte	5
+ 1619 03a4 07        		.byte	7
+ 1620 03a5 00        		.byte	0
+ 1621 03a6 00        		.byte	0
+ 1622 03a7 22        		.byte	34
+ 1623 03a8 14        		.byte	20
+ 1624 03a9 2A        		.byte	42
+ 1625 03aa 14        		.byte	20
+ 1626 03ab 08        		.byte	8
+ 1627 03ac 0F        		.byte	15
+ 1628 03ad 00        		.byte	0
+ 1629 03ae 3C        		.byte	60
+ 1630 03af 20        		.byte	32
+ 1631 03b0 78        		.byte	120
+ 1632 03b1 0F        		.byte	15
+ 1633 03b2 00        		.byte	0
+ 1634 03b3 48        		.byte	72
+ 1635 03b4 64        		.byte	100
+ 1636 03b5 58        		.byte	88
+ 1637 03b6 00        		.byte	0
+ 1638 03b7 00        		.byte	0
+ 1639 03b8 00        		.byte	0
+ 1640 03b9 00        		.byte	0
+ 1641 03ba 00        		.byte	0
+ 1642 03bb 30        		.byte	48
+ 1643 03bc 48        		.byte	72
+ 1644 03bd 45        		.byte	69
+ 1645 03be 40        		.byte	64
+ 1646 03bf 20        		.byte	32
+ 1647 03c0 00        		.byte	0
+ 1648 03c1 00        		.byte	0
+ 1649 03c2 00        		.byte	0
+ 1650 03c3 00        		.byte	0
+ 1651 03c4 00        		.byte	0
+ 1652 03c5 00        		.byte	0
+ 1653 03c6 00        		.byte	0
+ 1654 03c7 00        		.byte	0
+ 1655 03c8 00        		.byte	0
+ 1656 03c9 00        		.byte	0
+ 1657 03ca 00        		.byte	0
+ 1658 03cb 00        		.byte	0
+ 1659 03cc 00        		.byte	0
+ 1660 03cd 00        		.byte	0
+ 1661 03ce 00        		.byte	0
+ 1662 03cf 72        		.byte	114
+ 1663 03d0 29        		.byte	41
+ 1664 03d1 29        		.byte	41
+ 1665 03d2 2A        		.byte	42
+ 1666 03d3 71        		.byte	113
+ 1667 03d4 78        		.byte	120
+ 1668 03d5 25        		.byte	37
+ 1669 03d6 24        		.byte	36
+ 1670 03d7 25        		.byte	37
+ 1671 03d8 78        		.byte	120
+ 1672 03d9 70        		.byte	112
+ 1673 03da 2A        		.byte	42
+ 1674 03db 25        		.byte	37
+ 1675 03dc 2A        		.byte	42
+ 1676 03dd 70        		.byte	112
+ 1677 03de 7E        		.byte	126
+ 1678 03df 09        		.byte	9
+ 1679 03e0 7F        		.byte	127
+ 1680 03e1 49        		.byte	73
+ 1681 03e2 49        		.byte	73
+ 1682 03e3 0E        		.byte	14
+ 1683 03e4 51        		.byte	81
+ 1684 03e5 51        		.byte	81
+ 1685 03e6 71        		.byte	113
+ 1686 03e7 11        		.byte	17
+ 1687 03e8 00        		.byte	0
+ 1688 03e9 00        		.byte	0
+ 1689 03ea 00        		.byte	0
+ 1690 03eb 00        		.byte	0
+ 1691 03ec 00        		.byte	0
+ 1692 03ed 7C        		.byte	124
+ 1693 03ee 54        		.byte	84
+ 1694 03ef 56        		.byte	86
+ 1695 03f0 55        		.byte	85
+ 1696 03f1 44        		.byte	68
+ 1697 03f2 00        		.byte	0
+ 1698 03f3 00        		.byte	0
+ 1699 03f4 00        		.byte	0
+ 1700 03f5 00        		.byte	0
+ 1701 03f6 00        		.byte	0
+ 1702 03f7 00        		.byte	0
+ 1703 03f8 00        		.byte	0
+ 1704 03f9 00        		.byte	0
+ 1705 03fa 00        		.byte	0
+ 1706 03fb 00        		.byte	0
+ 1707 03fc 00        		.byte	0
+ 1708 03fd 00        		.byte	0
+ 1709 03fe 00        		.byte	0
+ 1710 03ff 00        		.byte	0
+ 1711 0400 00        		.byte	0
+ 1712 0401 00        		.byte	0
+ 1713 0402 00        		.byte	0
+ 1714 0403 00        		.byte	0
+ 1715 0404 00        		.byte	0
+ 1716 0405 00        		.byte	0
+ 1717 0406 00        		.byte	0
+ 1718 0407 00        		.byte	0
+ 1719 0408 00        		.byte	0
+ 1720 0409 00        		.byte	0
+ 1721 040a 00        		.byte	0
+ 1722 040b 00        		.byte	0
+ 1723 040c 00        		.byte	0
+ 1724 040d 00        		.byte	0
+ 1725 040e 00        		.byte	0
+ 1726 040f 00        		.byte	0
+ 1727 0410 00        		.byte	0
+ 1728 0411 00        		.byte	0
+ 1729 0412 00        		.byte	0
+ 1730 0413 00        		.byte	0
+ 1731 0414 00        		.byte	0
+ 1732 0415 7A        		.byte	122
+ 1733 0416 09        		.byte	9
+ 1734 0417 11        		.byte	17
+ 1735 0418 22        		.byte	34
+ 1736 0419 79        		.byte	121
+ 1737 041a 00        		.byte	0
+ 1738 041b 00        		.byte	0
+ 1739 041c 00        		.byte	0
+ 1740 041d 00        		.byte	0
+ 1741 041e 00        		.byte	0
+ 1742 041f 00        		.byte	0
+ 1743 0420 00        		.byte	0
+ 1744 0421 00        		.byte	0
+ 1745 0422 00        		.byte	0
+ 1746 0423 00        		.byte	0
+ 1747 0424 00        		.byte	0
+ 1748 0425 00        		.byte	0
+ 1749 0426 00        		.byte	0
+ 1750 0427 00        		.byte	0
+ 1751 0428 00        		.byte	0
+ 1752 0429 3A        		.byte	58
+ 1753 042a 45        		.byte	69
+ 1754 042b 45        		.byte	69
+ 1755 042c 46        		.byte	70
+ 1756 042d 39        		.byte	57
+ 1757 042e 3D        		.byte	61
+ 1758 042f 42        		.byte	66
+ 1759 0430 42        		.byte	66
+ 1760 0431 42        		.byte	66
+ 1761 0432 3D        		.byte	61
+ 1762 0433 22        		.byte	34
+ 1763 0434 14        		.byte	20
+ 1764 0435 08        		.byte	8
+ 1765 0436 14        		.byte	20
+ 1766 0437 22        		.byte	34
+ 1767 0438 5C        		.byte	92
+ 1768 0439 32        		.byte	50
+ 1769 043a 2A        		.byte	42
+ 1770 043b 26        		.byte	38
+ 1771 043c 1D        		.byte	29
+ 1772 043d 00        		.byte	0
+ 1773 043e 00        		.byte	0
+ 1774 043f 00        		.byte	0
+ 1775 0440 00        		.byte	0
+ 1776 0441 00        		.byte	0
+ 1777 0442 00        		.byte	0
+ 1778 0443 00        		.byte	0
+ 1779 0444 00        		.byte	0
+ 1780 0445 00        		.byte	0
+ 1781 0446 00        		.byte	0
+ 1782 0447 00        		.byte	0
+ 1783 0448 00        		.byte	0
+ 1784 0449 00        		.byte	0
+ 1785 044a 00        		.byte	0
+ 1786 044b 00        		.byte	0
+ 1787 044c 3C        		.byte	60
+ 1788 044d 41        		.byte	65
+ 1789 044e 40        		.byte	64
+ 1790 044f 41        		.byte	65
+ 1791 0450 3C        		.byte	60
+ 1792 0451 00        		.byte	0
+ 1793 0452 00        		.byte	0
+ 1794 0453 00        		.byte	0
+ 1795 0454 00        		.byte	0
+ 1796 0455 00        		.byte	0
+ 1797 0456 00        		.byte	0
+ 1798 0457 00        		.byte	0
+ 1799 0458 00        		.byte	0
+ 1800 0459 00        		.byte	0
+ 1801 045a 00        		.byte	0
+ 1802 045b 00        		.byte	0
+ 1803 045c 00        		.byte	0
+ 1804 045d 00        		.byte	0
+ 1805 045e 00        		.byte	0
+ 1806 045f 00        		.byte	0
+ 1807 0460 20        		.byte	32
+ 1808 0461 55        		.byte	85
+ 1809 0462 56        		.byte	86
+ 1810 0463 54        		.byte	84
+ 1811 0464 78        		.byte	120
+ 1812 0465 20        		.byte	32
+ 1813 0466 54        		.byte	84
+ 1814 0467 56        		.byte	86
+ 1815 0468 55        		.byte	85
+ 1816 0469 78        		.byte	120
+ 1817 046a 20        		.byte	32
+ 1818 046b 56        		.byte	86
+ 1819 046c 55        		.byte	85
+ 1820 046d 56        		.byte	86
+ 1821 046e 78        		.byte	120
+ 1822 046f 22        		.byte	34
+ 1823 0470 51        		.byte	81
+ 1824 0471 55        		.byte	85
+ 1825 0472 56        		.byte	86
+ 1826 0473 79        		.byte	121
+ 1827 0474 20        		.byte	32
+ 1828 0475 55        		.byte	85
+ 1829 0476 54        		.byte	84
+ 1830 0477 55        		.byte	85
+ 1831 0478 78        		.byte	120
+ 1832 0479 00        		.byte	0
+ 1833 047a 00        		.byte	0
+ 1834 047b 00        		.byte	0
+ 1835 047c 00        		.byte	0
+ 1836 047d 00        		.byte	0
+ 1837 047e 24        		.byte	36
+ 1838 047f 54        		.byte	84
+ 1839 0480 78        		.byte	120
+ 1840 0481 54        		.byte	84
+ 1841 0482 58        		.byte	88
+ 1842 0483 0C        		.byte	12
+ 1843 0484 52        		.byte	82
+ 1844 0485 52        		.byte	82
+ 1845 0486 72        		.byte	114
+ 1846 0487 12        		.byte	18
+ 1847 0488 38        		.byte	56
+ 1848 0489 55        		.byte	85
+ 1849 048a 56        		.byte	86
+ 1850 048b 54        		.byte	84
+ 1851 048c 18        		.byte	24
+ 1852 048d 38        		.byte	56
+ 1853 048e 54        		.byte	84
+ 1854 048f 56        		.byte	86
+ 1855 0490 55        		.byte	85
+ 1856 0491 18        		.byte	24
+ 1857 0492 38        		.byte	56
+ 1858 0493 56        		.byte	86
+ 1859 0494 55        		.byte	85
+ 1860 0495 56        		.byte	86
+ 1861 0496 18        		.byte	24
+ 1862 0497 38        		.byte	56
+ 1863 0498 55        		.byte	85
+ 1864 0499 54        		.byte	84
+ 1865 049a 55        		.byte	85
+ 1866 049b 18        		.byte	24
+ 1867 049c 00        		.byte	0
+ 1868 049d 49        		.byte	73
+ 1869 049e 7A        		.byte	122
+ 1870 049f 40        		.byte	64
+ 1871 04a0 00        		.byte	0
+ 1872 04a1 00        		.byte	0
+ 1873 04a2 48        		.byte	72
+ 1874 04a3 7A        		.byte	122
+ 1875 04a4 41        		.byte	65
+ 1876 04a5 00        		.byte	0
+ 1877 04a6 00        		.byte	0
+ 1878 04a7 4A        		.byte	74
+ 1879 04a8 79        		.byte	121
+ 1880 04a9 42        		.byte	66
+ 1881 04aa 00        		.byte	0
+ 1882 04ab 00        		.byte	0
+ 1883 04ac 4A        		.byte	74
+ 1884 04ad 78        		.byte	120
+ 1885 04ae 42        		.byte	66
+ 1886 04af 00        		.byte	0
+ 1887 04b0 00        		.byte	0
+ 1888 04b1 00        		.byte	0
+ 1889 04b2 00        		.byte	0
+ 1890 04b3 00        		.byte	0
+ 1891 04b4 00        		.byte	0
+ 1892 04b5 7A        		.byte	122
+ 1893 04b6 11        		.byte	17
+ 1894 04b7 09        		.byte	9
+ 1895 04b8 0A        		.byte	10
+ 1896 04b9 71        		.byte	113
+ 1897 04ba 30        		.byte	48
+ 1898 04bb 49        		.byte	73
+ 1899 04bc 4A        		.byte	74
+ 1900 04bd 48        		.byte	72
+ 1901 04be 30        		.byte	48
+ 1902 04bf 30        		.byte	48
+ 1903 04c0 48        		.byte	72
+ 1904 04c1 4A        		.byte	74
+ 1905 04c2 49        		.byte	73
+ 1906 04c3 30        		.byte	48
+ 1907 04c4 30        		.byte	48
+ 1908 04c5 4A        		.byte	74
+ 1909 04c6 49        		.byte	73
+ 1910 04c7 4A        		.byte	74
+ 1911 04c8 30        		.byte	48
+ 1912 04c9 32        		.byte	50
+ 1913 04ca 49        		.byte	73
+ 1914 04cb 49        		.byte	73
+ 1915 04cc 4A        		.byte	74
+ 1916 04cd 31        		.byte	49
+ 1917 04ce 30        		.byte	48
+ 1918 04cf 4A        		.byte	74
+ 1919 04d0 48        		.byte	72
+ 1920 04d1 4A        		.byte	74
+ 1921 04d2 30        		.byte	48
+ 1922 04d3 08        		.byte	8
+ 1923 04d4 08        		.byte	8
+ 1924 04d5 2A        		.byte	42
+ 1925 04d6 08        		.byte	8
+ 1926 04d7 08        		.byte	8
+ 1927 04d8 18        		.byte	24
+ 1928 04d9 64        		.byte	100
+ 1929 04da 3C        		.byte	60
+ 1930 04db 26        		.byte	38
+ 1931 04dc 18        		.byte	24
+ 1932 04dd 38        		.byte	56
+ 1933 04de 41        		.byte	65
+ 1934 04df 42        		.byte	66
+ 1935 04e0 20        		.byte	32
+ 1936 04e1 78        		.byte	120
+ 1937 04e2 38        		.byte	56
+ 1938 04e3 40        		.byte	64
+ 1939 04e4 42        		.byte	66
+ 1940 04e5 21        		.byte	33
+ 1941 04e6 78        		.byte	120
+ 1942 04e7 38        		.byte	56
+ 1943 04e8 42        		.byte	66
+ 1944 04e9 41        		.byte	65
+ 1945 04ea 22        		.byte	34
+ 1946 04eb 78        		.byte	120
+ 1947 04ec 38        		.byte	56
+ 1948 04ed 42        		.byte	66
+ 1949 04ee 40        		.byte	64
+ 1950 04ef 22        		.byte	34
+ 1951 04f0 78        		.byte	120
+ 1952 04f1 00        		.byte	0
+ 1953 04f2 00        		.byte	0
+ 1954 04f3 00        		.byte	0
+ 1955 04f4 00        		.byte	0
+ 1956 04f5 00        		.byte	0
+ 1957 04f6 00        		.byte	0
+ 1958 04f7 00        		.byte	0
+ 1959 04f8 00        		.byte	0
+ 1960 04f9 00        		.byte	0
+ 1961 04fa 00        		.byte	0
+ 1962 04fb 0C        		.byte	12
+ 1963 04fc 51        		.byte	81
+ 1964 04fd 50        		.byte	80
+ 1965 04fe 51        		.byte	81
+ 1966 04ff 3C        		.byte	60
+ 1968               		.text
+ 1970               	.Letext0:
+DEFINED SYMBOLS
+                            *ABS*:00000000 DOGM128-6_Graphicdisplay_driver.c
+     /tmp/ccrUc7Sq.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccrUc7Sq.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccrUc7Sq.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccrUc7Sq.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccrUc7Sq.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccrUc7Sq.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccrUc7Sq.s:95     .text:00000000 DOGM128_6_usart1_sendByte
+     /tmp/ccrUc7Sq.s:276    .text:00000078 DOGM128_6_clear_display
+     /tmp/ccrUc7Sq.s:374    .text:000000da DOGM128_6_display_init
+     /tmp/ccrUc7Sq.s:534    .text:00000180 DOGM128_6_display_backlight
+     /tmp/ccrUc7Sq.s:565    .text:0000018c DOGM128_6_LCD_print
+     /tmp/ccrUc7Sq.s:686    .progmem.data:00000000 font5x7
+
+NO UNDEFINED SYMBOLS
