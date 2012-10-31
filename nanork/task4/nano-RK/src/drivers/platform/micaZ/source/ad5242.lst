@@ -135,14 +135,14 @@
  116               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 ad5242.c
-     /tmp/ccR8JpR5.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccR8JpR5.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccR8JpR5.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccR8JpR5.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccR8JpR5.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccR8JpR5.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccR8JpR5.s:31     .text:00000000 ad5242_init
-     /tmp/ccR8JpR5.s:57     .text:00000006 ad5242_set
+     /tmp/cc0HqQVq.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc0HqQVq.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc0HqQVq.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc0HqQVq.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc0HqQVq.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc0HqQVq.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc0HqQVq.s:31     .text:00000000 ad5242_init
+     /tmp/cc0HqQVq.s:57     .text:00000006 ad5242_set
 
 UNDEFINED SYMBOLS
 i2c_init

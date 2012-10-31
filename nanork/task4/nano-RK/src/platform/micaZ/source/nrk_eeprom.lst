@@ -403,22 +403,22 @@
  530               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_eeprom.c
-     /tmp/ccURGeVE.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccURGeVE.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccURGeVE.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccURGeVE.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccURGeVE.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccURGeVE.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccURGeVE.s:129    .text:00000000 nrk_eeprom_read_byte
-     /tmp/ccURGeVE.s:154    .text:00000006 nrk_eeprom_write_byte
-     /tmp/ccURGeVE.s:178    .text:0000000e read_eeprom_mac_address
-     /tmp/ccURGeVE.s:271    .text:0000007a read_eeprom_channel
-     /tmp/ccURGeVE.s:304    .text:00000092 write_eeprom_load_img_pages
-     /tmp/ccURGeVE.s:333    .text:000000a2 read_eeprom_load_img_pages
-     /tmp/ccURGeVE.s:365    .text:000000ba read_eeprom_aes_key
-     /tmp/ccURGeVE.s:414    .text:000000ea write_eeprom_aes_key
-     /tmp/ccURGeVE.s:464    .text:0000011a read_eeprom_current_image_checksum
-     /tmp/ccURGeVE.s:497    .text:00000132 write_eeprom_current_image_checksum
+     /tmp/ccBVhSzU.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccBVhSzU.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccBVhSzU.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccBVhSzU.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccBVhSzU.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccBVhSzU.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccBVhSzU.s:129    .text:00000000 nrk_eeprom_read_byte
+     /tmp/ccBVhSzU.s:154    .text:00000006 nrk_eeprom_write_byte
+     /tmp/ccBVhSzU.s:178    .text:0000000e read_eeprom_mac_address
+     /tmp/ccBVhSzU.s:271    .text:0000007a read_eeprom_channel
+     /tmp/ccBVhSzU.s:304    .text:00000092 write_eeprom_load_img_pages
+     /tmp/ccBVhSzU.s:333    .text:000000a2 read_eeprom_load_img_pages
+     /tmp/ccBVhSzU.s:365    .text:000000ba read_eeprom_aes_key
+     /tmp/ccBVhSzU.s:414    .text:000000ea write_eeprom_aes_key
+     /tmp/ccBVhSzU.s:464    .text:0000011a read_eeprom_current_image_checksum
+     /tmp/ccBVhSzU.s:497    .text:00000132 write_eeprom_current_image_checksum
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num

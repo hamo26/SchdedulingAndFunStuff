@@ -19,11 +19,11 @@
     int k=0;								\
     while (1)                                                           \
     {									\
-	/*printf("cpu rem: %d\n", nrk_task_TCB[task_ID].cpu_remaining);             \*/\
 	printf("\n------\nStart running task..%d\n", n);            \
 	if(n==2){							\
 	    for(long i=0;i<=30000;i++){				\
 		if(i%10000==0){					\
+		printf("CBS budget is %d\n", nrk_task_TCB[task_ID].cpu_remaining);\
 		    for(int j=0;j<9999;j++){k++;}			\
 		    printf("Busying with task 2(CBS) %d out of 30000\n",i);\
 		}							\
@@ -57,7 +57,7 @@ nrk_activate_task(&task_##n)
 //"Instantiate" tasks.
 TASK(1, 6, 5);
 TASK(2, 7, 1);
-TASK(3, 7, 1);
+//TASK(3, 7, 1);
 
 int main ()
 {
@@ -72,7 +72,7 @@ int main ()
     //Higher value higher priority`
     INITIALIZE_TASK(1, BASIC_TASK);
     INITIALIZE_TASK(2, CBS_TASK);
-    INITIALIZE_TASK(3, BASIC_TASK);
+   // INITIALIZE_TASK(3, BASIC_TASK);
 
     nrk_start();
 
