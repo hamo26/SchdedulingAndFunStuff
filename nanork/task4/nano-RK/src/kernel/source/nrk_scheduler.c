@@ -154,13 +154,15 @@ void inline _nrk_scheduler()
 #ifdef NRK_STATS_TRACKER
             _nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
 #endif
-            //nrk_kernel_error_add(NRK_RESERVE_ERROR,nrk_cur_task_TCB->task_ID);
-            if(nrk_cur_task_TCB->task_type == CBS_TASK){
+            nrk_kernel_error_add(NRK_RESERVE_ERROR,nrk_cur_task_TCB->task_ID);
+            if(nrk_cur_task_TCB->task_type == CBS_TASK && 
+		    nrk_cur_task_TCB->task_state != SUSPENDED
+		    ){
                 printf("CBS goes exhausted \n");
                 // budget goes out
                 nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
                 nrk_cur_task_TCB->next_period = nrk_cur_task_TCB->period;
-                printf("Replenish CBS \n");
+                printf("Replenish CBS of Task %d\n",nrk_cur_task_TCB->task_ID);
             }else{
                 nrk_cur_task_TCB->cpu_remaining=0;
             }
@@ -173,22 +175,24 @@ void inline _nrk_scheduler()
 
         if (nrk_cur_task_TCB->cpu_remaining ==0 )
         {
-            printf("Task %d cpu remaining = 0\n", task_ID);
-            printf("Task type is %d\n", nrk_cur_task_TCB->task_type);
+            //printf("Task %d cpu remaining = 0\n", task_ID);
+            //printf("Task type is %d\n", nrk_cur_task_TCB->task_type);
             // Here we dont need to suspend CBS
             if(nrk_cur_task_TCB->task_type == BASIC_TASK){
 #ifdef NRK_STATS_TRACKER
                 _nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
 #endif
-                //nrk_kernel_error_add(NRK_RESERVE_VIOLATED,task_ID);
+                nrk_kernel_error_add(NRK_RESERVE_VIOLATED,task_ID);
                 nrk_cur_task_TCB->task_state = SUSPENDED;
                 nrk_rem_from_readyQ(task_ID);
-            }else if(nrk_cur_task_TCB->task_type == CBS_TASK){
+            }else if(nrk_cur_task_TCB->task_type == CBS_TASK
+		    && nrk_cur_task_TCB->task_state != SUSPENDED
+		    ){
                 // We need replenish the budget for CBS
-                printf("Replenish CBS \n");
+                printf("Task %d: Replenish CBS \n", task_ID);
                 nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
                 nrk_cur_task_TCB->next_period = nrk_cur_task_TCB->period;
-                printf("Next period is from %d to %d\n", nrk_cur_task_TCB->next_period, nrk_cur_task_TCB->period);
+                //printf("Next period is from %d to %d\n", nrk_cur_task_TCB->next_period, nrk_cur_task_TCB->period);
             }
 
         }

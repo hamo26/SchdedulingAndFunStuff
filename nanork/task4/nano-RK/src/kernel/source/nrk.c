@@ -300,6 +300,7 @@ int8_t nrk_TCB_init (nrk_task_type *Task, NRK_STK *ptos, NRK_STK *pbos, uint16_t
     nrk_task_TCB[Task->task_ID].errno= NRK_OK;
     // Save task type here
     nrk_task_TCB[Task->task_ID].task_type = Task->Type;
+    //nrk_task_TCB[Task->task_ID].FinishTask = Task->FinishTask;
  
 	
 	         

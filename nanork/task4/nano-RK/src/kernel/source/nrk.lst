@@ -984,14 +984,15 @@
  930 041c F040      		sbci r31,hi8(-(nrk_task_TCB))
  931 041e 8985      		ldd r24,Y+9
  932 0420 81A3      		std Z+33,r24
- 303:..//src/kernel/source/nrk.c ****  
- 304:..//src/kernel/source/nrk.c **** 	
- 305:..//src/kernel/source/nrk.c **** 	         
- 306:..//src/kernel/source/nrk.c **** 
- 307:..//src/kernel/source/nrk.c **** 			
- 308:..//src/kernel/source/nrk.c ****     return NRK_OK;
- 309:..//src/kernel/source/nrk.c **** 
- 310:..//src/kernel/source/nrk.c **** }
+ 303:..//src/kernel/source/nrk.c ****     //nrk_task_TCB[Task->task_ID].FinishTask = Task->FinishTask;
+ 304:..//src/kernel/source/nrk.c ****  
+ 305:..//src/kernel/source/nrk.c **** 	
+ 306:..//src/kernel/source/nrk.c **** 	         
+ 307:..//src/kernel/source/nrk.c **** 
+ 308:..//src/kernel/source/nrk.c **** 			
+ 309:..//src/kernel/source/nrk.c ****     return NRK_OK;
+ 310:..//src/kernel/source/nrk.c **** 
+ 311:..//src/kernel/source/nrk.c **** }
  934               	.LM104:
  935 0422 81E0      		ldi r24,lo8(1)
  936               	/* epilogue start */
@@ -1007,32 +1008,32 @@
  949               	.global	_nrk_timer_tick
  951               	_nrk_timer_tick:
  952               		.stabd	46,0,0
- 311:..//src/kernel/source/nrk.c **** 
  312:..//src/kernel/source/nrk.c **** 
- 313:..//src/kernel/source/nrk.c **** /*
- 314:..//src/kernel/source/nrk.c ****  * _nrk_timer_tick() 
- 315:..//src/kernel/source/nrk.c ****  *
- 316:..//src/kernel/source/nrk.c ****  * This function is called by the interrupt timer0.
- 317:..//src/kernel/source/nrk.c ****  * It calls the scheduler.
- 318:..//src/kernel/source/nrk.c ****  */
- 319:..//src/kernel/source/nrk.c **** void _nrk_timer_tick(void)
- 320:..//src/kernel/source/nrk.c **** {
+ 313:..//src/kernel/source/nrk.c **** 
+ 314:..//src/kernel/source/nrk.c **** /*
+ 315:..//src/kernel/source/nrk.c ****  * _nrk_timer_tick() 
+ 316:..//src/kernel/source/nrk.c ****  *
+ 317:..//src/kernel/source/nrk.c ****  * This function is called by the interrupt timer0.
+ 318:..//src/kernel/source/nrk.c ****  * It calls the scheduler.
+ 319:..//src/kernel/source/nrk.c ****  */
+ 320:..//src/kernel/source/nrk.c **** void _nrk_timer_tick(void)
+ 321:..//src/kernel/source/nrk.c **** {
  954               	.LM105:
  955               	.LFBB7:
  956               	/* prologue: function */
  957               	/* frame size = 0 */
  958               	/* stack size = 0 */
  959               	.L__stack_usage = 0
- 321:..//src/kernel/source/nrk.c **** 	// want to do something before the scheduler gets called? 
- 322:..//src/kernel/source/nrk.c **** 	// Go ahead and put it here...
- 323:..//src/kernel/source/nrk.c **** 
- 324:..//src/kernel/source/nrk.c **** 	_nrk_scheduler();
+ 322:..//src/kernel/source/nrk.c **** 	// want to do something before the scheduler gets called? 
+ 323:..//src/kernel/source/nrk.c **** 	// Go ahead and put it here...
+ 324:..//src/kernel/source/nrk.c **** 
+ 325:..//src/kernel/source/nrk.c **** 	_nrk_scheduler();
  961               	.LM106:
  962 0432 0E94 0000 		call _nrk_scheduler
  963               	/* epilogue start */
- 325:..//src/kernel/source/nrk.c **** 
- 326:..//src/kernel/source/nrk.c ****   	return;
- 327:..//src/kernel/source/nrk.c **** }
+ 326:..//src/kernel/source/nrk.c **** 
+ 327:..//src/kernel/source/nrk.c ****   	return;
+ 328:..//src/kernel/source/nrk.c **** }
  965               	.LM107:
  966 0436 0895      		ret
  968               	.Lscope7:
@@ -1040,18 +1041,18 @@
  972               	.global	nrk_version
  974               	nrk_version:
  975               		.stabd	46,0,0
- 328:..//src/kernel/source/nrk.c **** 
  329:..//src/kernel/source/nrk.c **** 
- 330:..//src/kernel/source/nrk.c **** uint16_t nrk_version (void)
- 331:..//src/kernel/source/nrk.c **** {
+ 330:..//src/kernel/source/nrk.c **** 
+ 331:..//src/kernel/source/nrk.c **** uint16_t nrk_version (void)
+ 332:..//src/kernel/source/nrk.c **** {
  977               	.LM108:
  978               	.LFBB8:
  979               	/* prologue: function */
  980               	/* frame size = 0 */
  981               	/* stack size = 0 */
  982               	.L__stack_usage = 0
- 332:..//src/kernel/source/nrk.c ****     return (NRK_VERSION);
- 333:..//src/kernel/source/nrk.c **** }
+ 333:..//src/kernel/source/nrk.c ****     return (NRK_VERSION);
+ 334:..//src/kernel/source/nrk.c **** }
  984               	.LM109:
  985 0438 85E6      		ldi r24,lo8(101)
  986 043a 90E0      		ldi r25,hi8(101)
@@ -1085,16 +1086,16 @@
  1039               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk.c
-     /tmp/ccpdHz1t.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccpdHz1t.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccpdHz1t.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccpdHz1t.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccpdHz1t.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccpdHz1t.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccpdHz1t.s:133    .text:00000000 nrk_int_disable
-     /tmp/ccpdHz1t.s:161    .text:00000004 nrk_int_enable
-     /tmp/ccpdHz1t.s:189    .text:00000008 nrk_halt
-     /tmp/ccpdHz1t.s:210    .text:0000000e nrk_init
+     /tmp/ccyuarLJ.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccyuarLJ.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccyuarLJ.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccyuarLJ.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccyuarLJ.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccyuarLJ.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccyuarLJ.s:133    .text:00000000 nrk_int_disable
+     /tmp/ccyuarLJ.s:161    .text:00000004 nrk_int_enable
+     /tmp/ccyuarLJ.s:189    .text:00000008 nrk_halt
+     /tmp/ccyuarLJ.s:210    .text:0000000e nrk_init
                             *COM*:00000001 nrk_wakeup_signal
                             *COM*:00000001 nrk_cur_task_prio
                             *COM*:00000002 nrk_cur_task_TCB
@@ -1107,11 +1108,11 @@ DEFINED SYMBOLS
                             *COM*:00000002 _head_node
                             *COM*:00000002 _free_node
                             *COM*:00000080 nrk_idle_task_stk
-     /tmp/ccpdHz1t.s:503    .text:0000019a nrk_start
-     /tmp/ccpdHz1t.s:641    .text:00000246 nrk_TCB_init
+     /tmp/ccyuarLJ.s:503    .text:0000019a nrk_start
+     /tmp/ccyuarLJ.s:641    .text:00000246 nrk_TCB_init
                             *COM*:00000001 nrk_task_init_cnt
-     /tmp/ccpdHz1t.s:951    .text:00000432 _nrk_timer_tick
-     /tmp/ccpdHz1t.s:974    .text:00000438 nrk_version
+     /tmp/ccyuarLJ.s:951    .text:00000432 _nrk_timer_tick
+     /tmp/ccyuarLJ.s:974    .text:00000438 nrk_version
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_kernel_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

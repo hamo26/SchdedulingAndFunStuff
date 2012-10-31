@@ -73,6 +73,7 @@ typedef struct os_tcb {
 
         // Task type goes here
         uint8_t task_type;
+	//bool FinishTask;
 
 
 } NRK_TCB;

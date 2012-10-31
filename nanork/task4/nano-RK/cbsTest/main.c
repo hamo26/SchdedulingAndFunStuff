@@ -15,25 +15,33 @@
 #define TASK(n, taskPeriod, taskExecution)                              \
     void task_##n##_func()                                              \
 {                                                                       \
-    int task_ID =  nrk_cur_task_TCB->task_ID;                           \
+    int task_ID =  nrk_cur_task_TCB->task_ID;				\
+    int k=0;								\
     while (1)                                                           \
     {									\
-        while(1){                                                       \
-            /*printf("cpu rem: %d\n", nrk_task_TCB[task_ID].cpu_remaining);             \*/\
-            if(nrk_task_TCB[task_ID].cpu_remaining < 300) break; \       
-        }                                                      \
-        printf("Running task..%d\n", n);                                \
-        nrk_wait_until_next_period();                                   \
-    }                                                                   \
-}                                                                       \
+	/*printf("cpu rem: %d\n", nrk_task_TCB[task_ID].cpu_remaining);             \*/\
+	printf("\n------\nStart running task..%d\n", n);            \
+	if(n==2){							\
+	    for(long i=0;i<=30000;i++){				\
+		if(i%10000==0){					\
+		    for(int j=0;j<9999;j++){k++;}			\
+		    printf("Busying with task 2(CBS) %d out of 30000\n",i);\
+		}							\
+	    }							\
+	}else{for(int i=0;i<10;i++){k++;}printf("Some busy tasks\n");}	\
+	printf("Finishing the task %d\n------\n\n",n);		\
+	nrk_wait_until_next_period();				\
+    }                                                      \
+}                                                                   \
 NRK_STK stack_##n[NRK_APP_STACKSIZE];                                   \
 nrk_task_type task_##n;                                                 \
 uint32_t task_##n##_period = taskPeriod;                               	\
 uint32_t task_##n##_execution = taskExecution;                         	\
 
 /*"Instantiate" the task*/
-#define INITIALIZE_TASK(n,task_type)                                              \
+#define INITIALIZE_TASK(n,task_type)                                    \
 task_##n.FirstActivation = TRUE;                                        \
+task_##n.prio = n;							\
 task_##n.Type = task_type;                                             \
 task_##n.SchType = PREEMPTIVE;                                          \
 task_##n.period.secs = task_##n##_period;                               \
@@ -49,7 +57,7 @@ nrk_activate_task(&task_##n)
 //"Instantiate" tasks.
 TASK(1, 6, 5);
 TASK(2, 7, 1);
-
+TASK(3, 7, 1);
 
 int main ()
 {
@@ -61,8 +69,10 @@ int main ()
     nrk_time_set(0,0);
 
     //Initialize tasks 
+    //Higher value higher priority`
     INITIALIZE_TASK(1, BASIC_TASK);
     INITIALIZE_TASK(2, CBS_TASK);
+    INITIALIZE_TASK(3, BASIC_TASK);
 
     nrk_start();
 

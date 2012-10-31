@@ -166,9 +166,11 @@
  257               		.stabd	78,0,0
  258               		.data
  259               	.LC1:
- 260 0004 5573 696E 		.string	"Using EDF"
- 260      6720 4544 
- 260      4600 
+ 260 0004 0A2A 2A2A 		.string	"\n*****\nUsing EDF to recruit the readyQ\n*****"
+ 260      2A2A 0A55 
+ 260      7369 6E67 
+ 260      2045 4446 
+ 260      2074 6F20 
  261               		.text
  264               	.global	nrk_add_to_readyQ
  266               	nrk_add_to_readyQ:
@@ -238,7 +240,7 @@
   91:..//src/kernel/source/nrk_task.c **** //				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period {break;}	//Sm
   92:..//src/kernel/source/nrk_task.c **** 
   93:..//src/kernel/source/nrk_task.c **** #ifdef SRP
-  94:..//src/kernel/source/nrk_task.c ****                     printf("Using EDF\n");
+  94:..//src/kernel/source/nrk_task.c ****                     printf("\n*****\nUsing EDF to recruit the readyQ\n*****\n");
   95:..//src/kernel/source/nrk_task.c **** 			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
   96:..//src/kernel/source/nrk_task.c **** 				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period 
  303               	.LM17:
@@ -275,7 +277,7 @@
  329 00de C20E      		add r12,r18
  330 00e0 D31E      		adc r13,r19
  331               	.L14:
-  94:..//src/kernel/source/nrk_task.c ****                     printf("Using EDF\n");
+  94:..//src/kernel/source/nrk_task.c ****                     printf("\n*****\nUsing EDF to recruit the readyQ\n*****\n");
  333               	.LM19:
  334 00e2 80E0      		ldi r24,lo8(.LC1)
  335 00e4 90E0      		ldi r25,hi8(.LC1)
@@ -1951,35 +1953,35 @@
  1708               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_task.c
-     /tmp/ccX4txS2.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccX4txS2.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccX4txS2.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccX4txS2.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccX4txS2.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccX4txS2.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccX4txS2.s:140    .text:00000000 nrk_get_high_ready_task_ID
+     /tmp/ccT93C59.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccT93C59.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccT93C59.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccT93C59.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccT93C59.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccT93C59.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccT93C59.s:140    .text:00000000 nrk_get_high_ready_task_ID
                             *COM*:00000002 _head_node
-     /tmp/ccX4txS2.s:169    .text:0000000c nrk_print_readyQ
-     /tmp/ccX4txS2.s:1677   .progmem.data:00000003 __c.2131
+     /tmp/ccT93C59.s:169    .text:0000000c nrk_print_readyQ
+     /tmp/ccT93C59.s:1677   .progmem.data:00000003 __c.2131
                             *COM*:000000aa nrk_task_TCB
-     /tmp/ccX4txS2.s:1673   .progmem.data:00000000 __c.2136
-     /tmp/ccX4txS2.s:266    .text:0000007e nrk_add_to_readyQ
+     /tmp/ccT93C59.s:1673   .progmem.data:00000000 __c.2136
+     /tmp/ccT93C59.s:266    .text:0000007e nrk_add_to_readyQ
                             *COM*:00000002 _free_node
-     /tmp/ccX4txS2.s:541    .text:000001fc nrk_rem_from_readyQ
-     /tmp/ccX4txS2.s:671    .text:0000029c nrk_activate_task
-     /tmp/ccX4txS2.s:807    .text:0000034e nrk_set_next_wakeup
+     /tmp/ccT93C59.s:541    .text:000001fc nrk_rem_from_readyQ
+     /tmp/ccT93C59.s:671    .text:0000029c nrk_activate_task
+     /tmp/ccT93C59.s:807    .text:0000034e nrk_set_next_wakeup
                             *COM*:00000002 nrk_cur_task_TCB
-     /tmp/ccX4txS2.s:897    .text:000003bc _nrk_wait_for_scheduler
-     /tmp/ccX4txS2.s:929    .text:000003d0 nrk_wait
+     /tmp/ccT93C59.s:897    .text:000003bc _nrk_wait_for_scheduler
+     /tmp/ccT93C59.s:929    .text:000003d0 nrk_wait
                             *COM*:00000001 _nrk_prev_timer_val
-     /tmp/ccX4txS2.s:1052   .text:00000480 nrk_wait_until_nw
-     /tmp/ccX4txS2.s:1125   .text:000004ce nrk_wait_until_ticks
-     /tmp/ccX4txS2.s:1204   .text:00000528 nrk_wait_ticks
-     /tmp/ccX4txS2.s:1299   .text:000005a6 nrk_wait_until_next_n_periods
-     /tmp/ccX4txS2.s:1389   .text:0000060c nrk_wait_until_next_period
-     /tmp/ccX4txS2.s:1467   .text:00000664 nrk_terminate_task
-     /tmp/ccX4txS2.s:1504   .text:00000686 nrk_wait_until
-     /tmp/ccX4txS2.s:1623   .text:00000732 nrk_get_pid
+     /tmp/ccT93C59.s:1052   .text:00000480 nrk_wait_until_nw
+     /tmp/ccT93C59.s:1125   .text:000004ce nrk_wait_until_ticks
+     /tmp/ccT93C59.s:1204   .text:00000528 nrk_wait_ticks
+     /tmp/ccT93C59.s:1299   .text:000005a6 nrk_wait_until_next_n_periods
+     /tmp/ccT93C59.s:1389   .text:0000060c nrk_wait_until_next_period
+     /tmp/ccT93C59.s:1467   .text:00000664 nrk_terminate_task
+     /tmp/ccT93C59.s:1504   .text:00000686 nrk_wait_until
+     /tmp/ccT93C59.s:1623   .text:00000732 nrk_get_pid
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

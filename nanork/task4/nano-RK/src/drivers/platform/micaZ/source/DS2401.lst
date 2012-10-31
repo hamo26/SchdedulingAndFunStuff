@@ -894,20 +894,20 @@
  749               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 DS2401.c
-     /tmp/ccLFOJCM.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccLFOJCM.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccLFOJCM.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccLFOJCM.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccLFOJCM.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccLFOJCM.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccLFOJCM.s:136    .text:00000000 Maxim_1Wire_ResetPulse
-     /tmp/ccLFOJCM.s:256    .text:00000048 Maxim_1Wire_WriteBit
-     /tmp/ccLFOJCM.s:349    .text:0000007e Maxim_1Wire_ReadBit
-     /tmp/ccLFOJCM.s:435    .text:000000b2 Maxim_1Wire_WriteByte
-     /tmp/ccLFOJCM.s:493    .text:000000f0 Maxim_1Wire_ReadByte
-     /tmp/ccLFOJCM.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
-     /tmp/ccLFOJCM.s:573    .text:0000012c DS2401_init
-     /tmp/ccLFOJCM.s:616    .text:0000013e DS2401_getSerialNumber
+     /tmp/cc134wnj.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc134wnj.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc134wnj.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc134wnj.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc134wnj.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc134wnj.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc134wnj.s:136    .text:00000000 Maxim_1Wire_ResetPulse
+     /tmp/cc134wnj.s:256    .text:00000048 Maxim_1Wire_WriteBit
+     /tmp/cc134wnj.s:349    .text:0000007e Maxim_1Wire_ReadBit
+     /tmp/cc134wnj.s:435    .text:000000b2 Maxim_1Wire_WriteByte
+     /tmp/cc134wnj.s:493    .text:000000f0 Maxim_1Wire_ReadByte
+     /tmp/cc134wnj.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
+     /tmp/cc134wnj.s:573    .text:0000012c DS2401_init
+     /tmp/cc134wnj.s:616    .text:0000013e DS2401_getSerialNumber
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

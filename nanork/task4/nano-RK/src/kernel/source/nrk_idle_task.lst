@@ -132,13 +132,13 @@
  219               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_idle_task.c
-     /tmp/cciKqu3w.s:2      *ABS*:0000003f __SREG__
-     /tmp/cciKqu3w.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cciKqu3w.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cciKqu3w.s:5      *ABS*:00000034 __CCP__
-     /tmp/cciKqu3w.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cciKqu3w.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cciKqu3w.s:140    .text:00000000 nrk_idle_task
+     /tmp/ccRB9ont.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccRB9ont.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccRB9ont.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccRB9ont.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccRB9ont.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccRB9ont.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccRB9ont.s:140    .text:00000000 nrk_idle_task
                             *COM*:00000001 _nrk_cpu_state
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk
