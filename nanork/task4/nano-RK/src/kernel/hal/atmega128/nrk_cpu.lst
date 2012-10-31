@@ -411,10 +411,10 @@
  442               	.LM44:
  443 00cc 80E0      		ldi r24,lo8(gs(_nrk_timer_tick))
  444 00ce 90E0      		ldi r25,hi8(gs(_nrk_timer_tick))
- 445 00d0 9093 FE10 		sts 4350,r25
+ 445 00d0 9093 0000 		sts nrk_kernel_stk+127,r25
  172:..//src/kernel/hal/atmega128/nrk_cpu.c ****     *stkc = (uint16_t)((uint16_t)_nrk_timer_tick&0xFF);
  447               	.LM45:
- 448 00d4 8093 FF10 		sts 4351,r24
+ 448 00d4 8093 0000 		sts nrk_kernel_stk+128,r24
  449               	/* epilogue start */
  173:..//src/kernel/hal/atmega128/nrk_cpu.c **** }
  451               	.LM46:
@@ -437,34 +437,34 @@
  178:..//src/kernel/hal/atmega128/nrk_cpu.c **** #ifdef KERNEL_STK_ARRAY
  179:..//src/kernel/hal/atmega128/nrk_cpu.c ****     stkc = (uint16_t*)&nrk_kernel_stk[NRK_KERNEL_STACKSIZE-1];
  180:..//src/kernel/hal/atmega128/nrk_cpu.c ****     nrk_kernel_stk[0]=STK_CANARY_VAL;
+ 470               	.LM48:
+ 471 00da 85E5      		ldi r24,lo8(85)
+ 472 00dc 8093 0000 		sts nrk_kernel_stk,r24
  181:..//src/kernel/hal/atmega128/nrk_cpu.c ****     nrk_kernel_stk_ptr = &nrk_kernel_stk[NRK_KERNEL_STACKSIZE-1];
+ 474               	.LM49:
+ 475 00e0 80E0      		ldi r24,lo8(nrk_kernel_stk+127)
+ 476 00e2 90E0      		ldi r25,hi8(nrk_kernel_stk+127)
+ 477 00e4 9093 0000 		sts nrk_kernel_stk_ptr+1,r25
+ 478 00e8 8093 0000 		sts nrk_kernel_stk_ptr,r24
  182:..//src/kernel/hal/atmega128/nrk_cpu.c **** #else
  183:..//src/kernel/hal/atmega128/nrk_cpu.c ****     stkc = (unsigned char *)NRK_KERNEL_STK_TOP-NRK_KERNEL_STACKSIZE;
  184:..//src/kernel/hal/atmega128/nrk_cpu.c ****     *stkc = STK_CANARY_VAL;
- 470               	.LM48:
- 471 00da 85E5      		ldi r24,lo8(85)
- 472 00dc 8093 7E10 		sts 4222,r24
  185:..//src/kernel/hal/atmega128/nrk_cpu.c ****     stkc = (unsigned char *)NRK_KERNEL_STK_TOP;
  186:..//src/kernel/hal/atmega128/nrk_cpu.c ****     nrk_kernel_stk_ptr = (unsigned char *)NRK_KERNEL_STK_TOP;
- 474               	.LM49:
- 475 00e0 EEEF      		ldi r30,lo8(4350)
- 476 00e2 F0E1      		ldi r31,hi8(4350)
- 477 00e4 F093 0000 		sts nrk_kernel_stk_ptr+1,r31
- 478 00e8 E093 0000 		sts nrk_kernel_stk_ptr,r30
  187:..//src/kernel/hal/atmega128/nrk_cpu.c **** #endif
  188:..//src/kernel/hal/atmega128/nrk_cpu.c ****     *stkc++ = (uint16_t)((uint16_t)_nrk_timer_tick>>8);
  480               	.LM50:
  481 00ec 80E0      		ldi r24,lo8(gs(_nrk_timer_tick))
  482 00ee 90E0      		ldi r25,hi8(gs(_nrk_timer_tick))
- 483 00f0 9083      		st Z,r25
+ 483 00f0 9093 0000 		sts nrk_kernel_stk+127,r25
  189:..//src/kernel/hal/atmega128/nrk_cpu.c ****     *stkc = (uint16_t)((uint16_t)_nrk_timer_tick&0xFF);
  485               	.LM51:
- 486 00f2 8093 FF10 		sts 4351,r24
+ 486 00f4 8093 0000 		sts nrk_kernel_stk+128,r24
  487               	/* epilogue start */
  190:..//src/kernel/hal/atmega128/nrk_cpu.c **** 
  191:..//src/kernel/hal/atmega128/nrk_cpu.c **** }
  489               	.LM52:
- 490 00f6 0895      		ret
+ 490 00f8 0895      		ret
  492               	.Lscope8:
  494               		.stabd	78,0,0
  496               	.global	nrk_target_start
@@ -484,62 +484,64 @@
  197:..//src/kernel/hal/atmega128/nrk_cpu.c **** 
  198:..//src/kernel/hal/atmega128/nrk_cpu.c ****     _nrk_setup_timer();
  508               	.LM54:
- 509 00f8 0E94 0000 		call _nrk_setup_timer
+ 509 00fa 0E94 0000 		call _nrk_setup_timer
  199:..//src/kernel/hal/atmega128/nrk_cpu.c ****     nrk_int_enable();
  511               	.LM55:
- 512 00fc 0E94 0000 		call nrk_int_enable
+ 512 00fe 0E94 0000 		call nrk_int_enable
  513               	/* epilogue start */
  200:..//src/kernel/hal/atmega128/nrk_cpu.c **** 
  201:..//src/kernel/hal/atmega128/nrk_cpu.c **** }
  515               	.LM56:
- 516 0100 0895      		ret
+ 516 0102 0895      		ret
  518               	.Lscope9:
  520               		.stabd	78,0,0
  521               		.comm _nrk_signal_list,4,1
  522               		.comm nrk_idle_task_stk,128,1
- 523               		.comm nrk_kernel_stk_ptr,2,1
- 524               		.comm nrk_task_TCB,165,1
- 525               		.comm nrk_wakeup_signal,1,1
- 526               		.comm _nrk_readyQ,30,1
- 527               		.comm _free_node,2,1
- 528               		.comm _head_node,2,1
- 529               		.comm nrk_cur_task_prio,1,1
- 530               		.comm nrk_cur_task_TCB,2,1
- 531               		.comm nrk_high_ready_prio,1,1
- 532               		.comm nrk_high_ready_TCB,2,1
- 533               		.comm _nrk_resource_cnt,1,1
- 534               		.comm nrk_system_time,8,1
- 535               		.comm error_task,1,1
- 536               		.comm error_num,1,1
- 537               		.comm nrk_sem_list,15,1
- 538               		.comm systemceiling,1,1
- 539               		.comm _nrk_prev_timer_val,1,1
- 540               		.comm _nrk_time_trigger,1,1
- 541               		.comm app_timer0_callback,2,1
- 542               		.comm app_timer0_prescale,1,1
- 566               	.Letext0:
- 567               	.global __do_clear_bss
+ 523               		.comm nrk_kernel_stk,128,1
+ 524               		.comm nrk_kernel_stk_ptr,2,1
+ 525               		.comm nrk_task_TCB,170,1
+ 526               		.comm nrk_wakeup_signal,1,1
+ 527               		.comm _nrk_readyQ,30,1
+ 528               		.comm _free_node,2,1
+ 529               		.comm _head_node,2,1
+ 530               		.comm nrk_cur_task_prio,1,1
+ 531               		.comm nrk_cur_task_TCB,2,1
+ 532               		.comm nrk_high_ready_prio,1,1
+ 533               		.comm nrk_high_ready_TCB,2,1
+ 534               		.comm _nrk_resource_cnt,1,1
+ 535               		.comm nrk_system_time,8,1
+ 536               		.comm error_task,1,1
+ 537               		.comm error_num,1,1
+ 538               		.comm nrk_sem_list,15,1
+ 539               		.comm systemceiling,1,1
+ 540               		.comm _nrk_prev_timer_val,1,1
+ 541               		.comm _nrk_time_trigger,1,1
+ 542               		.comm app_timer0_callback,2,1
+ 543               		.comm app_timer0_prescale,1,1
+ 568               	.Letext0:
+ 569               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_cpu.c
-     /tmp/ccrsikBW.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccrsikBW.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccrsikBW.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccrsikBW.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccrsikBW.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccrsikBW.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccrsikBW.s:138    .text:00000000 nrk_battery_save
-     /tmp/ccrsikBW.s:160    .text:00000002 nrk_task_set_entry_function
-     /tmp/ccrsikBW.s:185    .text:0000000a nrk_sleep
-     /tmp/ccrsikBW.s:225    .text:00000022 nrk_idle
-     /tmp/ccrsikBW.s:265    .text:00000038 nrk_task_stk_init
-     /tmp/ccrsikBW.s:374    .text:0000008e nrk_task_set_stk
-     /tmp/ccrsikBW.s:432    .text:000000cc nrk_stack_pointer_restore
-     /tmp/ccrsikBW.s:460    .text:000000da nrk_stack_pointer_init
+     /tmp/ccWdERjh.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccWdERjh.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccWdERjh.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccWdERjh.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccWdERjh.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccWdERjh.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccWdERjh.s:138    .text:00000000 nrk_battery_save
+     /tmp/ccWdERjh.s:160    .text:00000002 nrk_task_set_entry_function
+     /tmp/ccWdERjh.s:185    .text:0000000a nrk_sleep
+     /tmp/ccWdERjh.s:225    .text:00000022 nrk_idle
+     /tmp/ccWdERjh.s:265    .text:00000038 nrk_task_stk_init
+     /tmp/ccWdERjh.s:374    .text:0000008e nrk_task_set_stk
+     /tmp/ccWdERjh.s:432    .text:000000cc nrk_stack_pointer_restore
+                            *COM*:00000080 nrk_kernel_stk
+     /tmp/ccWdERjh.s:460    .text:000000da nrk_stack_pointer_init
                             *COM*:00000002 nrk_kernel_stk_ptr
-     /tmp/ccrsikBW.s:498    .text:000000f8 nrk_target_start
+     /tmp/ccWdERjh.s:498    .text:000000fa nrk_target_start
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
-                            *COM*:000000a5 nrk_task_TCB
+                            *COM*:000000aa nrk_task_TCB
                             *COM*:00000001 nrk_wakeup_signal
                             *COM*:0000001e _nrk_readyQ
                             *COM*:00000002 _free_node

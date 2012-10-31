@@ -888,27 +888,29 @@
  738               		.stabd	78,0,0
  739               		.comm _nrk_signal_list,4,1
  740               		.comm nrk_idle_task_stk,128,1
- 741               		.comm nrk_kernel_stk_ptr,2,1
- 746               	.Letext0:
- 747               	.global __do_clear_bss
+ 741               		.comm nrk_kernel_stk,128,1
+ 742               		.comm nrk_kernel_stk_ptr,2,1
+ 748               	.Letext0:
+ 749               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 DS2401.c
-     /tmp/ccqTkcdn.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccqTkcdn.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccqTkcdn.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccqTkcdn.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccqTkcdn.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccqTkcdn.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccqTkcdn.s:136    .text:00000000 Maxim_1Wire_ResetPulse
-     /tmp/ccqTkcdn.s:256    .text:00000048 Maxim_1Wire_WriteBit
-     /tmp/ccqTkcdn.s:349    .text:0000007e Maxim_1Wire_ReadBit
-     /tmp/ccqTkcdn.s:435    .text:000000b2 Maxim_1Wire_WriteByte
-     /tmp/ccqTkcdn.s:493    .text:000000f0 Maxim_1Wire_ReadByte
-     /tmp/ccqTkcdn.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
-     /tmp/ccqTkcdn.s:573    .text:0000012c DS2401_init
-     /tmp/ccqTkcdn.s:616    .text:0000013e DS2401_getSerialNumber
+     /tmp/ccLFOJCM.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccLFOJCM.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccLFOJCM.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccLFOJCM.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccLFOJCM.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccLFOJCM.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccLFOJCM.s:136    .text:00000000 Maxim_1Wire_ResetPulse
+     /tmp/ccLFOJCM.s:256    .text:00000048 Maxim_1Wire_WriteBit
+     /tmp/ccLFOJCM.s:349    .text:0000007e Maxim_1Wire_ReadBit
+     /tmp/ccLFOJCM.s:435    .text:000000b2 Maxim_1Wire_WriteByte
+     /tmp/ccLFOJCM.s:493    .text:000000f0 Maxim_1Wire_ReadByte
+     /tmp/ccLFOJCM.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
+     /tmp/ccLFOJCM.s:573    .text:0000012c DS2401_init
+     /tmp/ccLFOJCM.s:616    .text:0000013e DS2401_getSerialNumber
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000080 nrk_kernel_stk
                             *COM*:00000002 nrk_kernel_stk_ptr
 
 UNDEFINED SYMBOLS

@@ -190,16 +190,16 @@
  265               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_ext_int.c
-     /tmp/ccSpO5hP.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccSpO5hP.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccSpO5hP.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccSpO5hP.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccSpO5hP.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccSpO5hP.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccSpO5hP.s:123    .text:00000000 nrk_ext_int_enable
-     /tmp/ccSpO5hP.s:145    .text:00000004 nrk_ext_int_disable
-     /tmp/ccSpO5hP.s:169    .text:00000008 nrk_ext_int_configure
-     /tmp/ccSpO5hP.s:190    .text:0000000c __vector_1
+     /tmp/cc8GMx79.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc8GMx79.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc8GMx79.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc8GMx79.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc8GMx79.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc8GMx79.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc8GMx79.s:123    .text:00000000 nrk_ext_int_enable
+     /tmp/cc8GMx79.s:145    .text:00000004 nrk_ext_int_disable
+     /tmp/cc8GMx79.s:169    .text:00000008 nrk_ext_int_configure
+     /tmp/cc8GMx79.s:190    .text:0000000c __vector_1
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000002 ext_int0_callback
                             *COM*:00000002 ext_int1_callback

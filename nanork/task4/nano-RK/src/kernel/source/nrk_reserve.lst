@@ -10,11 +10,11 @@
   29               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_reserve.c
-     /tmp/ccOLYNPJ.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccOLYNPJ.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccOLYNPJ.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccOLYNPJ.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccOLYNPJ.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccOLYNPJ.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccleOZrG.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccleOZrG.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccleOZrG.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccleOZrG.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccleOZrG.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccleOZrG.s:7      *ABS*:00000001 __zero_reg__
 
 NO UNDEFINED SYMBOLS

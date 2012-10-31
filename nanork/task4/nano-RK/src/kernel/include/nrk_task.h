@@ -71,6 +71,9 @@ typedef struct os_tcb {
 	uint16_t  cpu_reserve;
 	uint16_t  num_periods;	
 
+        // Task type goes here
+        uint8_t task_type;
+
 
 } NRK_TCB;
 
@@ -154,6 +157,7 @@ int8_t nrk_set_next_wakeup(nrk_time_t t);
 #define	INVALID_TASK 	0
 #define	BASIC_TASK    	1
 #define	IDLE_TASK      	2
+#define CBS_TASK        3
 
 #define TCB_EMPTY_PRIO	99
 #define RES_FREE		99

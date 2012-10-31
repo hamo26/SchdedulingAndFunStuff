@@ -9,36 +9,38 @@
   11               	.Ltext0:
  134               		.comm _nrk_signal_list,4,1
  135               		.comm nrk_idle_task_stk,128,1
- 136               		.comm nrk_kernel_stk_ptr,2,1
- 137               		.comm nrk_task_TCB,165,1
- 138               		.comm nrk_wakeup_signal,1,1
- 139               		.comm _nrk_readyQ,30,1
- 140               		.comm _free_node,2,1
- 141               		.comm _head_node,2,1
- 142               		.comm nrk_cur_task_prio,1,1
- 143               		.comm nrk_cur_task_TCB,2,1
- 144               		.comm nrk_high_ready_prio,1,1
- 145               		.comm nrk_high_ready_TCB,2,1
- 146               		.comm _nrk_resource_cnt,1,1
- 147               		.comm nrk_system_time,8,1
- 148               		.comm nrk_sem_list,15,1
- 149               		.comm systemceiling,1,1
- 150               		.comm error_task,1,1
- 151               		.comm error_num,1,1
- 171               	.Letext0:
- 172               	.global __do_clear_bss
+ 136               		.comm nrk_kernel_stk,128,1
+ 137               		.comm nrk_kernel_stk_ptr,2,1
+ 138               		.comm nrk_task_TCB,170,1
+ 139               		.comm nrk_wakeup_signal,1,1
+ 140               		.comm _nrk_readyQ,30,1
+ 141               		.comm _free_node,2,1
+ 142               		.comm _head_node,2,1
+ 143               		.comm nrk_cur_task_prio,1,1
+ 144               		.comm nrk_cur_task_TCB,2,1
+ 145               		.comm nrk_high_ready_prio,1,1
+ 146               		.comm nrk_high_ready_TCB,2,1
+ 147               		.comm _nrk_resource_cnt,1,1
+ 148               		.comm nrk_system_time,8,1
+ 149               		.comm nrk_sem_list,15,1
+ 150               		.comm systemceiling,1,1
+ 151               		.comm error_task,1,1
+ 152               		.comm error_num,1,1
+ 173               	.Letext0:
+ 174               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_stats.c
-     /tmp/ccp71R5R.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccp71R5R.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccp71R5R.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccp71R5R.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccp71R5R.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccp71R5R.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccxG1h5E.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccxG1h5E.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccxG1h5E.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccxG1h5E.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccxG1h5E.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccxG1h5E.s:7      *ABS*:00000001 __zero_reg__
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000080 nrk_kernel_stk
                             *COM*:00000002 nrk_kernel_stk_ptr
-                            *COM*:000000a5 nrk_task_TCB
+                            *COM*:000000aa nrk_task_TCB
                             *COM*:00000001 nrk_wakeup_signal
                             *COM*:0000001e _nrk_readyQ
                             *COM*:00000002 _free_node

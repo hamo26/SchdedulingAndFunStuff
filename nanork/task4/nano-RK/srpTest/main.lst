@@ -316,8 +316,8 @@
  356 0202 0097      		sbiw r24,0
  357 0204 01F4      		brne .L6
  359               	.LM14:
- 360 0206 80E0      		ldi r24,lo8(__c.2122)
- 361 0208 90E0      		ldi r25,hi8(__c.2122)
+ 360 0206 80E0      		ldi r24,lo8(__c.2123)
+ 361 0208 90E0      		ldi r25,hi8(__c.2123)
  362 020a 0E94 0000 		call nrk_kprintf
  363               	.L6:
  107:main.c        ****     nrk_start();
@@ -374,7 +374,7 @@
  423               		.comm stack_2,128,1
  424               		.comm task_2,35,1
  425               		.section	.progmem.data,"a",@progbits
- 428               	__c.2122:
+ 428               	__c.2123:
  429 0000 4572 726F 		.string	"Error creating sem\r\n"
  429      7220 6372 
  429      6561 7469 
@@ -386,25 +386,25 @@
  452               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccM79TDR.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccM79TDR.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccM79TDR.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccM79TDR.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccM79TDR.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccM79TDR.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccM79TDR.s:140    .text:00000000 task_2_activity
+     /tmp/ccoPJeXu.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccoPJeXu.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccoPJeXu.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccoPJeXu.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccoPJeXu.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccoPJeXu.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccoPJeXu.s:140    .text:00000000 task_2_activity
                             *COM*:00000002 semaphoreA
-     /tmp/ccM79TDR.s:170    .text:00000026 task_1_activity
-     /tmp/ccM79TDR.s:204    .text:0000004c main
+     /tmp/ccoPJeXu.s:170    .text:00000026 task_1_activity
+     /tmp/ccoPJeXu.s:204    .text:0000004c main
                             *COM*:00000023 task_1
                             *COM*:00000080 stack_1
-     /tmp/ccM79TDR.s:382    .data:00000010 task_1_period
-     /tmp/ccM79TDR.s:390    .data:00000014 task_1_execution
+     /tmp/ccoPJeXu.s:382    .data:00000010 task_1_period
+     /tmp/ccoPJeXu.s:390    .data:00000014 task_1_execution
                             *COM*:00000023 task_2
                             *COM*:00000080 stack_2
-     /tmp/ccM79TDR.s:398    .data:00000018 task_2_period
-     /tmp/ccM79TDR.s:406    .data:0000001c task_2_execution
-     /tmp/ccM79TDR.s:428    .progmem.data:00000000 __c.2122
+     /tmp/ccoPJeXu.s:398    .data:00000018 task_2_period
+     /tmp/ccoPJeXu.s:406    .data:0000001c task_2_execution
+     /tmp/ccoPJeXu.s:428    .progmem.data:00000000 __c.2123
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

@@ -91,9 +91,17 @@ void nrk_add_to_readyQ (int8_t task_ID)
 //				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period {break;}	//Small absolute deadline = larger preemption level
 
 #ifdef SRP
+                    printf("Using EDF\n");
 			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
-				(nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period &&
-				nrk_task_TCB[task_ID].next_period < systemceiling)) {break;}	//Small absolute deadline = larger preemption level
+				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period 
+				//&& nrk_task_TCB[task_ID].next_period < systemceiling)) {break;}	//Small absolute deadline = larger preemption level
+                            ) break; // Get rid of srp for t4 at the moment
+                        else{
+                            // Dealing with same deadline issue in edf
+                            if( (nrk_task_TCB[NextNode->task_ID].next_period == nrk_task_TCB[task_ID].next_period)&&
+                                    (nrk_task_TCB[NextNode->task_ID].task_prio < nrk_task_TCB[task_ID].task_prio))
+                                break;
+                        }
 
 #else
 			if (nrk_task_TCB[NextNode->task_ID].elevated_prio_flag)

@@ -213,25 +213,27 @@
  291               		.comm error_task,1,1
  292               		.comm error_num,1,1
  293               		.comm nrk_idle_task_stk,128,1
- 294               		.comm nrk_kernel_stk_ptr,2,1
- 301               	.Letext0:
- 302               	.global __do_clear_bss
+ 294               		.comm nrk_kernel_stk,128,1
+ 295               		.comm nrk_kernel_stk_ptr,2,1
+ 303               	.Letext0:
+ 304               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_watchdog.c
-     /tmp/ccu1ohBQ.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccu1ohBQ.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccu1ohBQ.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccu1ohBQ.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccu1ohBQ.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccu1ohBQ.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccu1ohBQ.s:135    .text:00000000 nrk_watchdog_disable
-     /tmp/ccu1ohBQ.s:185    .text:0000001a nrk_watchdog_enable
-     /tmp/ccu1ohBQ.s:236    .text:00000036 nrk_watchdog_check
-     /tmp/ccu1ohBQ.s:266    .text:00000044 nrk_watchdog_reset
+     /tmp/ccWAvNqb.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccWAvNqb.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccWAvNqb.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccWAvNqb.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccWAvNqb.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccWAvNqb.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccWAvNqb.s:135    .text:00000000 nrk_watchdog_disable
+     /tmp/ccWAvNqb.s:185    .text:0000001a nrk_watchdog_enable
+     /tmp/ccWAvNqb.s:236    .text:00000036 nrk_watchdog_check
+     /tmp/ccWAvNqb.s:266    .text:00000044 nrk_watchdog_reset
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num
                             *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000080 nrk_kernel_stk
                             *COM*:00000002 nrk_kernel_stk_ptr
 
 UNDEFINED SYMBOLS

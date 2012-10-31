@@ -1122,33 +1122,35 @@
  1136               		.stabd	78,0,0
  1137               		.comm _nrk_signal_list,4,1
  1138               		.comm nrk_idle_task_stk,128,1
- 1139               		.comm nrk_kernel_stk_ptr,2,1
- 1140               		.comm _nrk_prev_timer_val,1,1
- 1141               		.comm _nrk_time_trigger,1,1
- 1142               		.comm app_timer0_callback,2,1
- 1143               		.comm app_timer0_prescale,1,1
- 1144               		.comm error_task,1,1
- 1145               		.comm error_num,1,1
- 1156               	.Letext0:
- 1157               	.global __do_clear_bss
+ 1139               		.comm nrk_kernel_stk,128,1
+ 1140               		.comm nrk_kernel_stk_ptr,2,1
+ 1141               		.comm _nrk_prev_timer_val,1,1
+ 1142               		.comm _nrk_time_trigger,1,1
+ 1143               		.comm app_timer0_callback,2,1
+ 1144               		.comm app_timer0_prescale,1,1
+ 1145               		.comm error_task,1,1
+ 1146               		.comm error_num,1,1
+ 1158               	.Letext0:
+ 1159               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_time.c
-     /tmp/ccHpUKRp.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccHpUKRp.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccHpUKRp.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccHpUKRp.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccHpUKRp.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccHpUKRp.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccHpUKRp.s:141    .text:00000000 nrk_time_get
-     /tmp/ccHpUKRp.s:265    .text:000000bc nrk_time_sub
-     /tmp/ccHpUKRp.s:462    .text:000001da nrk_time_compact_nanos
-     /tmp/ccHpUKRp.s:529    .text:00000220 nrk_time_add
-     /tmp/ccHpUKRp.s:646    .text:000002d6 nrk_time_set
-     /tmp/ccHpUKRp.s:679    .text:000002f8 _nrk_time_to_ticks
-     /tmp/ccHpUKRp.s:874    .text:00000416 _nrk_ticks_to_time
-     /tmp/ccHpUKRp.s:958    .text:00000488 _nrk_time_to_ticks_long
+     /tmp/cc21joQk.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc21joQk.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc21joQk.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc21joQk.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc21joQk.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc21joQk.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc21joQk.s:141    .text:00000000 nrk_time_get
+     /tmp/cc21joQk.s:265    .text:000000bc nrk_time_sub
+     /tmp/cc21joQk.s:462    .text:000001da nrk_time_compact_nanos
+     /tmp/cc21joQk.s:529    .text:00000220 nrk_time_add
+     /tmp/cc21joQk.s:646    .text:000002d6 nrk_time_set
+     /tmp/cc21joQk.s:679    .text:000002f8 _nrk_time_to_ticks
+     /tmp/cc21joQk.s:874    .text:00000416 _nrk_ticks_to_time
+     /tmp/cc21joQk.s:958    .text:00000488 _nrk_time_to_ticks_long
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000080 nrk_kernel_stk
                             *COM*:00000002 nrk_kernel_stk_ptr
                             *COM*:00000001 _nrk_prev_timer_val
                             *COM*:00000001 _nrk_time_trigger

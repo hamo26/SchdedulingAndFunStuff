@@ -295,11 +295,11 @@
  367 012c A487      		std Z+12,r26
  368 012e B587      		std Z+13,r27
  369               	.L9:
- 370 0130 B196      		adiw r30,33
+ 370 0130 B296      		adiw r30,34
   72:..//src/kernel/source/nrk_events.c ****     for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++){
  372               	.LM24:
- 373 0132 80E0      		ldi r24,hi8(nrk_task_TCB+172)
- 374 0134 E030      		cpi r30,lo8(nrk_task_TCB+172)
+ 373 0132 80E0      		ldi r24,hi8(nrk_task_TCB+177)
+ 374 0134 E030      		cpi r30,lo8(nrk_task_TCB+177)
  375 0136 F807      		cpc r31,r24
  376 0138 01F4      		brne .L11
   86:..//src/kernel/source/nrk_events.c **** 
@@ -699,11 +699,11 @@
  746               	.L24:
  165:..//src/kernel/source/nrk_events.c **** 		nrk_task_TCB[task_ID].active_signal_mask=0;
  748               	.LM65:
- 749 032e B196      		adiw r30,33
+ 749 032e B296      		adiw r30,34
  139:..//src/kernel/source/nrk_events.c ****     for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++){
  751               	.LM66:
- 752 0330 80E0      		ldi r24,hi8(nrk_task_TCB+172)
- 753 0332 E030      		cpi r30,lo8(nrk_task_TCB+172)
+ 752 0330 80E0      		ldi r24,hi8(nrk_task_TCB+177)
+ 753 0332 E030      		cpi r30,lo8(nrk_task_TCB+177)
  754 0334 F807      		cpc r31,r24
  755 0336 01F4      		brne .L25
  167:..//src/kernel/source/nrk_events.c **** 	    }   
@@ -1386,11 +1386,11 @@
  1316 05c0 1486      		std Z+12,__zero_reg__
  1317 05c2 1586      		std Z+13,__zero_reg__
  1318               	.L55:
- 1319 05c4 B196      		adiw r30,33
+ 1319 05c4 B296      		adiw r30,34
  291:..//src/kernel/source/nrk_events.c **** 	for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++){
  1321               	.LM138:
- 1322 05c6 20E0      		ldi r18,hi8(nrk_task_TCB+172)
- 1323 05c8 E030      		cpi r30,lo8(nrk_task_TCB+172)
+ 1322 05c6 20E0      		ldi r18,hi8(nrk_task_TCB+177)
+ 1323 05c8 E030      		cpi r30,lo8(nrk_task_TCB+177)
  1324 05ca F207      		cpc r31,r18
  1325 05cc 01F4      		brne .L56
  302:..//src/kernel/source/nrk_events.c **** 	nrk_int_enable();
@@ -1726,60 +1726,62 @@
  1669               		.stabd	78,0,0
  1670               		.comm _nrk_signal_list,4,1
  1671               		.comm nrk_idle_task_stk,128,1
- 1672               		.comm nrk_kernel_stk_ptr,2,1
- 1673               		.comm nrk_task_TCB,165,1
- 1674               		.comm nrk_wakeup_signal,1,1
- 1675               		.comm _nrk_readyQ,30,1
- 1676               		.comm _free_node,2,1
- 1677               		.comm _head_node,2,1
- 1678               		.comm nrk_cur_task_prio,1,1
- 1679               		.comm nrk_cur_task_TCB,2,1
- 1680               		.comm nrk_high_ready_prio,1,1
- 1681               		.comm nrk_high_ready_TCB,2,1
- 1682               		.comm _nrk_resource_cnt,1,1
- 1683               		.comm nrk_system_time,8,1
- 1684               		.comm error_task,1,1
- 1685               		.comm error_num,1,1
- 1686               		.comm _nrk_cpu_state,1,1
- 1687               		.comm next_next_wakeup,2,1
- 1688               		.comm _nrk_prev_timer_val,1,1
- 1689               		.comm _nrk_time_trigger,1,1
- 1690               		.comm app_timer0_callback,2,1
- 1691               		.comm app_timer0_prescale,1,1
- 1692               		.comm nrk_sem_list,15,1
- 1693               		.comm systemceiling,1,1
- 1719               	.Letext0:
- 1720               	.global __do_copy_data
- 1721               	.global __do_clear_bss
+ 1672               		.comm nrk_kernel_stk,128,1
+ 1673               		.comm nrk_kernel_stk_ptr,2,1
+ 1674               		.comm nrk_task_TCB,170,1
+ 1675               		.comm nrk_wakeup_signal,1,1
+ 1676               		.comm _nrk_readyQ,30,1
+ 1677               		.comm _free_node,2,1
+ 1678               		.comm _head_node,2,1
+ 1679               		.comm nrk_cur_task_prio,1,1
+ 1680               		.comm nrk_cur_task_TCB,2,1
+ 1681               		.comm nrk_high_ready_prio,1,1
+ 1682               		.comm nrk_high_ready_TCB,2,1
+ 1683               		.comm _nrk_resource_cnt,1,1
+ 1684               		.comm nrk_system_time,8,1
+ 1685               		.comm error_task,1,1
+ 1686               		.comm error_num,1,1
+ 1687               		.comm _nrk_cpu_state,1,1
+ 1688               		.comm next_next_wakeup,2,1
+ 1689               		.comm _nrk_prev_timer_val,1,1
+ 1690               		.comm _nrk_time_trigger,1,1
+ 1691               		.comm app_timer0_callback,2,1
+ 1692               		.comm app_timer0_prescale,1,1
+ 1693               		.comm nrk_sem_list,15,1
+ 1694               		.comm systemceiling,1,1
+ 1721               	.Letext0:
+ 1722               	.global __do_copy_data
+ 1723               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_events.c
-     /tmp/ccfsHuT1.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccfsHuT1.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccfsHuT1.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccfsHuT1.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccfsHuT1.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccfsHuT1.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccfsHuT1.s:140    .text:00000000 nrk_signal_create
+     /tmp/ccLCY7BR.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccLCY7BR.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccLCY7BR.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccLCY7BR.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccLCY7BR.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccLCY7BR.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccLCY7BR.s:140    .text:00000000 nrk_signal_create
                             *COM*:00000004 _nrk_signal_list
-     /tmp/ccfsHuT1.s:219    .text:0000006c nrk_signal_get_registered_mask
+     /tmp/ccLCY7BR.s:219    .text:0000006c nrk_signal_get_registered_mask
                             *COM*:00000002 nrk_cur_task_TCB
-     /tmp/ccfsHuT1.s:250    .text:0000007e nrk_signal_delete
-                            *COM*:000000a5 nrk_task_TCB
-     /tmp/ccfsHuT1.s:434    .text:0000018e nrk_signal_unregister
-     /tmp/ccfsHuT1.s:535    .text:00000212 nrk_signal_register
-     /tmp/ccfsHuT1.s:609    .text:0000027a nrk_event_signal
-     /tmp/ccfsHuT1.s:802    .text:00000360 nrk_event_wait
+     /tmp/ccLCY7BR.s:250    .text:0000007e nrk_signal_delete
+                            *COM*:000000aa nrk_task_TCB
+     /tmp/ccLCY7BR.s:434    .text:0000018e nrk_signal_unregister
+     /tmp/ccLCY7BR.s:535    .text:00000212 nrk_signal_register
+     /tmp/ccLCY7BR.s:609    .text:0000027a nrk_event_signal
+     /tmp/ccLCY7BR.s:802    .text:00000360 nrk_event_wait
                             *COM*:00000001 nrk_wakeup_signal
-     /tmp/ccfsHuT1.s:895    .text:000003d6 nrk_sem_create
+     /tmp/ccLCY7BR.s:895    .text:000003d6 nrk_sem_create
                             *COM*:00000001 _nrk_resource_cnt
                             *COM*:0000000f nrk_sem_list
-     /tmp/ccfsHuT1.s:972    .text:0000041a nrk_get_resource_index
-     /tmp/ccfsHuT1.s:1027   .text:00000444 nrk_sem_delete
-     /tmp/ccfsHuT1.s:1106   .text:00000488 nrk_sem_post
+     /tmp/ccLCY7BR.s:972    .text:0000041a nrk_get_resource_index
+     /tmp/ccLCY7BR.s:1027   .text:00000444 nrk_sem_delete
+     /tmp/ccLCY7BR.s:1106   .text:00000488 nrk_sem_post
                             *COM*:00000001 systemceiling
-     /tmp/ccfsHuT1.s:1362   .text:000005e4 nrk_sem_pend
-     /tmp/ccfsHuT1.s:1614   .text:0000075e nrk_sem_query
+     /tmp/ccLCY7BR.s:1362   .text:000005e4 nrk_sem_pend
+     /tmp/ccLCY7BR.s:1614   .text:0000075e nrk_sem_query
                             *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000080 nrk_kernel_stk
                             *COM*:00000002 nrk_kernel_stk_ptr
                             *COM*:0000001e _nrk_readyQ
                             *COM*:00000002 _free_node
