@@ -151,8 +151,8 @@ void inline _nrk_scheduler()
     {
         if(nrk_cur_task_TCB->cpu_remaining<_nrk_prev_timer_val)
         {
-	    // It's wrong for BASIC_TASK but for aperiodic CBS task it is possible to be the case.
-	    // We need make sure the CBC will not be suspended if it hasnt finished its executions. Also we register to error only when it is BASIC_TASK
+	    // It's an error for BASIC_TASK but for aperiodic CBS task it is possible to be the case.
+	    // We need make sure the CBC will not be forced to set its cpu_remaining to 0 if it hasnt finished its executions. Also we register to error only when it is BASIC_TASK
 #ifdef NRK_STATS_TRACKER
             _nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
 #endif
