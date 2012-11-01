@@ -1086,16 +1086,16 @@
  1039               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk.c
-     /tmp/cclYMuoZ.s:2      *ABS*:0000003f __SREG__
-     /tmp/cclYMuoZ.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cclYMuoZ.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cclYMuoZ.s:5      *ABS*:00000034 __CCP__
-     /tmp/cclYMuoZ.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cclYMuoZ.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cclYMuoZ.s:133    .text:00000000 nrk_int_disable
-     /tmp/cclYMuoZ.s:161    .text:00000004 nrk_int_enable
-     /tmp/cclYMuoZ.s:189    .text:00000008 nrk_halt
-     /tmp/cclYMuoZ.s:210    .text:0000000e nrk_init
+     /tmp/ccBYJexw.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccBYJexw.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccBYJexw.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccBYJexw.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccBYJexw.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccBYJexw.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccBYJexw.s:133    .text:00000000 nrk_int_disable
+     /tmp/ccBYJexw.s:161    .text:00000004 nrk_int_enable
+     /tmp/ccBYJexw.s:189    .text:00000008 nrk_halt
+     /tmp/ccBYJexw.s:210    .text:0000000e nrk_init
                             *COM*:00000001 nrk_wakeup_signal
                             *COM*:00000001 nrk_cur_task_prio
                             *COM*:00000002 nrk_cur_task_TCB
@@ -1108,11 +1108,11 @@ DEFINED SYMBOLS
                             *COM*:00000002 _head_node
                             *COM*:00000002 _free_node
                             *COM*:00000080 nrk_idle_task_stk
-     /tmp/cclYMuoZ.s:503    .text:0000019a nrk_start
-     /tmp/cclYMuoZ.s:641    .text:00000246 nrk_TCB_init
+     /tmp/ccBYJexw.s:503    .text:0000019a nrk_start
+     /tmp/ccBYJexw.s:641    .text:00000246 nrk_TCB_init
                             *COM*:00000001 nrk_task_init_cnt
-     /tmp/cclYMuoZ.s:951    .text:00000432 _nrk_timer_tick
-     /tmp/cclYMuoZ.s:974    .text:00000438 nrk_version
+     /tmp/ccBYJexw.s:951    .text:00000432 _nrk_timer_tick
+     /tmp/ccBYJexw.s:974    .text:00000438 nrk_version
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_kernel_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

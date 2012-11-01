@@ -26,8 +26,7 @@
 *******************************************************************************/
 
 #include <nrk.h>
-#include <nrk_task.h>
-#include <include.h>
+#include <nrk_task.h> #include <include.h>
 #include <ulib.h>
 #include <nrk_timer.h>
 #include <nrk_scheduler.h>
@@ -91,7 +90,6 @@ void nrk_add_to_readyQ (int8_t task_ID)
 //				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period {break;}	//Small absolute deadline = larger preemption level
 
 #ifdef SRP
-                    printf("\n*****\nUsing EDF to recruit the readyQ\n*****\n");
 			if (NextNode->task_ID == NRK_IDLE_TASK_ID ||
 				nrk_task_TCB[NextNode->task_ID].next_period > nrk_task_TCB[task_ID].next_period 
 				//&& nrk_task_TCB[task_ID].next_period < systemceiling)) {break;}	//Small absolute deadline = larger preemption level

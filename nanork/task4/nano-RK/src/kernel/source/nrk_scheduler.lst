@@ -21,7 +21,7 @@
  141      5320 6F66 
  141      2054 6173 
  142               	.LC2:
- 143 002e 5461 736B 		.string	"Task %d: Replenish CBS \n"
+ 143 002e 5461 736B 		.string	"Task %d: Replenish CBS <-------- \n"
  143      2025 643A 
  143      2052 6570 
  143      6C65 6E69 
@@ -527,7 +527,7 @@
  497 0232 01F0      		breq .L9
  190:..//src/kernel/source/nrk_scheduler.c **** 		    ){
  191:..//src/kernel/source/nrk_scheduler.c ****                 // We need replenish the budget for CBS
- 192:..//src/kernel/source/nrk_scheduler.c ****                 printf("Task %d: Replenish CBS \n", task_ID);
+ 192:..//src/kernel/source/nrk_scheduler.c ****                 printf("Task %d: Replenish CBS <-------- \n", task_ID);
  499               	.LM46:
  500 0234 00D0      		rcall .
  501 0236 00D0      		rcall .
@@ -573,7 +573,7 @@
  542 027c 00E6      		ldi r16,lo8(-5536)
  543 027e 1AEE      		ldi r17,hi8(-5536)
  544 0280 20E0      		ldi r18,lo8(0)
- 195:..//src/kernel/source/nrk_scheduler.c ****                 //printf("Next period is from %d to %d\n", nrk_cur_task_TCB->next_period, nrk_cur_t
+ 195:..//src/kernel/source/nrk_scheduler.c ****                 //printf("Next period is from %d\n", nrk_cur_task_TCB->next_period);
  196:..//src/kernel/source/nrk_scheduler.c ****             }
  197:..//src/kernel/source/nrk_scheduler.c **** 
  198:..//src/kernel/source/nrk_scheduler.c ****         }
@@ -1260,13 +1260,13 @@
  1078               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_scheduler.c
-     /tmp/ccbo931N.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccbo931N.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccbo931N.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccbo931N.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccbo931N.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccbo931N.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccbo931N.s:148    .text:00000000 _nrk_scheduler
+     /tmp/cc577lmq.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc577lmq.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc577lmq.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc577lmq.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc577lmq.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc577lmq.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc577lmq.s:148    .text:00000000 _nrk_scheduler
                             *COM*:00000001 _nrk_prev_timer_val
                             *COM*:00000008 nrk_system_time
                             *COM*:00000002 nrk_cur_task_TCB

@@ -894,20 +894,20 @@
  749               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 DS2401.c
-     /tmp/ccdBw86O.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccdBw86O.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccdBw86O.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccdBw86O.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccdBw86O.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccdBw86O.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccdBw86O.s:136    .text:00000000 Maxim_1Wire_ResetPulse
-     /tmp/ccdBw86O.s:256    .text:00000048 Maxim_1Wire_WriteBit
-     /tmp/ccdBw86O.s:349    .text:0000007e Maxim_1Wire_ReadBit
-     /tmp/ccdBw86O.s:435    .text:000000b2 Maxim_1Wire_WriteByte
-     /tmp/ccdBw86O.s:493    .text:000000f0 Maxim_1Wire_ReadByte
-     /tmp/ccdBw86O.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
-     /tmp/ccdBw86O.s:573    .text:0000012c DS2401_init
-     /tmp/ccdBw86O.s:616    .text:0000013e DS2401_getSerialNumber
+     /tmp/ccSzmxIa.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccSzmxIa.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccSzmxIa.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccSzmxIa.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccSzmxIa.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccSzmxIa.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccSzmxIa.s:136    .text:00000000 Maxim_1Wire_ResetPulse
+     /tmp/ccSzmxIa.s:256    .text:00000048 Maxim_1Wire_WriteBit
+     /tmp/ccSzmxIa.s:349    .text:0000007e Maxim_1Wire_ReadBit
+     /tmp/ccSzmxIa.s:435    .text:000000b2 Maxim_1Wire_WriteByte
+     /tmp/ccSzmxIa.s:493    .text:000000f0 Maxim_1Wire_ReadByte
+     /tmp/ccSzmxIa.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
+     /tmp/ccSzmxIa.s:573    .text:0000012c DS2401_init
+     /tmp/ccSzmxIa.s:616    .text:0000013e DS2401_getSerialNumber
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

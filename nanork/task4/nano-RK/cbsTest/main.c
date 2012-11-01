@@ -20,12 +20,15 @@
     while (1)                                                           \
     {									\
 	printf("\n------\nStart running task..%d\n", n);            \
+	long int duty = rand()*4;					\
+	if(duty<0) duty = 0-duty;					\
 	if(n==2){							\
-	    for(long i=0;i<=30000;i++){				\
-		if(i%10000==0){					\
-		printf("CBS budget is %d\n", nrk_task_TCB[task_ID].cpu_remaining);\
+	    printf("Duty amount is %d\n",duty);				\
+	    for(int i=0;i<=duty;i++){				\
+		if(i%2000==0){					\
+		    printf("CBS budget is %d\n", nrk_task_TCB[task_ID].cpu_remaining);\
 		    for(int j=0;j<9999;j++){k++;}			\
-		    printf("Busying with task 2(CBS) %d out of 30000\n",i);\
+		    printf("Busying with task 2(CBS) %d out of %d\n",i,duty);\
 		}							\
 	    }							\
 	}else{for(int i=0;i<10;i++){k++;}printf("Some busy tasks\n");}	\
@@ -55,9 +58,11 @@ nrk_task_set_stk(&task_##n, stack_##n, NRK_APP_STACKSIZE);              \
 nrk_activate_task(&task_##n)						
 
 //"Instantiate" tasks.
-TASK(1, 6, 5);
-TASK(2, 7, 1);
-//TASK(3, 7, 1);
+TASK(1, 6, 3);
+TASK(2, 5, 1);
+TASK(3, 7, 1);
+
+nrk_time_t *seed;
 
 int main ()
 {
@@ -68,11 +73,14 @@ int main ()
 
     nrk_time_set(0,0);
 
+    nrk_time_get(seed);
+    srand(seed->nano_secs);
+
     //Initialize tasks 
     //Higher value higher priority`
     INITIALIZE_TASK(1, BASIC_TASK);
     INITIALIZE_TASK(2, CBS_TASK);
-   // INITIALIZE_TASK(3, BASIC_TASK);
+    INITIALIZE_TASK(3, BASIC_TASK);
 
     nrk_start();
 
