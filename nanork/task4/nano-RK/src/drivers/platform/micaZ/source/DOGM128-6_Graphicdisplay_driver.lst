@@ -2139,17 +2139,17 @@
  1970               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 DOGM128-6_Graphicdisplay_driver.c
-     /tmp/ccJOHMhj.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccJOHMhj.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccJOHMhj.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccJOHMhj.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccJOHMhj.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccJOHMhj.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccJOHMhj.s:95     .text:00000000 DOGM128_6_usart1_sendByte
-     /tmp/ccJOHMhj.s:276    .text:00000078 DOGM128_6_clear_display
-     /tmp/ccJOHMhj.s:374    .text:000000da DOGM128_6_display_init
-     /tmp/ccJOHMhj.s:534    .text:00000180 DOGM128_6_display_backlight
-     /tmp/ccJOHMhj.s:565    .text:0000018c DOGM128_6_LCD_print
-     /tmp/ccJOHMhj.s:686    .progmem.data:00000000 font5x7
+     /tmp/ccJ1gVai.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccJ1gVai.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccJ1gVai.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccJ1gVai.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccJ1gVai.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccJ1gVai.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccJ1gVai.s:95     .text:00000000 DOGM128_6_usart1_sendByte
+     /tmp/ccJ1gVai.s:276    .text:00000078 DOGM128_6_clear_display
+     /tmp/ccJ1gVai.s:374    .text:000000da DOGM128_6_display_init
+     /tmp/ccJ1gVai.s:534    .text:00000180 DOGM128_6_display_backlight
+     /tmp/ccJ1gVai.s:565    .text:0000018c DOGM128_6_LCD_print
+     /tmp/ccJ1gVai.s:686    .progmem.data:00000000 font5x7
 
 NO UNDEFINED SYMBOLS

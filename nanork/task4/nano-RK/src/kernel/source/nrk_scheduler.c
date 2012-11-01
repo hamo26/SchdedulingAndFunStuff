@@ -151,20 +151,18 @@ void inline _nrk_scheduler()
     {
         if(nrk_cur_task_TCB->cpu_remaining<_nrk_prev_timer_val)
         {
+	    // It's wrong for BASIC_TASK but for aperiodic CBS task it is possible to be the case.
+	    // We need make sure the CBC will not be suspended if it hasnt finished its executions. Also we register to error only when it is BASIC_TASK
 #ifdef NRK_STATS_TRACKER
             _nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
 #endif
-            nrk_kernel_error_add(NRK_RESERVE_ERROR,nrk_cur_task_TCB->task_ID);
-            if(nrk_cur_task_TCB->task_type == CBS_TASK && 
-		    nrk_cur_task_TCB->task_state != SUSPENDED
-		    ){
-                printf("CBS goes exhausted \n");
-                // budget goes out
-                nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
+            if(nrk_cur_task_TCB->task_type == CBS_TASK && nrk_cur_task_TCB->task_state != SUSPENDED){
                 nrk_cur_task_TCB->next_period = nrk_cur_task_TCB->period;
+                nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
                 printf("Replenish CBS of Task %d\n",nrk_cur_task_TCB->task_ID);
             }else{
                 nrk_cur_task_TCB->cpu_remaining=0;
+		nrk_kernel_error_add(NRK_RESERVE_ERROR,nrk_cur_task_TCB->task_ID);
             }
         }
         else
@@ -190,8 +188,8 @@ void inline _nrk_scheduler()
 		    ){
                 // We need replenish the budget for CBS
                 printf("Task %d: Replenish CBS <-------- \n", task_ID);
-                nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
                 nrk_cur_task_TCB->next_period = nrk_cur_task_TCB->period;
+                nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
                 //printf("Next period is from %d\n", nrk_cur_task_TCB->next_period);
             }
 

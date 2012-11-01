@@ -766,28 +766,28 @@
  858               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/cc887V0C.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc887V0C.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc887V0C.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc887V0C.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc887V0C.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc887V0C.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc887V0C.s:148    .text:00000000 task_3_func
-     /tmp/cc887V0C.s:225    .text:00000066 task_2_func
-     /tmp/cc887V0C.s:473    .text:00000206 task_1_func
-     /tmp/cc887V0C.s:542    .text:0000026c main
+     /tmp/ccKg9nwz.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccKg9nwz.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccKg9nwz.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccKg9nwz.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccKg9nwz.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccKg9nwz.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccKg9nwz.s:148    .text:00000000 task_3_func
+     /tmp/ccKg9nwz.s:225    .text:00000066 task_2_func
+     /tmp/ccKg9nwz.s:473    .text:00000206 task_1_func
+     /tmp/ccKg9nwz.s:542    .text:0000026c main
                             *COM*:00000002 seed
                             *COM*:00000023 task_1
-     /tmp/cc887V0C.s:769    .data:0000009b task_1_period
-     /tmp/cc887V0C.s:777    .data:0000009f task_1_execution
+     /tmp/ccKg9nwz.s:769    .data:0000009b task_1_period
+     /tmp/ccKg9nwz.s:777    .data:0000009f task_1_execution
                             *COM*:00000080 stack_1
                             *COM*:00000023 task_2
-     /tmp/cc887V0C.s:785    .data:000000a3 task_2_period
-     /tmp/cc887V0C.s:793    .data:000000a7 task_2_execution
+     /tmp/ccKg9nwz.s:785    .data:000000a3 task_2_period
+     /tmp/ccKg9nwz.s:793    .data:000000a7 task_2_execution
                             *COM*:00000080 stack_2
                             *COM*:00000023 task_3
-     /tmp/cc887V0C.s:801    .data:000000ab task_3_period
-     /tmp/cc887V0C.s:809    .data:000000af task_3_execution
+     /tmp/ccKg9nwz.s:801    .data:000000ab task_3_period
+     /tmp/ccKg9nwz.s:809    .data:000000af task_3_execution
                             *COM*:00000080 stack_3
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
