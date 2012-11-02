@@ -1,0 +1,1296 @@
+   1               		.file	"nrk_scheduler.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+ 137               		.data
+ 138               	.LC0:
+ 139 0000 5265 706C 		.string	"Replenish CBS of Task %d\n"
+ 139      656E 6973 
+ 139      6820 4342 
+ 139      5320 6F66 
+ 139      2054 6173 
+ 140               	.LC1:
+ 141 001a 5461 736B 		.string	"Task %d: Replenish CBS <-------- \n"
+ 141      2025 643A 
+ 141      2052 6570 
+ 141      6C65 6E69 
+ 141      7368 2043 
+ 142               		.text
+ 144               	.global	_nrk_scheduler
+ 146               	_nrk_scheduler:
+ 147               		.stabd	46,0,0
+   1:..//src/kernel/source/nrk_scheduler.c **** /******************************************************************************
+   2:..//src/kernel/source/nrk_scheduler.c ****  *  Nano-RK, a real-time operating system for sensor networks.
+   3:..//src/kernel/source/nrk_scheduler.c ****  *  Copyright (C) 2007, Real-Time and Multimedia Lab, Carnegie Mellon University
+   4:..//src/kernel/source/nrk_scheduler.c ****  *  All rights reserved.
+   5:..//src/kernel/source/nrk_scheduler.c ****  *
+   6:..//src/kernel/source/nrk_scheduler.c ****  *  This is the Open Source Version of Nano-RK included as part of a Dual
+   7:..//src/kernel/source/nrk_scheduler.c ****  *  Licensing Model. If you are unsure which license to use please refer to:
+   8:..//src/kernel/source/nrk_scheduler.c ****  *  http://www.nanork.org/nano-RK/wiki/Licensing
+   9:..//src/kernel/source/nrk_scheduler.c ****  *
+  10:..//src/kernel/source/nrk_scheduler.c ****  *  This program is free software: you can redistribute it and/or modify
+  11:..//src/kernel/source/nrk_scheduler.c ****  *  it under the terms of the GNU General Public License as published by
+  12:..//src/kernel/source/nrk_scheduler.c ****  *  the Free Software Foundation, version 2.0 of the License.
+  13:..//src/kernel/source/nrk_scheduler.c ****  *
+  14:..//src/kernel/source/nrk_scheduler.c ****  *  This program is distributed in the hope that it will be useful,
+  15:..//src/kernel/source/nrk_scheduler.c ****  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:..//src/kernel/source/nrk_scheduler.c ****  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  17:..//src/kernel/source/nrk_scheduler.c ****  *  GNU General Public License for more details.
+  18:..//src/kernel/source/nrk_scheduler.c ****  *
+  19:..//src/kernel/source/nrk_scheduler.c ****  *  You should have received a copy of the GNU General Public License
+  20:..//src/kernel/source/nrk_scheduler.c ****  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  21:..//src/kernel/source/nrk_scheduler.c ****  *
+  22:..//src/kernel/source/nrk_scheduler.c ****  *  Contributing Authors (specific to this file): *  Anthony Rowe
+  23:..//src/kernel/source/nrk_scheduler.c ****  *  Zane Starr
+  24:..//src/kernel/source/nrk_scheduler.c ****  *  Anand Eswaren
+  25:..//src/kernel/source/nrk_scheduler.c ****  *******************************************************************************/
+  26:..//src/kernel/source/nrk_scheduler.c **** 
+  27:..//src/kernel/source/nrk_scheduler.c **** #include <nrk.h>
+  28:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_task.h>
+  29:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_defs.h>
+  30:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_error.h>
+  31:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_events.h>
+  32:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_scheduler.h>
+  33:..//src/kernel/source/nrk_scheduler.c **** #include <include.h>
+  34:..//src/kernel/source/nrk_scheduler.c **** #include <ulib.h>
+  35:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_timer.h>
+  36:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_time.h>
+  37:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_cfg.h>
+  38:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_cpu.h>
+  39:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_watchdog.h>
+  40:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_platform_time.h>
+  41:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_stats.h>
+  42:..//src/kernel/source/nrk_scheduler.c **** #include <nrk_sw_wdt.h>
+  43:..//src/kernel/source/nrk_scheduler.c **** 
+  44:..//src/kernel/source/nrk_scheduler.c **** 
+  45:..//src/kernel/source/nrk_scheduler.c **** // This define was moved into nrk_platform_time.h since it needs to be different based on the clk s
+  46:..//src/kernel/source/nrk_scheduler.c **** // 750 measure to 100uS
+  47:..//src/kernel/source/nrk_scheduler.c **** // 800 * .125 = 100us
+  48:..//src/kernel/source/nrk_scheduler.c **** //#define CONTEXT_SWAP_TIME_BOUND    750
+  49:..//src/kernel/source/nrk_scheduler.c **** // For rfa1:
+  50:..//src/kernel/source/nrk_scheduler.c **** //#define CONTEXT_SWAP_TIME_BOUND    1500 
+  51:..//src/kernel/source/nrk_scheduler.c **** 
+  52:..//src/kernel/source/nrk_scheduler.c **** uint8_t t;
+  53:..//src/kernel/source/nrk_scheduler.c **** void inline _nrk_scheduler()
+  54:..//src/kernel/source/nrk_scheduler.c **** {
+ 149               	.LM0:
+ 150               	.LFBB1:
+ 151 0000 2F92      		push r2
+ 152 0002 3F92      		push r3
+ 153 0004 4F92      		push r4
+ 154 0006 5F92      		push r5
+ 155 0008 6F92      		push r6
+ 156 000a 7F92      		push r7
+ 157 000c 8F92      		push r8
+ 158 000e 9F92      		push r9
+ 159 0010 AF92      		push r10
+ 160 0012 BF92      		push r11
+ 161 0014 CF92      		push r12
+ 162 0016 DF92      		push r13
+ 163 0018 EF92      		push r14
+ 164 001a FF92      		push r15
+ 165 001c 0F93      		push r16
+ 166 001e 1F93      		push r17
+ 167 0020 DF93      		push r29
+ 168 0022 CF93      		push r28
+ 169 0024 0F92      		push __tmp_reg__
+ 170 0026 CDB7      		in r28,__SP_L__
+ 171 0028 DEB7      		in r29,__SP_H__
+ 172               	/* prologue: function */
+ 173               	/* frame size = 1 */
+ 174               	/* stack size = 19 */
+ 175               	.L__stack_usage = 19
+  55:..//src/kernel/source/nrk_scheduler.c ****     int8_t task_ID;
+  56:..//src/kernel/source/nrk_scheduler.c ****     uint16_t next_wake;
+  57:..//src/kernel/source/nrk_scheduler.c ****     uint16_t start_time_stamp;
+  58:..//src/kernel/source/nrk_scheduler.c **** 
+  59:..//src/kernel/source/nrk_scheduler.c ****     _nrk_precision_os_timer_reset();
+ 177               	.LM1:
+ 178 002a 0E94 0000 		call _nrk_precision_os_timer_reset
+  60:..//src/kernel/source/nrk_scheduler.c ****     nrk_int_disable();   // this should be removed...  Not needed
+ 180               	.LM2:
+ 181 002e 0E94 0000 		call nrk_int_disable
+  61:..//src/kernel/source/nrk_scheduler.c **** 
+  62:..//src/kernel/source/nrk_scheduler.c **** 
+  63:..//src/kernel/source/nrk_scheduler.c **** #ifndef NRK_NO_BOUNDED_CONTEXT_SWAP
+  64:..//src/kernel/source/nrk_scheduler.c ****     _nrk_high_speed_timer_reset();
+ 183               	.LM3:
+ 184 0032 0E94 0000 		call _nrk_high_speed_timer_reset
+  65:..//src/kernel/source/nrk_scheduler.c ****     start_time_stamp=_nrk_high_speed_timer_get();
+ 186               	.LM4:
+ 187 0036 0E94 0000 		call _nrk_high_speed_timer_get
+ 188 003a 2C01      		movw r4,r24
+  66:..//src/kernel/source/nrk_scheduler.c **** #endif
+  67:..//src/kernel/source/nrk_scheduler.c ****     _nrk_set_next_wakeup(MAX_SCHED_WAKEUP_TIME);
+ 190               	.LM5:
+ 191 003c 8AEF      		ldi r24,lo8(-6)
+ 192 003e 0E94 0000 		call _nrk_set_next_wakeup
+  68:..//src/kernel/source/nrk_scheduler.c ****     // Set to huge number which will later get set to min
+  69:..//src/kernel/source/nrk_scheduler.c **** 
+  70:..//src/kernel/source/nrk_scheduler.c ****     next_wake=60000;
+  71:..//src/kernel/source/nrk_scheduler.c ****     // Safety zone starts here....
+  72:..//src/kernel/source/nrk_scheduler.c **** 
+  73:..//src/kernel/source/nrk_scheduler.c **** 
+  74:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_WATCHDOG
+  75:..//src/kernel/source/nrk_scheduler.c ****     nrk_watchdog_reset();
+  76:..//src/kernel/source/nrk_scheduler.c **** #endif
+  77:..//src/kernel/source/nrk_scheduler.c **** 
+  78:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_SW_WDT
+  79:..//src/kernel/source/nrk_scheduler.c ****     _nrk_sw_wdt_check();
+  80:..//src/kernel/source/nrk_scheduler.c **** #endif
+  81:..//src/kernel/source/nrk_scheduler.c **** 
+  82:..//src/kernel/source/nrk_scheduler.c **** 
+  83:..//src/kernel/source/nrk_scheduler.c **** 
+  84:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_KERNEL_TEST
+  85:..//src/kernel/source/nrk_scheduler.c ****     //nrk_kprintf( PSTR("*"));
+  86:..//src/kernel/source/nrk_scheduler.c ****     //Check if OS tick was delayed...
+  87:..//src/kernel/source/nrk_scheduler.c ****     // if(_nrk_cpu_state!=CPU_SLEEP && _nrk_os_timer_get()!=0) {
+  88:..//src/kernel/source/nrk_scheduler.c ****     //		nrk_kprintf( PSTR("X" ));
+  89:..//src/kernel/source/nrk_scheduler.c ****     //printf( "%u ",_nrk_os_timer_get());
+  90:..//src/kernel/source/nrk_scheduler.c ****     //	}
+  91:..//src/kernel/source/nrk_scheduler.c ****     //printf( "%u\r\n",_nrk_prev_timer_val);
+  92:..//src/kernel/source/nrk_scheduler.c ****     if((_nrk_cpu_state!=CPU_ACTIVE) && (_nrk_os_timer_get()>nrk_max_sleep_wakeup_time))
+  93:..//src/kernel/source/nrk_scheduler.c ****         nrk_max_sleep_wakeup_time=_nrk_os_timer_get();
+  94:..//src/kernel/source/nrk_scheduler.c **** #endif
+  95:..//src/kernel/source/nrk_scheduler.c ****     //while(_nrk_time_trigger>0)
+  96:..//src/kernel/source/nrk_scheduler.c ****     //{
+  97:..//src/kernel/source/nrk_scheduler.c ****     nrk_system_time.nano_secs+=((uint32_t)_nrk_prev_timer_val*NANOS_PER_TICK);
+ 194               	.LM6:
+ 195 0042 6091 0000 		lds r22,_nrk_prev_timer_val
+ 196 0046 70E0      		ldi r23,lo8(0)
+ 197 0048 80E0      		ldi r24,lo8(0)
+ 198 004a 90E0      		ldi r25,hi8(0)
+ 199 004c 23EB      		ldi r18,lo8(976563)
+ 200 004e 36EE      		ldi r19,hi8(976563)
+ 201 0050 4EE0      		ldi r20,hlo8(976563)
+ 202 0052 50E0      		ldi r21,hhi8(976563)
+ 203 0054 0E94 0000 		call __mulsi3
+ 204 0058 7B01      		movw r14,r22
+ 205 005a 8C01      		movw r16,r24
+ 206 005c 8091 0000 		lds r24,nrk_system_time+4
+ 207 0060 9091 0000 		lds r25,nrk_system_time+4+1
+ 208 0064 A091 0000 		lds r26,nrk_system_time+4+2
+ 209 0068 B091 0000 		lds r27,nrk_system_time+4+3
+ 210 006c E80E      		add r14,r24
+ 211 006e F91E      		adc r15,r25
+ 212 0070 0A1F      		adc r16,r26
+ 213 0072 1B1F      		adc r17,r27
+  98:..//src/kernel/source/nrk_scheduler.c ****     nrk_system_time.nano_secs-=(nrk_system_time.nano_secs%(uint32_t)NANOS_PER_TICK);
+ 215               	.LM7:
+ 216 0074 C801      		movw r24,r16
+ 217 0076 B701      		movw r22,r14
+ 218 0078 0E94 0000 		call __udivmodsi4
+ 219 007c E61A      		sub r14,r22
+ 220 007e F70A      		sbc r15,r23
+ 221 0080 080B      		sbc r16,r24
+ 222 0082 190B      		sbc r17,r25
+ 223 0084 8091 0000 		lds r24,nrk_system_time
+ 224 0088 9091 0000 		lds r25,nrk_system_time+1
+ 225 008c A091 0000 		lds r26,nrk_system_time+2
+ 226 0090 B091 0000 		lds r27,nrk_system_time+3
+  99:..//src/kernel/source/nrk_scheduler.c **** 
+ 100:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_STATS_TRACKER
+ 101:..//src/kernel/source/nrk_scheduler.c ****     if(nrk_cur_task_TCB->task_ID==NRK_IDLE_TASK_ID)
+ 102:..//src/kernel/source/nrk_scheduler.c ****     {
+ 103:..//src/kernel/source/nrk_scheduler.c ****         if(_nrk_cpu_state==CPU_SLEEP) _nrk_stats_sleep(_nrk_prev_timer_val);
+ 104:..//src/kernel/source/nrk_scheduler.c ****         _nrk_stats_task_preempted(nrk_cur_task_TCB->task_ID, _nrk_prev_timer_val);
+ 105:..//src/kernel/source/nrk_scheduler.c ****         // Add 0 time since the preempted call before set the correct value
+ 106:..//src/kernel/source/nrk_scheduler.c ****         _nrk_stats_task_suspend(nrk_cur_task_TCB->task_ID, 0);
+ 107:..//src/kernel/source/nrk_scheduler.c ****     }
+ 108:..//src/kernel/source/nrk_scheduler.c ****     else
+ 109:..//src/kernel/source/nrk_scheduler.c ****     {
+ 110:..//src/kernel/source/nrk_scheduler.c ****         if(nrk_cur_task_TCB->suspend_flag==1)
+ 111:..//src/kernel/source/nrk_scheduler.c ****             _nrk_stats_task_suspend(nrk_cur_task_TCB->task_ID, _nrk_prev_timer_val);
+ 112:..//src/kernel/source/nrk_scheduler.c ****         else
+ 113:..//src/kernel/source/nrk_scheduler.c ****             _nrk_stats_task_preempted(nrk_cur_task_TCB->task_ID, _nrk_prev_timer_val);
+ 114:..//src/kernel/source/nrk_scheduler.c ****     }
+ 115:..//src/kernel/source/nrk_scheduler.c **** #endif
+ 116:..//src/kernel/source/nrk_scheduler.c **** 
+ 117:..//src/kernel/source/nrk_scheduler.c ****     while(nrk_system_time.nano_secs>=NANOS_PER_SEC)
+ 118:..//src/kernel/source/nrk_scheduler.c ****     {
+ 119:..//src/kernel/source/nrk_scheduler.c ****         nrk_system_time.nano_secs-=NANOS_PER_SEC;
+ 120:..//src/kernel/source/nrk_scheduler.c ****         nrk_system_time.secs++;
+ 121:..//src/kernel/source/nrk_scheduler.c ****         nrk_system_time.nano_secs-=(nrk_system_time.nano_secs%(uint32_t)NANOS_PER_TICK);
+ 228               	.LM8:
+ 229 0094 E3EB      		ldi r30,lo8(976563)
+ 230 0096 AE2E      		mov r10,r30
+ 231 0098 E6EE      		ldi r30,hi8(976563)
+ 232 009a BE2E      		mov r11,r30
+ 233 009c EEE0      		ldi r30,hlo8(976563)
+ 234 009e CE2E      		mov r12,r30
+ 235 00a0 D12C      		mov r13,__zero_reg__
+ 117:..//src/kernel/source/nrk_scheduler.c ****     while(nrk_system_time.nano_secs>=NANOS_PER_SEC)
+ 237               	.LM9:
+ 238 00a2 00C0      		rjmp .L2
+ 239               	.L3:
+ 119:..//src/kernel/source/nrk_scheduler.c ****         nrk_system_time.nano_secs-=NANOS_PER_SEC;
+ 241               	.LM10:
+ 242 00a4 80E0      		ldi r24,lo8(-1000000000)
+ 243 00a6 96E3      		ldi r25,hi8(-1000000000)
+ 244 00a8 A5E6      		ldi r26,hlo8(-1000000000)
+ 245 00aa B4EC      		ldi r27,hhi8(-1000000000)
+ 246 00ac E80E      		add r14,r24
+ 247 00ae F91E      		adc r15,r25
+ 248 00b0 0A1F      		adc r16,r26
+ 249 00b2 1B1F      		adc r17,r27
+ 251               	.LM11:
+ 252 00b4 C801      		movw r24,r16
+ 253 00b6 B701      		movw r22,r14
+ 254 00b8 A601      		movw r20,r12
+ 255 00ba 9501      		movw r18,r10
+ 256 00bc 0E94 0000 		call __udivmodsi4
+ 257 00c0 E61A      		sub r14,r22
+ 258 00c2 F70A      		sbc r15,r23
+ 259 00c4 080B      		sbc r16,r24
+ 260 00c6 190B      		sbc r17,r25
+ 261 00c8 D401      		movw r26,r8
+ 262 00ca C301      		movw r24,r6
+ 263               	.L2:
+ 265               	.LM12:
+ 266 00cc 3C01      		movw r6,r24
+ 267 00ce 4D01      		movw r8,r26
+ 268 00d0 0894      		sec
+ 269 00d2 611C      		adc r6,__zero_reg__
+ 270 00d4 711C      		adc r7,__zero_reg__
+ 271 00d6 811C      		adc r8,__zero_reg__
+ 272 00d8 911C      		adc r9,__zero_reg__
+ 117:..//src/kernel/source/nrk_scheduler.c ****     while(nrk_system_time.nano_secs>=NANOS_PER_SEC)
+ 274               	.LM13:
+ 275 00da E0E0      		ldi r30,lo8(1000000000)
+ 276 00dc EE16      		cp r14,r30
+ 277 00de EAEC      		ldi r30,hi8(1000000000)
+ 278 00e0 FE06      		cpc r15,r30
+ 279 00e2 EAE9      		ldi r30,hlo8(1000000000)
+ 280 00e4 0E07      		cpc r16,r30
+ 281 00e6 EBE3      		ldi r30,hhi8(1000000000)
+ 282 00e8 1E07      		cpc r17,r30
+ 283 00ea 00F4      		brsh .L3
+ 117:..//src/kernel/source/nrk_scheduler.c ****     while(nrk_system_time.nano_secs>=NANOS_PER_SEC)
+ 285               	.LM14:
+ 286 00ec 8093 0000 		sts nrk_system_time,r24
+ 287 00f0 9093 0000 		sts nrk_system_time+1,r25
+ 288 00f4 A093 0000 		sts nrk_system_time+2,r26
+ 289 00f8 B093 0000 		sts nrk_system_time+3,r27
+ 290 00fc E092 0000 		sts nrk_system_time+4,r14
+ 291 0100 F092 0000 		sts nrk_system_time+4+1,r15
+ 292 0104 0093 0000 		sts nrk_system_time+4+2,r16
+ 293 0108 1093 0000 		sts nrk_system_time+4+3,r17
+ 122:..//src/kernel/source/nrk_scheduler.c ****     }
+ 123:..//src/kernel/source/nrk_scheduler.c ****     //  _nrk_time_trigger--;
+ 124:..//src/kernel/source/nrk_scheduler.c ****     //}
+ 125:..//src/kernel/source/nrk_scheduler.c ****     if(nrk_cur_task_TCB->suspend_flag==1 && nrk_cur_task_TCB->task_state!=FINISHED)
+ 295               	.LM15:
+ 296 010c E091 0000 		lds r30,nrk_cur_task_TCB
+ 297 0110 F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 298 0114 8581      		ldd r24,Z+5
+ 299 0116 8823      		tst r24
+ 300 0118 01F0      		breq .L4
+ 302               	.LM16:
+ 303 011a 8185      		ldd r24,Z+9
+ 304 011c 8430      		cpi r24,lo8(4)
+ 305 011e 01F0      		breq .L4
+ 126:..//src/kernel/source/nrk_scheduler.c ****     {
+ 127:..//src/kernel/source/nrk_scheduler.c ****         //	nrk_cur_task_TCB->task_state = EVENT_SUSPENDED;
+ 128:..//src/kernel/source/nrk_scheduler.c **** 
+ 129:..//src/kernel/source/nrk_scheduler.c ****         if(nrk_cur_task_TCB->event_suspend==RSRC_EVENT_SUSPENDED)
+ 307               	.LM17:
+ 308 0120 8781      		ldd r24,Z+7
+ 309 0122 8230      		cpi r24,lo8(2)
+ 310 0124 01F0      		breq .L37
+ 311               	.L5:
+ 130:..//src/kernel/source/nrk_scheduler.c ****             nrk_cur_task_TCB->task_state = EVENT_SUSPENDED;
+ 131:..//src/kernel/source/nrk_scheduler.c ****         else if( nrk_cur_task_TCB->event_suspend>0 && nrk_cur_task_TCB->nw_flag==0)
+ 313               	.LM18:
+ 314 0126 8823      		tst r24
+ 315 0128 01F0      		breq .L7
+ 317               	.LM19:
+ 318 012a 8681      		ldd r24,Z+6
+ 319 012c 8823      		tst r24
+ 320 012e 01F4      		brne .L8
+ 321               	.L37:
+ 132:..//src/kernel/source/nrk_scheduler.c ****             nrk_cur_task_TCB->task_state = EVENT_SUSPENDED;
+ 323               	.LM20:
+ 324 0130 85E0      		ldi r24,lo8(5)
+ 325 0132 00C0      		rjmp .L38
+ 326               	.L8:
+ 133:..//src/kernel/source/nrk_scheduler.c ****         else if( nrk_cur_task_TCB->event_suspend>0 && nrk_cur_task_TCB->nw_flag==1)
+ 134:..//src/kernel/source/nrk_scheduler.c ****             nrk_cur_task_TCB->task_state = SUSPENDED;
+ 328               	.LM21:
+ 329 0134 83E0      		ldi r24,lo8(3)
+ 330               	.L38:
+ 331 0136 8187      		std Z+9,r24
+ 332 0138 00C0      		rjmp .L6
+ 333               	.L7:
+ 135:..//src/kernel/source/nrk_scheduler.c ****         else
+ 136:..//src/kernel/source/nrk_scheduler.c ****         {
+ 137:..//src/kernel/source/nrk_scheduler.c ****             nrk_cur_task_TCB->task_state = SUSPENDED;
+ 335               	.LM22:
+ 336 013a 83E0      		ldi r24,lo8(3)
+ 337 013c 8187      		std Z+9,r24
+ 138:..//src/kernel/source/nrk_scheduler.c ****             nrk_cur_task_TCB->event_suspend=0;
+ 339               	.LM23:
+ 340 013e 1782      		std Z+7,__zero_reg__
+ 139:..//src/kernel/source/nrk_scheduler.c ****             nrk_cur_task_TCB->nw_flag=0;
+ 342               	.LM24:
+ 343 0140 1682      		std Z+6,__zero_reg__
+ 344               	.L6:
+ 140:..//src/kernel/source/nrk_scheduler.c ****         }
+ 141:..//src/kernel/source/nrk_scheduler.c ****         nrk_rem_from_readyQ(nrk_cur_task_TCB->task_ID);
+ 346               	.LM25:
+ 347 0142 8085      		ldd r24,Z+8
+ 348 0144 0E94 0000 		call nrk_rem_from_readyQ
+ 349               	.L4:
+ 142:..//src/kernel/source/nrk_scheduler.c ****     }
+ 143:..//src/kernel/source/nrk_scheduler.c ****     //nrk_print_readyQ();
+ 144:..//src/kernel/source/nrk_scheduler.c ****      
+ 145:..//src/kernel/source/nrk_scheduler.c ****     // Update cpu used value for ended task
+ 146:..//src/kernel/source/nrk_scheduler.c ****     // If the task has used its reserve, suspend task
+ 147:..//src/kernel/source/nrk_scheduler.c ****     // Don't disable IdleTask which is 0
+ 148:..//src/kernel/source/nrk_scheduler.c ****     // Don't decrease cpu_remaining if reserve is 0 and hence disabled
+ 149:..//src/kernel/source/nrk_scheduler.c ****     if(nrk_cur_task_TCB->cpu_reserve!=0 && nrk_cur_task_TCB->task_ID!=NRK_IDLE_TASK_ID && nrk_cur_t
+ 351               	.LM26:
+ 352 0148 E091 0000 		lds r30,nrk_cur_task_TCB
+ 353 014c F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 354 0150 458D      		ldd r20,Z+29
+ 355 0152 568D      		ldd r21,Z+30
+ 356 0154 4115      		cp r20,__zero_reg__
+ 357 0156 5105      		cpc r21,__zero_reg__
+ 358 0158 01F4      		brne .+2
+ 359 015a 00C0      		rjmp .L9
+ 361               	.LM27:
+ 362 015c 6085      		ldd r22,Z+8
+ 363 015e 6623      		tst r22
+ 364 0160 01F4      		brne .+2
+ 365 0162 00C0      		rjmp .L9
+ 366 0164 7185      		ldd r23,Z+9
+ 367 0166 7430      		cpi r23,lo8(4)
+ 368 0168 01F4      		brne .+2
+ 369 016a 00C0      		rjmp .L9
+ 150:..//src/kernel/source/nrk_scheduler.c ****     {
+ 151:..//src/kernel/source/nrk_scheduler.c ****         if(nrk_cur_task_TCB->cpu_remaining<_nrk_prev_timer_val)
+ 371               	.LM28:
+ 372 016c 218D      		ldd r18,Z+25
+ 373 016e 328D      		ldd r19,Z+26
+ 374 0170 8091 0000 		lds r24,_nrk_prev_timer_val
+ 375 0174 90E0      		ldi r25,lo8(0)
+ 376 0176 2817      		cp r18,r24
+ 377 0178 3907      		cpc r19,r25
+ 378 017a 00F4      		brsh .L10
+ 152:..//src/kernel/source/nrk_scheduler.c ****         {
+ 153:..//src/kernel/source/nrk_scheduler.c **** 	    // It's an error for BASIC_TASK but for aperiodic CBS task it is possible to be the case.
+ 154:..//src/kernel/source/nrk_scheduler.c **** 	    // We need make sure the CBC will not be forced to set its cpu_remaining to 0 if it hasnt fini
+ 155:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_STATS_TRACKER
+ 156:..//src/kernel/source/nrk_scheduler.c ****             _nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
+ 157:..//src/kernel/source/nrk_scheduler.c **** #endif
+ 158:..//src/kernel/source/nrk_scheduler.c ****             if(nrk_cur_task_TCB->task_type == CBS_TASK && nrk_cur_task_TCB->task_state != SUSPENDED
+ 380               	.LM29:
+ 381 017c 81A1      		ldd r24,Z+33
+ 382 017e 8330      		cpi r24,lo8(3)
+ 383 0180 01F4      		brne .L11
+ 385               	.LM30:
+ 386 0182 7330      		cpi r23,lo8(3)
+ 387 0184 01F0      		breq .L11
+ 159:..//src/kernel/source/nrk_scheduler.c ****                 nrk_cur_task_TCB->next_period = nrk_cur_task_TCB->period;
+ 389               	.LM31:
+ 390 0186 838D      		ldd r24,Z+27
+ 391 0188 948D      		ldd r25,Z+28
+ 392 018a 908F      		std Z+24,r25
+ 393 018c 878B      		std Z+23,r24
+ 160:..//src/kernel/source/nrk_scheduler.c ****                 nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
+ 395               	.LM32:
+ 396 018e 528F      		std Z+26,r21
+ 397 0190 418F      		std Z+25,r20
+ 161:..//src/kernel/source/nrk_scheduler.c ****                 printf("Replenish CBS of Task %d\n",nrk_cur_task_TCB->task_ID);
+ 399               	.LM33:
+ 400 0192 00D0      		rcall .
+ 401 0194 00D0      		rcall .
+ 402 0196 80E0      		ldi r24,lo8(.LC0)
+ 403 0198 90E0      		ldi r25,hi8(.LC0)
+ 404 019a ADB7      		in r26,__SP_L__
+ 405 019c BEB7      		in r27,__SP_H__
+ 406 019e 1296      		adiw r26,1+1
+ 407 01a0 9C93      		st X,r25
+ 408 01a2 8E93      		st -X,r24
+ 409 01a4 1197      		sbiw r26,1
+ 410 01a6 7727      		clr r23
+ 411 01a8 67FD      		sbrc r22,7
+ 412 01aa 7095      		com r23
+ 413 01ac 1496      		adiw r26,3+1
+ 414 01ae 7C93      		st X,r23
+ 415 01b0 6E93      		st -X,r22
+ 416 01b2 1397      		sbiw r26,3
+ 417 01b4 0E94 0000 		call printf
+ 418 01b8 0F90      		pop __tmp_reg__
+ 419 01ba 0F90      		pop __tmp_reg__
+ 420 01bc 0F90      		pop __tmp_reg__
+ 421 01be 0F90      		pop __tmp_reg__
+ 422 01c0 00C0      		rjmp .L12
+ 423               	.L11:
+ 162:..//src/kernel/source/nrk_scheduler.c ****             }else{
+ 163:..//src/kernel/source/nrk_scheduler.c ****                 nrk_cur_task_TCB->cpu_remaining=0;
+ 425               	.LM34:
+ 426 01c2 128E      		std Z+26,__zero_reg__
+ 427 01c4 118E      		std Z+25,__zero_reg__
+ 164:..//src/kernel/source/nrk_scheduler.c **** 		nrk_kernel_error_add(NRK_RESERVE_ERROR,nrk_cur_task_TCB->task_ID);
+ 429               	.LM35:
+ 430 01c6 82E0      		ldi r24,lo8(2)
+ 431 01c8 0E94 0000 		call nrk_kernel_error_add
+ 432 01cc 00C0      		rjmp .L12
+ 433               	.L10:
+ 165:..//src/kernel/source/nrk_scheduler.c ****             }
+ 166:..//src/kernel/source/nrk_scheduler.c ****         }
+ 167:..//src/kernel/source/nrk_scheduler.c ****         else
+ 168:..//src/kernel/source/nrk_scheduler.c ****             nrk_cur_task_TCB->cpu_remaining-=_nrk_prev_timer_val;
+ 435               	.LM36:
+ 436 01ce 281B      		sub r18,r24
+ 437 01d0 390B      		sbc r19,r25
+ 438 01d2 328F      		std Z+26,r19
+ 439 01d4 218F      		std Z+25,r18
+ 440               	.L12:
+ 169:..//src/kernel/source/nrk_scheduler.c **** 
+ 170:..//src/kernel/source/nrk_scheduler.c ****         task_ID= nrk_cur_task_TCB->task_ID;
+ 442               	.LM37:
+ 443 01d6 E091 0000 		lds r30,nrk_cur_task_TCB
+ 444 01da F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 445 01de 0085      		ldd r16,Z+8
+ 171:..//src/kernel/source/nrk_scheduler.c ****       //                  printf("cpu remaining of %d is %d \n",task_ID,nrk_task_TCB[task_ID].cpu_r
+ 172:..//src/kernel/source/nrk_scheduler.c **** 
+ 173:..//src/kernel/source/nrk_scheduler.c ****         if (nrk_cur_task_TCB->cpu_remaining ==0 )
+ 447               	.LM38:
+ 448 01e0 218D      		ldd r18,Z+25
+ 449 01e2 328D      		ldd r19,Z+26
+ 450 01e4 2115      		cp r18,__zero_reg__
+ 451 01e6 3105      		cpc r19,__zero_reg__
+ 452 01e8 01F4      		brne .L9
+ 174:..//src/kernel/source/nrk_scheduler.c ****         {
+ 175:..//src/kernel/source/nrk_scheduler.c ****             //printf("Task %d cpu remaining = 0\n", task_ID);
+ 176:..//src/kernel/source/nrk_scheduler.c ****             //printf("Task type is %d\n", nrk_cur_task_TCB->task_type);
+ 177:..//src/kernel/source/nrk_scheduler.c ****             // Here we dont need to suspend CBS
+ 178:..//src/kernel/source/nrk_scheduler.c ****             if(nrk_cur_task_TCB->task_type == BASIC_TASK){
+ 454               	.LM39:
+ 455 01ea 81A1      		ldd r24,Z+33
+ 456 01ec 8130      		cpi r24,lo8(1)
+ 457 01ee 01F4      		brne .L13
+ 179:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_STATS_TRACKER
+ 180:..//src/kernel/source/nrk_scheduler.c ****                 _nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
+ 181:..//src/kernel/source/nrk_scheduler.c **** #endif
+ 182:..//src/kernel/source/nrk_scheduler.c ****                 nrk_kernel_error_add(NRK_RESERVE_VIOLATED,task_ID);
+ 459               	.LM40:
+ 460 01f0 83E0      		ldi r24,lo8(3)
+ 461 01f2 602F      		mov r22,r16
+ 462 01f4 0E94 0000 		call nrk_kernel_error_add
+ 183:..//src/kernel/source/nrk_scheduler.c ****                 nrk_cur_task_TCB->task_state = SUSPENDED;
+ 464               	.LM41:
+ 465 01f8 E091 0000 		lds r30,nrk_cur_task_TCB
+ 466 01fc F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 467 0200 83E0      		ldi r24,lo8(3)
+ 468 0202 8187      		std Z+9,r24
+ 184:..//src/kernel/source/nrk_scheduler.c ****                 nrk_rem_from_readyQ(task_ID);
+ 470               	.LM42:
+ 471 0204 802F      		mov r24,r16
+ 472 0206 0E94 0000 		call nrk_rem_from_readyQ
+ 473 020a 00C0      		rjmp .L9
+ 474               	.L13:
+ 185:..//src/kernel/source/nrk_scheduler.c ****             }else if(nrk_cur_task_TCB->task_type == CBS_TASK
+ 476               	.LM43:
+ 477 020c 8330      		cpi r24,lo8(3)
+ 478 020e 01F4      		brne .L9
+ 186:..//src/kernel/source/nrk_scheduler.c **** 		    && nrk_cur_task_TCB->task_state != SUSPENDED
+ 480               	.LM44:
+ 481 0210 8185      		ldd r24,Z+9
+ 482 0212 8330      		cpi r24,lo8(3)
+ 483 0214 01F0      		breq .L9
+ 187:..//src/kernel/source/nrk_scheduler.c **** 		    ){
+ 188:..//src/kernel/source/nrk_scheduler.c ****                 // We need replenish the budget for CBS
+ 189:..//src/kernel/source/nrk_scheduler.c ****                 printf("Task %d: Replenish CBS <-------- \n", task_ID);
+ 485               	.LM45:
+ 486 0216 00D0      		rcall .
+ 487 0218 00D0      		rcall .
+ 488 021a 20E0      		ldi r18,lo8(.LC1)
+ 489 021c 30E0      		ldi r19,hi8(.LC1)
+ 490 021e EDB7      		in r30,__SP_L__
+ 491 0220 FEB7      		in r31,__SP_H__
+ 492 0222 3283      		std Z+2,r19
+ 493 0224 2183      		std Z+1,r18
+ 494 0226 802F      		mov r24,r16
+ 495 0228 9927      		clr r25
+ 496 022a 87FD      		sbrc r24,7
+ 497 022c 9095      		com r25
+ 498 022e 9483      		std Z+4,r25
+ 499 0230 8383      		std Z+3,r24
+ 500 0232 0E94 0000 		call printf
+ 190:..//src/kernel/source/nrk_scheduler.c ****                 nrk_cur_task_TCB->next_period = nrk_cur_task_TCB->period;
+ 502               	.LM46:
+ 503 0236 E091 0000 		lds r30,nrk_cur_task_TCB
+ 504 023a F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 505 023e 838D      		ldd r24,Z+27
+ 506 0240 948D      		ldd r25,Z+28
+ 507 0242 908F      		std Z+24,r25
+ 508 0244 878B      		std Z+23,r24
+ 191:..//src/kernel/source/nrk_scheduler.c ****                 nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
+ 510               	.LM47:
+ 511 0246 858D      		ldd r24,Z+29
+ 512 0248 968D      		ldd r25,Z+30
+ 513 024a 928F      		std Z+26,r25
+ 514 024c 818F      		std Z+25,r24
+ 515 024e 0F90      		pop __tmp_reg__
+ 516 0250 0F90      		pop __tmp_reg__
+ 517 0252 0F90      		pop __tmp_reg__
+ 518 0254 0F90      		pop __tmp_reg__
+ 519               	.L9:
+ 521               	.LM48:
+ 522 0256 70E0      		ldi r23,lo8(nrk_task_TCB+5)
+ 523 0258 272E      		mov r2,r23
+ 524 025a 70E0      		ldi r23,hi8(nrk_task_TCB+5)
+ 525 025c 372E      		mov r3,r23
+ 121:..//src/kernel/source/nrk_scheduler.c ****         nrk_system_time.nano_secs-=(nrk_system_time.nano_secs%(uint32_t)NANOS_PER_TICK);
+ 527               	.LM49:
+ 528 025e 00E6      		ldi r16,lo8(-5536)
+ 529 0260 1AEE      		ldi r17,hi8(-5536)
+ 530 0262 20E0      		ldi r18,lo8(0)
+ 192:..//src/kernel/source/nrk_scheduler.c ****                 //printf("Next period is from %d\n", nrk_cur_task_TCB->next_period);
+ 193:..//src/kernel/source/nrk_scheduler.c ****             }
+ 194:..//src/kernel/source/nrk_scheduler.c **** 
+ 195:..//src/kernel/source/nrk_scheduler.c ****         }
+ 196:..//src/kernel/source/nrk_scheduler.c ****     }
+ 197:..//src/kernel/source/nrk_scheduler.c **** 
+ 198:..//src/kernel/source/nrk_scheduler.c ****     // Check I/O nrk_queues to add tasks with remaining cpu back...
+ 199:..//src/kernel/source/nrk_scheduler.c **** 
+ 200:..//src/kernel/source/nrk_scheduler.c ****     // Add eligable tasks back to the ready Queue
+ 201:..//src/kernel/source/nrk_scheduler.c ****     // At the same time find the next earliest wakeup
+ 202:..//src/kernel/source/nrk_scheduler.c ****     for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++)
+ 203:..//src/kernel/source/nrk_scheduler.c ****     {
+ 204:..//src/kernel/source/nrk_scheduler.c ****         if(nrk_task_TCB[task_ID].task_ID==-1) continue;
+ 205:..//src/kernel/source/nrk_scheduler.c ****         nrk_task_TCB[task_ID].suspend_flag=0;
+ 206:..//src/kernel/source/nrk_scheduler.c ****         if( nrk_task_TCB[task_ID].task_ID!=NRK_IDLE_TASK_ID && nrk_task_TCB[task_ID].task_state!=FI
+ 207:..//src/kernel/source/nrk_scheduler.c ****         {
+ 208:..//src/kernel/source/nrk_scheduler.c ****             if(  nrk_task_TCB[task_ID].next_wakeup >= _nrk_prev_timer_val )
+ 209:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].next_wakeup-=_nrk_prev_timer_val;
+ 210:..//src/kernel/source/nrk_scheduler.c ****             else
+ 211:..//src/kernel/source/nrk_scheduler.c ****             {
+ 212:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].next_wakeup=0;
+ 213:..//src/kernel/source/nrk_scheduler.c ****             }
+ 214:..//src/kernel/source/nrk_scheduler.c ****             // Do next period book keeping.
+ 215:..//src/kernel/source/nrk_scheduler.c ****             // next_period needs to be set such that the period is kept consistent even if other
+ 216:..//src/kernel/source/nrk_scheduler.c ****             // wait until functions are called.
+ 217:..//src/kernel/source/nrk_scheduler.c ****             if( nrk_task_TCB[task_ID].next_period >= _nrk_prev_timer_val )
+ 218:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].next_period-=_nrk_prev_timer_val;
+ 219:..//src/kernel/source/nrk_scheduler.c ****             else
+ 220:..//src/kernel/source/nrk_scheduler.c ****             {
+ 221:..//src/kernel/source/nrk_scheduler.c ****                 if(nrk_task_TCB[task_ID].period>_nrk_prev_timer_val)
+ 222:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_period= nrk_task_TCB[task_ID].period-_nrk_prev_timer
+ 223:..//src/kernel/source/nrk_scheduler.c ****                 else
+ 224:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_period= _nrk_prev_timer_val % nrk_task_TCB[task_ID].
+ 225:..//src/kernel/source/nrk_scheduler.c ****             }
+ 226:..//src/kernel/source/nrk_scheduler.c ****             if(nrk_task_TCB[task_ID].next_period==0) nrk_task_TCB[task_ID].next_period=nrk_task_TCB
+ 227:..//src/kernel/source/nrk_scheduler.c **** 
+ 228:..//src/kernel/source/nrk_scheduler.c ****         }
+ 229:..//src/kernel/source/nrk_scheduler.c **** 
+ 230:..//src/kernel/source/nrk_scheduler.c **** 
+ 231:..//src/kernel/source/nrk_scheduler.c ****         // Look for Next Task that Might Wakeup to interrupt current task
+ 232:..//src/kernel/source/nrk_scheduler.c ****         if (nrk_task_TCB[task_ID].task_state == SUSPENDED )
+ 233:..//src/kernel/source/nrk_scheduler.c ****         {
+ 234:..//src/kernel/source/nrk_scheduler.c ****             // printf( "Task: %d nw: %d\n",task_ID,nrk_task_TCB[task_ID].next_wakeup);
+ 235:..//src/kernel/source/nrk_scheduler.c ****             // If a task needs to become READY, make it ready
+ 236:..//src/kernel/source/nrk_scheduler.c ****             if (nrk_task_TCB[task_ID].next_wakeup == 0)
+ 237:..//src/kernel/source/nrk_scheduler.c ****             {
+ 238:..//src/kernel/source/nrk_scheduler.c ****                 // printf( "Adding back %d\n",task_ID );
+ 239:..//src/kernel/source/nrk_scheduler.c ****                 if(nrk_task_TCB[task_ID].event_suspend>0 && nrk_task_TCB[task_ID].nw_flag==1) nrk_t
+ 240:..//src/kernel/source/nrk_scheduler.c ****                 //if(nrk_task_TCB[task_ID].event_suspend==0) nrk_task_TCB[task_ID].active_signal_ma
+ 241:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].event_suspend=0;
+ 242:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].nw_flag=0;
+ 243:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].suspend_flag=0;
+ 244:..//src/kernel/source/nrk_scheduler.c ****                 if(nrk_task_TCB[task_ID].num_periods==1)
+ 245:..//src/kernel/source/nrk_scheduler.c ****                 {
+ 246:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].cpu_remaining = nrk_task_TCB[task_ID].cpu_reserve;
+ 247:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].task_state = READY;
+ 248:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_wakeup = nrk_task_TCB[task_ID].next_period;
+ 249:..//src/kernel/source/nrk_scheduler.c ****                     // If there is no period set, don't wakeup periodically
+ 250:..//src/kernel/source/nrk_scheduler.c ****                     if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCH
+ 251:..//src/kernel/source/nrk_scheduler.c ****                     nrk_add_to_readyQ(task_ID);
+ 252:..//src/kernel/source/nrk_scheduler.c ****                 }
+ 253:..//src/kernel/source/nrk_scheduler.c ****                 else
+ 254:..//src/kernel/source/nrk_scheduler.c ****                 {
+ 255:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].cpu_remaining = nrk_task_TCB[task_ID].cpu_reserve;
+ 256:..//src/kernel/source/nrk_scheduler.c ****                     //nrk_task_TCB[task_ID].next_wakeup = nrk_task_TCB[task_ID].next_period;
+ 257:..//src/kernel/source/nrk_scheduler.c ****                     //nrk_task_TCB[task_ID].num_periods--;
+ 258:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_wakeup = (nrk_task_TCB[task_ID].period*(nrk_task_TCB
+ 259:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_period = (nrk_task_TCB[task_ID].period*(nrk_task_TCB
+ 260:..//src/kernel/source/nrk_scheduler.c ****                     if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCH
+ 261:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].num_periods=1;
+ 532               	.LM50:
+ 533 0264 61E0      		ldi r22,lo8(1)
+ 534 0266 662E      		mov r6,r22
+ 535 0268 712C      		mov r7,__zero_reg__
+ 260:..//src/kernel/source/nrk_scheduler.c ****                     if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCH
+ 537               	.LM51:
+ 538 026a 5AEF      		ldi r21,lo8(250)
+ 539 026c E52E      		mov r14,r21
+ 540 026e F12C      		mov r15,__zero_reg__
+ 247:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].task_state = READY;
+ 542               	.LM52:
+ 543 0270 42E0      		ldi r20,lo8(2)
+ 544 0272 942E      		mov r9,r20
+ 239:..//src/kernel/source/nrk_scheduler.c ****                 if(nrk_task_TCB[task_ID].event_suspend>0 && nrk_task_TCB[task_ID].nw_flag==1) nrk_t
+ 546               	.LM53:
+ 547 0274 31E0      		ldi r19,lo8(1)
+ 548 0276 A32E      		mov r10,r19
+ 549 0278 B12C      		mov r11,__zero_reg__
+ 550 027a C12C      		mov r12,__zero_reg__
+ 551 027c D12C      		mov r13,__zero_reg__
+ 552               	.L26:
+ 204:..//src/kernel/source/nrk_scheduler.c ****         if(nrk_task_TCB[task_ID].task_ID==-1) continue;
+ 554               	.LM54:
+ 555 027e D101      		movw r26,r2
+ 556 0280 1396      		adiw r26,3
+ 557 0282 8C91      		ld r24,X
+ 558 0284 1397      		sbiw r26,3
+ 559 0286 8F3F      		cpi r24,lo8(-1)
+ 560 0288 01F4      		brne .+2
+ 561 028a 00C0      		rjmp .L14
+ 205:..//src/kernel/source/nrk_scheduler.c ****         nrk_task_TCB[task_ID].suspend_flag=0;
+ 563               	.LM55:
+ 564 028c 1C92      		st X,__zero_reg__
+ 206:..//src/kernel/source/nrk_scheduler.c ****         if( nrk_task_TCB[task_ID].task_ID!=NRK_IDLE_TASK_ID && nrk_task_TCB[task_ID].task_state!=FI
+ 566               	.LM56:
+ 567 028e 8823      		tst r24
+ 568 0290 01F4      		brne .+2
+ 569 0292 00C0      		rjmp .L15
+ 206:..//src/kernel/source/nrk_scheduler.c ****         if( nrk_task_TCB[task_ID].task_ID!=NRK_IDLE_TASK_ID && nrk_task_TCB[task_ID].task_state!=FI
+ 571               	.LM57:
+ 572 0294 1496      		adiw r26,4
+ 573 0296 8C91      		ld r24,X
+ 574 0298 1497      		sbiw r26,4
+ 575 029a 8430      		cpi r24,lo8(4)
+ 576 029c 01F0      		breq .L15
+ 208:..//src/kernel/source/nrk_scheduler.c ****             if(  nrk_task_TCB[task_ID].next_wakeup >= _nrk_prev_timer_val )
+ 578               	.LM58:
+ 579 029e 5096      		adiw r26,16
+ 580 02a0 4D91      		ld r20,X+
+ 581 02a2 5C91      		ld r21,X
+ 582 02a4 5197      		sbiw r26,16+1
+ 583 02a6 8091 0000 		lds r24,_nrk_prev_timer_val
+ 584 02aa 90E0      		ldi r25,lo8(0)
+ 585 02ac 4817      		cp r20,r24
+ 586 02ae 5907      		cpc r21,r25
+ 587 02b0 00F0      		brlo .L16
+ 209:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].next_wakeup-=_nrk_prev_timer_val;
+ 589               	.LM59:
+ 590 02b2 481B      		sub r20,r24
+ 591 02b4 590B      		sbc r21,r25
+ 592 02b6 5196      		adiw r26,16+1
+ 593 02b8 5C93      		st X,r21
+ 594 02ba 4E93      		st -X,r20
+ 595 02bc 5097      		sbiw r26,16
+ 596 02be 00C0      		rjmp .L17
+ 597               	.L16:
+ 212:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].next_wakeup=0;
+ 599               	.LM60:
+ 600 02c0 F101      		movw r30,r2
+ 601 02c2 118A      		std Z+17,__zero_reg__
+ 602 02c4 108A      		std Z+16,__zero_reg__
+ 603               	.L17:
+ 217:..//src/kernel/source/nrk_scheduler.c ****             if( nrk_task_TCB[task_ID].next_period >= _nrk_prev_timer_val )
+ 605               	.LM61:
+ 606 02c6 D101      		movw r26,r2
+ 607 02c8 5296      		adiw r26,18
+ 608 02ca 4D91      		ld r20,X+
+ 609 02cc 5C91      		ld r21,X
+ 610 02ce 5397      		sbiw r26,18+1
+ 611 02d0 4817      		cp r20,r24
+ 612 02d2 5907      		cpc r21,r25
+ 613 02d4 00F0      		brlo .L18
+ 218:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].next_period-=_nrk_prev_timer_val;
+ 615               	.LM62:
+ 616 02d6 481B      		sub r20,r24
+ 617 02d8 590B      		sbc r21,r25
+ 618 02da 5396      		adiw r26,18+1
+ 619 02dc 5C93      		st X,r21
+ 620 02de 4E93      		st -X,r20
+ 621 02e0 5297      		sbiw r26,18
+ 622 02e2 00C0      		rjmp .L19
+ 623               	.L18:
+ 221:..//src/kernel/source/nrk_scheduler.c ****                 if(nrk_task_TCB[task_ID].period>_nrk_prev_timer_val)
+ 625               	.LM63:
+ 626 02e4 F101      		movw r30,r2
+ 627 02e6 6689      		ldd r22,Z+22
+ 628 02e8 7789      		ldd r23,Z+23
+ 629 02ea 8617      		cp r24,r22
+ 630 02ec 9707      		cpc r25,r23
+ 631 02ee 00F4      		brsh .L20
+ 222:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_period= nrk_task_TCB[task_ID].period-_nrk_prev_timer
+ 633               	.LM64:
+ 634 02f0 681B      		sub r22,r24
+ 635 02f2 790B      		sbc r23,r25
+ 636 02f4 738B      		std Z+19,r23
+ 637 02f6 628B      		std Z+18,r22
+ 638 02f8 00C0      		rjmp .L19
+ 639               	.L20:
+ 224:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_period= _nrk_prev_timer_val % nrk_task_TCB[task_ID].
+ 641               	.LM65:
+ 642 02fa 0E94 0000 		call __udivmodhi4
+ 643 02fe D101      		movw r26,r2
+ 644 0300 5396      		adiw r26,18+1
+ 645 0302 9C93      		st X,r25
+ 646 0304 8E93      		st -X,r24
+ 647 0306 5297      		sbiw r26,18
+ 648               	.L19:
+ 226:..//src/kernel/source/nrk_scheduler.c ****             if(nrk_task_TCB[task_ID].next_period==0) nrk_task_TCB[task_ID].next_period=nrk_task_TCB
+ 650               	.LM66:
+ 651 0308 F101      		movw r30,r2
+ 652 030a 8289      		ldd r24,Z+18
+ 653 030c 9389      		ldd r25,Z+19
+ 654 030e 0097      		sbiw r24,0
+ 655 0310 01F4      		brne .L15
+ 226:..//src/kernel/source/nrk_scheduler.c ****             if(nrk_task_TCB[task_ID].next_period==0) nrk_task_TCB[task_ID].next_period=nrk_task_TCB
+ 657               	.LM67:
+ 658 0312 8689      		ldd r24,Z+22
+ 659 0314 9789      		ldd r25,Z+23
+ 660 0316 938B      		std Z+19,r25
+ 661 0318 828B      		std Z+18,r24
+ 662               	.L15:
+ 232:..//src/kernel/source/nrk_scheduler.c ****         if (nrk_task_TCB[task_ID].task_state == SUSPENDED )
+ 664               	.LM68:
+ 665 031a D101      		movw r26,r2
+ 666 031c 1496      		adiw r26,4
+ 667 031e 8C91      		ld r24,X
+ 668 0320 1497      		sbiw r26,4
+ 669 0322 8330      		cpi r24,lo8(3)
+ 670 0324 01F0      		breq .+2
+ 671 0326 00C0      		rjmp .L14
+ 236:..//src/kernel/source/nrk_scheduler.c ****             if (nrk_task_TCB[task_ID].next_wakeup == 0)
+ 673               	.LM69:
+ 674 0328 5096      		adiw r26,16
+ 675 032a 8D91      		ld r24,X+
+ 676 032c 9C91      		ld r25,X
+ 677 032e 5197      		sbiw r26,16+1
+ 678 0330 0097      		sbiw r24,0
+ 679 0332 01F0      		breq .+2
+ 680 0334 00C0      		rjmp .L21
+ 239:..//src/kernel/source/nrk_scheduler.c ****                 if(nrk_task_TCB[task_ID].event_suspend>0 && nrk_task_TCB[task_ID].nw_flag==1) nrk_t
+ 682               	.LM70:
+ 683 0336 1296      		adiw r26,2
+ 684 0338 8C91      		ld r24,X
+ 685 033a 1297      		sbiw r26,2
+ 686 033c 8823      		tst r24
+ 687 033e 01F0      		breq .L22
+ 239:..//src/kernel/source/nrk_scheduler.c ****                 if(nrk_task_TCB[task_ID].event_suspend>0 && nrk_task_TCB[task_ID].nw_flag==1) nrk_t
+ 689               	.LM71:
+ 690 0340 1196      		adiw r26,1
+ 691 0342 8C91      		ld r24,X
+ 692 0344 1197      		sbiw r26,1
+ 693 0346 8823      		tst r24
+ 694 0348 01F0      		breq .L22
+ 695 034a D601      		movw r26,r12
+ 696 034c C501      		movw r24,r10
+ 697 034e 0090 0000 		lds r0,nrk_wakeup_signal
+ 698 0352 00C0      		rjmp 2f
+ 699 0354 880F      	1:	lsl r24
+ 700 0356 991F      		rol r25
+ 701 0358 AA1F      		rol r26
+ 702 035a BB1F      		rol r27
+ 703 035c 0A94      	2:	dec r0
+ 704 035e 02F4      		brpl 1b
+ 705 0360 F101      		movw r30,r2
+ 706 0362 8487      		std Z+12,r24
+ 707 0364 9587      		std Z+13,r25
+ 708 0366 A687      		std Z+14,r26
+ 709 0368 B787      		std Z+15,r27
+ 710               	.L22:
+ 241:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].event_suspend=0;
+ 712               	.LM72:
+ 713 036a D101      		movw r26,r2
+ 714 036c 1296      		adiw r26,2
+ 715 036e 1C92      		st X,__zero_reg__
+ 716 0370 1297      		sbiw r26,2
+ 242:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].nw_flag=0;
+ 718               	.LM73:
+ 719 0372 1196      		adiw r26,1
+ 720 0374 1C92      		st X,__zero_reg__
+ 721 0376 1197      		sbiw r26,1
+ 243:..//src/kernel/source/nrk_scheduler.c ****                 nrk_task_TCB[task_ID].suspend_flag=0;
+ 723               	.LM74:
+ 724 0378 1C92      		st X,__zero_reg__
+ 244:..//src/kernel/source/nrk_scheduler.c ****                 if(nrk_task_TCB[task_ID].num_periods==1)
+ 726               	.LM75:
+ 727 037a 5A96      		adiw r26,26
+ 728 037c 4D91      		ld r20,X+
+ 729 037e 5C91      		ld r21,X
+ 730 0380 5B97      		sbiw r26,26+1
+ 731 0382 5696      		adiw r26,22
+ 732 0384 8D91      		ld r24,X+
+ 733 0386 9C91      		ld r25,X
+ 734 0388 5797      		sbiw r26,22+1
+ 735 038a 5896      		adiw r26,24
+ 736 038c 6D91      		ld r22,X+
+ 737 038e 7C91      		ld r23,X
+ 738 0390 5997      		sbiw r26,24+1
+ 739 0392 4130      		cpi r20,1
+ 740 0394 5105      		cpc r21,__zero_reg__
+ 741 0396 01F4      		brne .L23
+ 246:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].cpu_remaining = nrk_task_TCB[task_ID].cpu_reserve;
+ 743               	.LM76:
+ 744 0398 5596      		adiw r26,20+1
+ 745 039a 7C93      		st X,r23
+ 746 039c 6E93      		st -X,r22
+ 747 039e 5497      		sbiw r26,20
+ 247:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].task_state = READY;
+ 749               	.LM77:
+ 750 03a0 1496      		adiw r26,4
+ 751 03a2 9C92      		st X,r9
+ 752 03a4 1497      		sbiw r26,4
+ 248:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_wakeup = nrk_task_TCB[task_ID].next_period;
+ 754               	.LM78:
+ 755 03a6 5296      		adiw r26,18
+ 756 03a8 4D91      		ld r20,X+
+ 757 03aa 5C91      		ld r21,X
+ 758 03ac 5397      		sbiw r26,18+1
+ 759 03ae 5196      		adiw r26,16+1
+ 760 03b0 5C93      		st X,r21
+ 761 03b2 4E93      		st -X,r20
+ 762 03b4 5097      		sbiw r26,16
+ 250:..//src/kernel/source/nrk_scheduler.c ****                     if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCH
+ 764               	.LM79:
+ 765 03b6 0097      		sbiw r24,0
+ 766 03b8 01F4      		brne .L24
+ 250:..//src/kernel/source/nrk_scheduler.c ****                     if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCH
+ 768               	.LM80:
+ 769 03ba 5196      		adiw r26,16+1
+ 770 03bc FC92      		st X,r15
+ 771 03be EE92      		st -X,r14
+ 772 03c0 5097      		sbiw r26,16
+ 773               	.L24:
+ 251:..//src/kernel/source/nrk_scheduler.c ****                     nrk_add_to_readyQ(task_ID);
+ 775               	.LM81:
+ 776 03c2 822F      		mov r24,r18
+ 777 03c4 2983      		std Y+1,r18
+ 778 03c6 0E94 0000 		call nrk_add_to_readyQ
+ 779 03ca 2981      		ldd r18,Y+1
+ 780 03cc 00C0      		rjmp .L21
+ 781               	.L23:
+ 255:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].cpu_remaining = nrk_task_TCB[task_ID].cpu_reserve;
+ 783               	.LM82:
+ 784 03ce F101      		movw r30,r2
+ 785 03d0 758B      		std Z+21,r23
+ 786 03d2 648B      		std Z+20,r22
+ 258:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_wakeup = (nrk_task_TCB[task_ID].period*(nrk_task_TCB
+ 788               	.LM83:
+ 789 03d4 BA01      		movw r22,r20
+ 790 03d6 6150      		subi r22,lo8(-(-1))
+ 791 03d8 7040      		sbci r23,hi8(-(-1))
+ 792 03da 689F      		mul r22,r24
+ 793 03dc A001      		movw r20,r0
+ 794 03de 699F      		mul r22,r25
+ 795 03e0 500D      		add r21,r0
+ 796 03e2 789F      		mul r23,r24
+ 797 03e4 500D      		add r21,r0
+ 798 03e6 1124      		clr r1
+ 799 03e8 518B      		std Z+17,r21
+ 800 03ea 408B      		std Z+16,r20
+ 259:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_period = (nrk_task_TCB[task_ID].period*(nrk_task_TCB
+ 802               	.LM84:
+ 803 03ec 538B      		std Z+19,r21
+ 804 03ee 428B      		std Z+18,r20
+ 260:..//src/kernel/source/nrk_scheduler.c ****                     if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCH
+ 806               	.LM85:
+ 807 03f0 0097      		sbiw r24,0
+ 808 03f2 01F4      		brne .L25
+ 260:..//src/kernel/source/nrk_scheduler.c ****                     if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCH
+ 810               	.LM86:
+ 811 03f4 F18A      		std Z+17,r15
+ 812 03f6 E08A      		std Z+16,r14
+ 813               	.L25:
+ 815               	.LM87:
+ 816 03f8 D101      		movw r26,r2
+ 817 03fa 5B96      		adiw r26,26+1
+ 818 03fc 7C92      		st X,r7
+ 819 03fe 6E92      		st -X,r6
+ 820 0400 5A97      		sbiw r26,26
+ 821               	.L21:
+ 262:..//src/kernel/source/nrk_scheduler.c ****                     //			printf( "np = %d\r\n",nrk_task_TCB[task_ID].next_wakeup);
+ 263:..//src/kernel/source/nrk_scheduler.c ****                     //			nrk_task_TCB[task_ID].num_periods=1;
+ 264:..//src/kernel/source/nrk_scheduler.c ****                 }
+ 265:..//src/kernel/source/nrk_scheduler.c ****             }
+ 266:..//src/kernel/source/nrk_scheduler.c **** 
+ 267:..//src/kernel/source/nrk_scheduler.c ****             if(nrk_task_TCB[task_ID].next_wakeup!=0 &&
+ 823               	.LM88:
+ 824 0402 F101      		movw r30,r2
+ 825 0404 8089      		ldd r24,Z+16
+ 826 0406 9189      		ldd r25,Z+17
+ 827 0408 0097      		sbiw r24,0
+ 828 040a 01F0      		breq .L14
+ 830               	.LM89:
+ 831 040c 8017      		cp r24,r16
+ 832 040e 9107      		cpc r25,r17
+ 833 0410 00F4      		brsh .L14
+ 835               	.LM90:
+ 836 0412 8C01      		movw r16,r24
+ 837               	.L14:
+ 202:..//src/kernel/source/nrk_scheduler.c ****     for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++)
+ 839               	.LM91:
+ 840 0414 2F5F      		subi r18,lo8(-(1))
+ 841 0416 82E2      		ldi r24,lo8(34)
+ 842 0418 90E0      		ldi r25,hi8(34)
+ 843 041a 280E      		add r2,r24
+ 844 041c 391E      		adc r3,r25
+ 845 041e 2530      		cpi r18,lo8(5)
+ 846 0420 01F0      		breq .+2
+ 847 0422 00C0      		rjmp .L26
+ 268:..//src/kernel/source/nrk_scheduler.c ****                     nrk_task_TCB[task_ID].next_wakeup<next_wake )
+ 269:..//src/kernel/source/nrk_scheduler.c ****             {
+ 270:..//src/kernel/source/nrk_scheduler.c ****                 // Find closest next_wake task
+ 271:..//src/kernel/source/nrk_scheduler.c ****                 next_wake=nrk_task_TCB[task_ID].next_wakeup;
+ 272:..//src/kernel/source/nrk_scheduler.c ****             }
+ 273:..//src/kernel/source/nrk_scheduler.c **** 
+ 274:..//src/kernel/source/nrk_scheduler.c ****         }
+ 275:..//src/kernel/source/nrk_scheduler.c ****     }
+ 276:..//src/kernel/source/nrk_scheduler.c **** 
+ 277:..//src/kernel/source/nrk_scheduler.c **** 
+ 278:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_STATS_TRACKER
+ 279:..//src/kernel/source/nrk_scheduler.c ****     _nrk_stats_task_start(nrk_cur_task_TCB->task_ID);
+ 280:..//src/kernel/source/nrk_scheduler.c **** #endif
+ 281:..//src/kernel/source/nrk_scheduler.c ****     task_ID = nrk_get_high_ready_task_ID();
+ 849               	.LM92:
+ 850 0424 0E94 0000 		call nrk_get_high_ready_task_ID
+ 851 0428 E82E      		mov r14,r24
+ 282:..//src/kernel/source/nrk_scheduler.c ****     nrk_high_ready_prio = nrk_task_TCB[task_ID].task_prio;
+ 853               	.LM93:
+ 854 042a 282F      		mov r18,r24
+ 855 042c 3327      		clr r19
+ 856 042e 27FD      		sbrc r18,7
+ 857 0430 3095      		com r19
+ 858 0432 F901      		movw r30,r18
+ 859 0434 EE0F      		lsl r30
+ 860 0436 FF1F      		rol r31
+ 861 0438 85E0      		ldi r24,5
+ 862 043a 220F      	1:	lsl r18
+ 863 043c 331F      		rol r19
+ 864 043e 8A95      		dec r24
+ 865 0440 01F4      		brne 1b
+ 866 0442 E20F      		add r30,r18
+ 867 0444 F31F      		adc r31,r19
+ 868 0446 E050      		subi r30,lo8(-(nrk_task_TCB))
+ 869 0448 F040      		sbci r31,hi8(-(nrk_task_TCB))
+ 870 044a 8285      		ldd r24,Z+10
+ 871 044c 8093 0000 		sts nrk_high_ready_prio,r24
+ 283:..//src/kernel/source/nrk_scheduler.c ****     nrk_high_ready_TCB = &nrk_task_TCB[task_ID];
+ 873               	.LM94:
+ 874 0450 F093 0000 		sts nrk_high_ready_TCB+1,r31
+ 875 0454 E093 0000 		sts nrk_high_ready_TCB,r30
+ 284:..//src/kernel/source/nrk_scheduler.c **** 
+ 285:..//src/kernel/source/nrk_scheduler.c ****     // next_wake should hold next time when a suspended task might get run
+ 286:..//src/kernel/source/nrk_scheduler.c ****     // task_ID holds the highest priority READY task ID
+ 287:..//src/kernel/source/nrk_scheduler.c ****     // So nrk_task_TCB[task_ID].cpu_remaining holds the READY task's end time
+ 288:..//src/kernel/source/nrk_scheduler.c **** 
+ 289:..//src/kernel/source/nrk_scheduler.c ****     // Now we pick the next wakeup (either the end of the current task, or the possible resume
+ 290:..//src/kernel/source/nrk_scheduler.c ****     // of a suspended task)
+ 291:..//src/kernel/source/nrk_scheduler.c ****     if(task_ID!=NRK_IDLE_TASK_ID)
+ 877               	.LM95:
+ 878 0458 EE20      		tst r14
+ 879 045a 01F0      		breq .L27
+ 292:..//src/kernel/source/nrk_scheduler.c ****     {
+ 293:..//src/kernel/source/nrk_scheduler.c ****         // You are a non-Idle Task
+ 294:..//src/kernel/source/nrk_scheduler.c ****         if(nrk_task_TCB[task_ID].cpu_reserve!=0 && nrk_task_TCB[task_ID].cpu_remaining<MAX_SCHED_WA
+ 881               	.LM96:
+ 882 045c 258D      		ldd r18,Z+29
+ 883 045e 368D      		ldd r19,Z+30
+ 884 0460 2115      		cp r18,__zero_reg__
+ 885 0462 3105      		cpc r19,__zero_reg__
+ 886 0464 01F0      		breq .L28
+ 888               	.LM97:
+ 889 0466 218D      		ldd r18,Z+25
+ 890 0468 328D      		ldd r19,Z+26
+ 891 046a 2A3F      		cpi r18,250
+ 892 046c 3105      		cpc r19,__zero_reg__
+ 893 046e 00F4      		brsh .L28
+ 295:..//src/kernel/source/nrk_scheduler.c ****         {
+ 296:..//src/kernel/source/nrk_scheduler.c ****             if(next_wake>nrk_task_TCB[task_ID].cpu_remaining)
+ 895               	.LM98:
+ 896 0470 2017      		cp r18,r16
+ 897 0472 3107      		cpc r19,r17
+ 898 0474 00F4      		brsh .+2
+ 899 0476 00C0      		rjmp .L29
+ 900 0478 00C0      		rjmp .L32
+ 901               	.L28:
+ 902 047a 9801      		movw r18,r16
+ 903 047c 0B3F      		cpi r16,251
+ 904 047e 1105      		cpc r17,__zero_reg__
+ 905 0480 00F4      		brsh .+2
+ 906 0482 00C0      		rjmp .L29
+ 907 0484 2AEF      		ldi r18,lo8(250)
+ 908 0486 30E0      		ldi r19,hi8(250)
+ 909 0488 00C0      		rjmp .L29
+ 910               	.L27:
+ 297:..//src/kernel/source/nrk_scheduler.c ****                 next_wake=nrk_task_TCB[task_ID].cpu_remaining;
+ 298:..//src/kernel/source/nrk_scheduler.c ****         }
+ 299:..//src/kernel/source/nrk_scheduler.c ****         else
+ 300:..//src/kernel/source/nrk_scheduler.c ****         {
+ 301:..//src/kernel/source/nrk_scheduler.c ****             if(next_wake>MAX_SCHED_WAKEUP_TIME)  next_wake=MAX_SCHED_WAKEUP_TIME;
+ 302:..//src/kernel/source/nrk_scheduler.c ****         }
+ 303:..//src/kernel/source/nrk_scheduler.c ****     }
+ 304:..//src/kernel/source/nrk_scheduler.c ****     else
+ 305:..//src/kernel/source/nrk_scheduler.c ****     {
+ 306:..//src/kernel/source/nrk_scheduler.c ****         // This is the idle task
+ 307:..//src/kernel/source/nrk_scheduler.c ****         // Make sure you wake up from the idle task a little earlier
+ 308:..//src/kernel/source/nrk_scheduler.c ****         // if you would go into deep sleep...
+ 309:..//src/kernel/source/nrk_scheduler.c ****         // After waking from deep sleep, the next context swap must be at least
+ 310:..//src/kernel/source/nrk_scheduler.c ****         // NRK_SLEEP_WAKEUP_TIME-1 away to make sure the CPU wakes up in time.
+ 311:..//src/kernel/source/nrk_scheduler.c **** #ifndef NRK_NO_POWER_DOWN
+ 312:..//src/kernel/source/nrk_scheduler.c ****         if(next_wake>NRK_SLEEP_WAKEUP_TIME)
+ 313:..//src/kernel/source/nrk_scheduler.c ****         {
+ 314:..//src/kernel/source/nrk_scheduler.c ****             if(next_wake-NRK_SLEEP_WAKEUP_TIME<MAX_SCHED_WAKEUP_TIME)
+ 315:..//src/kernel/source/nrk_scheduler.c ****             {
+ 316:..//src/kernel/source/nrk_scheduler.c ****                 if(next_wake-NRK_SLEEP_WAKEUP_TIME<NRK_SLEEP_WAKEUP_TIME)
+ 317:..//src/kernel/source/nrk_scheduler.c ****                 {
+ 318:..//src/kernel/source/nrk_scheduler.c ****                     next_wake=NRK_SLEEP_WAKEUP_TIME-1;
+ 319:..//src/kernel/source/nrk_scheduler.c ****                 }
+ 320:..//src/kernel/source/nrk_scheduler.c ****                 else
+ 321:..//src/kernel/source/nrk_scheduler.c ****                 {
+ 322:..//src/kernel/source/nrk_scheduler.c ****                     next_wake=next_wake-NRK_SLEEP_WAKEUP_TIME;
+ 323:..//src/kernel/source/nrk_scheduler.c ****                 }
+ 324:..//src/kernel/source/nrk_scheduler.c ****             }
+ 325:..//src/kernel/source/nrk_scheduler.c ****             else if(next_wake>NRK_SLEEP_WAKEUP_TIME+MAX_SCHED_WAKEUP_TIME)
+ 326:..//src/kernel/source/nrk_scheduler.c ****             {
+ 327:..//src/kernel/source/nrk_scheduler.c ****                 next_wake=MAX_SCHED_WAKEUP_TIME;
+ 328:..//src/kernel/source/nrk_scheduler.c ****             }
+ 329:..//src/kernel/source/nrk_scheduler.c ****             else
+ 330:..//src/kernel/source/nrk_scheduler.c ****             {
+ 331:..//src/kernel/source/nrk_scheduler.c ****                 next_wake=MAX_SCHED_WAKEUP_TIME-NRK_SLEEP_WAKEUP_TIME;
+ 332:..//src/kernel/source/nrk_scheduler.c ****             }
+ 333:..//src/kernel/source/nrk_scheduler.c ****         }
+ 334:..//src/kernel/source/nrk_scheduler.c **** #endif
+ 335:..//src/kernel/source/nrk_scheduler.c ****     }
+ 336:..//src/kernel/source/nrk_scheduler.c **** 
+ 337:..//src/kernel/source/nrk_scheduler.c ****     /*
+ 338:..//src/kernel/source/nrk_scheduler.c ****     // Some code to catch the case when the scheduler wakes up
+ 339:..//src/kernel/source/nrk_scheduler.c ****     // from deep sleep and has to execute again before NRK_SLEEP_WAKEUP_TIME-1
+ 340:..//src/kernel/source/nrk_scheduler.c ****     if(_nrk_cpu_state==2 && next_wake<NRK_SLEEP_WAKEUP_TIME-1)
+ 341:..//src/kernel/source/nrk_scheduler.c ****     {
+ 342:..//src/kernel/source/nrk_scheduler.c ****     nrk_int_disable();
+ 343:..//src/kernel/source/nrk_scheduler.c ****     while(1)
+ 344:..//src/kernel/source/nrk_scheduler.c ****     {
+ 345:..//src/kernel/source/nrk_scheduler.c ****     nrk_spin_wait_us(60000);
+ 346:..//src/kernel/source/nrk_scheduler.c ****     nrk_led_toggle(RED_LED);
+ 347:..//src/kernel/source/nrk_scheduler.c ****     nrk_spin_wait_us(60000);
+ 348:..//src/kernel/source/nrk_scheduler.c ****     nrk_led_toggle(GREEN_LED);
+ 349:..//src/kernel/source/nrk_scheduler.c ****     printf( "crash: %d %d %d\r\n",task_ID,next_wake,_nrk_cpu_state);
+ 350:..//src/kernel/source/nrk_scheduler.c ****     }
+ 351:..//src/kernel/source/nrk_scheduler.c ****     }*/
+ 352:..//src/kernel/source/nrk_scheduler.c **** 
+ 353:..//src/kernel/source/nrk_scheduler.c **** 
+ 354:..//src/kernel/source/nrk_scheduler.c ****     //  If we disable power down, we still need to wakeup before the overflow
+ 355:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_NO_POWER_DOWN
+ 356:..//src/kernel/source/nrk_scheduler.c ****     if(next_wake>MAX_SCHED_WAKEUP_TIME)  next_wake=MAX_SCHED_WAKEUP_TIME;
+ 912               	.LM99:
+ 913 048a 0B3F      		cpi r16,251
+ 914 048c 1105      		cpc r17,__zero_reg__
+ 915 048e 00F0      		brlo .L32
+ 916 0490 0AEF      		ldi r16,lo8(250)
+ 917 0492 10E0      		ldi r17,hi8(250)
+ 918               	.L32:
+ 357:..//src/kernel/source/nrk_scheduler.c **** #endif
+ 358:..//src/kernel/source/nrk_scheduler.c ****     //printf( "nw = %d %d %d\r\n",task_ID,_nrk_cpu_state,next_wake);
+ 359:..//src/kernel/source/nrk_scheduler.c ****     nrk_cur_task_prio = nrk_high_ready_prio;
+ 920               	.LM100:
+ 921 0494 8093 0000 		sts nrk_cur_task_prio,r24
+ 360:..//src/kernel/source/nrk_scheduler.c ****     nrk_cur_task_TCB  = nrk_high_ready_TCB;
+ 923               	.LM101:
+ 924 0498 F093 0000 		sts nrk_cur_task_TCB+1,r31
+ 925 049c E093 0000 		sts nrk_cur_task_TCB,r30
+ 361:..//src/kernel/source/nrk_scheduler.c **** 
+ 362:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_KERNEL_TEST
+ 363:..//src/kernel/source/nrk_scheduler.c ****     if(nrk_high_ready_TCB==NULL)
+ 364:..//src/kernel/source/nrk_scheduler.c ****     {
+ 365:..//src/kernel/source/nrk_scheduler.c ****         nrk_kprintf( PSTR( "KERNEL TEST: BAD TCB!\r\n" ));
+ 366:..//src/kernel/source/nrk_scheduler.c ****     }
+ 367:..//src/kernel/source/nrk_scheduler.c **** #endif
+ 368:..//src/kernel/source/nrk_scheduler.c ****     //printf( "n %u %u %u %u\r\n",task_ID, _nrk_prev_timer_val, next_wake,_nrk_os_timer_get());
+ 369:..//src/kernel/source/nrk_scheduler.c **** 
+ 370:..//src/kernel/source/nrk_scheduler.c ****     _nrk_prev_timer_val=next_wake;
+ 927               	.LM102:
+ 928 04a0 0093 0000 		sts _nrk_prev_timer_val,r16
+ 371:..//src/kernel/source/nrk_scheduler.c **** 
+ 372:..//src/kernel/source/nrk_scheduler.c **** 
+ 373:..//src/kernel/source/nrk_scheduler.c ****     if((_nrk_os_timer_get()+1)>=next_wake)  // just bigger then, or equal?
+ 930               	.LM103:
+ 931 04a4 0E94 0000 		call _nrk_os_timer_get
+ 932 04a8 282F      		mov r18,r24
+ 933 04aa 30E0      		ldi r19,lo8(0)
+ 934 04ac 2F5F      		subi r18,lo8(-(1))
+ 935 04ae 3F4F      		sbci r19,hi8(-(1))
+ 936 04b0 2017      		cp r18,r16
+ 937 04b2 3107      		cpc r19,r17
+ 938 04b4 00F0      		brlo .L33
+ 374:..//src/kernel/source/nrk_scheduler.c ****     {
+ 375:..//src/kernel/source/nrk_scheduler.c ****         // FIXME: Terrible Terrible...
+ 376:..//src/kernel/source/nrk_scheduler.c ****         // Need to find out why this is happening...
+ 377:..//src/kernel/source/nrk_scheduler.c **** #ifdef NRK_KERNEL_TEST
+ 378:..//src/kernel/source/nrk_scheduler.c ****         // Ignore if you are the idle task coming from deep sleep
+ 379:..//src/kernel/source/nrk_scheduler.c ****         if(!(task_ID==NRK_IDLE_TASK_ID && _nrk_cpu_state==CPU_SLEEP))
+ 380:..//src/kernel/source/nrk_scheduler.c ****             nrk_kernel_error_add(NRK_WAKEUP_MISSED,task_ID);
+ 381:..//src/kernel/source/nrk_scheduler.c **** #endif
+ 382:..//src/kernel/source/nrk_scheduler.c ****         // This is bad news, but keeps things running
+ 383:..//src/kernel/source/nrk_scheduler.c ****         // +2 just in case we are on the edge of the last tick
+ 384:..//src/kernel/source/nrk_scheduler.c ****         next_wake=_nrk_os_timer_get()+2;
+ 940               	.LM104:
+ 941 04b6 0E94 0000 		call _nrk_os_timer_get
+ 942 04ba 082F      		mov r16,r24
+ 943 04bc 10E0      		ldi r17,lo8(0)
+ 944 04be 0E5F      		subi r16,lo8(-(2))
+ 945 04c0 1F4F      		sbci r17,hi8(-(2))
+ 385:..//src/kernel/source/nrk_scheduler.c ****         _nrk_prev_timer_val=next_wake;
+ 947               	.LM105:
+ 948 04c2 0093 0000 		sts _nrk_prev_timer_val,r16
+ 949               	.L33:
+ 386:..//src/kernel/source/nrk_scheduler.c ****     }
+ 387:..//src/kernel/source/nrk_scheduler.c **** 
+ 388:..//src/kernel/source/nrk_scheduler.c ****     if(task_ID!=NRK_IDLE_TASK_ID) _nrk_cpu_state=CPU_ACTIVE;
+ 951               	.LM106:
+ 952 04c6 EE20      		tst r14
+ 953 04c8 01F0      		breq .L34
+ 955               	.LM107:
+ 956 04ca 1092 0000 		sts _nrk_cpu_state,__zero_reg__
+ 957               	.L34:
+ 389:..//src/kernel/source/nrk_scheduler.c **** 
+ 390:..//src/kernel/source/nrk_scheduler.c ****     _nrk_set_next_wakeup(next_wake);
+ 959               	.LM108:
+ 960 04ce 802F      		mov r24,r16
+ 961 04d0 0E94 0000 		call _nrk_set_next_wakeup
+ 391:..//src/kernel/source/nrk_scheduler.c **** 
+ 392:..//src/kernel/source/nrk_scheduler.c **** #ifndef NRK_NO_BOUNDED_CONTEXT_SWAP
+ 393:..//src/kernel/source/nrk_scheduler.c ****     // Bound Context Swap to 100us
+ 394:..//src/kernel/source/nrk_scheduler.c ****     nrk_high_speed_timer_wait(start_time_stamp,CONTEXT_SWAP_TIME_BOUND);
+ 963               	.LM109:
+ 964 04d4 C201      		movw r24,r4
+ 965 04d6 6EEE      		ldi r22,lo8(750)
+ 966 04d8 72E0      		ldi r23,hi8(750)
+ 967 04da 0E94 0000 		call nrk_high_speed_timer_wait
+ 395:..//src/kernel/source/nrk_scheduler.c **** #endif
+ 396:..//src/kernel/source/nrk_scheduler.c ****     nrk_stack_pointer_restore();
+ 969               	.LM110:
+ 970 04de 0E94 0000 		call nrk_stack_pointer_restore
+ 397:..//src/kernel/source/nrk_scheduler.c ****     //nrk_int_enable();
+ 398:..//src/kernel/source/nrk_scheduler.c ****     nrk_start_high_ready_task();
+ 972               	.LM111:
+ 973 04e2 0E94 0000 		call nrk_start_high_ready_task
+ 974               	/* epilogue start */
+ 399:..//src/kernel/source/nrk_scheduler.c **** 
+ 400:..//src/kernel/source/nrk_scheduler.c **** }
+ 976               	.LM112:
+ 977 04e6 0F90      		pop __tmp_reg__
+ 978 04e8 CF91      		pop r28
+ 979 04ea DF91      		pop r29
+ 980 04ec 1F91      		pop r17
+ 981 04ee 0F91      		pop r16
+ 982 04f0 FF90      		pop r15
+ 983 04f2 EF90      		pop r14
+ 984 04f4 DF90      		pop r13
+ 985 04f6 CF90      		pop r12
+ 986 04f8 BF90      		pop r11
+ 987 04fa AF90      		pop r10
+ 988 04fc 9F90      		pop r9
+ 989 04fe 8F90      		pop r8
+ 990 0500 7F90      		pop r7
+ 991 0502 6F90      		pop r6
+ 992 0504 5F90      		pop r5
+ 993 0506 4F90      		pop r4
+ 994 0508 3F90      		pop r3
+ 995 050a 2F90      		pop r2
+ 996 050c 0895      		ret
+ 997               	.L29:
+ 202:..//src/kernel/source/nrk_scheduler.c ****     for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++)
+ 999               	.LM113:
+ 1000 050e 8901      		movw r16,r18
+ 1001 0510 00C0      		rjmp .L32
+ 1006               	.Lscope1:
+ 1008               		.stabd	78,0,0
+ 1009               		.comm _nrk_signal_list,4,1
+ 1010               		.comm nrk_idle_task_stk,128,1
+ 1011               		.comm nrk_kernel_stk,128,1
+ 1012               		.comm nrk_kernel_stk_ptr,2,1
+ 1013               		.comm nrk_task_TCB,170,1
+ 1014               		.comm nrk_wakeup_signal,1,1
+ 1015               		.comm _nrk_readyQ,30,1
+ 1016               		.comm _free_node,2,1
+ 1017               		.comm _head_node,2,1
+ 1018               		.comm nrk_cur_task_prio,1,1
+ 1019               		.comm nrk_cur_task_TCB,2,1
+ 1020               		.comm nrk_high_ready_prio,1,1
+ 1021               		.comm nrk_high_ready_TCB,2,1
+ 1022               		.comm _nrk_resource_cnt,1,1
+ 1023               		.comm nrk_system_time,8,1
+ 1024               		.comm nrk_sem_list,15,1
+ 1025               		.comm systemceiling,1,1
+ 1026               		.comm error_task,1,1
+ 1027               		.comm error_num,1,1
+ 1028               		.comm _nrk_cpu_state,1,1
+ 1029               		.comm next_next_wakeup,2,1
+ 1030               		.comm _nrk_prev_timer_val,1,1
+ 1031               		.comm _nrk_time_trigger,1,1
+ 1032               		.comm app_timer0_callback,2,1
+ 1033               		.comm app_timer0_prescale,1,1
+ 1034               		.comm t,1,1
+ 1062               	.Letext0:
+ 1063               	.global __do_copy_data
+ 1064               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 nrk_scheduler.c
+     /tmp/cco9Zgfw.s:2      *ABS*:0000003f __SREG__
+     /tmp/cco9Zgfw.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cco9Zgfw.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cco9Zgfw.s:5      *ABS*:00000034 __CCP__
+     /tmp/cco9Zgfw.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cco9Zgfw.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cco9Zgfw.s:146    .text:00000000 _nrk_scheduler
+                            *COM*:00000001 _nrk_prev_timer_val
+                            *COM*:00000008 nrk_system_time
+                            *COM*:00000002 nrk_cur_task_TCB
+                            *COM*:000000aa nrk_task_TCB
+                            *COM*:00000001 nrk_wakeup_signal
+                            *COM*:00000001 nrk_high_ready_prio
+                            *COM*:00000002 nrk_high_ready_TCB
+                            *COM*:00000001 nrk_cur_task_prio
+                            *COM*:00000001 _nrk_cpu_state
+                            *COM*:00000004 _nrk_signal_list
+                            *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000080 nrk_kernel_stk
+                            *COM*:00000002 nrk_kernel_stk_ptr
+                            *COM*:0000001e _nrk_readyQ
+                            *COM*:00000002 _free_node
+                            *COM*:00000002 _head_node
+                            *COM*:00000001 _nrk_resource_cnt
+                            *COM*:0000000f nrk_sem_list
+                            *COM*:00000001 systemceiling
+                            *COM*:00000001 error_task
+                            *COM*:00000001 error_num
+                            *COM*:00000002 next_next_wakeup
+                            *COM*:00000001 _nrk_time_trigger
+                            *COM*:00000002 app_timer0_callback
+                            *COM*:00000001 app_timer0_prescale
+                            *COM*:00000001 t
+
+UNDEFINED SYMBOLS
+_nrk_precision_os_timer_reset
+nrk_int_disable
+_nrk_high_speed_timer_reset
+_nrk_high_speed_timer_get
+_nrk_set_next_wakeup
+__mulsi3
+__udivmodsi4
+nrk_rem_from_readyQ
+printf
+nrk_kernel_error_add
+__udivmodhi4
+nrk_add_to_readyQ
+nrk_get_high_ready_task_ID
+_nrk_os_timer_get
+nrk_high_speed_timer_wait
+nrk_stack_pointer_restore
+nrk_start_high_ready_task
+__do_copy_data
+__do_clear_bss

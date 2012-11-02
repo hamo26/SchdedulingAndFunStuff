@@ -1,0 +1,514 @@
+   1               		.file	"mda100_driver.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+  76               	.global	mda100_init
+  78               	mda100_init:
+  79               		.stabd	46,0,0
+   1:..//src/drivers/platform/micaZ/source/mda100_driver.c **** /******************************************************************************
+   2:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  Nano-RK, a real-time operating system for sensor networks.
+   3:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  Copyright (C) 2011 Technische Universität München (www.vmi.ei.tum.de)
+   4:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  All rights reserved.
+   5:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *
+   6:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  This is the Open Source Version of Nano-RK included as part of a Dual
+   7:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  Licensing Model. If you are unsure which license to use please refer to:
+   8:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  http://www.nanork.org/nano-RK/wiki/Licensing
+   9:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *
+  10:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  This program is free software: you can redistribute it and/or modify
+  11:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  it under the terms of the GNU General Public License as published by
+  12:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  the Free Software Foundation, version 2.0 of the License.
+  13:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *
+  14:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  This program is distributed in the hope that it will be useful,
+  15:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  17:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  GNU General Public License for more details.
+  18:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *
+  19:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  You should have received a copy of the GNU General Public License
+  20:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  21:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *
+  22:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *
+  23:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  mda100 sensor board driver
+  24:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *
+  25:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  Contributing Authors (specific to this file):
+  26:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *  Author: Peter Diener
+  27:..//src/drivers/platform/micaZ/source/mda100_driver.c **** *
+  28:..//src/drivers/platform/micaZ/source/mda100_driver.c **** ***************************************************************************************/
+  29:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  30:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  31:..//src/drivers/platform/micaZ/source/mda100_driver.c **** #include "mda100_driver.h"
+  32:..//src/drivers/platform/micaZ/source/mda100_driver.c **** #include "adc_driver.h"
+  33:..//src/drivers/platform/micaZ/source/mda100_driver.c **** #include <avr/io.h>
+  34:..//src/drivers/platform/micaZ/source/mda100_driver.c **** #include <math.h>
+  35:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  36:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  37:..//src/drivers/platform/micaZ/source/mda100_driver.c **** volatile unsigned char mda100_initDone = 0;
+  38:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  39:..//src/drivers/platform/micaZ/source/mda100_driver.c **** #define CheckIfInitDone() do{ if (mda100_initDone == 0) mda100_init(); }while(0)
+  40:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  41:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  42:..//src/drivers/platform/micaZ/source/mda100_driver.c **** // Do not forget to init everything before using it
+  43:..//src/drivers/platform/micaZ/source/mda100_driver.c **** void mda100_init()
+  44:..//src/drivers/platform/micaZ/source/mda100_driver.c **** {
+  81               	.LM0:
+  82               	.LFBB1:
+  83               	/* prologue: function */
+  84               	/* frame size = 0 */
+  85               	/* stack size = 0 */
+  86               	.L__stack_usage = 0
+  45:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	adc_init();
+  88               	.LM1:
+  89 0000 0E94 0000 		call adc_init
+  46:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	mda100_initDone = 1;
+  91               	.LM2:
+  92 0004 81E0      		ldi r24,lo8(1)
+  93 0006 8093 0000 		sts mda100_initDone,r24
+  94               	/* epilogue start */
+  47:..//src/drivers/platform/micaZ/source/mda100_driver.c **** }
+  96               	.LM3:
+  97 000a 0895      		ret
+  99               	.Lscope1:
+ 101               		.stabd	78,0,0
+ 103               	.global	mda100_Powersave
+ 105               	mda100_Powersave:
+ 106               		.stabd	46,0,0
+  48:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  49:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  50:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  51:..//src/drivers/platform/micaZ/source/mda100_driver.c **** void mda100_Powersave()
+  52:..//src/drivers/platform/micaZ/source/mda100_driver.c **** {
+ 108               	.LM4:
+ 109               	.LFBB2:
+ 110               	/* prologue: function */
+ 111               	/* frame size = 0 */
+ 112               	/* stack size = 0 */
+ 113               	.L__stack_usage = 0
+  53:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	CheckIfInitDone();
+ 115               	.LM5:
+ 116 000c 8091 0000 		lds r24,mda100_initDone
+ 117 0010 8823      		tst r24
+ 118 0012 01F4      		brne .L3
+ 120               	.LM6:
+ 121 0014 0E94 0000 		call mda100_init
+ 122               	.L3:
+  54:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	adc_Powersave();
+ 124               	.LM7:
+ 125 0018 0E94 0000 		call adc_Powersave
+ 126               	/* epilogue start */
+  55:..//src/drivers/platform/micaZ/source/mda100_driver.c **** }
+ 128               	.LM8:
+ 129 001c 0895      		ret
+ 131               	.Lscope2:
+ 133               		.stabd	78,0,0
+ 136               	.global	mda100_LightSensor_Power
+ 138               	mda100_LightSensor_Power:
+ 139               		.stabd	46,0,0
+  56:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  57:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  58:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  59:..//src/drivers/platform/micaZ/source/mda100_driver.c **** // Power control via int1 (PE5)
+  60:..//src/drivers/platform/micaZ/source/mda100_driver.c **** // This must be tristate if not in use, otherwise temperature sensor will be incorrect
+  61:..//src/drivers/platform/micaZ/source/mda100_driver.c **** void mda100_LightSensor_Power(T_Power powerstatus)
+  62:..//src/drivers/platform/micaZ/source/mda100_driver.c **** {
+ 141               	.LM9:
+ 142               	.LFBB3:
+ 143 001e DF93      		push r29
+ 144 0020 CF93      		push r28
+ 145 0022 0F92      		push __tmp_reg__
+ 146 0024 CDB7      		in r28,__SP_L__
+ 147 0026 DEB7      		in r29,__SP_H__
+ 148               	/* prologue: function */
+ 149               	/* frame size = 1 */
+ 150               	/* stack size = 3 */
+ 151               	.L__stack_usage = 3
+  63:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	CheckIfInitDone();
+ 153               	.LM10:
+ 154 0028 9091 0000 		lds r25,mda100_initDone
+ 155 002c 9923      		tst r25
+ 156 002e 01F4      		brne .L5
+ 158               	.LM11:
+ 159 0030 8983      		std Y+1,r24
+ 160 0032 0E94 0000 		call mda100_init
+ 161 0036 8981      		ldd r24,Y+1
+ 162               	.L5:
+  64:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	// Switch off temperature sensor power first; Only one of these may be active at a time
+  65:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	PORTC &= ~(1 << 0);
+ 164               	.LM12:
+ 165 0038 A898      		cbi 53-32,0
+  66:..//src/drivers/platform/micaZ/source/mda100_driver.c ****     DDRC  &= ~(1 << 0);
+ 167               	.LM13:
+ 168 003a A098      		cbi 52-32,0
+  67:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  68:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	if (powerstatus == POWER_ON)
+ 170               	.LM14:
+ 171 003c 8130      		cpi r24,lo8(1)
+ 172 003e 01F4      		brne .L6
+  69:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	{
+  70:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 		PORTE |= (1 << 5);
+ 174               	.LM15:
+ 175 0040 1D9A      		sbi 35-32,5
+  71:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 		DDRE  |= (1 << 5);
+ 177               	.LM16:
+ 178 0042 159A      		sbi 34-32,5
+ 179 0044 00C0      		rjmp .L4
+ 180               	.L6:
+  72:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	}
+  73:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	else
+  74:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	{
+  75:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 		PORTE &= ~(1 << 5);
+ 182               	.LM17:
+ 183 0046 1D98      		cbi 35-32,5
+  76:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 		DDRE  &= ~(1 << 5);
+ 185               	.LM18:
+ 186 0048 1598      		cbi 34-32,5
+ 187               	.L4:
+ 188               	/* epilogue start */
+  77:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	}
+  78:..//src/drivers/platform/micaZ/source/mda100_driver.c **** }
+ 190               	.LM19:
+ 191 004a 0F90      		pop __tmp_reg__
+ 192 004c CF91      		pop r28
+ 193 004e DF91      		pop r29
+ 194 0050 0895      		ret
+ 196               	.Lscope3:
+ 198               		.stabd	78,0,0
+ 201               	.global	mda100_TemperatureSensor_Power
+ 203               	mda100_TemperatureSensor_Power:
+ 204               		.stabd	46,0,0
+  79:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  80:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  81:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  82:..//src/drivers/platform/micaZ/source/mda100_driver.c **** // Power control via PW0
+  83:..//src/drivers/platform/micaZ/source/mda100_driver.c **** // This must be tristate if not in use, otherwise light sensor will be incorrect
+  84:..//src/drivers/platform/micaZ/source/mda100_driver.c **** void mda100_TemperatureSensor_Power(T_Power powerstatus)
+  85:..//src/drivers/platform/micaZ/source/mda100_driver.c **** {
+ 206               	.LM20:
+ 207               	.LFBB4:
+ 208 0052 DF93      		push r29
+ 209 0054 CF93      		push r28
+ 210 0056 0F92      		push __tmp_reg__
+ 211 0058 CDB7      		in r28,__SP_L__
+ 212 005a DEB7      		in r29,__SP_H__
+ 213               	/* prologue: function */
+ 214               	/* frame size = 1 */
+ 215               	/* stack size = 3 */
+ 216               	.L__stack_usage = 3
+  86:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	CheckIfInitDone();
+ 218               	.LM21:
+ 219 005c 9091 0000 		lds r25,mda100_initDone
+ 220 0060 9923      		tst r25
+ 221 0062 01F4      		brne .L9
+ 223               	.LM22:
+ 224 0064 8983      		std Y+1,r24
+ 225 0066 0E94 0000 		call mda100_init
+ 226 006a 8981      		ldd r24,Y+1
+ 227               	.L9:
+  87:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	// Switch off light sensor power first; Only one of these may be active at a time
+  88:..//src/drivers/platform/micaZ/source/mda100_driver.c ****     PORTE &= ~(1 << 5);
+ 229               	.LM23:
+ 230 006c 1D98      		cbi 35-32,5
+  89:..//src/drivers/platform/micaZ/source/mda100_driver.c ****     DDRE  &= ~(1 << 5);
+ 232               	.LM24:
+ 233 006e 1598      		cbi 34-32,5
+  90:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+  91:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	if (powerstatus == POWER_ON)
+ 235               	.LM25:
+ 236 0070 8130      		cpi r24,lo8(1)
+ 237 0072 01F4      		brne .L10
+  92:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	{
+  93:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 		PORTC |= (1 << 0);
+ 239               	.LM26:
+ 240 0074 A89A      		sbi 53-32,0
+  94:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 		DDRC  |= (1 << 0);
+ 242               	.LM27:
+ 243 0076 A09A      		sbi 52-32,0
+ 244 0078 00C0      		rjmp .L8
+ 245               	.L10:
+  95:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	}
+  96:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	else
+  97:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	{
+  98:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 		PORTC &= ~(1 << 0);
+ 247               	.LM28:
+ 248 007a A898      		cbi 53-32,0
+  99:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 		DDRC  &= ~(1 << 0);
+ 250               	.LM29:
+ 251 007c A098      		cbi 52-32,0
+ 252               	.L8:
+ 253               	/* epilogue start */
+ 100:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	}
+ 101:..//src/drivers/platform/micaZ/source/mda100_driver.c **** }
+ 255               	.LM30:
+ 256 007e 0F90      		pop __tmp_reg__
+ 257 0080 CF91      		pop r28
+ 258 0082 DF91      		pop r29
+ 259 0084 0895      		ret
+ 261               	.Lscope4:
+ 263               		.stabd	78,0,0
+ 265               	.global	mda100_LightSensor_GetCounts
+ 267               	mda100_LightSensor_GetCounts:
+ 268               		.stabd	46,0,0
+ 102:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 103:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 104:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 105:..//src/drivers/platform/micaZ/source/mda100_driver.c **** // This is a ratiometric value, so use Vcc as reference
+ 106:..//src/drivers/platform/micaZ/source/mda100_driver.c **** unsigned int mda100_LightSensor_GetCounts()
+ 107:..//src/drivers/platform/micaZ/source/mda100_driver.c **** {
+ 270               	.LM31:
+ 271               	.LFBB5:
+ 272               	/* prologue: function */
+ 273               	/* frame size = 0 */
+ 274               	/* stack size = 0 */
+ 275               	.L__stack_usage = 0
+ 108:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	CheckIfInitDone();
+ 277               	.LM32:
+ 278 0086 8091 0000 		lds r24,mda100_initDone
+ 279 008a 8823      		tst r24
+ 280 008c 01F4      		brne .L13
+ 282               	.LM33:
+ 283 008e 0E94 0000 		call mda100_init
+ 284               	.L13:
+ 109:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	mda100_LightSensor_Power(POWER_ON);
+ 286               	.LM34:
+ 287 0092 81E0      		ldi r24,lo8(1)
+ 288 0094 0E94 0000 		call mda100_LightSensor_Power
+ 110:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	return adc_GetChannel(1);
+ 290               	.LM35:
+ 291 0098 81E0      		ldi r24,lo8(1)
+ 292 009a 0E94 0000 		call adc_GetChannel
+ 293               	/* epilogue start */
+ 111:..//src/drivers/platform/micaZ/source/mda100_driver.c **** }
+ 295               	.LM36:
+ 296 009e 0895      		ret
+ 298               	.Lscope5:
+ 300               		.stabd	78,0,0
+ 302               	.global	mda100_TemperatureSensor_GetCounts
+ 304               	mda100_TemperatureSensor_GetCounts:
+ 305               		.stabd	46,0,0
+ 112:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 113:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 114:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 115:..//src/drivers/platform/micaZ/source/mda100_driver.c **** // This is a ratiometric value, so use Vcc as reference
+ 116:..//src/drivers/platform/micaZ/source/mda100_driver.c **** unsigned int mda100_TemperatureSensor_GetCounts()
+ 117:..//src/drivers/platform/micaZ/source/mda100_driver.c **** {
+ 307               	.LM37:
+ 308               	.LFBB6:
+ 309               	/* prologue: function */
+ 310               	/* frame size = 0 */
+ 311               	/* stack size = 0 */
+ 312               	.L__stack_usage = 0
+ 118:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	CheckIfInitDone();
+ 314               	.LM38:
+ 315 00a0 8091 0000 		lds r24,mda100_initDone
+ 316 00a4 8823      		tst r24
+ 317 00a6 01F4      		brne .L15
+ 319               	.LM39:
+ 320 00a8 0E94 0000 		call mda100_init
+ 321               	.L15:
+ 119:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	mda100_TemperatureSensor_Power(POWER_ON);
+ 323               	.LM40:
+ 324 00ac 81E0      		ldi r24,lo8(1)
+ 325 00ae 0E94 0000 		call mda100_TemperatureSensor_Power
+ 120:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	return adc_GetChannel(1);
+ 327               	.LM41:
+ 328 00b2 81E0      		ldi r24,lo8(1)
+ 329 00b4 0E94 0000 		call adc_GetChannel
+ 330               	/* epilogue start */
+ 121:..//src/drivers/platform/micaZ/source/mda100_driver.c **** }
+ 332               	.LM42:
+ 333 00b8 0895      		ret
+ 335               	.Lscope6:
+ 337               		.stabd	78,0,0
+ 339               	.global	mda100_TemperatureSensor_GetKelvin
+ 341               	mda100_TemperatureSensor_GetKelvin:
+ 342               		.stabd	46,0,0
+ 122:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 123:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 124:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 125:..//src/drivers/platform/micaZ/source/mda100_driver.c **** float mda100_TemperatureSensor_GetKelvin()
+ 126:..//src/drivers/platform/micaZ/source/mda100_driver.c **** {
+ 344               	.LM43:
+ 345               	.LFBB7:
+ 346 00ba AF92      		push r10
+ 347 00bc BF92      		push r11
+ 348 00be CF92      		push r12
+ 349 00c0 DF92      		push r13
+ 350 00c2 EF92      		push r14
+ 351 00c4 FF92      		push r15
+ 352 00c6 0F93      		push r16
+ 353 00c8 1F93      		push r17
+ 354               	/* prologue: function */
+ 355               	/* frame size = 0 */
+ 356               	/* stack size = 8 */
+ 357               	.L__stack_usage = 8
+ 127:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	float counts = mda100_TemperatureSensor_GetCounts();
+ 359               	.LM44:
+ 360 00ca 0E94 0000 		call mda100_TemperatureSensor_GetCounts
+ 361 00ce BC01      		movw r22,r24
+ 362 00d0 80E0      		ldi r24,lo8(0)
+ 363 00d2 90E0      		ldi r25,hi8(0)
+ 364 00d4 0E94 0000 		call __floatunsisf
+ 365 00d8 8B01      		movw r16,r22
+ 366 00da 7C01      		movw r14,r24
+ 128:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	float lnRthr = log( 10e3 * (1023.0 - counts) / counts);
+ 368               	.LM45:
+ 369 00dc 60E0      		ldi r22,lo8(0x447fc000)
+ 370 00de 70EC      		ldi r23,hi8(0x447fc000)
+ 371 00e0 8FE7      		ldi r24,hlo8(0x447fc000)
+ 372 00e2 94E4      		ldi r25,hhi8(0x447fc000)
+ 373 00e4 202F      		mov r18,r16
+ 374 00e6 312F      		mov r19,r17
+ 375 00e8 4E2D      		mov r20,r14
+ 376 00ea 5F2D      		mov r21,r15
+ 377 00ec 0E94 0000 		call __subsf3
+ 378 00f0 20E0      		ldi r18,lo8(0x461c4000)
+ 379 00f2 30E4      		ldi r19,hi8(0x461c4000)
+ 380 00f4 4CE1      		ldi r20,hlo8(0x461c4000)
+ 381 00f6 56E4      		ldi r21,hhi8(0x461c4000)
+ 382 00f8 0E94 0000 		call __mulsf3
+ 383 00fc 202F      		mov r18,r16
+ 384 00fe 312F      		mov r19,r17
+ 385 0100 4E2D      		mov r20,r14
+ 386 0102 5F2D      		mov r21,r15
+ 387 0104 0E94 0000 		call __divsf3
+ 388 0108 0E94 0000 		call log
+ 389 010c 7B01      		movw r14,r22
+ 390 010e 8C01      		movw r16,r24
+ 129:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	float lnRthr3 = pow(lnRthr, 3);	// lnRthr³
+ 392               	.LM46:
+ 393 0110 20E0      		ldi r18,lo8(0x40400000)
+ 394 0112 30E0      		ldi r19,hi8(0x40400000)
+ 395 0114 40E4      		ldi r20,hlo8(0x40400000)
+ 396 0116 50E4      		ldi r21,hhi8(0x40400000)
+ 397 0118 0E94 0000 		call pow
+ 398 011c D62E      		mov r13,r22
+ 399 011e C72E      		mov r12,r23
+ 400 0120 B82E      		mov r11,r24
+ 401 0122 A92E      		mov r10,r25
+ 130:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	
+ 131:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	float a = 0.001010024;
+ 132:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	float b = 0.000242127;
+ 133:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	float c = 0.000000146;
+ 134:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	
+ 135:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	return ( 1 / ( a + b * lnRthr + c * lnRthr3) );
+ 403               	.LM47:
+ 404 0124 C801      		movw r24,r16
+ 405 0126 B701      		movw r22,r14
+ 406 0128 29E7      		ldi r18,lo8(0x397de379)
+ 407 012a 33EE      		ldi r19,hi8(0x397de379)
+ 408 012c 4DE7      		ldi r20,hlo8(0x397de379)
+ 409 012e 59E3      		ldi r21,hhi8(0x397de379)
+ 410 0130 0E94 0000 		call __mulsf3
+ 411 0134 28EC      		ldi r18,lo8(0x3a8462c8)
+ 412 0136 32E6      		ldi r19,hi8(0x3a8462c8)
+ 413 0138 44E8      		ldi r20,hlo8(0x3a8462c8)
+ 414 013a 5AE3      		ldi r21,hhi8(0x3a8462c8)
+ 415 013c 0E94 0000 		call __addsf3
+ 416 0140 7B01      		movw r14,r22
+ 417 0142 8C01      		movw r16,r24
+ 418 0144 A601      		movw r20,r12
+ 419 0146 9501      		movw r18,r10
+ 420 0148 652F      		mov r22,r21
+ 421 014a 742F      		mov r23,r20
+ 422 014c 832F      		mov r24,r19
+ 423 014e 922F      		mov r25,r18
+ 424 0150 2DE2      		ldi r18,lo8(0x341cc42d)
+ 425 0152 34EC      		ldi r19,hi8(0x341cc42d)
+ 426 0154 4CE1      		ldi r20,hlo8(0x341cc42d)
+ 427 0156 54E3      		ldi r21,hhi8(0x341cc42d)
+ 428 0158 0E94 0000 		call __mulsf3
+ 429 015c 9B01      		movw r18,r22
+ 430 015e AC01      		movw r20,r24
+ 431 0160 C801      		movw r24,r16
+ 432 0162 B701      		movw r22,r14
+ 433 0164 0E94 0000 		call __addsf3
+ 434 0168 9B01      		movw r18,r22
+ 435 016a AC01      		movw r20,r24
+ 436 016c 60E0      		ldi r22,lo8(0x3f800000)
+ 437 016e 70E0      		ldi r23,hi8(0x3f800000)
+ 438 0170 80E8      		ldi r24,hlo8(0x3f800000)
+ 439 0172 9FE3      		ldi r25,hhi8(0x3f800000)
+ 440 0174 0E94 0000 		call __divsf3
+ 441               	/* epilogue start */
+ 136:..//src/drivers/platform/micaZ/source/mda100_driver.c **** }
+ 443               	.LM48:
+ 444 0178 1F91      		pop r17
+ 445 017a 0F91      		pop r16
+ 446 017c FF90      		pop r15
+ 447 017e EF90      		pop r14
+ 448 0180 DF90      		pop r13
+ 449 0182 CF90      		pop r12
+ 450 0184 BF90      		pop r11
+ 451 0186 AF90      		pop r10
+ 452 0188 0895      		ret
+ 457               	.Lscope7:
+ 459               		.stabd	78,0,0
+ 461               	.global	mda100_TemperatureSensor_GetDegreeCelsius
+ 463               	mda100_TemperatureSensor_GetDegreeCelsius:
+ 464               		.stabd	46,0,0
+ 137:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 138:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 139:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 
+ 140:..//src/drivers/platform/micaZ/source/mda100_driver.c **** float mda100_TemperatureSensor_GetDegreeCelsius()
+ 141:..//src/drivers/platform/micaZ/source/mda100_driver.c **** {
+ 466               	.LM49:
+ 467               	.LFBB8:
+ 468               	/* prologue: function */
+ 469               	/* frame size = 0 */
+ 470               	/* stack size = 0 */
+ 471               	.L__stack_usage = 0
+ 142:..//src/drivers/platform/micaZ/source/mda100_driver.c **** 	return (mda100_TemperatureSensor_GetKelvin() - 273.15);
+ 473               	.LM50:
+ 474 018a 0E94 0000 		call mda100_TemperatureSensor_GetKelvin
+ 475 018e 23E3      		ldi r18,lo8(0x43889333)
+ 476 0190 33E9      		ldi r19,hi8(0x43889333)
+ 477 0192 48E8      		ldi r20,hlo8(0x43889333)
+ 478 0194 53E4      		ldi r21,hhi8(0x43889333)
+ 479 0196 0E94 0000 		call __subsf3
+ 480               	/* epilogue start */
+ 143:..//src/drivers/platform/micaZ/source/mda100_driver.c **** }
+ 482               	.LM51:
+ 483 019a 0895      		ret
+ 485               	.Lscope8:
+ 487               		.stabd	78,0,0
+ 488               	.global	mda100_initDone
+ 489               	.global	mda100_initDone
+ 490               		.section .bss
+ 493               	mda100_initDone:
+ 494 0000 00        		.skip 1,0
+ 496               		.text
+ 498               	.Letext0:
+ 499               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 mda100_driver.c
+     /tmp/ccSOZq37.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccSOZq37.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccSOZq37.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccSOZq37.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccSOZq37.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccSOZq37.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccSOZq37.s:78     .text:00000000 mda100_init
+     /tmp/ccSOZq37.s:493    .bss:00000000 mda100_initDone
+     /tmp/ccSOZq37.s:105    .text:0000000c mda100_Powersave
+     /tmp/ccSOZq37.s:138    .text:0000001e mda100_LightSensor_Power
+     /tmp/ccSOZq37.s:203    .text:00000052 mda100_TemperatureSensor_Power
+     /tmp/ccSOZq37.s:267    .text:00000086 mda100_LightSensor_GetCounts
+     /tmp/ccSOZq37.s:304    .text:000000a0 mda100_TemperatureSensor_GetCounts
+     /tmp/ccSOZq37.s:341    .text:000000ba mda100_TemperatureSensor_GetKelvin
+     /tmp/ccSOZq37.s:463    .text:0000018a mda100_TemperatureSensor_GetDegreeCelsius
+
+UNDEFINED SYMBOLS
+adc_init
+adc_Powersave
+adc_GetChannel
+__floatunsisf
+__subsf3
+__mulsf3
+__divsf3
+log
+pow
+__addsf3
+__do_clear_bss

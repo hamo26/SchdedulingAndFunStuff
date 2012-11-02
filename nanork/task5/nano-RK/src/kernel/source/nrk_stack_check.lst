@@ -1,0 +1,574 @@
+   1               		.file	"nrk_stack_check.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+ 134               		.data
+ 135               	.LC0:
+ 136 0000 6375 723A 		.string	"cur: %d "
+ 136      2025 6420 
+ 136      00
+ 137               	.LC1:
+ 138 0009 626F 7474 		.string	"bottom = %x "
+ 138      6F6D 203D 
+ 138      2025 7820 
+ 138      00
+ 139               	.LC2:
+ 140 0016 6361 6E61 		.string	"canary = %x "
+ 140      7279 203D 
+ 140      2025 7820 
+ 140      00
+ 141               	.LC3:
+ 142 0023 7374 6B20 		.string	"stk = %x "
+ 142      3D20 2578 
+ 142      2000 
+ 143               	.LC4:
+ 144 002d 7463 6220 		.string	"tcb addr = %x\r\n"
+ 144      6164 6472 
+ 144      203D 2025 
+ 144      780D 0A00 
+ 145               	.LC5:
+ 146 003d 2564 3A20 		.string	"%d: bottom = %x "
+ 146      626F 7474 
+ 146      6F6D 203D 
+ 146      2025 7820 
+ 146      00
+ 147               		.text
+ 149               	.global	dump_stack_info
+ 151               	dump_stack_info:
+ 152               		.stabd	46,0,0
+   1:..//src/kernel/source/nrk_stack_check.c **** /******************************************************************************
+   2:..//src/kernel/source/nrk_stack_check.c **** *  Nano-RK, a real-time operating system for sensor networks.
+   3:..//src/kernel/source/nrk_stack_check.c **** *  Copyright (C) 2007, Real-Time and Multimedia Lab, Carnegie Mellon University
+   4:..//src/kernel/source/nrk_stack_check.c **** *  All rights reserved.
+   5:..//src/kernel/source/nrk_stack_check.c **** *
+   6:..//src/kernel/source/nrk_stack_check.c **** *  This is the Open Source Version of Nano-RK included as part of a Dual
+   7:..//src/kernel/source/nrk_stack_check.c **** *  Licensing Model. If you are unsure which license to use please refer to:
+   8:..//src/kernel/source/nrk_stack_check.c **** *  http://www.nanork.org/nano-RK/wiki/Licensing
+   9:..//src/kernel/source/nrk_stack_check.c **** *
+  10:..//src/kernel/source/nrk_stack_check.c **** *  This program is free software: you can redistribute it and/or modify
+  11:..//src/kernel/source/nrk_stack_check.c **** *  it under the terms of the GNU General Public License as published by
+  12:..//src/kernel/source/nrk_stack_check.c **** *  the Free Software Foundation, version 2.0 of the License.
+  13:..//src/kernel/source/nrk_stack_check.c **** *
+  14:..//src/kernel/source/nrk_stack_check.c **** *  This program is distributed in the hope that it will be useful,
+  15:..//src/kernel/source/nrk_stack_check.c **** *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+  16:..//src/kernel/source/nrk_stack_check.c **** *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+  17:..//src/kernel/source/nrk_stack_check.c **** *  GNU General Public License for more details.
+  18:..//src/kernel/source/nrk_stack_check.c **** *
+  19:..//src/kernel/source/nrk_stack_check.c **** *  You should have received a copy of the GNU General Public License
+  20:..//src/kernel/source/nrk_stack_check.c **** *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+  21:..//src/kernel/source/nrk_stack_check.c **** *
+  22:..//src/kernel/source/nrk_stack_check.c **** *  Contributing Authors (specific to this file):
+  23:..//src/kernel/source/nrk_stack_check.c **** *  Anthony Rowe
+  24:..//src/kernel/source/nrk_stack_check.c **** *  Zane Starr
+  25:..//src/kernel/source/nrk_stack_check.c **** *******************************************************************************/
+  26:..//src/kernel/source/nrk_stack_check.c **** 
+  27:..//src/kernel/source/nrk_stack_check.c **** #include <nrk.h>
+  28:..//src/kernel/source/nrk_stack_check.c **** #include <nrk_error.h>
+  29:..//src/kernel/source/nrk_stack_check.c **** #include <nrk_stack_check.h>
+  30:..//src/kernel/source/nrk_stack_check.c **** #include <stdio.h>
+  31:..//src/kernel/source/nrk_stack_check.c **** 
+  32:..//src/kernel/source/nrk_stack_check.c **** void dump_stack_info()
+  33:..//src/kernel/source/nrk_stack_check.c **** {
+ 154               	.LM0:
+ 155               	.LFBB1:
+ 156 0000 6F92      		push r6
+ 157 0002 7F92      		push r7
+ 158 0004 8F92      		push r8
+ 159 0006 9F92      		push r9
+ 160 0008 AF92      		push r10
+ 161 000a BF92      		push r11
+ 162 000c CF92      		push r12
+ 163 000e DF92      		push r13
+ 164 0010 EF92      		push r14
+ 165 0012 FF92      		push r15
+ 166 0014 0F93      		push r16
+ 167 0016 1F93      		push r17
+ 168 0018 CF93      		push r28
+ 169 001a DF93      		push r29
+ 170               	/* prologue: function */
+ 171               	/* frame size = 0 */
+ 172               	/* stack size = 14 */
+ 173               	.L__stack_usage = 14
+  34:..//src/kernel/source/nrk_stack_check.c ****     unsigned int *stk;
+  35:..//src/kernel/source/nrk_stack_check.c ****     unsigned char *stkc;
+  36:..//src/kernel/source/nrk_stack_check.c ****     uint8_t i;
+  37:..//src/kernel/source/nrk_stack_check.c **** 
+  38:..//src/kernel/source/nrk_stack_check.c ****     nrk_kprintf( PSTR("\r\nSTACK DUMP\r\n"));
+ 175               	.LM1:
+ 176 001c 80E0      		ldi r24,lo8(__c.2059)
+ 177 001e 90E0      		ldi r25,hi8(__c.2059)
+ 178 0020 0E94 0000 		call nrk_kprintf
+  39:..//src/kernel/source/nrk_stack_check.c **** 
+  40:..//src/kernel/source/nrk_stack_check.c ****     printf( "cur: %d ",nrk_cur_task_TCB->task_ID);
+ 180               	.LM2:
+ 181 0024 00D0      		rcall .
+ 182 0026 00D0      		rcall .
+ 183 0028 80E0      		ldi r24,lo8(.LC0)
+ 184 002a 90E0      		ldi r25,hi8(.LC0)
+ 185 002c ADB7      		in r26,__SP_L__
+ 186 002e BEB7      		in r27,__SP_H__
+ 187 0030 1296      		adiw r26,1+1
+ 188 0032 9C93      		st X,r25
+ 189 0034 8E93      		st -X,r24
+ 190 0036 1197      		sbiw r26,1
+ 191 0038 E091 0000 		lds r30,nrk_cur_task_TCB
+ 192 003c F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 193 0040 8085      		ldd r24,Z+8
+ 194 0042 9927      		clr r25
+ 195 0044 87FD      		sbrc r24,7
+ 196 0046 9095      		com r25
+ 197 0048 1496      		adiw r26,3+1
+ 198 004a 9C93      		st X,r25
+ 199 004c 8E93      		st -X,r24
+ 200 004e 1397      		sbiw r26,3
+ 201 0050 0E94 0000 		call printf
+  41:..//src/kernel/source/nrk_stack_check.c ****     stk= (unsigned int *)nrk_cur_task_TCB->OSTCBStkBottom;
+ 203               	.LM3:
+ 204 0054 E091 0000 		lds r30,nrk_cur_task_TCB
+ 205 0058 F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 206 005c C281      		ldd r28,Z+2
+ 207 005e D381      		ldd r29,Z+3
+  42:..//src/kernel/source/nrk_stack_check.c ****     stkc = (unsigned char*)stk;
+  43:..//src/kernel/source/nrk_stack_check.c ****     printf( "bottom = %x ",(uint16_t)stkc );
+ 209               	.LM4:
+ 210 0060 80E0      		ldi r24,lo8(.LC1)
+ 211 0062 90E0      		ldi r25,hi8(.LC1)
+ 212 0064 EDB7      		in r30,__SP_L__
+ 213 0066 FEB7      		in r31,__SP_H__
+ 214 0068 9283      		std Z+2,r25
+ 215 006a 8183      		std Z+1,r24
+ 216 006c D483      		std Z+4,r29
+ 217 006e C383      		std Z+3,r28
+ 218 0070 0E94 0000 		call printf
+  44:..//src/kernel/source/nrk_stack_check.c ****     printf( "canary = %x ",*stkc );
+ 220               	.LM5:
+ 221 0074 EDB7      		in r30,__SP_L__
+ 222 0076 FEB7      		in r31,__SP_H__
+ 223 0078 3196      		adiw r30,1
+ 224 007a A0E0      		ldi r26,lo8(.LC2)
+ 225 007c EA2E      		mov r14,r26
+ 226 007e A0E0      		ldi r26,hi8(.LC2)
+ 227 0080 FA2E      		mov r15,r26
+ 228 0082 ADB7      		in r26,__SP_L__
+ 229 0084 BEB7      		in r27,__SP_H__
+ 230 0086 1296      		adiw r26,1+1
+ 231 0088 FC92      		st X,r15
+ 232 008a EE92      		st -X,r14
+ 233 008c 1197      		sbiw r26,1
+ 234 008e 8881      		ld r24,Y
+ 235 0090 8283      		std Z+2,r24
+ 236 0092 1382      		std Z+3,__zero_reg__
+ 237 0094 0E94 0000 		call printf
+  45:..//src/kernel/source/nrk_stack_check.c ****     stk= (unsigned int *)nrk_cur_task_TCB->OSTaskStkPtr;
+  46:..//src/kernel/source/nrk_stack_check.c ****     stkc = (unsigned char*)stk;
+  47:..//src/kernel/source/nrk_stack_check.c ****     printf( "stk = %x ",(uint16_t)stkc );
+ 239               	.LM6:
+ 240 0098 E0E0      		ldi r30,lo8(.LC3)
+ 241 009a CE2E      		mov r12,r30
+ 242 009c E0E0      		ldi r30,hi8(.LC3)
+ 243 009e DE2E      		mov r13,r30
+ 244 00a0 EDB7      		in r30,__SP_L__
+ 245 00a2 FEB7      		in r31,__SP_H__
+ 246 00a4 D282      		std Z+2,r13
+ 247 00a6 C182      		std Z+1,r12
+  45:..//src/kernel/source/nrk_stack_check.c ****     stk= (unsigned int *)nrk_cur_task_TCB->OSTaskStkPtr;
+ 249               	.LM7:
+ 250 00a8 E091 0000 		lds r30,nrk_cur_task_TCB
+ 251 00ac F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 253               	.LM8:
+ 254 00b0 8081      		ld r24,Z
+ 255 00b2 9181      		ldd r25,Z+1
+ 256 00b4 ADB7      		in r26,__SP_L__
+ 257 00b6 BEB7      		in r27,__SP_H__
+ 258 00b8 1496      		adiw r26,3+1
+ 259 00ba 9C93      		st X,r25
+ 260 00bc 8E93      		st -X,r24
+ 261 00be 1397      		sbiw r26,3
+ 262 00c0 0E94 0000 		call printf
+  48:..//src/kernel/source/nrk_stack_check.c ****     printf( "tcb addr = %x\r\n",(uint16_t)nrk_cur_task_TCB);
+ 264               	.LM9:
+ 265 00c4 70E0      		ldi r23,lo8(.LC4)
+ 266 00c6 A72E      		mov r10,r23
+ 267 00c8 70E0      		ldi r23,hi8(.LC4)
+ 268 00ca B72E      		mov r11,r23
+ 269 00cc EDB7      		in r30,__SP_L__
+ 270 00ce FEB7      		in r31,__SP_H__
+ 271 00d0 B282      		std Z+2,r11
+ 272 00d2 A182      		std Z+1,r10
+ 273 00d4 8091 0000 		lds r24,nrk_cur_task_TCB
+ 274 00d8 9091 0000 		lds r25,nrk_cur_task_TCB+1
+ 275 00dc 9483      		std Z+4,r25
+ 276 00de 8383      		std Z+3,r24
+ 277 00e0 0E94 0000 		call printf
+ 278 00e4 00E0      		ldi r16,lo8(nrk_task_TCB)
+ 279 00e6 10E0      		ldi r17,hi8(nrk_task_TCB)
+ 280 00e8 0F90      		pop __tmp_reg__
+ 281 00ea 0F90      		pop __tmp_reg__
+ 282 00ec 0F90      		pop __tmp_reg__
+ 283 00ee 0F90      		pop __tmp_reg__
+ 284 00f0 C0E0      		ldi r28,lo8(0)
+ 285 00f2 D0E0      		ldi r29,hi8(0)
+  49:..//src/kernel/source/nrk_stack_check.c **** 
+  50:..//src/kernel/source/nrk_stack_check.c ****     for(i=0; i<NRK_MAX_TASKS; i++ )
+  51:..//src/kernel/source/nrk_stack_check.c ****     {
+  52:..//src/kernel/source/nrk_stack_check.c ****         stk= (unsigned int *)nrk_task_TCB[i].OSTCBStkBottom;
+  53:..//src/kernel/source/nrk_stack_check.c ****         stkc = (unsigned char*)stk;
+  54:..//src/kernel/source/nrk_stack_check.c ****         printf( "%d: bottom = %x ",i,(uint16_t)stkc );
+ 287               	.LM10:
+ 288 00f4 60E0      		ldi r22,lo8(.LC5)
+ 289 00f6 662E      		mov r6,r22
+ 290 00f8 60E0      		ldi r22,hi8(.LC5)
+ 291 00fa 762E      		mov r7,r22
+  55:..//src/kernel/source/nrk_stack_check.c ****         printf( "canary = %x ",*stkc );
+ 293               	.LM11:
+ 294 00fc 4701      		movw r8,r14
+  56:..//src/kernel/source/nrk_stack_check.c ****         stk= (unsigned int *)nrk_task_TCB[i].OSTaskStkPtr;
+  57:..//src/kernel/source/nrk_stack_check.c ****         stkc = (unsigned char*)stk;
+  58:..//src/kernel/source/nrk_stack_check.c ****         printf( "stk = %x ",(uint16_t)stkc );
+ 296               	.LM12:
+ 297 00fe C601      		movw r24,r12
+ 298 0100 DC2C      		mov r13,r12
+ 299 0102 C92E      		mov r12,r25
+  59:..//src/kernel/source/nrk_stack_check.c ****         printf( "tcb addr = %x\r\n",(uint16_t)&nrk_task_TCB[i]);
+ 301               	.LM13:
+ 302 0104 C501      		movw r24,r10
+ 303 0106 BA2C      		mov r11,r10
+ 304 0108 A92E      		mov r10,r25
+ 305               	.L2:
+  52:..//src/kernel/source/nrk_stack_check.c ****         stk= (unsigned int *)nrk_task_TCB[i].OSTCBStkBottom;
+ 307               	.LM14:
+ 308 010a D801      		movw r26,r16
+ 309 010c 1296      		adiw r26,2
+ 310 010e ED90      		ld r14,X+
+ 311 0110 FC90      		ld r15,X
+ 312 0112 1397      		sbiw r26,2+1
+  54:..//src/kernel/source/nrk_stack_check.c ****         printf( "%d: bottom = %x ",i,(uint16_t)stkc );
+ 314               	.LM15:
+ 315 0114 00D0      		rcall .
+ 316 0116 00D0      		rcall .
+ 317 0118 00D0      		rcall .
+ 318 011a EDB7      		in r30,__SP_L__
+ 319 011c FEB7      		in r31,__SP_H__
+ 320 011e 3196      		adiw r30,1
+ 321 0120 ADB7      		in r26,__SP_L__
+ 322 0122 BEB7      		in r27,__SP_H__
+ 323 0124 1296      		adiw r26,1+1
+ 324 0126 7C92      		st X,r7
+ 325 0128 6E92      		st -X,r6
+ 326 012a 1197      		sbiw r26,1
+ 327 012c D383      		std Z+3,r29
+ 328 012e C283      		std Z+2,r28
+ 329 0130 F582      		std Z+5,r15
+ 330 0132 E482      		std Z+4,r14
+ 331 0134 0E94 0000 		call printf
+  55:..//src/kernel/source/nrk_stack_check.c ****         printf( "canary = %x ",*stkc );
+ 333               	.LM16:
+ 334 0138 0F90      		pop __tmp_reg__
+ 335 013a 0F90      		pop __tmp_reg__
+ 336 013c EDB7      		in r30,__SP_L__
+ 337 013e FEB7      		in r31,__SP_H__
+ 338 0140 3196      		adiw r30,1
+ 339 0142 ADB7      		in r26,__SP_L__
+ 340 0144 BEB7      		in r27,__SP_H__
+ 341 0146 1196      		adiw r26,1
+ 342 0148 8C92      		st X,r8
+ 343 014a 1197      		sbiw r26,1
+ 344 014c 1296      		adiw r26,2
+ 345 014e 9C92      		st X,r9
+ 346 0150 D701      		movw r26,r14
+ 347 0152 8C91      		ld r24,X
+ 348 0154 8283      		std Z+2,r24
+ 349 0156 1382      		std Z+3,__zero_reg__
+ 350 0158 0E94 0000 		call printf
+  58:..//src/kernel/source/nrk_stack_check.c ****         printf( "stk = %x ",(uint16_t)stkc );
+ 352               	.LM17:
+ 353 015c EDB7      		in r30,__SP_L__
+ 354 015e FEB7      		in r31,__SP_H__
+ 355 0160 D182      		std Z+1,r13
+ 356 0162 C282      		std Z+2,r12
+ 357 0164 D801      		movw r26,r16
+ 358 0166 8D91      		ld r24,X+
+ 359 0168 9C91      		ld r25,X
+ 360 016a 9483      		std Z+4,r25
+ 361 016c 8383      		std Z+3,r24
+ 362 016e 0E94 0000 		call printf
+ 364               	.LM18:
+ 365 0172 EDB7      		in r30,__SP_L__
+ 366 0174 FEB7      		in r31,__SP_H__
+ 367 0176 B182      		std Z+1,r11
+ 368 0178 A282      		std Z+2,r10
+ 369 017a CE01      		movw r24,r28
+ 370 017c 880F      		lsl r24
+ 371 017e 991F      		rol r25
+ 372 0180 9E01      		movw r18,r28
+ 373 0182 45E0      		ldi r20,5
+ 374 0184 220F      	1:	lsl r18
+ 375 0186 331F      		rol r19
+ 376 0188 4A95      		dec r20
+ 377 018a 01F4      		brne 1b
+ 378 018c 820F      		add r24,r18
+ 379 018e 931F      		adc r25,r19
+ 380 0190 8050      		subi r24,lo8(-(nrk_task_TCB))
+ 381 0192 9040      		sbci r25,hi8(-(nrk_task_TCB))
+ 382 0194 9483      		std Z+4,r25
+ 383 0196 8383      		std Z+3,r24
+ 384 0198 0E94 0000 		call printf
+ 385 019c 2196      		adiw r28,1
+ 386 019e 0E5D      		subi r16,lo8(-(34))
+ 387 01a0 1F4F      		sbci r17,hi8(-(34))
+  50:..//src/kernel/source/nrk_stack_check.c ****     for(i=0; i<NRK_MAX_TASKS; i++ )
+ 389               	.LM19:
+ 390 01a2 0F90      		pop __tmp_reg__
+ 391 01a4 0F90      		pop __tmp_reg__
+ 392 01a6 0F90      		pop __tmp_reg__
+ 393 01a8 0F90      		pop __tmp_reg__
+ 394 01aa C530      		cpi r28,5
+ 395 01ac D105      		cpc r29,__zero_reg__
+ 396 01ae 01F0      		breq .+2
+ 397 01b0 00C0      		rjmp .L2
+ 398               	/* epilogue start */
+  60:..//src/kernel/source/nrk_stack_check.c **** 
+  61:..//src/kernel/source/nrk_stack_check.c ****     }
+  62:..//src/kernel/source/nrk_stack_check.c **** 
+  63:..//src/kernel/source/nrk_stack_check.c **** }
+ 400               	.LM20:
+ 401 01b2 DF91      		pop r29
+ 402 01b4 CF91      		pop r28
+ 403 01b6 1F91      		pop r17
+ 404 01b8 0F91      		pop r16
+ 405 01ba FF90      		pop r15
+ 406 01bc EF90      		pop r14
+ 407 01be DF90      		pop r13
+ 408 01c0 CF90      		pop r12
+ 409 01c2 BF90      		pop r11
+ 410 01c4 AF90      		pop r10
+ 411 01c6 9F90      		pop r9
+ 412 01c8 8F90      		pop r8
+ 413 01ca 7F90      		pop r7
+ 414 01cc 6F90      		pop r6
+ 415 01ce 0895      		ret
+ 417               	.Lscope1:
+ 419               		.stabd	78,0,0
+ 421               	.global	nrk_stack_check
+ 423               	nrk_stack_check:
+ 424               		.stabd	46,0,0
+  64:..//src/kernel/source/nrk_stack_check.c **** 
+  65:..//src/kernel/source/nrk_stack_check.c **** 
+  66:..//src/kernel/source/nrk_stack_check.c **** /*
+  67:..//src/kernel/source/nrk_stack_check.c ****  * Simple Canary value stack overflow check.
+  68:..//src/kernel/source/nrk_stack_check.c ****  * If the end of the stack was overwritten, then flag an error.
+  69:..//src/kernel/source/nrk_stack_check.c ****  *
+  70:..//src/kernel/source/nrk_stack_check.c ****  * */
+  71:..//src/kernel/source/nrk_stack_check.c **** //inline void nrk_stack_check()
+  72:..//src/kernel/source/nrk_stack_check.c **** void nrk_stack_check()
+  73:..//src/kernel/source/nrk_stack_check.c **** {
+ 426               	.LM21:
+ 427               	.LFBB2:
+ 428 01d0 CF93      		push r28
+ 429 01d2 DF93      		push r29
+ 430               	/* prologue: function */
+ 431               	/* frame size = 0 */
+ 432               	/* stack size = 2 */
+ 433               	.L__stack_usage = 2
+  74:..//src/kernel/source/nrk_stack_check.c **** #ifdef NRK_STACK_CHECK
+  75:..//src/kernel/source/nrk_stack_check.c **** 
+  76:..//src/kernel/source/nrk_stack_check.c ****     unsigned int *stk ;  // 2 bytes
+  77:..//src/kernel/source/nrk_stack_check.c ****     unsigned char *stkc; // 1 byte
+  78:..//src/kernel/source/nrk_stack_check.c **** 
+  79:..//src/kernel/source/nrk_stack_check.c ****     stk  = (unsigned int *)nrk_cur_task_TCB->OSTCBStkBottom;          /* Load stack pointer */
+ 435               	.LM22:
+ 436 01d4 E091 0000 		lds r30,nrk_cur_task_TCB
+ 437 01d8 F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 438 01dc C281      		ldd r28,Z+2
+ 439 01de D381      		ldd r29,Z+3
+  80:..//src/kernel/source/nrk_stack_check.c ****     stkc = (unsigned char*)stk;
+  81:..//src/kernel/source/nrk_stack_check.c ****     if(*stkc != STK_CANARY_VAL)
+ 441               	.LM23:
+ 442 01e0 8881      		ld r24,Y
+ 443 01e2 8535      		cpi r24,lo8(85)
+ 444 01e4 01F0      		breq .L5
+  82:..//src/kernel/source/nrk_stack_check.c ****     {
+  83:..//src/kernel/source/nrk_stack_check.c **** #ifdef NRK_REPORT_ERRORS
+  84:..//src/kernel/source/nrk_stack_check.c ****         dump_stack_info();
+ 446               	.LM24:
+ 447 01e6 0E94 0000 		call dump_stack_info
+  85:..//src/kernel/source/nrk_stack_check.c **** #endif
+  86:..//src/kernel/source/nrk_stack_check.c ****         nrk_error_add( NRK_STACK_OVERFLOW );
+ 449               	.LM25:
+ 450 01ea 81E0      		ldi r24,lo8(1)
+ 451 01ec 0E94 0000 		call nrk_error_add
+  87:..//src/kernel/source/nrk_stack_check.c ****         *stkc=STK_CANARY_VAL;
+ 453               	.LM26:
+ 454 01f0 85E5      		ldi r24,lo8(85)
+ 455 01f2 8883      		st Y,r24
+ 456               	.L5:
+  88:..//src/kernel/source/nrk_stack_check.c ****     }
+  89:..//src/kernel/source/nrk_stack_check.c **** 
+  90:..//src/kernel/source/nrk_stack_check.c ****     stk  = (unsigned int *)nrk_cur_task_TCB->OSTaskStkPtr;          /* Load stack pointer */
+ 458               	.LM27:
+ 459 01f4 E091 0000 		lds r30,nrk_cur_task_TCB
+ 460 01f8 F091 0000 		lds r31,nrk_cur_task_TCB+1
+  91:..//src/kernel/source/nrk_stack_check.c ****     stkc = (unsigned char*)stk;
+  92:..//src/kernel/source/nrk_stack_check.c ****     if(stkc > (unsigned char *)RAMEND )
+ 462               	.LM28:
+ 463 01fc 8081      		ld r24,Z
+ 464 01fe 9181      		ldd r25,Z+1
+ 465 0200 21E1      		ldi r18,hi8(4352)
+ 466 0202 8030      		cpi r24,lo8(4352)
+ 467 0204 9207      		cpc r25,r18
+ 468 0206 00F0      		brlo .L4
+  93:..//src/kernel/source/nrk_stack_check.c ****     {
+  94:..//src/kernel/source/nrk_stack_check.c **** #ifdef NRK_REPORT_ERRORS
+  95:..//src/kernel/source/nrk_stack_check.c ****         dump_stack_info();
+ 470               	.LM29:
+ 471 0208 0E94 0000 		call dump_stack_info
+  96:..//src/kernel/source/nrk_stack_check.c **** #endif
+  97:..//src/kernel/source/nrk_stack_check.c ****         nrk_error_add( NRK_INVALID_STACK_POINTER);
+ 473               	.LM30:
+ 474 020c 82E1      		ldi r24,lo8(18)
+ 475 020e 0E94 0000 		call nrk_error_add
+ 476               	.L4:
+ 477               	/* epilogue start */
+  98:..//src/kernel/source/nrk_stack_check.c ****     }
+  99:..//src/kernel/source/nrk_stack_check.c **** 
+ 100:..//src/kernel/source/nrk_stack_check.c **** 
+ 101:..//src/kernel/source/nrk_stack_check.c **** 
+ 102:..//src/kernel/source/nrk_stack_check.c **** 
+ 103:..//src/kernel/source/nrk_stack_check.c **** #endif
+ 104:..//src/kernel/source/nrk_stack_check.c **** }
+ 479               	.LM31:
+ 480 0212 DF91      		pop r29
+ 481 0214 CF91      		pop r28
+ 482 0216 0895      		ret
+ 484               	.Lscope2:
+ 486               		.stabd	78,0,0
+ 489               	.global	nrk_stack_check_pid
+ 491               	nrk_stack_check_pid:
+ 492               		.stabd	46,0,0
+ 105:..//src/kernel/source/nrk_stack_check.c **** 
+ 106:..//src/kernel/source/nrk_stack_check.c **** int8_t nrk_stack_check_pid(int8_t pid)
+ 107:..//src/kernel/source/nrk_stack_check.c **** {
+ 494               	.LM32:
+ 495               	.LFBB3:
+ 496               	/* prologue: function */
+ 497               	/* frame size = 0 */
+ 498               	/* stack size = 0 */
+ 499               	.L__stack_usage = 0
+ 108:..//src/kernel/source/nrk_stack_check.c **** #ifdef NRK_STACK_CHECK
+ 109:..//src/kernel/source/nrk_stack_check.c **** 
+ 110:..//src/kernel/source/nrk_stack_check.c ****     unsigned int *stk ;  // 2 bytes
+ 111:..//src/kernel/source/nrk_stack_check.c ****     unsigned char *stkc; // 1 byte
+ 112:..//src/kernel/source/nrk_stack_check.c **** 
+ 113:..//src/kernel/source/nrk_stack_check.c ****     stk  = (unsigned int *)nrk_task_TCB[pid].OSTCBStkBottom;          /* Load stack pointer */
+ 501               	.LM33:
+ 502 0218 9927      		clr r25
+ 503 021a 87FD      		sbrc r24,7
+ 504 021c 9095      		com r25
+ 505 021e FC01      		movw r30,r24
+ 506 0220 EE0F      		lsl r30
+ 507 0222 FF1F      		rol r31
+ 508 0224 B5E0      		ldi r27,5
+ 509 0226 880F      	1:	lsl r24
+ 510 0228 991F      		rol r25
+ 511 022a BA95      		dec r27
+ 512 022c 01F4      		brne 1b
+ 513 022e E80F      		add r30,r24
+ 514 0230 F91F      		adc r31,r25
+ 515 0232 E050      		subi r30,lo8(-(nrk_task_TCB))
+ 516 0234 F040      		sbci r31,hi8(-(nrk_task_TCB))
+ 517 0236 A281      		ldd r26,Z+2
+ 518 0238 B381      		ldd r27,Z+3
+ 114:..//src/kernel/source/nrk_stack_check.c ****     stkc = (unsigned char*)stk;
+ 115:..//src/kernel/source/nrk_stack_check.c ****     if(*stkc != STK_CANARY_VAL)
+ 520               	.LM34:
+ 521 023a 8C91      		ld r24,X
+ 522 023c 8535      		cpi r24,lo8(85)
+ 523 023e 01F0      		breq .L8
+ 116:..//src/kernel/source/nrk_stack_check.c ****     {
+ 117:..//src/kernel/source/nrk_stack_check.c ****         *stkc=STK_CANARY_VAL;
+ 525               	.LM35:
+ 526 0240 85E5      		ldi r24,lo8(85)
+ 527 0242 8C93      		st X,r24
+ 528 0244 00C0      		rjmp .L11
+ 529               	.L8:
+ 118:..//src/kernel/source/nrk_stack_check.c ****         return NRK_ERROR;
+ 119:..//src/kernel/source/nrk_stack_check.c ****     }
+ 120:..//src/kernel/source/nrk_stack_check.c ****     stk  = (unsigned int *)nrk_task_TCB[pid].OSTaskStkPtr;          /* Load stack pointer */
+ 121:..//src/kernel/source/nrk_stack_check.c ****     stkc = (unsigned char*)stk;
+ 122:..//src/kernel/source/nrk_stack_check.c ****     if(stkc > (unsigned char *)RAMEND )
+ 531               	.LM36:
+ 532 0246 8081      		ld r24,Z
+ 533 0248 9181      		ldd r25,Z+1
+ 534 024a 21E1      		ldi r18,hi8(4352)
+ 535 024c 8030      		cpi r24,lo8(4352)
+ 536 024e 9207      		cpc r25,r18
+ 537 0250 00F0      		brlo .L10
+ 123:..//src/kernel/source/nrk_stack_check.c ****     {
+ 124:..//src/kernel/source/nrk_stack_check.c ****         nrk_error_add( NRK_INVALID_STACK_POINTER);
+ 539               	.LM37:
+ 540 0252 82E1      		ldi r24,lo8(18)
+ 541 0254 0E94 0000 		call nrk_error_add
+ 542               	.L11:
+ 125:..//src/kernel/source/nrk_stack_check.c ****         return NRK_ERROR;
+ 544               	.LM38:
+ 545 0258 8FEF      		ldi r24,lo8(-1)
+ 546 025a 0895      		ret
+ 547               	.L10:
+ 126:..//src/kernel/source/nrk_stack_check.c ****     }
+ 127:..//src/kernel/source/nrk_stack_check.c **** #endif
+ 128:..//src/kernel/source/nrk_stack_check.c ****     return NRK_OK;
+ 549               	.LM39:
+ 550 025c 81E0      		ldi r24,lo8(1)
+ 129:..//src/kernel/source/nrk_stack_check.c **** }
+ 552               	.LM40:
+ 553 025e 0895      		ret
+ 555               	.Lscope3:
+ 557               		.stabd	78,0,0
+ 558               		.comm _nrk_signal_list,4,1
+ 559               		.comm nrk_idle_task_stk,128,1
+ 560               		.comm nrk_kernel_stk,128,1
+ 561               		.comm nrk_kernel_stk_ptr,2,1
+ 562               		.comm error_task,1,1
+ 563               		.comm error_num,1,1
+ 564               		.section	.progmem.data,"a",@progbits
+ 567               	__c.2059:
+ 568 0000 0D0A 5354 		.string	"\r\nSTACK DUMP\r\n"
+ 568      4143 4B20 
+ 568      4455 4D50 
+ 568      0D0A 00
+ 575               		.text
+ 577               	.Letext0:
+ 578               	.global __do_copy_data
+ 579               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 nrk_stack_check.c
+     /tmp/ccUUCdOT.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccUUCdOT.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccUUCdOT.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccUUCdOT.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccUUCdOT.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccUUCdOT.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccUUCdOT.s:151    .text:00000000 dump_stack_info
+     /tmp/ccUUCdOT.s:567    .progmem.data:00000000 __c.2059
+     /tmp/ccUUCdOT.s:423    .text:000001d0 nrk_stack_check
+     /tmp/ccUUCdOT.s:491    .text:00000218 nrk_stack_check_pid
+                            *COM*:00000004 _nrk_signal_list
+                            *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000080 nrk_kernel_stk
+                            *COM*:00000002 nrk_kernel_stk_ptr
+                            *COM*:00000001 error_task
+                            *COM*:00000001 error_num
+
+UNDEFINED SYMBOLS
+nrk_kprintf
+nrk_cur_task_TCB
+printf
+nrk_task_TCB
+nrk_error_add
+__do_copy_data
+__do_clear_bss

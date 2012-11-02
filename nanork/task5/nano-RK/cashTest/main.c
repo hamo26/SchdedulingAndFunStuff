@@ -58,9 +58,9 @@ nrk_task_set_stk(&task_##n, stack_##n, NRK_APP_STACKSIZE);              \
 nrk_activate_task(&task_##n)						
 
 //"Instantiate" tasks.
-TASK(1, 6, 3);
-TASK(2, 5, 1);
-TASK(3, 7, 1);
+TASK(1, 3, 2);
+TASK(2, 50, 1);
+//TASK(3, 7, 1);
 
 nrk_time_t *seed;
 
@@ -80,7 +80,7 @@ int main ()
     //Higher value higher priority`
     INITIALIZE_TASK(1, BASIC_TASK);
     INITIALIZE_TASK(2, CBS_TASK);
-    INITIALIZE_TASK(3, BASIC_TASK);
+   // INITIALIZE_TASK(3, BASIC_TASK);
 
     nrk_start();
 

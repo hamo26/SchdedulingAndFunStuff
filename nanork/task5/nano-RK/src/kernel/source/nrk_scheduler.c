@@ -19,8 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Contributing Authors (specific to this file):
- *  Anthony Rowe
+ *  Contributing Authors (specific to this file): *  Anthony Rowe
  *  Zane Starr
  *  Anand Eswaren
  *******************************************************************************/

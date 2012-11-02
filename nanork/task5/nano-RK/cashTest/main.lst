@@ -1,0 +1,680 @@
+   1               		.file	"main.c"
+   2               	__SREG__ = 0x3f
+   3               	__SP_H__ = 0x3e
+   4               	__SP_L__ = 0x3d
+   5               	__CCP__ = 0x34
+   6               	__tmp_reg__ = 0
+   7               	__zero_reg__ = 1
+  10               		.text
+  11               	.Ltext0:
+ 137               		.data
+ 138               	.LC0:
+ 139 0000 0A2D 2D2D 		.string	"\n------\nStart running task..%d\n"
+ 139      2D2D 2D0A 
+ 139      5374 6172 
+ 139      7420 7275 
+ 139      6E6E 696E 
+ 140               	.LC1:
+ 141 0020 4475 7479 		.string	"Duty amount is %d\n"
+ 141      2061 6D6F 
+ 141      756E 7420 
+ 141      6973 2025 
+ 141      640A 00
+ 142               	.LC2:
+ 143 0033 4342 5320 		.string	"CBS budget is %d\n"
+ 143      6275 6467 
+ 143      6574 2069 
+ 143      7320 2564 
+ 143      0A00 
+ 144               	.LC3:
+ 145 0045 4275 7379 		.string	"Busying with task 2(CBS) %d out of %d\n"
+ 145      696E 6720 
+ 145      7769 7468 
+ 145      2074 6173 
+ 145      6B20 3228 
+ 146               	.LC4:
+ 147 006c 4669 6E69 		.string	"Finishing the task %d\n------\n\n"
+ 147      7368 696E 
+ 147      6720 7468 
+ 147      6520 7461 
+ 147      736B 2025 
+ 148               		.text
+ 150               	.global	task_2_func
+ 152               	task_2_func:
+ 153               		.stabd	46,0,0
+   1:main.c        **** #include <nrk.h>
+   2:main.c        **** #include <include.h>
+   3:main.c        **** #include <ulib.h>
+   4:main.c        **** #include <stdio.h>
+   5:main.c        **** #include <hal.h>
+   6:main.c        **** #include <nrk_error.h>
+   7:main.c        **** #include <nrk_timer.h>
+   8:main.c        **** #include <nrk_stack_check.h>
+   9:main.c        **** 
+  10:main.c        **** /*
+  11:main.c        ****    To stay inline (no pun intended) with the nano-rk direction of using guards for 
+  12:main.c        ****    optimization and potential performance, we use macros rather than methods.
+  13:main.c        ****    We could have created a method, but the call may be expensive and impede the performance of the 
+  14:main.c        ****  */
+  15:main.c        **** #define TASK(n, taskPeriod, taskExecution)                              \
+  16:main.c        ****     void task_##n##_func()                                              \
+  17:main.c        **** {                                                                       \
+  18:main.c        ****     int task_ID =  nrk_cur_task_TCB->task_ID;				\
+  19:main.c        ****     int k=0;								\
+  20:main.c        ****     while (1)                                                           \
+  21:main.c        ****     {									\
+  22:main.c        **** 	printf("\n------\nStart running task..%d\n", n);            \
+  23:main.c        **** 	long int duty = rand()*4;					\
+  24:main.c        **** 	if(duty<0) duty = 0-duty;					\
+  25:main.c        **** 	if(n==2){							\
+  26:main.c        **** 	    printf("Duty amount is %d\n",duty);				\
+  27:main.c        **** 	    for(int i=0;i<=duty;i++){				\
+  28:main.c        **** 		if(i%2000==0){					\
+  29:main.c        **** 		    printf("CBS budget is %d\n", nrk_task_TCB[task_ID].cpu_remaining);\
+  30:main.c        **** 		    for(int j=0;j<9999;j++){k++;}			\
+  31:main.c        **** 		    printf("Busying with task 2(CBS) %d out of %d\n",i,duty);\
+  32:main.c        **** 		}							\
+  33:main.c        **** 	    }							\
+  34:main.c        **** 	}else{for(int i=0;i<10;i++){k++;}printf("Some busy tasks\n");}	\
+  35:main.c        **** 	printf("Finishing the task %d\n------\n\n",n);		\
+  36:main.c        **** 	nrk_wait_until_next_period();				\
+  37:main.c        ****     }                                                      \
+  38:main.c        **** }                                                                   \
+  39:main.c        **** NRK_STK stack_##n[NRK_APP_STACKSIZE];                                   \
+  40:main.c        **** nrk_task_type task_##n;                                                 \
+  41:main.c        **** uint32_t task_##n##_period = taskPeriod;                               	\
+  42:main.c        **** uint32_t task_##n##_execution = taskExecution;                         	\
+  43:main.c        **** 
+  44:main.c        **** /*"Instantiate" the task*/
+  45:main.c        **** #define INITIALIZE_TASK(n,task_type)                                    \
+  46:main.c        **** task_##n.FirstActivation = TRUE;                                        \
+  47:main.c        **** task_##n.prio = n;							\
+  48:main.c        **** task_##n.Type = task_type;                                             \
+  49:main.c        **** task_##n.SchType = PREEMPTIVE;                                          \
+  50:main.c        **** task_##n.period.secs = task_##n##_period;                               \
+  51:main.c        **** task_##n.period.nano_secs = 0;                                          \
+  52:main.c        **** task_##n.cpu_reserve.secs = task_##n##_execution;                      \
+  53:main.c        **** task_##n.cpu_reserve.nano_secs = 0;                                     \
+  54:main.c        **** task_##n.offset.secs = 0;                                               \
+  55:main.c        **** task_##n.offset.nano_secs = 0;                                          \
+  56:main.c        **** nrk_task_set_entry_function(&task_##n, task_##n##_func);            \
+  57:main.c        **** nrk_task_set_stk(&task_##n, stack_##n, NRK_APP_STACKSIZE);              \
+  58:main.c        **** nrk_activate_task(&task_##n)						
+  59:main.c        **** 
+  60:main.c        **** //"Instantiate" tasks.
+  61:main.c        **** TASK(1, 3, 2);
+  62:main.c        **** TASK(2, 50, 1);
+ 155               	.LM0:
+ 156               	.LFBB1:
+ 157 0000 2F92      		push r2
+ 158 0002 3F92      		push r3
+ 159 0004 4F92      		push r4
+ 160 0006 5F92      		push r5
+ 161 0008 6F92      		push r6
+ 162 000a 7F92      		push r7
+ 163 000c 8F92      		push r8
+ 164 000e 9F92      		push r9
+ 165 0010 AF92      		push r10
+ 166 0012 BF92      		push r11
+ 167 0014 CF92      		push r12
+ 168 0016 DF92      		push r13
+ 169 0018 EF92      		push r14
+ 170 001a FF92      		push r15
+ 171 001c 0F93      		push r16
+ 172 001e 1F93      		push r17
+ 173 0020 CF93      		push r28
+ 174 0022 DF93      		push r29
+ 175               	/* prologue: function */
+ 176               	/* frame size = 0 */
+ 177               	/* stack size = 18 */
+ 178               	.L__stack_usage = 18
+ 180               	.LM1:
+ 181 0024 E091 0000 		lds r30,nrk_cur_task_TCB
+ 182 0028 F091 0000 		lds r31,nrk_cur_task_TCB+1
+ 183 002c 8085      		ldd r24,Z+8
+ 184 002e 9927      		clr r25
+ 185 0030 87FD      		sbrc r24,7
+ 186 0032 9095      		com r25
+ 187               	.LBB2:
+ 188 0034 E0E0      		ldi r30,lo8(.LC0)
+ 189 0036 8E2E      		mov r8,r30
+ 190 0038 E0E0      		ldi r30,hi8(.LC0)
+ 191 003a 9E2E      		mov r9,r30
+ 192 003c 72E0      		ldi r23,lo8(2)
+ 193 003e A72E      		mov r10,r23
+ 194 0040 B12C      		mov r11,__zero_reg__
+ 195 0042 60E0      		ldi r22,lo8(.LC1)
+ 196 0044 662E      		mov r6,r22
+ 197 0046 60E0      		ldi r22,hi8(.LC1)
+ 198 0048 762E      		mov r7,r22
+ 199               	.LBB3:
+ 200 004a 50ED      		ldi r21,lo8(2000)
+ 201 004c 452E      		mov r4,r21
+ 202 004e 57E0      		ldi r21,hi8(2000)
+ 203 0050 552E      		mov r5,r21
+ 204 0052 40E0      		ldi r20,lo8(.LC2)
+ 205 0054 242E      		mov r2,r20
+ 206 0056 40E0      		ldi r20,hi8(.LC2)
+ 207 0058 342E      		mov r3,r20
+ 208 005a 6C01      		movw r12,r24
+ 209 005c CC0C      		lsl r12
+ 210 005e DD1C      		rol r13
+ 211 0060 25E0      		ldi r18,5
+ 212 0062 880F      	1:	lsl r24
+ 213 0064 991F      		rol r25
+ 214 0066 2A95      		dec r18
+ 215 0068 01F4      		brne 1b
+ 216 006a C80E      		add r12,r24
+ 217 006c D91E      		adc r13,r25
+ 218 006e 80E0      		ldi r24,lo8(nrk_task_TCB+25)
+ 219 0070 90E0      		ldi r25,hi8(nrk_task_TCB+25)
+ 220 0072 C80E      		add r12,r24
+ 221 0074 D91E      		adc r13,r25
+ 222               	.L6:
+ 223               	.LBE3:
+ 225               	.LM2:
+ 226 0076 00D0      		rcall .
+ 227 0078 00D0      		rcall .
+ 228 007a ADB7      		in r26,__SP_L__
+ 229 007c BEB7      		in r27,__SP_H__
+ 230 007e 1296      		adiw r26,1+1
+ 231 0080 9C92      		st X,r9
+ 232 0082 8E92      		st -X,r8
+ 233 0084 1197      		sbiw r26,1
+ 234 0086 1496      		adiw r26,3+1
+ 235 0088 BC92      		st X,r11
+ 236 008a AE92      		st -X,r10
+ 237 008c 1397      		sbiw r26,3
+ 238 008e 0E94 0000 		call printf
+ 239 0092 0F90      		pop __tmp_reg__
+ 240 0094 0F90      		pop __tmp_reg__
+ 241 0096 0F90      		pop __tmp_reg__
+ 242 0098 0F90      		pop __tmp_reg__
+ 243 009a 0E94 0000 		call rand
+ 244 009e 7C01      		movw r14,r24
+ 245 00a0 EE0C      		lsl r14
+ 246 00a2 FF1C      		rol r15
+ 247 00a4 EE0C      		lsl r14
+ 248 00a6 FF1C      		rol r15
+ 249 00a8 0027      		clr r16
+ 250 00aa F7FC      		sbrc r15,7
+ 251 00ac 0095      		com r16
+ 252 00ae 102F      		mov r17,r16
+ 253 00b0 17FF      		sbrs r17,7
+ 254 00b2 00C0      		rjmp .L2
+ 255 00b4 1095      		com r17
+ 256 00b6 0095      		com r16
+ 257 00b8 F094      		com r15
+ 258 00ba E094      		com r14
+ 259 00bc E11C      		adc r14,__zero_reg__
+ 260 00be F11C      		adc r15,__zero_reg__
+ 261 00c0 011D      		adc r16,__zero_reg__
+ 262 00c2 111D      		adc r17,__zero_reg__
+ 263               	.L2:
+ 264 00c4 00D0      		rcall .
+ 265 00c6 00D0      		rcall .
+ 266 00c8 00D0      		rcall .
+ 267 00ca EDB7      		in r30,__SP_L__
+ 268 00cc FEB7      		in r31,__SP_H__
+ 269 00ce 7282      		std Z+2,r7
+ 270 00d0 6182      		std Z+1,r6
+ 271 00d2 ADB7      		in r26,__SP_L__
+ 272 00d4 BEB7      		in r27,__SP_H__
+ 273 00d6 1396      		adiw r26,3
+ 274 00d8 ED92      		st X+,r14
+ 275 00da FD92      		st X+,r15
+ 276 00dc 0D93      		st X+,r16
+ 277 00de 1C93      		st X,r17
+ 278 00e0 1697      		sbiw r26,3+3
+ 279 00e2 0E94 0000 		call printf
+ 280               	.LBB4:
+ 281 00e6 EDB7      		in r30,__SP_L__
+ 282 00e8 FEB7      		in r31,__SP_H__
+ 283 00ea 3696      		adiw r30,6
+ 284 00ec 0FB6      		in __tmp_reg__,__SREG__
+ 285 00ee F894      		cli
+ 286 00f0 FEBF      		out __SP_H__,r31
+ 287 00f2 0FBE      		out __SREG__,__tmp_reg__
+ 288 00f4 EDBF      		out __SP_L__,r30
+ 289 00f6 C0E0      		ldi r28,lo8(0)
+ 290 00f8 D0E0      		ldi r29,hi8(0)
+ 291 00fa 00C0      		rjmp .L3
+ 292               	.L5:
+ 294               	.LM3:
+ 295 00fc CE01      		movw r24,r28
+ 296 00fe B201      		movw r22,r4
+ 297 0100 0E94 0000 		call __divmodhi4
+ 298 0104 0097      		sbiw r24,0
+ 299 0106 01F4      		brne .L4
+ 301               	.LM4:
+ 302 0108 00D0      		rcall .
+ 303 010a 00D0      		rcall .
+ 304 010c ADB7      		in r26,__SP_L__
+ 305 010e BEB7      		in r27,__SP_H__
+ 306 0110 1296      		adiw r26,1+1
+ 307 0112 3C92      		st X,r3
+ 308 0114 2E92      		st -X,r2
+ 309 0116 1197      		sbiw r26,1
+ 310 0118 F601      		movw r30,r12
+ 311 011a 8081      		ld r24,Z
+ 312 011c 9181      		ldd r25,Z+1
+ 313 011e 1496      		adiw r26,3+1
+ 314 0120 9C93      		st X,r25
+ 315 0122 8E93      		st -X,r24
+ 316 0124 1397      		sbiw r26,3
+ 317 0126 0E94 0000 		call printf
+ 318 012a 00D0      		rcall .
+ 319 012c 00D0      		rcall .
+ 320 012e EDB7      		in r30,__SP_L__
+ 321 0130 FEB7      		in r31,__SP_H__
+ 322 0132 3196      		adiw r30,1
+ 323 0134 80E0      		ldi r24,lo8(.LC3)
+ 324 0136 90E0      		ldi r25,hi8(.LC3)
+ 325 0138 ADB7      		in r26,__SP_L__
+ 326 013a BEB7      		in r27,__SP_H__
+ 327 013c 1296      		adiw r26,1+1
+ 328 013e 9C93      		st X,r25
+ 329 0140 8E93      		st -X,r24
+ 330 0142 1197      		sbiw r26,1
+ 331 0144 D383      		std Z+3,r29
+ 332 0146 C283      		std Z+2,r28
+ 333 0148 E482      		std Z+4,r14
+ 334 014a F582      		std Z+5,r15
+ 335 014c 0683      		std Z+6,r16
+ 336 014e 1783      		std Z+7,r17
+ 337 0150 0E94 0000 		call printf
+ 338 0154 ADB7      		in r26,__SP_L__
+ 339 0156 BEB7      		in r27,__SP_H__
+ 340 0158 1896      		adiw r26,8
+ 341 015a 0FB6      		in __tmp_reg__,__SREG__
+ 342 015c F894      		cli
+ 343 015e BEBF      		out __SP_H__,r27
+ 344 0160 0FBE      		out __SREG__,__tmp_reg__
+ 345 0162 ADBF      		out __SP_L__,r26
+ 346               	.L4:
+ 348               	.LM5:
+ 349 0164 2196      		adiw r28,1
+ 350               	.L3:
+ 352               	.LM6:
+ 353 0166 CE01      		movw r24,r28
+ 354 0168 AA27      		clr r26
+ 355 016a 97FD      		sbrc r25,7
+ 356 016c A095      		com r26
+ 357 016e BA2F      		mov r27,r26
+ 358 0170 E816      		cp r14,r24
+ 359 0172 F906      		cpc r15,r25
+ 360 0174 0A07      		cpc r16,r26
+ 361 0176 1B07      		cpc r17,r27
+ 362 0178 04F4      		brge .L5
+ 363               	.LBE4:
+ 365               	.LM7:
+ 366 017a 00D0      		rcall .
+ 367 017c 00D0      		rcall .
+ 368 017e 80E0      		ldi r24,lo8(.LC4)
+ 369 0180 90E0      		ldi r25,hi8(.LC4)
+ 370 0182 EDB7      		in r30,__SP_L__
+ 371 0184 FEB7      		in r31,__SP_H__
+ 372 0186 9283      		std Z+2,r25
+ 373 0188 8183      		std Z+1,r24
+ 374 018a B482      		std Z+4,r11
+ 375 018c A382      		std Z+3,r10
+ 376 018e 0E94 0000 		call printf
+ 377 0192 0F90      		pop __tmp_reg__
+ 378 0194 0F90      		pop __tmp_reg__
+ 379 0196 0F90      		pop __tmp_reg__
+ 380 0198 0F90      		pop __tmp_reg__
+ 381 019a 0E94 0000 		call nrk_wait_until_next_period
+ 382               	.LBE2:
+ 383 019e 00C0      		rjmp .L6
+ 394               	.Lscope1:
+ 396               		.stabd	78,0,0
+ 397               		.data
+ 398               	.LC5:
+ 399 008b 536F 6D65 		.string	"Some busy tasks"
+ 399      2062 7573 
+ 399      7920 7461 
+ 399      736B 7300 
+ 400               		.text
+ 402               	.global	task_1_func
+ 404               	task_1_func:
+ 405               		.stabd	46,0,0
+  61:main.c        **** TASK(1, 3, 2);
+ 407               	.LM8:
+ 408               	.LFBB2:
+ 409 01a0 EF92      		push r14
+ 410 01a2 FF92      		push r15
+ 411 01a4 0F93      		push r16
+ 412 01a6 1F93      		push r17
+ 413 01a8 CF93      		push r28
+ 414 01aa DF93      		push r29
+ 415               	/* prologue: function */
+ 416               	/* frame size = 0 */
+ 417               	/* stack size = 6 */
+ 418               	.L__stack_usage = 6
+ 419               	.LBB5:
+  61:main.c        **** TASK(1, 3, 2);
+ 421               	.LM9:
+ 422 01ac F0E0      		ldi r31,lo8(.LC0)
+ 423 01ae EF2E      		mov r14,r31
+ 424 01b0 F0E0      		ldi r31,hi8(.LC0)
+ 425 01b2 FF2E      		mov r15,r31
+ 426 01b4 C1E0      		ldi r28,lo8(1)
+ 427 01b6 D0E0      		ldi r29,hi8(1)
+ 428 01b8 00E0      		ldi r16,lo8(.LC4)
+ 429 01ba 10E0      		ldi r17,hi8(.LC4)
+ 430               	.L8:
+  61:main.c        **** TASK(1, 3, 2);
+ 432               	.LM10:
+ 433 01bc 00D0      		rcall .
+ 434 01be 00D0      		rcall .
+ 435 01c0 EDB7      		in r30,__SP_L__
+ 436 01c2 FEB7      		in r31,__SP_H__
+ 437 01c4 F282      		std Z+2,r15
+ 438 01c6 E182      		std Z+1,r14
+ 439 01c8 D483      		std Z+4,r29
+ 440 01ca C383      		std Z+3,r28
+ 441 01cc 0E94 0000 		call printf
+ 442 01d0 0F90      		pop __tmp_reg__
+ 443 01d2 0F90      		pop __tmp_reg__
+ 444 01d4 0F90      		pop __tmp_reg__
+ 445 01d6 0F90      		pop __tmp_reg__
+ 446 01d8 0E94 0000 		call rand
+ 447 01dc 80E0      		ldi r24,lo8(.LC5)
+ 448 01de 90E0      		ldi r25,hi8(.LC5)
+ 449 01e0 0E94 0000 		call puts
+ 450 01e4 00D0      		rcall .
+ 451 01e6 00D0      		rcall .
+ 452 01e8 EDB7      		in r30,__SP_L__
+ 453 01ea FEB7      		in r31,__SP_H__
+ 454 01ec 1283      		std Z+2,r17
+ 455 01ee 0183      		std Z+1,r16
+ 456 01f0 D483      		std Z+4,r29
+ 457 01f2 C383      		std Z+3,r28
+ 458 01f4 0E94 0000 		call printf
+ 459 01f8 0F90      		pop __tmp_reg__
+ 460 01fa 0F90      		pop __tmp_reg__
+ 461 01fc 0F90      		pop __tmp_reg__
+ 462 01fe 0F90      		pop __tmp_reg__
+ 463 0200 0E94 0000 		call nrk_wait_until_next_period
+ 464 0204 00C0      		rjmp .L8
+ 465               	.LBE5:
+ 467               	.Lscope2:
+ 469               		.stabd	78,0,0
+ 471               	.global	main
+ 473               	main:
+ 474               		.stabd	46,0,0
+  63:main.c        **** //TASK(3, 7, 1);
+  64:main.c        **** 
+  65:main.c        **** nrk_time_t *seed;
+  66:main.c        **** 
+  67:main.c        **** int main ()
+  68:main.c        **** {
+ 476               	.LM11:
+ 477               	.LFBB3:
+ 478 0206 1F93      		push r17
+ 479 0208 CF93      		push r28
+ 480 020a DF93      		push r29
+ 481               	/* prologue: function */
+ 482               	/* frame size = 0 */
+ 483               	/* stack size = 3 */
+ 484               	.L__stack_usage = 3
+  69:main.c        ****     nrk_setup_ports();
+ 486               	.LM12:
+ 487 020c 0E94 0000 		call nrk_setup_ports
+  70:main.c        ****     nrk_setup_uart(UART_BAUDRATE_115K2);
+ 489               	.LM13:
+ 490 0210 87E0      		ldi r24,lo8(7)
+ 491 0212 90E0      		ldi r25,hi8(7)
+ 492 0214 0E94 0000 		call nrk_setup_uart
+  71:main.c        **** 
+  72:main.c        ****     nrk_init();
+ 494               	.LM14:
+ 495 0218 0E94 0000 		call nrk_init
+  73:main.c        **** 
+  74:main.c        ****     nrk_time_set(0,0);
+ 497               	.LM15:
+ 498 021c 60E0      		ldi r22,lo8(0)
+ 499 021e 70E0      		ldi r23,hi8(0)
+ 500 0220 CB01      		movw r24,r22
+ 501 0222 20E0      		ldi r18,lo8(0)
+ 502 0224 30E0      		ldi r19,hi8(0)
+ 503 0226 A901      		movw r20,r18
+ 504 0228 0E94 0000 		call nrk_time_set
+  75:main.c        **** 
+  76:main.c        ****     nrk_time_get(seed);
+ 506               	.LM16:
+ 507 022c 8091 0000 		lds r24,seed
+ 508 0230 9091 0000 		lds r25,seed+1
+ 509 0234 0E94 0000 		call nrk_time_get
+  77:main.c        ****     srand(seed->nano_secs);
+ 511               	.LM17:
+ 512 0238 E091 0000 		lds r30,seed
+ 513 023c F091 0000 		lds r31,seed+1
+ 514 0240 6481      		ldd r22,Z+4
+ 515 0242 7581      		ldd r23,Z+5
+ 516 0244 8681      		ldd r24,Z+6
+ 517 0246 9781      		ldd r25,Z+7
+ 518 0248 0E94 0000 		call srand
+  78:main.c        **** 
+  79:main.c        ****     //Initialize tasks 
+  80:main.c        ****     //Higher value higher priority`
+  81:main.c        ****     INITIALIZE_TASK(1, BASIC_TASK);
+ 520               	.LM18:
+ 521 024c 11E0      		ldi r17,lo8(1)
+ 522 024e 1093 0000 		sts task_1+7,r17
+ 523 0252 1093 0000 		sts task_1+8,r17
+ 524 0256 1093 0000 		sts task_1+9,r17
+ 525 025a 1093 0000 		sts task_1+10,r17
+ 526 025e 8091 0000 		lds r24,task_1_period
+ 527 0262 9091 0000 		lds r25,task_1_period+1
+ 528 0266 A091 0000 		lds r26,task_1_period+2
+ 529 026a B091 0000 		lds r27,task_1_period+3
+ 530 026e 8093 0000 		sts task_1+11,r24
+ 531 0272 9093 0000 		sts task_1+11+1,r25
+ 532 0276 A093 0000 		sts task_1+11+2,r26
+ 533 027a B093 0000 		sts task_1+11+3,r27
+ 534 027e 1092 0000 		sts task_1+15,__zero_reg__
+ 535 0282 1092 0000 		sts task_1+15+1,__zero_reg__
+ 536 0286 1092 0000 		sts task_1+15+2,__zero_reg__
+ 537 028a 1092 0000 		sts task_1+15+3,__zero_reg__
+ 538 028e 8091 0000 		lds r24,task_1_execution
+ 539 0292 9091 0000 		lds r25,task_1_execution+1
+ 540 0296 A091 0000 		lds r26,task_1_execution+2
+ 541 029a B091 0000 		lds r27,task_1_execution+3
+ 542 029e 8093 0000 		sts task_1+19,r24
+ 543 02a2 9093 0000 		sts task_1+19+1,r25
+ 544 02a6 A093 0000 		sts task_1+19+2,r26
+ 545 02aa B093 0000 		sts task_1+19+3,r27
+ 546 02ae 1092 0000 		sts task_1+23,__zero_reg__
+ 547 02b2 1092 0000 		sts task_1+23+1,__zero_reg__
+ 548 02b6 1092 0000 		sts task_1+23+2,__zero_reg__
+ 549 02ba 1092 0000 		sts task_1+23+3,__zero_reg__
+ 550 02be 1092 0000 		sts task_1+27,__zero_reg__
+ 551 02c2 1092 0000 		sts task_1+27+1,__zero_reg__
+ 552 02c6 1092 0000 		sts task_1+27+2,__zero_reg__
+ 553 02ca 1092 0000 		sts task_1+27+3,__zero_reg__
+ 554 02ce 1092 0000 		sts task_1+31,__zero_reg__
+ 555 02d2 1092 0000 		sts task_1+31+1,__zero_reg__
+ 556 02d6 1092 0000 		sts task_1+31+2,__zero_reg__
+ 557 02da 1092 0000 		sts task_1+31+3,__zero_reg__
+ 558 02de C0E0      		ldi r28,lo8(task_1)
+ 559 02e0 D0E0      		ldi r29,hi8(task_1)
+ 560 02e2 CE01      		movw r24,r28
+ 561 02e4 60E0      		ldi r22,lo8(gs(task_1_func))
+ 562 02e6 70E0      		ldi r23,hi8(gs(task_1_func))
+ 563 02e8 0E94 0000 		call nrk_task_set_entry_function
+ 564 02ec CE01      		movw r24,r28
+ 565 02ee 60E0      		ldi r22,lo8(stack_1)
+ 566 02f0 70E0      		ldi r23,hi8(stack_1)
+ 567 02f2 40E8      		ldi r20,lo8(128)
+ 568 02f4 50E0      		ldi r21,hi8(128)
+ 569 02f6 0E94 0000 		call nrk_task_set_stk
+ 570 02fa CE01      		movw r24,r28
+ 571 02fc 0E94 0000 		call nrk_activate_task
+  82:main.c        ****     INITIALIZE_TASK(2, CBS_TASK);
+ 573               	.LM19:
+ 574 0300 1093 0000 		sts task_2+7,r17
+ 575 0304 82E0      		ldi r24,lo8(2)
+ 576 0306 8093 0000 		sts task_2+8,r24
+ 577 030a 83E0      		ldi r24,lo8(3)
+ 578 030c 8093 0000 		sts task_2+9,r24
+ 579 0310 1093 0000 		sts task_2+10,r17
+ 580 0314 8091 0000 		lds r24,task_2_period
+ 581 0318 9091 0000 		lds r25,task_2_period+1
+ 582 031c A091 0000 		lds r26,task_2_period+2
+ 583 0320 B091 0000 		lds r27,task_2_period+3
+ 584 0324 8093 0000 		sts task_2+11,r24
+ 585 0328 9093 0000 		sts task_2+11+1,r25
+ 586 032c A093 0000 		sts task_2+11+2,r26
+ 587 0330 B093 0000 		sts task_2+11+3,r27
+ 588 0334 1092 0000 		sts task_2+15,__zero_reg__
+ 589 0338 1092 0000 		sts task_2+15+1,__zero_reg__
+ 590 033c 1092 0000 		sts task_2+15+2,__zero_reg__
+ 591 0340 1092 0000 		sts task_2+15+3,__zero_reg__
+ 592 0344 8091 0000 		lds r24,task_2_execution
+ 593 0348 9091 0000 		lds r25,task_2_execution+1
+ 594 034c A091 0000 		lds r26,task_2_execution+2
+ 595 0350 B091 0000 		lds r27,task_2_execution+3
+ 596 0354 8093 0000 		sts task_2+19,r24
+ 597 0358 9093 0000 		sts task_2+19+1,r25
+ 598 035c A093 0000 		sts task_2+19+2,r26
+ 599 0360 B093 0000 		sts task_2+19+3,r27
+ 600 0364 1092 0000 		sts task_2+23,__zero_reg__
+ 601 0368 1092 0000 		sts task_2+23+1,__zero_reg__
+ 602 036c 1092 0000 		sts task_2+23+2,__zero_reg__
+ 603 0370 1092 0000 		sts task_2+23+3,__zero_reg__
+ 604 0374 1092 0000 		sts task_2+27,__zero_reg__
+ 605 0378 1092 0000 		sts task_2+27+1,__zero_reg__
+ 606 037c 1092 0000 		sts task_2+27+2,__zero_reg__
+ 607 0380 1092 0000 		sts task_2+27+3,__zero_reg__
+ 608 0384 1092 0000 		sts task_2+31,__zero_reg__
+ 609 0388 1092 0000 		sts task_2+31+1,__zero_reg__
+ 610 038c 1092 0000 		sts task_2+31+2,__zero_reg__
+ 611 0390 1092 0000 		sts task_2+31+3,__zero_reg__
+ 612 0394 C0E0      		ldi r28,lo8(task_2)
+ 613 0396 D0E0      		ldi r29,hi8(task_2)
+ 614 0398 CE01      		movw r24,r28
+ 615 039a 60E0      		ldi r22,lo8(gs(task_2_func))
+ 616 039c 70E0      		ldi r23,hi8(gs(task_2_func))
+ 617 039e 0E94 0000 		call nrk_task_set_entry_function
+ 618 03a2 CE01      		movw r24,r28
+ 619 03a4 60E0      		ldi r22,lo8(stack_2)
+ 620 03a6 70E0      		ldi r23,hi8(stack_2)
+ 621 03a8 40E8      		ldi r20,lo8(128)
+ 622 03aa 50E0      		ldi r21,hi8(128)
+ 623 03ac 0E94 0000 		call nrk_task_set_stk
+ 624 03b0 CE01      		movw r24,r28
+ 625 03b2 0E94 0000 		call nrk_activate_task
+  83:main.c        ****    // INITIALIZE_TASK(3, BASIC_TASK);
+  84:main.c        **** 
+  85:main.c        ****     nrk_start();
+ 627               	.LM20:
+ 628 03b6 0E94 0000 		call nrk_start
+  86:main.c        **** 
+  87:main.c        ****     return 0;
+  88:main.c        **** }
+ 630               	.LM21:
+ 631 03ba 80E0      		ldi r24,lo8(0)
+ 632 03bc 90E0      		ldi r25,hi8(0)
+ 633               	/* epilogue start */
+ 634 03be DF91      		pop r29
+ 635 03c0 CF91      		pop r28
+ 636 03c2 1F91      		pop r17
+ 637 03c4 0895      		ret
+ 639               	.Lscope3:
+ 641               		.stabd	78,0,0
+ 642               	.global	task_1_period
+ 643               		.data
+ 646               	task_1_period:
+ 647 009b 03        		.byte	3
+ 648 009c 00        		.byte	0
+ 649 009d 00        		.byte	0
+ 650 009e 00        		.byte	0
+ 651               	.global	task_1_execution
+ 654               	task_1_execution:
+ 655 009f 02        		.byte	2
+ 656 00a0 00        		.byte	0
+ 657 00a1 00        		.byte	0
+ 658 00a2 00        		.byte	0
+ 659               	.global	task_2_period
+ 662               	task_2_period:
+ 663 00a3 32        		.byte	50
+ 664 00a4 00        		.byte	0
+ 665 00a5 00        		.byte	0
+ 666 00a6 00        		.byte	0
+ 667               	.global	task_2_execution
+ 670               	task_2_execution:
+ 671 00a7 01        		.byte	1
+ 672 00a8 00        		.byte	0
+ 673 00a9 00        		.byte	0
+ 674 00aa 00        		.byte	0
+ 675               		.comm _nrk_signal_list,4,1
+ 676               		.comm nrk_idle_task_stk,128,1
+ 677               		.comm nrk_kernel_stk,128,1
+ 678               		.comm nrk_kernel_stk_ptr,2,1
+ 679               		.comm error_task,1,1
+ 680               		.comm error_num,1,1
+ 681               		.comm _nrk_prev_timer_val,1,1
+ 682               		.comm _nrk_time_trigger,1,1
+ 683               		.comm app_timer0_callback,2,1
+ 684               		.comm app_timer0_prescale,1,1
+ 685               		.comm stack_1,128,1
+ 686               		.comm task_1,35,1
+ 687               		.comm stack_2,128,1
+ 688               		.comm task_2,35,1
+ 689               		.comm seed,2,1
+ 709               		.text
+ 711               	.Letext0:
+ 712               	.global __do_copy_data
+ 713               	.global __do_clear_bss
+DEFINED SYMBOLS
+                            *ABS*:00000000 main.c
+     /tmp/cc7WyiGH.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc7WyiGH.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc7WyiGH.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc7WyiGH.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc7WyiGH.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc7WyiGH.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc7WyiGH.s:152    .text:00000000 task_2_func
+     /tmp/cc7WyiGH.s:404    .text:000001a0 task_1_func
+     /tmp/cc7WyiGH.s:473    .text:00000206 main
+                            *COM*:00000002 seed
+                            *COM*:00000023 task_1
+     /tmp/cc7WyiGH.s:646    .data:0000009b task_1_period
+     /tmp/cc7WyiGH.s:654    .data:0000009f task_1_execution
+                            *COM*:00000080 stack_1
+                            *COM*:00000023 task_2
+     /tmp/cc7WyiGH.s:662    .data:000000a3 task_2_period
+     /tmp/cc7WyiGH.s:670    .data:000000a7 task_2_execution
+                            *COM*:00000080 stack_2
+                            *COM*:00000004 _nrk_signal_list
+                            *COM*:00000080 nrk_idle_task_stk
+                            *COM*:00000080 nrk_kernel_stk
+                            *COM*:00000002 nrk_kernel_stk_ptr
+                            *COM*:00000001 error_task
+                            *COM*:00000001 error_num
+                            *COM*:00000001 _nrk_prev_timer_val
+                            *COM*:00000001 _nrk_time_trigger
+                            *COM*:00000002 app_timer0_callback
+                            *COM*:00000001 app_timer0_prescale
+
+UNDEFINED SYMBOLS
+nrk_cur_task_TCB
+nrk_task_TCB
+printf
+rand
+__divmodhi4
+nrk_wait_until_next_period
+puts
+nrk_setup_ports
+nrk_setup_uart
+nrk_init
+nrk_time_set
+nrk_time_get
+srand
+nrk_task_set_entry_function
+nrk_task_set_stk
+nrk_activate_task
+nrk_start
+__do_copy_data
+__do_clear_bss
