@@ -75,6 +75,11 @@ typedef struct os_tcb {
         uint8_t task_type;
 	//bool FinishTask;
 
+	#ifdef CBS_CASH
+	// extend task for CBS CASH
+	uint16_t cash;
+	uint16_t cash_period;
+	#endif
 
 } NRK_TCB;
 
