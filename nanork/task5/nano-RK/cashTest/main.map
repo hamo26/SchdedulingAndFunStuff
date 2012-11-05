@@ -1493,9 +1493,9 @@ LOAD /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a
  .stab          0x00019dd0       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
                                  0x78 (size before relaxing)
 
-.stabstr        0x00000000     0x6e46
+.stabstr        0x00000000     0x6e4d
  *(.stabstr)
- .stabstr       0x00000000     0x6e46 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
+ .stabstr       0x00000000     0x6e4d /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
 
 .stab.excl
  *(.stab.excl)

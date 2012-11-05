@@ -27,7 +27,7 @@
 	    for(int i=0;i<=duty;i++){				\
 		if(i%2000==0){					\
 		    printf("CBS budget is %d\n", nrk_task_TCB[task_ID].cpu_remaining);\
-		    for(int j=0;j<30000;j++){k++;}			\
+		    for(int j=0;j<30000;j++){k++;for(int j=0;j<30000;j++){}}			\
 		    printf("Busying with task (CBS) %d out of %d\n",i,duty);\
 		}							\
 	    }							\
@@ -58,9 +58,9 @@ nrk_task_set_stk(&task_##n, stack_##n, NRK_APP_STACKSIZE);              \
 nrk_activate_task(&task_##n)						
 
 //"Instantiate" tasks.
-TASK(1, 3, 2);
-TASK(2, 5, 1);
-TASK(3, 7, 1);
+TASK(1, 8, 1);
+TASK(2, 5, 4);
+TASK(3, 9, 1);
 
 nrk_time_t *seed;
 
