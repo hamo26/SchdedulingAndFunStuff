@@ -325,8 +325,8 @@ void inline _nrk_scheduler()
 			if(nrk_task_TCB[i].task_type == CBS_TASK){
 				int j = 0;
 				int cash_task_id = 0;
-				
-				for(j = 0; j < NRK_MAX_TASKS; j++){
+				/*
+				for(j = 0; j < NRK_MAX_TASKS; i++){
 					if(nrk_task_TCB[j].task_type == CBS_TASK && nrk_task_TCB[j].cash_period > 0) {
 						if(cash_task_id == 0){
 							cash_task_id = nrk_task_TCB[j].task_ID;
@@ -338,7 +338,7 @@ void inline _nrk_scheduler()
 						}
 					}
 				}
-				
+				*/
 
 				// check if the cash task_id is updated and the next highest CBS task is not cash task
 				if (cash_task_id > 0 && nrk_get_high_ready_task_ID() != cash_task_id){

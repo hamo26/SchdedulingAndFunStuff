@@ -27,7 +27,7 @@
 	    for(int i=0;i<=duty;i++){				\
 		if(i%2000==0){					\
 		    printf("CBS budget is %d\n", nrk_task_TCB[task_ID].cpu_remaining);\
-		    for(int j=0;j<30000;j++){k++;}			\
+		    for(int j=0;j<i;j++){k++;}			\
 		    printf("Busying with task (CBS) %d out of %d\n",i,duty);\
 		}							\
 	    }							\

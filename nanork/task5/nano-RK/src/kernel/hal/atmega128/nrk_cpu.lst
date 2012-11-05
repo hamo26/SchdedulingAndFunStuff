@@ -499,7 +499,7 @@
  522               		.comm nrk_idle_task_stk,128,1
  523               		.comm nrk_kernel_stk,128,1
  524               		.comm nrk_kernel_stk_ptr,2,1
- 525               		.comm nrk_task_TCB,170,1
+ 525               		.comm nrk_task_TCB,190,1
  526               		.comm nrk_wakeup_signal,1,1
  527               		.comm _nrk_readyQ,30,1
  528               		.comm _free_node,2,1
@@ -522,26 +522,26 @@
  569               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_cpu.c
-     /tmp/ccY5TgdT.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccY5TgdT.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccY5TgdT.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccY5TgdT.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccY5TgdT.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccY5TgdT.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccY5TgdT.s:138    .text:00000000 nrk_battery_save
-     /tmp/ccY5TgdT.s:160    .text:00000002 nrk_task_set_entry_function
-     /tmp/ccY5TgdT.s:185    .text:0000000a nrk_sleep
-     /tmp/ccY5TgdT.s:225    .text:00000022 nrk_idle
-     /tmp/ccY5TgdT.s:265    .text:00000038 nrk_task_stk_init
-     /tmp/ccY5TgdT.s:374    .text:0000008e nrk_task_set_stk
-     /tmp/ccY5TgdT.s:432    .text:000000cc nrk_stack_pointer_restore
+     /tmp/ccdAG4yR.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccdAG4yR.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccdAG4yR.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccdAG4yR.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccdAG4yR.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccdAG4yR.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccdAG4yR.s:138    .text:00000000 nrk_battery_save
+     /tmp/ccdAG4yR.s:160    .text:00000002 nrk_task_set_entry_function
+     /tmp/ccdAG4yR.s:185    .text:0000000a nrk_sleep
+     /tmp/ccdAG4yR.s:225    .text:00000022 nrk_idle
+     /tmp/ccdAG4yR.s:265    .text:00000038 nrk_task_stk_init
+     /tmp/ccdAG4yR.s:374    .text:0000008e nrk_task_set_stk
+     /tmp/ccdAG4yR.s:432    .text:000000cc nrk_stack_pointer_restore
                             *COM*:00000080 nrk_kernel_stk
-     /tmp/ccY5TgdT.s:460    .text:000000da nrk_stack_pointer_init
+     /tmp/ccdAG4yR.s:460    .text:000000da nrk_stack_pointer_init
                             *COM*:00000002 nrk_kernel_stk_ptr
-     /tmp/ccY5TgdT.s:498    .text:000000fa nrk_target_start
+     /tmp/ccdAG4yR.s:498    .text:000000fa nrk_target_start
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
-                            *COM*:000000aa nrk_task_TCB
+                            *COM*:000000be nrk_task_TCB
                             *COM*:00000001 nrk_wakeup_signal
                             *COM*:0000001e _nrk_readyQ
                             *COM*:00000002 _free_node

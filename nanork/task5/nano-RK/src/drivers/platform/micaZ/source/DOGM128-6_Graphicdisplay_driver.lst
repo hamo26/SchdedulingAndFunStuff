@@ -2139,17 +2139,17 @@
  1970               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 DOGM128-6_Graphicdisplay_driver.c
-     /tmp/ccvt0zvp.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccvt0zvp.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccvt0zvp.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccvt0zvp.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccvt0zvp.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccvt0zvp.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccvt0zvp.s:95     .text:00000000 DOGM128_6_usart1_sendByte
-     /tmp/ccvt0zvp.s:276    .text:00000078 DOGM128_6_clear_display
-     /tmp/ccvt0zvp.s:374    .text:000000da DOGM128_6_display_init
-     /tmp/ccvt0zvp.s:534    .text:00000180 DOGM128_6_display_backlight
-     /tmp/ccvt0zvp.s:565    .text:0000018c DOGM128_6_LCD_print
-     /tmp/ccvt0zvp.s:686    .progmem.data:00000000 font5x7
+     /tmp/ccZ4mX37.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccZ4mX37.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccZ4mX37.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccZ4mX37.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccZ4mX37.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccZ4mX37.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccZ4mX37.s:95     .text:00000000 DOGM128_6_usart1_sendByte
+     /tmp/ccZ4mX37.s:276    .text:00000078 DOGM128_6_clear_display
+     /tmp/ccZ4mX37.s:374    .text:000000da DOGM128_6_display_init
+     /tmp/ccZ4mX37.s:534    .text:00000180 DOGM128_6_display_backlight
+     /tmp/ccZ4mX37.s:565    .text:0000018c DOGM128_6_LCD_print
+     /tmp/ccZ4mX37.s:686    .progmem.data:00000000 font5x7
 
 NO UNDEFINED SYMBOLS

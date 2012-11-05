@@ -38,6 +38,5 @@
 #define NRK_KERNEL_STACKSIZE           128
 
 #define SRP
-#define CBS_CASH
 
 #endif

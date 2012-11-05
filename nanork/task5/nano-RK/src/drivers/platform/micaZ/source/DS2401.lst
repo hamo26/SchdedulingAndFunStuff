@@ -894,20 +894,20 @@
  749               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 DS2401.c
-     /tmp/ccf0a8Pl.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccf0a8Pl.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccf0a8Pl.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccf0a8Pl.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccf0a8Pl.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccf0a8Pl.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccf0a8Pl.s:136    .text:00000000 Maxim_1Wire_ResetPulse
-     /tmp/ccf0a8Pl.s:256    .text:00000048 Maxim_1Wire_WriteBit
-     /tmp/ccf0a8Pl.s:349    .text:0000007e Maxim_1Wire_ReadBit
-     /tmp/ccf0a8Pl.s:435    .text:000000b2 Maxim_1Wire_WriteByte
-     /tmp/ccf0a8Pl.s:493    .text:000000f0 Maxim_1Wire_ReadByte
-     /tmp/ccf0a8Pl.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
-     /tmp/ccf0a8Pl.s:573    .text:0000012c DS2401_init
-     /tmp/ccf0a8Pl.s:616    .text:0000013e DS2401_getSerialNumber
+     /tmp/ccuwqUMX.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccuwqUMX.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccuwqUMX.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccuwqUMX.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccuwqUMX.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccuwqUMX.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccuwqUMX.s:136    .text:00000000 Maxim_1Wire_ResetPulse
+     /tmp/ccuwqUMX.s:256    .text:00000048 Maxim_1Wire_WriteBit
+     /tmp/ccuwqUMX.s:349    .text:0000007e Maxim_1Wire_ReadBit
+     /tmp/ccuwqUMX.s:435    .text:000000b2 Maxim_1Wire_WriteByte
+     /tmp/ccuwqUMX.s:493    .text:000000f0 Maxim_1Wire_ReadByte
+     /tmp/ccuwqUMX.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
+     /tmp/ccuwqUMX.s:573    .text:0000012c DS2401_init
+     /tmp/ccuwqUMX.s:616    .text:0000013e DS2401_getSerialNumber
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

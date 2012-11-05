@@ -75,7 +75,7 @@ Archive member included because of file (symbol)
 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clz.o)
                               /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivdi3.o) (__clz_tab)
 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
-                              main.o (rand)
+                              main.o (srand)
 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
                               /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o) (__ftoa_engine)
 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
@@ -119,7 +119,7 @@ t                   0x1               ./..//src/kernel/source/nrk_scheduler.o
 _free_node          0x2               ./..//src/kernel/source/nrk.o
 app_timer0_callback
                     0x2               main.o
-nrk_task_TCB        0xaa              ./..//src/kernel/source/nrk.o
+nrk_task_TCB        0xbe              ./..//src/kernel/source/nrk.o
 next_next_wakeup    0x2               ./..//src/kernel/source/nrk.o
 ext_int1_callback   0x2               ./..//src/kernel/hal/atmega128/nrk_ext_int.o
 radio_sem           0x2               ./..//src/radio/cc2420/source/basic_rf.o
@@ -131,6 +131,7 @@ nrk_task_init_cnt   0x1               ./..//src/kernel/source/nrk.o
 error_task          0x1               main.o
 systemceiling       0x1               ./..//src/kernel/source/nrk.o
 mdmctrl0            0x2               ./..//src/radio/cc2420/source/basic_rf.o
+stack_3             0x80              main.o
 i2cDataLen          0x1               ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
 rfSettings          0x9               ./..//src/radio/cc2420/source/basic_rf.o
 _nrk_time_trigger   0x1               main.o
@@ -153,6 +154,7 @@ auto_ack_enable     0x1               ./..//src/radio/cc2420/source/basic_rf.o
 stack_2             0x80              main.o
 nrk_cur_task_TCB    0x2               ./..//src/kernel/source/nrk.o
 nrk_kernel_stk_ptr  0x2               main.o
+task_3              0x23              main.o
 last_pkt_encrypted  0x1               ./..//src/radio/cc2420/source/basic_rf.o
 nrk_high_ready_prio
                     0x1               ./..//src/kernel/source/nrk.o
@@ -317,7 +319,7 @@ LOAD /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000     0x8aee
+.text           0x00000000     0x8f8a
  *(.vectors)
  .vectors       0x00000000       0x8c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
                 0x00000000                __vectors
@@ -416,557 +418,558 @@ LOAD /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a
                 0x000009d0                __vector_10
                 0x000009d0                __vector_18
                 0x000009d0                __vector_20
- .text          0x000009d4      0x3c6 main.o
-                0x000009d4                task_2_func
-                0x00000b74                task_1_func
-                0x00000bda                main
- .text          0x00000d9a       0x36 ./..//src/radio/cc2420/source/hal_rf_set_channel.o
-                0x00000d9a                halRfSetChannel
- .text          0x00000dd0       0x16 ./..//src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
-                0x00000dd0                halRfWaitForCrystalOscillator
- .text          0x00000de6     0x115a ./..//src/radio/cc2420/source/basic_rf.o
-                0x00000de6                cc259x_rx
-                0x00000df8                cc259x_tx
-                0x00000e0a                rf_power_down
-                0x00000e28                rf_power_up
-                0x00000e42                rf_security_last_pkt_status
-                0x00000e48                rf_security_set_ctr_counter
-                0x00000ebc                rf_security_set_key
-                0x00001052                rf_security_enable
-                0x00001092                rf_security_disable
-                0x000010b4                rf_get_sem
-                0x000010be                rf_tx_power
-                0x000010e2                rf_set_channel
-                0x000010e8                rf_addr_decode_enable
-                0x0000111c                rf_addr_decode_disable
-                0x00001150                rf_auto_ack_enable
-                0x0000118a                rf_auto_ack_disable
-                0x000011c2                rf_addr_decode_set_my_mac
-                0x0000121c                rf_set_rx
-                0x0000124e                rf_init
-                0x000013bc                rf_rx_on
-                0x000013e0                rf_polling_rx_on
-                0x00001404                rf_rx_off
-                0x0000141a                rf_tx_tdma_packet
-                0x000016c6                rf_tx_packet
-                0x000019a8                rf_busy
-                0x000019b0                rf_rx_check_fifop
-                0x000019b8                rf_rx_check_sfd
-                0x000019c0                rf_polling_rx_packet
-                0x00001d6e                rf_rx_packet
-                0x00001d84                rf_flush_rx_fifo
-                0x00001d9e                rf_set_cca_thresh
-                0x00001dc4                rf_test_mode
-                0x00001e0c                rf_data_mode
-                0x00001e50                rf_rx_set_serial
-                0x00001e7e                rf_tx_set_serial
-                0x00001ea0                rf_set_preamble_length
-                0x00001ede                rf_set_cca_mode
-                0x00001f24                rf_carrier_on
-                0x00001f32                rf_carrier_off
- .text          0x00001f40      0x514 ./..//src/platform/micaZ/source/ulib.o
-                0x00001f40                getc0
-                0x00001f4a                putc0
-                0x00001f54                nrk_uart_rx_signal_get
-                0x00001f58                nrk_uart_data_ready
-                0x00001f74                nrk_kprintf
-                0x00001f9a                nrk_gpio_set
-                0x00002026                nrk_gpio_clr
-                0x000020b4                nrk_gpio_get
-                0x00002120                nrk_gpio_pullups
-                0x00002134                nrk_gpio_toggle
-                0x000021c0                nrk_gpio_direction
-                0x000022e6                nrk_get_button
-                0x000022ea                nrk_led_toggle
-                0x00002310                nrk_led_clr
-                0x00002336                nrk_setup_ports
-                0x0000237e                nrk_led_set
-                0x000023a4                putc1
-                0x000023bc                setup_uart0
-                0x000023d4                nrk_setup_uart
-                0x00002412                setup_uart1
-                0x0000243c                getc1
- .text          0x00002454        0xe ./..//src/platform/micaZ/source/hal_wait.o
-                0x00002454                halWait
- .text          0x00002462      0x142 ./..//src/platform/micaZ/source/nrk_eeprom.o
-                0x00002462                nrk_eeprom_read_byte
-                0x00002468                nrk_eeprom_write_byte
-                0x00002470                read_eeprom_mac_address
-                0x000024dc                read_eeprom_channel
-                0x000024f4                write_eeprom_load_img_pages
-                0x00002504                read_eeprom_load_img_pages
-                0x0000251c                read_eeprom_aes_key
-                0x0000254c                write_eeprom_aes_key
-                0x0000257c                read_eeprom_current_image_checksum
-                0x00002594                write_eeprom_current_image_checksum
- .text          0x000025a4      0x43e ./..//src/kernel/source/nrk.o
-                0x000025a4                nrk_int_disable
-                0x000025a8                nrk_int_enable
-                0x000025ac                nrk_halt
-                0x000025b2                nrk_init
-                0x0000273e                nrk_start
-                0x000027ea                nrk_TCB_init
-                0x000029d6                _nrk_timer_tick
-                0x000029dc                nrk_version
- .text          0x000029e2        0x0 ./..//src/kernel/source/nrk_stats.o
- .text          0x000029e2      0x456 ./..//src/kernel/source/nrk_error.o
-                0x000029e2                _nrk_errno_set
-                0x000029ee                nrk_errno_get
-                0x000029fa                nrk_error_get
-                0x00002a16                pause
-                0x00002a40                blink_dot
-                0x00002a5a                blink_dash
-                0x00002a7c                blink_morse_code_error
-                0x00002be0                nrk_error_print
-                0x00002d9e                nrk_kernel_error_add
-                0x00002e20                nrk_error_add
- .text          0x00002e38      0x260 ./..//src/kernel/source/nrk_stack_check.o
-                0x00002e38                dump_stack_info
-                0x00003008                nrk_stack_check
-                0x00003050                nrk_stack_check_pid
- .text          0x00003098      0x790 ./..//src/kernel/source/nrk_events.o
-                0x00003098                nrk_signal_create
-                0x00003104                nrk_signal_get_registered_mask
-                0x00003116                nrk_signal_delete
-                0x00003226                nrk_signal_unregister
-                0x000032aa                nrk_signal_register
-                0x00003312                nrk_event_signal
-                0x000033f8                nrk_event_wait
-                0x0000346e                nrk_sem_create
-                0x000034b2                nrk_get_resource_index
-                0x000034dc                nrk_sem_delete
-                0x00003520                nrk_sem_post
-                0x0000367c                nrk_sem_pend
-                0x000037f6                nrk_sem_query
- .text          0x00003828      0x70a ./..//src/kernel/source/nrk_task.o
-                0x00003828                nrk_get_high_ready_task_ID
-                0x00003834                nrk_print_readyQ
-                0x000038a6                nrk_add_to_readyQ
-                0x000039f0                nrk_rem_from_readyQ
-                0x00003a90                nrk_activate_task
-                0x00003b42                nrk_set_next_wakeup
-                0x00003bb0                _nrk_wait_for_scheduler
-                0x00003bc4                nrk_wait
-                0x00003c74                nrk_wait_until_nw
-                0x00003cc2                nrk_wait_until_ticks
-                0x00003d1c                nrk_wait_ticks
-                0x00003d9a                nrk_wait_until_next_n_periods
-                0x00003e00                nrk_wait_until_next_period
-                0x00003e58                nrk_terminate_task
-                0x00003e7a                nrk_wait_until
-                0x00003f26                nrk_get_pid
- .text          0x00003f32      0x596 ./..//src/kernel/source/nrk_time.o
-                0x00003f32                nrk_time_get
-                0x00003fee                nrk_time_sub
-                0x0000410c                nrk_time_compact_nanos
-                0x00004152                nrk_time_add
-                0x00004208                nrk_time_set
-                0x0000422a                _nrk_time_to_ticks
-                0x00004348                _nrk_ticks_to_time
-                0x000043ba                _nrk_time_to_ticks_long
- .text          0x000044c8       0x36 ./..//src/kernel/source/nrk_idle_task.o
-                0x000044c8                nrk_idle_task
- .text          0x000044fe      0x512 ./..//src/kernel/source/nrk_scheduler.o
-                0x000044fe                _nrk_scheduler
- .text          0x00004a10        0x0 ./..//src/kernel/source/nrk_driver.o
- .text          0x00004a10        0x0 ./..//src/kernel/source/nrk_reserve.o
- .text          0x00004a10        0x0 ./..//src/kernel/source/nrk_sw_wdt.o
- .text          0x00004a10      0x2f2 ./..//src/kernel/hal/atmega128/nrk_timer.o
-                0x00004a10                nrk_spin_wait_us
-                0x00004a1e                _nrk_high_speed_timer_stop
-                0x00004a22                _nrk_high_speed_timer_start
-                0x00004a28                _nrk_high_speed_timer_reset
-                0x00004a34                _nrk_high_speed_timer_get
-                0x00004a56                nrk_high_speed_timer_wait
-                0x00004ac6                _nrk_os_timer_set
-                0x00004aca                _nrk_os_timer_stop
-                0x00004ada                _nrk_os_timer_start
-                0x00004ae6                _nrk_os_timer_reset
-                0x00004af8                _nrk_setup_timer
-                0x00004b30                _nrk_precision_os_timer_reset
-                0x00004b32                _nrk_get_next_wakeup
-                0x00004b38                _nrk_set_next_wakeup
-                0x00004b3e                _nrk_os_timer_get
-                0x00004b42                __vector_default
-                0x00004b96                __vector_15
-                0x00004b96                __vector_16
-                0x00004bfc                nrk_timer_int_stop
-                0x00004c0a                nrk_timer_int_reset
-                0x00004c18                nrk_timer_int_read
-                0x00004c2a                nrk_timer_int_start
-                0x00004c3c                nrk_timer_int_configure
-                0x00004c9e                __vector_9
- .text          0x00004d02       0x4a ./..//src/kernel/hal/atmega128/nrk_status.o
-                0x00004d02                _nrk_startup_error
- .text          0x00004d4c       0x60 ./..//src/kernel/hal/atmega128/nrk_ext_int.o
-                0x00004d4c                nrk_ext_int_enable
-                0x00004d50                nrk_ext_int_disable
-                0x00004d54                nrk_ext_int_configure
-                0x00004d58                __vector_1
- .text          0x00004dac       0x48 ./..//src/kernel/hal/atmega128/nrk_watchdog.o
-                0x00004dac                nrk_watchdog_disable
-                0x00004dc6                nrk_watchdog_enable
-                0x00004de2                nrk_watchdog_check
-                0x00004df0                nrk_watchdog_reset
- .text          0x00004df4      0x104 ./..//src/kernel/hal/atmega128/nrk_cpu.o
-                0x00004df4                nrk_battery_save
-                0x00004df6                nrk_task_set_entry_function
-                0x00004dfe                nrk_sleep
-                0x00004e16                nrk_idle
-                0x00004e2c                nrk_task_stk_init
-                0x00004e82                nrk_task_set_stk
-                0x00004ec0                nrk_stack_pointer_restore
-                0x00004ece                nrk_stack_pointer_init
-                0x00004eee                nrk_target_start
- .text          0x00004ef8       0x42 ./..//src/drivers/platform/micaZ/source/ad5242.o
-                0x00004ef8                ad5242_init
-                0x00004efe                ad5242_set
- .text          0x00004f3a       0x6a ./..//src/drivers/platform/micaZ/source/adc_driver.o
-                0x00004f3a                adc_init
-                0x00004f66                adc_Powersave
-                0x00004f6a                adc_GetChannel
-                0x00004f82                adc_GetBatteryVoltage
- .text          0x00004fa4       0xf6 ./..//src/drivers/platform/micaZ/source/i2c_driver.o
-                0x00004fa4                i2c_init
-                0x00004fba                i2c_waitForInterruptFlag
-                0x00004fc4                i2c_actionStart
-                0x00004fd0                i2c_start
-                0x00004ff2                i2c_stop
-                0x0000500a                i2c_send
-                0x00005034                i2c_receive
-                0x00005058                i2c_controlByte_RX
-                0x0000507a                i2c_controlByte_TX
- .text          0x0000509a      0x19c ./..//src/drivers/platform/micaZ/source/mda100_driver.o
-                0x0000509a                mda100_init
-                0x000050a6                mda100_Powersave
-                0x000050b8                mda100_LightSensor_Power
-                0x000050ec                mda100_TemperatureSensor_Power
-                0x00005120                mda100_LightSensor_GetCounts
-                0x0000513a                mda100_TemperatureSensor_GetCounts
-                0x00005154                mda100_TemperatureSensor_GetKelvin
-                0x00005224                mda100_TemperatureSensor_GetDegreeCelsius
- .text          0x00005236      0x26e ./..//src/drivers/platform/micaZ/source/mts310cb_driver.o
-                0x00005236                mts310cb_init
-                0x00005246                mts310cb_Powersave
-                0x00005258                mts310cb_Accelerometer_Power
-                0x00005284                mts310cb_Magnetometer_Power
-                0x000052b0                mts310cb_TemperatureSensor_Power
-                0x000052d8                mts310cb_LightSensor_Power
-                0x00005300                mts310cb_Sounder_Power
-                0x0000532c                mts310cb_Microphone_Power
-                0x00005358                mts310cb_Magnetometer_x_SetOffset
-                0x00005384                mts310cb_Magnetometer_y_SetOffset
-                0x000053b0                mts310cb_Microphone_SetGain
-                0x000053dc                mts310cb_Microphone_SetMode
-                0x0000540c                mts310cb_LightSensor_GetCounts
-                0x00005426                mts310cb_TemperatureSensor_GetCounts
-                0x00005440                mts310cb_Microphone_GetCounts
-                0x00005454                mts310cb_Accelerometer_x_GetCounts
-                0x00005468                mts310cb_Accelerometer_y_GetCounts
-                0x0000547c                mts310cb_Magnetometer_x_GetCounts
-                0x00005490                mts310cb_Magnetometer_y_GetCounts
- .text          0x000054a4      0x1da ./..//src/drivers/platform/micaZ/source/DS2401.o
-                0x000054a4                Maxim_1Wire_ResetPulse
-                0x000054ec                Maxim_1Wire_WriteBit
-                0x00005522                Maxim_1Wire_ReadBit
-                0x00005556                Maxim_1Wire_WriteByte
-                0x00005594                Maxim_1Wire_ReadByte
-                0x000055c8                Maxim_1Wire_CommandReadRom
-                0x000055d0                DS2401_init
-                0x000055e2                DS2401_getSerialNumber
- .text          0x0000567e      0x21a ./..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
-                0x0000567e                DOGM128_6_usart1_sendByte
-                0x000056f6                DOGM128_6_clear_display
-                0x00005758                DOGM128_6_display_init
-                0x000057fe                DOGM128_6_display_backlight
-                0x0000580a                DOGM128_6_LCD_print
- .text          0x00005898      0x6bc ./..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
-                0x00005898                USART0_putchar
-                0x000058a8                USART0_getchar
-                0x000058cc                eDIP240_7_Display_send_packet
-                0x0000598c                eDIP240_7_Display_get_buffer
-                0x00005a8e                eDIP240_7_Display_request_buffer_info
-                0x00005b90                eDIP240_7_Display_set_protocol
-                0x00005c24                eDIP240_7_Display_get_protocoll_info
-                0x00005d36                eDIP240_7_Display_repeat_last_packet
-                0x00005e12                eDIP240_7_Display_select
-                0x00005e9e                eDIP240_7_Display_deselect
-                0x00005f2a                eDIP240_7_Display_send_string
-                0x00005f42                eDIP240_7_Display_send_string_with_NULL
- .text          0x00005f54      0x634 ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
-                0x00005f54                setLedMode
-                0x00005f84                getLedMode
-                0x00005fb0                S2V
-                0x00005fde                V2S
-                0x00006006                setBits
-                0x0000600e                prescalerSec2Hex
-                0x00006072                pwmFrac2Hex
-                0x000060ca                TUM_LKN_Sensorboard_getCurrentStep
-                0x000060d0                TUM_LKN_Sensorboard_setControl0
-                0x000060fa                TUM_LKN_Sensorboard_setControl1
-                0x00006124                TUM_LKN_Sensorboard_setBrightness0
-                0x00006132                TUM_LKN_Sensorboard_setBrightness1
-                0x00006140                TWI_write
-                0x000061a4                TWI_read
-                0x00006222                i2cAction
-                0x0000624e                setLeds
-                0x00006298                TUM_LKN_Sensorboard_greenBlink
-                0x000062aa                TUM_LKN_Sensorboard_greenToggle
-                0x000062c0                TUM_LKN_Sensorboard_greenOff
-                0x000062ce                TUM_LKN_Sensorboard_greenOn
-                0x000062dc                TUM_LKN_Sensorboard_yellowBlink
-                0x000062ee                TUM_LKN_Sensorboard_yellowToggle
-                0x00006304                TUM_LKN_Sensorboard_yellowOff
-                0x00006312                TUM_LKN_Sensorboard_yellowOn
-                0x00006320                TUM_LKN_Sensorboard_redBlink
-                0x00006332                TUM_LKN_Sensorboard_redToggle
-                0x00006348                TUM_LKN_Sensorboard_redOff
-                0x00006356                TUM_LKN_Sensorboard_redOn
-                0x00006364                TUM_LKN_Sensorboard_laserBlink
-                0x00006376                TUM_LKN_Sensorboard_laserToggle
-                0x0000638c                TUM_LKN_Sensorboard_laserOff
-                0x0000639a                TUM_LKN_Sensorboard_laserOn
-                0x000063a8                readADC
-                0x000063f2                TUM_LKN_Sensorboard_readChannel
-                0x000063f8                TUM_LKN_Sensorboard_readChannel3
-                0x00006400                TUM_LKN_Sensorboard_readChannel2
-                0x00006408                TUM_LKN_Sensorboard_readChannel1
-                0x00006410                TUM_LKN_Sensorboard_readPhotoVoltage
-                0x00006418                writeDAC
-                0x0000643e                TUM_LKN_Sensorboard_writeValue
-                0x00006448                readIOs
-                0x00006464                writeIOs
-                0x00006488                TUM_LKN_Sensorboard_halfStepCW
-                0x000064b0                TUM_LKN_Sensorboard_halfStepCCW
-                0x000064d8                TUM_LKN_Sensorboard_stepCW
-                0x00006500                TUM_LKN_Sensorboard_stepCCW
-                0x00006528                TUM_LKN_Sensorboard_StepperIdle
-                0x00006534                TUM_LKN_Sensorboard_setBeeper
-                0x0000654c                TUM_LKN_Sensorboard_writeIO
-                0x00006574                TUM_LKN_Sensorboard_writeIOs
-                0x0000657a                TUM_LKN_Sensorboard_init
- .text          0x00006588       0x56 ./..//src/kernel/hal/atmega128/atmel_hw_specific.o
-                0x00006588                nrk_start_high_ready_task
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_mulsi3.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodhi4.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodhi4.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodsi4.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_copy_data.o)
- .text          0x000065de        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clear_bss.o)
- .text          0x000065de      0xcac /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivdi3.o)
-                0x000065de                __udivdi3
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_prologue.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_epilogue.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clz.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
- .text          0x0000728a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodsi4.o)
-                0x0000728a                . = ALIGN (0x2)
+ .text          0x000009d4      0x5a8 main.o
+                0x000009d4                task_3_func
+                0x00000b3c                task_1_func
+                0x00000ca4                task_2_func
+                0x00000d06                main
+ .text          0x00000f7c       0x36 ./..//src/radio/cc2420/source/hal_rf_set_channel.o
+                0x00000f7c                halRfSetChannel
+ .text          0x00000fb2       0x16 ./..//src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
+                0x00000fb2                halRfWaitForCrystalOscillator
+ .text          0x00000fc8     0x115a ./..//src/radio/cc2420/source/basic_rf.o
+                0x00000fc8                cc259x_rx
+                0x00000fda                cc259x_tx
+                0x00000fec                rf_power_down
+                0x0000100a                rf_power_up
+                0x00001024                rf_security_last_pkt_status
+                0x0000102a                rf_security_set_ctr_counter
+                0x0000109e                rf_security_set_key
+                0x00001234                rf_security_enable
+                0x00001274                rf_security_disable
+                0x00001296                rf_get_sem
+                0x000012a0                rf_tx_power
+                0x000012c4                rf_set_channel
+                0x000012ca                rf_addr_decode_enable
+                0x000012fe                rf_addr_decode_disable
+                0x00001332                rf_auto_ack_enable
+                0x0000136c                rf_auto_ack_disable
+                0x000013a4                rf_addr_decode_set_my_mac
+                0x000013fe                rf_set_rx
+                0x00001430                rf_init
+                0x0000159e                rf_rx_on
+                0x000015c2                rf_polling_rx_on
+                0x000015e6                rf_rx_off
+                0x000015fc                rf_tx_tdma_packet
+                0x000018a8                rf_tx_packet
+                0x00001b8a                rf_busy
+                0x00001b92                rf_rx_check_fifop
+                0x00001b9a                rf_rx_check_sfd
+                0x00001ba2                rf_polling_rx_packet
+                0x00001f50                rf_rx_packet
+                0x00001f66                rf_flush_rx_fifo
+                0x00001f80                rf_set_cca_thresh
+                0x00001fa6                rf_test_mode
+                0x00001fee                rf_data_mode
+                0x00002032                rf_rx_set_serial
+                0x00002060                rf_tx_set_serial
+                0x00002082                rf_set_preamble_length
+                0x000020c0                rf_set_cca_mode
+                0x00002106                rf_carrier_on
+                0x00002114                rf_carrier_off
+ .text          0x00002122      0x514 ./..//src/platform/micaZ/source/ulib.o
+                0x00002122                getc0
+                0x0000212c                putc0
+                0x00002136                nrk_uart_rx_signal_get
+                0x0000213a                nrk_uart_data_ready
+                0x00002156                nrk_kprintf
+                0x0000217c                nrk_gpio_set
+                0x00002208                nrk_gpio_clr
+                0x00002296                nrk_gpio_get
+                0x00002302                nrk_gpio_pullups
+                0x00002316                nrk_gpio_toggle
+                0x000023a2                nrk_gpio_direction
+                0x000024c8                nrk_get_button
+                0x000024cc                nrk_led_toggle
+                0x000024f2                nrk_led_clr
+                0x00002518                nrk_setup_ports
+                0x00002560                nrk_led_set
+                0x00002586                putc1
+                0x0000259e                setup_uart0
+                0x000025b6                nrk_setup_uart
+                0x000025f4                setup_uart1
+                0x0000261e                getc1
+ .text          0x00002636        0xe ./..//src/platform/micaZ/source/hal_wait.o
+                0x00002636                halWait
+ .text          0x00002644      0x142 ./..//src/platform/micaZ/source/nrk_eeprom.o
+                0x00002644                nrk_eeprom_read_byte
+                0x0000264a                nrk_eeprom_write_byte
+                0x00002652                read_eeprom_mac_address
+                0x000026be                read_eeprom_channel
+                0x000026d6                write_eeprom_load_img_pages
+                0x000026e6                read_eeprom_load_img_pages
+                0x000026fe                read_eeprom_aes_key
+                0x0000272e                write_eeprom_aes_key
+                0x0000275e                read_eeprom_current_image_checksum
+                0x00002776                write_eeprom_current_image_checksum
+ .text          0x00002786      0x416 ./..//src/kernel/source/nrk.o
+                0x00002786                nrk_int_disable
+                0x0000278a                nrk_int_enable
+                0x0000278e                nrk_halt
+                0x00002794                nrk_init
+                0x00002920                nrk_start
+                0x000029ca                nrk_TCB_init
+                0x00002b90                _nrk_timer_tick
+                0x00002b96                nrk_version
+ .text          0x00002b9c        0x0 ./..//src/kernel/source/nrk_stats.o
+ .text          0x00002b9c      0x456 ./..//src/kernel/source/nrk_error.o
+                0x00002b9c                _nrk_errno_set
+                0x00002ba8                nrk_errno_get
+                0x00002bb4                nrk_error_get
+                0x00002bd0                pause
+                0x00002bfa                blink_dot
+                0x00002c14                blink_dash
+                0x00002c36                blink_morse_code_error
+                0x00002d9a                nrk_error_print
+                0x00002f58                nrk_kernel_error_add
+                0x00002fda                nrk_error_add
+ .text          0x00002ff2      0x264 ./..//src/kernel/source/nrk_stack_check.o
+                0x00002ff2                dump_stack_info
+                0x000031c8                nrk_stack_check
+                0x00003210                nrk_stack_check_pid
+ .text          0x00003256      0x790 ./..//src/kernel/source/nrk_events.o
+                0x00003256                nrk_signal_create
+                0x000032c2                nrk_signal_get_registered_mask
+                0x000032d4                nrk_signal_delete
+                0x000033e4                nrk_signal_unregister
+                0x00003468                nrk_signal_register
+                0x000034d0                nrk_event_signal
+                0x000035b6                nrk_event_wait
+                0x0000362c                nrk_sem_create
+                0x00003670                nrk_get_resource_index
+                0x0000369a                nrk_sem_delete
+                0x000036de                nrk_sem_post
+                0x0000383a                nrk_sem_pend
+                0x000039b4                nrk_sem_query
+ .text          0x000039e6      0x70a ./..//src/kernel/source/nrk_task.o
+                0x000039e6                nrk_get_high_ready_task_ID
+                0x000039f2                nrk_print_readyQ
+                0x00003a6e                nrk_add_to_readyQ
+                0x00003bb2                nrk_rem_from_readyQ
+                0x00003c52                nrk_activate_task
+                0x00003d00                nrk_set_next_wakeup
+                0x00003d6e                _nrk_wait_for_scheduler
+                0x00003d82                nrk_wait
+                0x00003e32                nrk_wait_until_nw
+                0x00003e80                nrk_wait_until_ticks
+                0x00003eda                nrk_wait_ticks
+                0x00003f58                nrk_wait_until_next_n_periods
+                0x00003fbe                nrk_wait_until_next_period
+                0x00004016                nrk_terminate_task
+                0x00004038                nrk_wait_until
+                0x000040e4                nrk_get_pid
+ .text          0x000040f0      0x596 ./..//src/kernel/source/nrk_time.o
+                0x000040f0                nrk_time_get
+                0x000041ac                nrk_time_sub
+                0x000042ca                nrk_time_compact_nanos
+                0x00004310                nrk_time_add
+                0x000043c6                nrk_time_set
+                0x000043e8                _nrk_time_to_ticks
+                0x00004506                _nrk_ticks_to_time
+                0x00004578                _nrk_time_to_ticks_long
+ .text          0x00004686       0x36 ./..//src/kernel/source/nrk_idle_task.o
+                0x00004686                nrk_idle_task
+ .text          0x000046bc      0x7f0 ./..//src/kernel/source/nrk_scheduler.o
+                0x000046bc                _nrk_scheduler
+ .text          0x00004eac        0x0 ./..//src/kernel/source/nrk_driver.o
+ .text          0x00004eac        0x0 ./..//src/kernel/source/nrk_reserve.o
+ .text          0x00004eac        0x0 ./..//src/kernel/source/nrk_sw_wdt.o
+ .text          0x00004eac      0x2f2 ./..//src/kernel/hal/atmega128/nrk_timer.o
+                0x00004eac                nrk_spin_wait_us
+                0x00004eba                _nrk_high_speed_timer_stop
+                0x00004ebe                _nrk_high_speed_timer_start
+                0x00004ec4                _nrk_high_speed_timer_reset
+                0x00004ed0                _nrk_high_speed_timer_get
+                0x00004ef2                nrk_high_speed_timer_wait
+                0x00004f62                _nrk_os_timer_set
+                0x00004f66                _nrk_os_timer_stop
+                0x00004f76                _nrk_os_timer_start
+                0x00004f82                _nrk_os_timer_reset
+                0x00004f94                _nrk_setup_timer
+                0x00004fcc                _nrk_precision_os_timer_reset
+                0x00004fce                _nrk_get_next_wakeup
+                0x00004fd4                _nrk_set_next_wakeup
+                0x00004fda                _nrk_os_timer_get
+                0x00004fde                __vector_default
+                0x00005032                __vector_15
+                0x00005032                __vector_16
+                0x00005098                nrk_timer_int_stop
+                0x000050a6                nrk_timer_int_reset
+                0x000050b4                nrk_timer_int_read
+                0x000050c6                nrk_timer_int_start
+                0x000050d8                nrk_timer_int_configure
+                0x0000513a                __vector_9
+ .text          0x0000519e       0x4a ./..//src/kernel/hal/atmega128/nrk_status.o
+                0x0000519e                _nrk_startup_error
+ .text          0x000051e8       0x60 ./..//src/kernel/hal/atmega128/nrk_ext_int.o
+                0x000051e8                nrk_ext_int_enable
+                0x000051ec                nrk_ext_int_disable
+                0x000051f0                nrk_ext_int_configure
+                0x000051f4                __vector_1
+ .text          0x00005248       0x48 ./..//src/kernel/hal/atmega128/nrk_watchdog.o
+                0x00005248                nrk_watchdog_disable
+                0x00005262                nrk_watchdog_enable
+                0x0000527e                nrk_watchdog_check
+                0x0000528c                nrk_watchdog_reset
+ .text          0x00005290      0x104 ./..//src/kernel/hal/atmega128/nrk_cpu.o
+                0x00005290                nrk_battery_save
+                0x00005292                nrk_task_set_entry_function
+                0x0000529a                nrk_sleep
+                0x000052b2                nrk_idle
+                0x000052c8                nrk_task_stk_init
+                0x0000531e                nrk_task_set_stk
+                0x0000535c                nrk_stack_pointer_restore
+                0x0000536a                nrk_stack_pointer_init
+                0x0000538a                nrk_target_start
+ .text          0x00005394       0x42 ./..//src/drivers/platform/micaZ/source/ad5242.o
+                0x00005394                ad5242_init
+                0x0000539a                ad5242_set
+ .text          0x000053d6       0x6a ./..//src/drivers/platform/micaZ/source/adc_driver.o
+                0x000053d6                adc_init
+                0x00005402                adc_Powersave
+                0x00005406                adc_GetChannel
+                0x0000541e                adc_GetBatteryVoltage
+ .text          0x00005440       0xf6 ./..//src/drivers/platform/micaZ/source/i2c_driver.o
+                0x00005440                i2c_init
+                0x00005456                i2c_waitForInterruptFlag
+                0x00005460                i2c_actionStart
+                0x0000546c                i2c_start
+                0x0000548e                i2c_stop
+                0x000054a6                i2c_send
+                0x000054d0                i2c_receive
+                0x000054f4                i2c_controlByte_RX
+                0x00005516                i2c_controlByte_TX
+ .text          0x00005536      0x19c ./..//src/drivers/platform/micaZ/source/mda100_driver.o
+                0x00005536                mda100_init
+                0x00005542                mda100_Powersave
+                0x00005554                mda100_LightSensor_Power
+                0x00005588                mda100_TemperatureSensor_Power
+                0x000055bc                mda100_LightSensor_GetCounts
+                0x000055d6                mda100_TemperatureSensor_GetCounts
+                0x000055f0                mda100_TemperatureSensor_GetKelvin
+                0x000056c0                mda100_TemperatureSensor_GetDegreeCelsius
+ .text          0x000056d2      0x26e ./..//src/drivers/platform/micaZ/source/mts310cb_driver.o
+                0x000056d2                mts310cb_init
+                0x000056e2                mts310cb_Powersave
+                0x000056f4                mts310cb_Accelerometer_Power
+                0x00005720                mts310cb_Magnetometer_Power
+                0x0000574c                mts310cb_TemperatureSensor_Power
+                0x00005774                mts310cb_LightSensor_Power
+                0x0000579c                mts310cb_Sounder_Power
+                0x000057c8                mts310cb_Microphone_Power
+                0x000057f4                mts310cb_Magnetometer_x_SetOffset
+                0x00005820                mts310cb_Magnetometer_y_SetOffset
+                0x0000584c                mts310cb_Microphone_SetGain
+                0x00005878                mts310cb_Microphone_SetMode
+                0x000058a8                mts310cb_LightSensor_GetCounts
+                0x000058c2                mts310cb_TemperatureSensor_GetCounts
+                0x000058dc                mts310cb_Microphone_GetCounts
+                0x000058f0                mts310cb_Accelerometer_x_GetCounts
+                0x00005904                mts310cb_Accelerometer_y_GetCounts
+                0x00005918                mts310cb_Magnetometer_x_GetCounts
+                0x0000592c                mts310cb_Magnetometer_y_GetCounts
+ .text          0x00005940      0x1da ./..//src/drivers/platform/micaZ/source/DS2401.o
+                0x00005940                Maxim_1Wire_ResetPulse
+                0x00005988                Maxim_1Wire_WriteBit
+                0x000059be                Maxim_1Wire_ReadBit
+                0x000059f2                Maxim_1Wire_WriteByte
+                0x00005a30                Maxim_1Wire_ReadByte
+                0x00005a64                Maxim_1Wire_CommandReadRom
+                0x00005a6c                DS2401_init
+                0x00005a7e                DS2401_getSerialNumber
+ .text          0x00005b1a      0x21a ./..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
+                0x00005b1a                DOGM128_6_usart1_sendByte
+                0x00005b92                DOGM128_6_clear_display
+                0x00005bf4                DOGM128_6_display_init
+                0x00005c9a                DOGM128_6_display_backlight
+                0x00005ca6                DOGM128_6_LCD_print
+ .text          0x00005d34      0x6bc ./..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
+                0x00005d34                USART0_putchar
+                0x00005d44                USART0_getchar
+                0x00005d68                eDIP240_7_Display_send_packet
+                0x00005e28                eDIP240_7_Display_get_buffer
+                0x00005f2a                eDIP240_7_Display_request_buffer_info
+                0x0000602c                eDIP240_7_Display_set_protocol
+                0x000060c0                eDIP240_7_Display_get_protocoll_info
+                0x000061d2                eDIP240_7_Display_repeat_last_packet
+                0x000062ae                eDIP240_7_Display_select
+                0x0000633a                eDIP240_7_Display_deselect
+                0x000063c6                eDIP240_7_Display_send_string
+                0x000063de                eDIP240_7_Display_send_string_with_NULL
+ .text          0x000063f0      0x634 ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
+                0x000063f0                setLedMode
+                0x00006420                getLedMode
+                0x0000644c                S2V
+                0x0000647a                V2S
+                0x000064a2                setBits
+                0x000064aa                prescalerSec2Hex
+                0x0000650e                pwmFrac2Hex
+                0x00006566                TUM_LKN_Sensorboard_getCurrentStep
+                0x0000656c                TUM_LKN_Sensorboard_setControl0
+                0x00006596                TUM_LKN_Sensorboard_setControl1
+                0x000065c0                TUM_LKN_Sensorboard_setBrightness0
+                0x000065ce                TUM_LKN_Sensorboard_setBrightness1
+                0x000065dc                TWI_write
+                0x00006640                TWI_read
+                0x000066be                i2cAction
+                0x000066ea                setLeds
+                0x00006734                TUM_LKN_Sensorboard_greenBlink
+                0x00006746                TUM_LKN_Sensorboard_greenToggle
+                0x0000675c                TUM_LKN_Sensorboard_greenOff
+                0x0000676a                TUM_LKN_Sensorboard_greenOn
+                0x00006778                TUM_LKN_Sensorboard_yellowBlink
+                0x0000678a                TUM_LKN_Sensorboard_yellowToggle
+                0x000067a0                TUM_LKN_Sensorboard_yellowOff
+                0x000067ae                TUM_LKN_Sensorboard_yellowOn
+                0x000067bc                TUM_LKN_Sensorboard_redBlink
+                0x000067ce                TUM_LKN_Sensorboard_redToggle
+                0x000067e4                TUM_LKN_Sensorboard_redOff
+                0x000067f2                TUM_LKN_Sensorboard_redOn
+                0x00006800                TUM_LKN_Sensorboard_laserBlink
+                0x00006812                TUM_LKN_Sensorboard_laserToggle
+                0x00006828                TUM_LKN_Sensorboard_laserOff
+                0x00006836                TUM_LKN_Sensorboard_laserOn
+                0x00006844                readADC
+                0x0000688e                TUM_LKN_Sensorboard_readChannel
+                0x00006894                TUM_LKN_Sensorboard_readChannel3
+                0x0000689c                TUM_LKN_Sensorboard_readChannel2
+                0x000068a4                TUM_LKN_Sensorboard_readChannel1
+                0x000068ac                TUM_LKN_Sensorboard_readPhotoVoltage
+                0x000068b4                writeDAC
+                0x000068da                TUM_LKN_Sensorboard_writeValue
+                0x000068e4                readIOs
+                0x00006900                writeIOs
+                0x00006924                TUM_LKN_Sensorboard_halfStepCW
+                0x0000694c                TUM_LKN_Sensorboard_halfStepCCW
+                0x00006974                TUM_LKN_Sensorboard_stepCW
+                0x0000699c                TUM_LKN_Sensorboard_stepCCW
+                0x000069c4                TUM_LKN_Sensorboard_StepperIdle
+                0x000069d0                TUM_LKN_Sensorboard_setBeeper
+                0x000069e8                TUM_LKN_Sensorboard_writeIO
+                0x00006a10                TUM_LKN_Sensorboard_writeIOs
+                0x00006a16                TUM_LKN_Sensorboard_init
+ .text          0x00006a24       0x56 ./..//src/kernel/hal/atmega128/atmel_hw_specific.o
+                0x00006a24                nrk_start_high_ready_task
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_mulsi3.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodhi4.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodhi4.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodsi4.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_copy_data.o)
+ .text          0x00006a7a        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clear_bss.o)
+ .text          0x00006a7a      0xcac /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivdi3.o)
+                0x00006a7a                __udivdi3
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_prologue.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_epilogue.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clz.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
+ .text          0x00007726        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodsi4.o)
+                0x00007726                . = ALIGN (0x2)
  *(.text.*)
  .text.avr-libc
-                0x0000728a      0x75e /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
-                0x0000728a                vfprintf
+                0x00007726      0x75e /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+                0x00007726                vfprintf
  .text.avr-libc.fplib
-                0x000079e8        0xa /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
-                0x000079e8                __subsf3
-                0x000079ea                __addsf3
+                0x00007e84        0xa /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
+                0x00007e84                __subsf3
+                0x00007e86                __addsf3
  .text.avr-libc.fplib
-                0x000079f2       0xc0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
-                0x00007a0c                __addsf3x
+                0x00007e8e       0xc0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
+                0x00007ea8                __addsf3x
  .text.avr-libc.fplib
-                0x00007ab2        0x4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
-                0x00007ab2                __divsf3
+                0x00007f4e        0x4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
+                0x00007f4e                __divsf3
  .text.avr-libc.fplib
-                0x00007ab6       0xcc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
-                0x00007acc                __divsf3x
-                0x00007ad0                __divsf3_pse
+                0x00007f52       0xcc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
+                0x00007f68                __divsf3x
+                0x00007f6c                __divsf3_pse
  .text.avr-libc.fplib
-                0x00007b82       0x58 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
-                0x00007b82                __fixunssfsi
+                0x0000801e       0x58 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
+                0x0000801e                __fixunssfsi
  .text.avr-libc.fplib
-                0x00007bda       0x7a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
-                0x00007bda                __floatunsisf
-                0x00007bde                __floatsisf
+                0x00008076       0x7a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
+                0x00008076                __floatunsisf
+                0x0000807a                __floatsisf
  .text.avr-libc.fplib
-                0x00007c54        0xc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
-                0x00007c54                __fp_inf
+                0x000080f0        0xc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
+                0x000080f0                __fp_inf
  .text.avr-libc.fplib
-                0x00007c60        0x6 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
-                0x00007c60                __fp_nan
+                0x000080fc        0x6 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
+                0x000080fc                __fp_nan
  .text.avr-libc.fplib
-                0x00007c66        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
-                0x00007c66                __fp_pscA
+                0x00008102        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
+                0x00008102                __fp_pscA
  .text.avr-libc.fplib
-                0x00007c74        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
-                0x00007c74                __fp_pscB
+                0x00008110        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
+                0x00008110                __fp_pscB
  .text.avr-libc.fplib
-                0x00007c82       0x22 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
-                0x00007c82                __fp_round
+                0x0000811e       0x22 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
+                0x0000811e                __fp_round
  .text.avr-libc.fplib
-                0x00007ca4       0x44 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
-                0x00007ca4                __fp_split3
-                0x00007cb4                __fp_splitA
+                0x00008140       0x44 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
+                0x00008140                __fp_split3
+                0x00008150                __fp_splitA
  .text.avr-libc.fplib
-                0x00007ce8        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
-                0x00007ce8                __fp_zero
-                0x00007cea                __fp_szero
+                0x00008184        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
+                0x00008184                __fp_zero
+                0x00008186                __fp_szero
  .text.avr-libc.fplib
-                0x00007cf6        0x8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
-                0x00007cf6                __gtsf2
-                0x00007cf6                __gesf2
+                0x00008192        0x8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
+                0x00008192                __gtsf2
+                0x00008192                __gesf2
  .text.avr-libc.fplib
-                0x00007cfe       0x8a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
-                0x00007d08                log
+                0x0000819a       0x8a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
+                0x000081a4                log
  .text.avr-libc.fplib
-                0x00007d88        0x4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
-                0x00007d88                __mulsf3
+                0x00008224        0x4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
+                0x00008224                __mulsf3
  .text.avr-libc.fplib
-                0x00007d8c       0xc2 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
-                0x00007da0                __mulsf3x
-                0x00007da4                __mulsf3_pse
+                0x00008228       0xc2 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
+                0x0000823c                __mulsf3x
+                0x00008240                __mulsf3_pse
  .text.avr-libc.fplib
-                0x00007e4e       0x98 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
-                0x00007e4e                pow
+                0x000082ea       0x98 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
+                0x000082ea                pow
  .text.avr-libc.fplib
-                0x00007ee6       0x62 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
-                0x00007ef0                exp
+                0x00008382       0x62 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
+                0x0000838c                exp
  .text.avr-libc.fplib
-                0x00007f48       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
-                0x00007f48                __fp_cmp
+                0x000083e4       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
+                0x000083e4                __fp_cmp
  .text.avr-libc.fplib
-                0x00007f90       0x1c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
-                0x00007f90                __fp_mpack
-                0x00007f94                __fp_mpack_finite
+                0x0000842c       0x1c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
+                0x0000842c                __fp_mpack
+                0x00008430                __fp_mpack_finite
  .text.avr-libc.fplib
-                0x00007fac       0x4a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
-                0x00007fac                __fp_powser
+                0x00008448       0x4a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
+                0x00008448                __fp_powser
  .text.avr-libc.fplib
-                0x00007ff6        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
-                0x00007ff6                inverse
+                0x00008492        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
+                0x00008492                inverse
  .text.avr-libc.fplib
-                0x00008004       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
-                0x00008008                ldexp
+                0x000084a0       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
+                0x000084a4                ldexp
  .text.avr-libc.fplib
-                0x00008070       0x66 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
-                0x00008070                modff
-                0x00008070                modf
- .text.libgcc   0x000080d6       0x3e /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_mulsi3.o)
-                0x000080d6                __mulsi3
- .text.libgcc   0x00008114       0x28 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodhi4.o)
-                0x00008114                __udivmodhi4
- .text.libgcc   0x0000813c       0x26 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodhi4.o)
-                0x0000813c                __divmodhi4
-                0x0000813c                _div
- .text.libgcc   0x00008162       0x44 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodsi4.o)
-                0x00008162                __udivmodsi4
- .text.libgcc   0x000081a6        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
- .text.libgcc   0x000081a6        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_copy_data.o)
- .text.libgcc   0x000081a6        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clear_bss.o)
- .text.libgcc   0x000081a6       0x38 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_prologue.o)
-                0x000081a6                __prologue_saves__
- .text.libgcc   0x000081de       0x36 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_epilogue.o)
-                0x000081de                __epilogue_restores__
+                0x0000850c       0x66 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
+                0x0000850c                modff
+                0x0000850c                modf
+ .text.libgcc   0x00008572       0x3e /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_mulsi3.o)
+                0x00008572                __mulsi3
+ .text.libgcc   0x000085b0       0x28 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodhi4.o)
+                0x000085b0                __udivmodhi4
+ .text.libgcc   0x000085d8       0x26 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodhi4.o)
+                0x000085d8                __divmodhi4
+                0x000085d8                _div
+ .text.libgcc   0x000085fe       0x44 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodsi4.o)
+                0x000085fe                __udivmodsi4
+ .text.libgcc   0x00008642        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
+ .text.libgcc   0x00008642        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_copy_data.o)
+ .text.libgcc   0x00008642        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clear_bss.o)
+ .text.libgcc   0x00008642       0x38 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_prologue.o)
+                0x00008642                __prologue_saves__
+ .text.libgcc   0x0000867a       0x36 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_epilogue.o)
+                0x0000867a                __epilogue_restores__
  .text.avr-libc
-                0x00008214       0xbc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
-                0x000082aa                rand_r
-                0x000082b0                rand
-                0x000082ba                srand
+                0x000086b0       0xbc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
+                0x00008746                rand_r
+                0x0000874c                rand
+                0x00008756                srand
  .text.avr-libc
-                0x000082d0      0x1b0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
-                0x000082d0                __ftoa_engine
+                0x0000876c      0x1b0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+                0x0000876c                __ftoa_engine
  .text.avr-libc
-                0x00008480       0x16 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
-                0x00008480                strnlen_P
+                0x0000891c       0x16 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
+                0x0000891c                strnlen_P
  .text.avr-libc
-                0x00008496       0x16 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
-                0x00008496                strnlen
+                0x00008932       0x16 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
+                0x00008932                strnlen
  .text.avr-libc
-                0x000084ac       0x96 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
-                0x000084ac                fdevopen
+                0x00008948       0x96 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
+                0x00008948                fdevopen
  .text.avr-libc
-                0x00008542       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
-                0x00008542                fgetc
+                0x000089de       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
+                0x000089de                fgetc
  .text.avr-libc
-                0x000085c6       0x58 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
-                0x000085c6                fputc
+                0x00008a62       0x58 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
+                0x00008a62                fputc
  .text.avr-libc
-                0x0000861e       0x24 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
-                0x0000861e                printf
+                0x00008aba       0x24 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
+                0x00008aba                printf
  .text.avr-libc
-                0x00008642       0x6e /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
-                0x00008642                puts
+                0x00008ade       0x6e /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
+                0x00008ade                puts
  .text.avr-libc
-                0x000086b0       0x60 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
-                0x000086b0                sprintf
+                0x00008b4c       0x60 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
+                0x00008b4c                sprintf
  .text.avr-libc
-                0x00008710       0xbc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
-                0x00008710                __ultoa_invert
+                0x00008bac       0xbc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+                0x00008bac                __ultoa_invert
  .text.avr-libc
-                0x000087cc       0x10 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
-                0x000087cc                __eerd_byte_m128
+                0x00008c68       0x10 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
+                0x00008c68                __eerd_byte_m128
  .text.avr-libc
-                0x000087dc       0x1a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
-                0x000087dc                __eewr_byte_m128
-                0x000087de                __eewr_r18_m128
+                0x00008c78       0x1a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
+                0x00008c78                __eewr_byte_m128
+                0x00008c7a                __eewr_r18_m128
  .text.avr-libc
-                0x000087f6       0x4a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
-                0x000087f6                calloc
+                0x00008c92       0x4a /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
+                0x00008c92                calloc
  .text.avr-libc
-                0x00008840      0x266 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
-                0x00008840                malloc
-                0x00008974                free
+                0x00008cdc      0x266 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
+                0x00008cdc                malloc
+                0x00008e10                free
  .text.avr-libc
-                0x00008aa6        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
-                0x00008aa6                memset
- .text.libgcc   0x00008ab4       0x36 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodsi4.o)
-                0x00008ab4                __divmodsi4
-                0x00008aea                . = ALIGN (0x2)
+                0x00008f42        0xe /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
+                0x00008f42                memset
+ .text.libgcc   0x00008f50       0x36 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodsi4.o)
+                0x00008f50                __divmodsi4
+                0x00008f86                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00008aea        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
-                0x00008aea                exit
-                0x00008aea                _exit
+ .fini9         0x00008f86        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
+                0x00008f86                exit
+                0x00008f86                _exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -985,331 +988,336 @@ LOAD /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00008aea        0x4 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
+ .fini0         0x00008f86        0x4 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
  *(.fini0)
-                0x00008aee                _etext = .
+                0x00008f8a                _etext = .
 
-.data           0x00800100      0x2c8 load address 0x00008aee
+.data           0x00800100      0x2d0 load address 0x00008f8a
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
- .data          0x00800100       0xab main.o
-                0x0080019b                task_1_period
-                0x0080019f                task_1_execution
-                0x008001a3                task_2_period
-                0x008001a7                task_2_execution
- .data          0x008001ab        0x0 ./..//src/radio/cc2420/source/hal_rf_set_channel.o
- .data          0x008001ab        0x0 ./..//src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
- .data          0x008001ab        0x0 ./..//src/radio/cc2420/source/basic_rf.o
- .data          0x008001ab       0x23 ./..//src/platform/micaZ/source/ulib.o
-                0x008001ab                NRK_LED_0
-                0x008001ac                NRK_LED_1
-                0x008001ad                NRK_LED_2
-                0x008001ae                NRK_VREG_EN
-                0x008001af                NRK_RESET_N
-                0x008001b0                NRK_CSN
-                0x008001b1                NRK_SCK
-                0x008001b2                NRK_MOSI
-                0x008001b3                NRK_MISO
-                0x008001b4                NRK_FIFO
-                0x008001b5                NRK_UART1_RXD
-                0x008001b6                NRK_UART1_TXD
-                0x008001b7                NRK_SFD
-                0x008001b8                NRK_UART1_RTS
-                0x008001b9                NRK_CCA
-                0x008001ba                NRK_UART1_CTS
-                0x008001bb                NRK_UART0_RXD
-                0x008001bc                NRK_UART0_TXD
-                0x008001bd                NRK_FIFOP
-                0x008001be                NRK_ADC_INPUT_0
-                0x008001bf                NRK_ADC_INPUT_1
-                0x008001c0                NRK_ADC_INPUT_2
-                0x008001c1                NRK_ADC_INPUT_3
-                0x008001c2                NRK_ADC_INPUT_6
-                0x008001c3                NRK_ADC_INPUT_7
-                0x008001c4                NRK_DEBUG_0
-                0x008001c5                NRK_DEBUG_1
-                0x008001c6                NRK_DEBUG_2
-                0x008001c7                NRK_DEBUG_3
-                0x008001c8                NRK_LED_3
-                0x008001c9                NRK_BLED
-                0x008001ca                NRK_SPI_SS
-                0x008001cb                NRK_GPIO26
-                0x008001cc                NRK_GPIO28
-                0x008001cd                NRK_GPIO34
- .data          0x008001ce        0x0 ./..//src/platform/micaZ/source/hal_wait.o
- .data          0x008001ce        0x0 ./..//src/platform/micaZ/source/nrk_eeprom.o
- .data          0x008001ce        0x0 ./..//src/kernel/source/nrk.o
- .data          0x008001ce        0x0 ./..//src/kernel/source/nrk_stats.o
- .data          0x008001ce        0x3 ./..//src/kernel/source/nrk_error.o
- .data          0x008001d1       0x4e ./..//src/kernel/source/nrk_stack_check.o
- .data          0x0080021f       0x4e ./..//src/kernel/source/nrk_events.o
- .data          0x0080026d        0x4 ./..//src/kernel/source/nrk_task.o
- .data          0x00800271        0x0 ./..//src/kernel/source/nrk_time.o
- .data          0x00800271        0x0 ./..//src/kernel/source/nrk_idle_task.o
- .data          0x00800271       0x3d ./..//src/kernel/source/nrk_scheduler.o
- .data          0x008002ae        0x0 ./..//src/kernel/source/nrk_driver.o
- .data          0x008002ae        0x0 ./..//src/kernel/source/nrk_reserve.o
- .data          0x008002ae        0x0 ./..//src/kernel/source/nrk_sw_wdt.o
- .data          0x008002ae        0x0 ./..//src/kernel/hal/atmega128/nrk_timer.o
- .data          0x008002ae        0x0 ./..//src/kernel/hal/atmega128/nrk_status.o
- .data          0x008002ae        0x0 ./..//src/kernel/hal/atmega128/nrk_ext_int.o
- .data          0x008002ae        0x0 ./..//src/kernel/hal/atmega128/nrk_watchdog.o
- .data          0x008002ae        0x0 ./..//src/kernel/hal/atmega128/nrk_cpu.o
- .data          0x008002ae        0x0 ./..//src/drivers/platform/micaZ/source/ad5242.o
- .data          0x008002ae        0x0 ./..//src/drivers/platform/micaZ/source/adc_driver.o
- .data          0x008002ae        0x0 ./..//src/drivers/platform/micaZ/source/i2c_driver.o
- .data          0x008002ae        0x0 ./..//src/drivers/platform/micaZ/source/mda100_driver.o
- .data          0x008002ae        0x0 ./..//src/drivers/platform/micaZ/source/mts310cb_driver.o
- .data          0x008002ae        0x0 ./..//src/drivers/platform/micaZ/source/DS2401.o
- .data          0x008002ae        0x0 ./..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
- .data          0x008002ae        0x0 ./..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
- .data          0x008002ae       0x10 ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
-                0x008002ae                steppertimeout
-                0x008002b0                steps
-                0x008002b8                m_vbatt
-                0x008002bc                m_pwm
- .data          0x008002be        0x0 ./..//src/kernel/hal/atmega128/atmel_hw_specific.o
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_mulsi3.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodhi4.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodhi4.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodsi4.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_copy_data.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clear_bss.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivdi3.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_prologue.o)
- .data          0x008002be        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_epilogue.o)
- .data          0x008002be      0x100 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clz.o)
-                0x008002be                __clz_tab
- .data          0x008003be        0x4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
- .data          0x008003c2        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
- .data          0x008003c2        0x6 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
-                0x008003c2                __malloc_margin
-                0x008003c4                __malloc_heap_start
-                0x008003c6                __malloc_heap_end
- .data          0x008003c8        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
- .data          0x008003c8        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodsi4.o)
+ .data          0x00800100       0xb2 main.o
+                0x0080019a                task_1_period
+                0x0080019e                task_1_execution
+                0x008001a2                task_2_period
+                0x008001a6                task_2_execution
+                0x008001aa                task_3_period
+                0x008001ae                task_3_execution
+ .data          0x008001b2        0x0 ./..//src/radio/cc2420/source/hal_rf_set_channel.o
+ .data          0x008001b2        0x0 ./..//src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
+ .data          0x008001b2        0x0 ./..//src/radio/cc2420/source/basic_rf.o
+ .data          0x008001b2       0x23 ./..//src/platform/micaZ/source/ulib.o
+                0x008001b2                NRK_LED_0
+                0x008001b3                NRK_LED_1
+                0x008001b4                NRK_LED_2
+                0x008001b5                NRK_VREG_EN
+                0x008001b6                NRK_RESET_N
+                0x008001b7                NRK_CSN
+                0x008001b8                NRK_SCK
+                0x008001b9                NRK_MOSI
+                0x008001ba                NRK_MISO
+                0x008001bb                NRK_FIFO
+                0x008001bc                NRK_UART1_RXD
+                0x008001bd                NRK_UART1_TXD
+                0x008001be                NRK_SFD
+                0x008001bf                NRK_UART1_RTS
+                0x008001c0                NRK_CCA
+                0x008001c1                NRK_UART1_CTS
+                0x008001c2                NRK_UART0_RXD
+                0x008001c3                NRK_UART0_TXD
+                0x008001c4                NRK_FIFOP
+                0x008001c5                NRK_ADC_INPUT_0
+                0x008001c6                NRK_ADC_INPUT_1
+                0x008001c7                NRK_ADC_INPUT_2
+                0x008001c8                NRK_ADC_INPUT_3
+                0x008001c9                NRK_ADC_INPUT_6
+                0x008001ca                NRK_ADC_INPUT_7
+                0x008001cb                NRK_DEBUG_0
+                0x008001cc                NRK_DEBUG_1
+                0x008001cd                NRK_DEBUG_2
+                0x008001ce                NRK_DEBUG_3
+                0x008001cf                NRK_LED_3
+                0x008001d0                NRK_BLED
+                0x008001d1                NRK_SPI_SS
+                0x008001d2                NRK_GPIO26
+                0x008001d3                NRK_GPIO28
+                0x008001d4                NRK_GPIO34
+ .data          0x008001d5        0x0 ./..//src/platform/micaZ/source/hal_wait.o
+ .data          0x008001d5        0x0 ./..//src/platform/micaZ/source/nrk_eeprom.o
+ .data          0x008001d5        0x0 ./..//src/kernel/source/nrk.o
+ .data          0x008001d5        0x0 ./..//src/kernel/source/nrk_stats.o
+ .data          0x008001d5        0x3 ./..//src/kernel/source/nrk_error.o
+ .data          0x008001d8       0x4e ./..//src/kernel/source/nrk_stack_check.o
+ .data          0x00800226       0x4e ./..//src/kernel/source/nrk_events.o
+ .data          0x00800274        0x4 ./..//src/kernel/source/nrk_task.o
+ .data          0x00800278        0x0 ./..//src/kernel/source/nrk_time.o
+ .data          0x00800278        0x0 ./..//src/kernel/source/nrk_idle_task.o
+ .data          0x00800278       0x3d ./..//src/kernel/source/nrk_scheduler.o
+ .data          0x008002b5        0x0 ./..//src/kernel/source/nrk_driver.o
+ .data          0x008002b5        0x0 ./..//src/kernel/source/nrk_reserve.o
+ .data          0x008002b5        0x0 ./..//src/kernel/source/nrk_sw_wdt.o
+ .data          0x008002b5        0x0 ./..//src/kernel/hal/atmega128/nrk_timer.o
+ .data          0x008002b5        0x0 ./..//src/kernel/hal/atmega128/nrk_status.o
+ .data          0x008002b5        0x0 ./..//src/kernel/hal/atmega128/nrk_ext_int.o
+ .data          0x008002b5        0x0 ./..//src/kernel/hal/atmega128/nrk_watchdog.o
+ .data          0x008002b5        0x0 ./..//src/kernel/hal/atmega128/nrk_cpu.o
+ .data          0x008002b5        0x0 ./..//src/drivers/platform/micaZ/source/ad5242.o
+ .data          0x008002b5        0x0 ./..//src/drivers/platform/micaZ/source/adc_driver.o
+ .data          0x008002b5        0x0 ./..//src/drivers/platform/micaZ/source/i2c_driver.o
+ .data          0x008002b5        0x0 ./..//src/drivers/platform/micaZ/source/mda100_driver.o
+ .data          0x008002b5        0x0 ./..//src/drivers/platform/micaZ/source/mts310cb_driver.o
+ .data          0x008002b5        0x0 ./..//src/drivers/platform/micaZ/source/DS2401.o
+ .data          0x008002b5        0x0 ./..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
+ .data          0x008002b5        0x0 ./..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
+ .data          0x008002b5       0x10 ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
+                0x008002b5                steppertimeout
+                0x008002b7                steps
+                0x008002bf                m_vbatt
+                0x008002c3                m_pwm
+ .data          0x008002c5        0x0 ./..//src/kernel/hal/atmega128/atmel_hw_specific.o
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_mulsi3.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodhi4.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodhi4.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodsi4.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_copy_data.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clear_bss.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivdi3.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_prologue.o)
+ .data          0x008002c5        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_epilogue.o)
+ .data          0x008002c5      0x100 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clz.o)
+                0x008002c5                __clz_tab
+ .data          0x008003c5        0x4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
+ .data          0x008003c9        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
+ .data          0x008003c9        0x6 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
+                0x008003c9                __malloc_margin
+                0x008003cb                __malloc_heap_start
+                0x008003cd                __malloc_heap_end
+ .data          0x008003cf        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
+ .data          0x008003cf        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodsi4.o)
  *(.data*)
  *(.rodata)
  *(.rodata*)
  *(.gnu.linkonce.d*)
-                0x008003c8                . = ALIGN (0x2)
-                0x008003c8                _edata = .
-                0x008003c8                PROVIDE (__data_end, .)
+                0x008003d0                . = ALIGN (0x2)
+ *fill*         0x008003cf        0x1 00
+                0x008003d0                _edata = .
+                0x008003d0                PROVIDE (__data_end, .)
 
-.bss            0x008003c8      0x387
-                0x008003c8                PROVIDE (__bss_start, .)
+.bss            0x008003d0      0x43e
+                0x008003d0                PROVIDE (__bss_start, .)
  *(.bss)
- .bss           0x008003c8        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
- .bss           0x008003c8        0x0 main.o
- .bss           0x008003c8        0x0 ./..//src/radio/cc2420/source/hal_rf_set_channel.o
- .bss           0x008003c8        0x0 ./..//src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
- .bss           0x008003c8        0x0 ./..//src/radio/cc2420/source/basic_rf.o
- .bss           0x008003c8        0x0 ./..//src/platform/micaZ/source/ulib.o
- .bss           0x008003c8        0x0 ./..//src/platform/micaZ/source/hal_wait.o
- .bss           0x008003c8        0x0 ./..//src/platform/micaZ/source/nrk_eeprom.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_stats.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_error.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_stack_check.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_events.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_task.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_time.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_idle_task.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_scheduler.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_driver.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_reserve.o
- .bss           0x008003c8        0x0 ./..//src/kernel/source/nrk_sw_wdt.o
- .bss           0x008003c8        0x0 ./..//src/kernel/hal/atmega128/nrk_timer.o
- .bss           0x008003c8        0x0 ./..//src/kernel/hal/atmega128/nrk_status.o
- .bss           0x008003c8        0x0 ./..//src/kernel/hal/atmega128/nrk_ext_int.o
- .bss           0x008003c8        0x0 ./..//src/kernel/hal/atmega128/nrk_watchdog.o
- .bss           0x008003c8        0x0 ./..//src/kernel/hal/atmega128/nrk_cpu.o
- .bss           0x008003c8        0x0 ./..//src/drivers/platform/micaZ/source/ad5242.o
- .bss           0x008003c8        0x0 ./..//src/drivers/platform/micaZ/source/adc_driver.o
- .bss           0x008003c8        0x0 ./..//src/drivers/platform/micaZ/source/i2c_driver.o
- .bss           0x008003c8        0x1 ./..//src/drivers/platform/micaZ/source/mda100_driver.o
-                0x008003c8                mda100_initDone
- .bss           0x008003c9        0x1 ./..//src/drivers/platform/micaZ/source/mts310cb_driver.o
-                0x008003c9                mts310cb_initDone
- .bss           0x008003ca        0x0 ./..//src/drivers/platform/micaZ/source/DS2401.o
- .bss           0x008003ca        0x0 ./..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
- .bss           0x008003ca        0x0 ./..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
- .bss           0x008003ca        0xd ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
-                0x008003ca                m_currentstep
-                0x008003cb                i2cData
-                0x008003d3                m_lastxs
-                0x008003d4                m_ledstate
-                0x008003d5                m_prescaler
- .bss           0x008003d7        0x0 ./..//src/kernel/hal/atmega128/atmel_hw_specific.o
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_mulsi3.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodhi4.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodhi4.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodsi4.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_copy_data.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clear_bss.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivdi3.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_prologue.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_epilogue.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clz.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
- .bss           0x008003d7        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodsi4.o)
+ .bss           0x008003d0        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
+ .bss           0x008003d0        0x0 main.o
+ .bss           0x008003d0        0x0 ./..//src/radio/cc2420/source/hal_rf_set_channel.o
+ .bss           0x008003d0        0x0 ./..//src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
+ .bss           0x008003d0        0x0 ./..//src/radio/cc2420/source/basic_rf.o
+ .bss           0x008003d0        0x0 ./..//src/platform/micaZ/source/ulib.o
+ .bss           0x008003d0        0x0 ./..//src/platform/micaZ/source/hal_wait.o
+ .bss           0x008003d0        0x0 ./..//src/platform/micaZ/source/nrk_eeprom.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_stats.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_error.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_stack_check.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_events.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_task.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_time.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_idle_task.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_scheduler.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_driver.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_reserve.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/source/nrk_sw_wdt.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/hal/atmega128/nrk_timer.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/hal/atmega128/nrk_status.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/hal/atmega128/nrk_ext_int.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/hal/atmega128/nrk_watchdog.o
+ .bss           0x008003d0        0x0 ./..//src/kernel/hal/atmega128/nrk_cpu.o
+ .bss           0x008003d0        0x0 ./..//src/drivers/platform/micaZ/source/ad5242.o
+ .bss           0x008003d0        0x0 ./..//src/drivers/platform/micaZ/source/adc_driver.o
+ .bss           0x008003d0        0x0 ./..//src/drivers/platform/micaZ/source/i2c_driver.o
+ .bss           0x008003d0        0x1 ./..//src/drivers/platform/micaZ/source/mda100_driver.o
+                0x008003d0                mda100_initDone
+ .bss           0x008003d1        0x1 ./..//src/drivers/platform/micaZ/source/mts310cb_driver.o
+                0x008003d1                mts310cb_initDone
+ .bss           0x008003d2        0x0 ./..//src/drivers/platform/micaZ/source/DS2401.o
+ .bss           0x008003d2        0x0 ./..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
+ .bss           0x008003d2        0x0 ./..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
+ .bss           0x008003d2        0xd ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
+                0x008003d2                m_currentstep
+                0x008003d3                i2cData
+                0x008003db                m_lastxs
+                0x008003dc                m_ledstate
+                0x008003dd                m_prescaler
+ .bss           0x008003df        0x0 ./..//src/kernel/hal/atmega128/atmel_hw_specific.o
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_mulsi3.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodhi4.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodhi4.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivmodsi4.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_exit.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_copy_data.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clear_bss.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_udivdi3.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_prologue.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_epilogue.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_clz.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
+ .bss           0x008003df        0x0 /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a(_divmodsi4.o)
  *(.bss*)
  *(COMMON)
- COMMON         0x008003d7      0x255 main.o
-                0x008003d7                app_timer0_callback
-                0x008003d9                stack_1
-                0x00800459                error_task
-                0x0080045a                _nrk_time_trigger
-                0x0080045b                task_2
-                0x0080047e                nrk_kernel_stk
-                0x008004fe                _nrk_signal_list
-                0x00800502                seed
-                0x00800504                stack_2
-                0x00800584                nrk_kernel_stk_ptr
-                0x00800586                app_timer0_prescale
-                0x00800587                _nrk_prev_timer_val
-                0x00800588                error_num
-                0x00800589                task_1
-                0x008005ac                nrk_idle_task_stk
- COMMON         0x0080062c       0x1b ./..//src/radio/cc2420/source/basic_rf.o
-                0x0080062c                rx_ctr
-                0x00800630                radio_sem
-                0x00800632                security_enable
-                0x00800633                mdmctrl0
-                0x00800635                rfSettings
-                0x0080063e                tmp_blah
-                0x00800640                auto_ack_enable
-                0x00800641                last_pkt_encrypted
-                0x00800642                tx_ctr
-                0x00800646                rx_ready
- COMMON         0x00800647       0xf0 ./..//src/kernel/source/nrk.o
-                0x00800647                _free_node
-                0x00800649                nrk_task_TCB
-                0x008006f3                next_next_wakeup
-                0x008006f5                nrk_sem_list
-                0x00800704                nrk_task_init_cnt
-                0x00800705                systemceiling
-                0x00800706                nrk_wakeup_signal
-                0x00800707                nrk_high_ready_TCB
-                0x00800709                nrk_cur_task_prio
-                0x0080070a                _nrk_cpu_state
-                0x0080070b                _head_node
-                0x0080070d                nrk_system_time
-                0x00800715                _nrk_resource_cnt
-                0x00800716                nrk_cur_task_TCB
-                0x00800718                nrk_high_ready_prio
-                0x00800719                _nrk_readyQ
- COMMON         0x00800737        0x1 ./..//src/kernel/source/nrk_scheduler.o
-                0x00800737                t
- COMMON         0x00800738        0x8 ./..//src/kernel/hal/atmega128/nrk_ext_int.o
-                0x00800738                ext_int1_callback
-                0x0080073a                ext_int0_callback
-                0x0080073c                ext_int2_callback
-                0x0080073e                pc_int0_callback
- COMMON         0x00800740        0x5 ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
-                0x00800740                i2cDataLen
-                0x00800741                i2cDataDirection
-                0x00800742                m_channel
-                0x00800743                i2cDestination
- COMMON         0x00800745        0x6 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
-                0x00800745                __iob
- COMMON         0x0080074b        0x4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
-                0x0080074b                __brkval
-                0x0080074d                __flp
-                0x0080074f                PROVIDE (__bss_end, .)
-                0x00008aee                __data_load_start = LOADADDR (.data)
-                0x00008db6                __data_load_end = (__data_load_start + SIZEOF (.data))
+ COMMON         0x008003df      0x2f8 main.o
+                0x008003df                app_timer0_callback
+                0x008003e1                stack_1
+                0x00800461                error_task
+                0x00800462                stack_3
+                0x008004e2                _nrk_time_trigger
+                0x008004e3                task_2
+                0x00800506                nrk_kernel_stk
+                0x00800586                _nrk_signal_list
+                0x0080058a                seed
+                0x0080058c                stack_2
+                0x0080060c                nrk_kernel_stk_ptr
+                0x0080060e                task_3
+                0x00800631                app_timer0_prescale
+                0x00800632                _nrk_prev_timer_val
+                0x00800633                error_num
+                0x00800634                task_1
+                0x00800657                nrk_idle_task_stk
+ COMMON         0x008006d7       0x1b ./..//src/radio/cc2420/source/basic_rf.o
+                0x008006d7                rx_ctr
+                0x008006db                radio_sem
+                0x008006dd                security_enable
+                0x008006de                mdmctrl0
+                0x008006e0                rfSettings
+                0x008006e9                tmp_blah
+                0x008006eb                auto_ack_enable
+                0x008006ec                last_pkt_encrypted
+                0x008006ed                tx_ctr
+                0x008006f1                rx_ready
+ COMMON         0x008006f2      0x104 ./..//src/kernel/source/nrk.o
+                0x008006f2                _free_node
+                0x008006f4                nrk_task_TCB
+                0x008007b2                next_next_wakeup
+                0x008007b4                nrk_sem_list
+                0x008007c3                nrk_task_init_cnt
+                0x008007c4                systemceiling
+                0x008007c5                nrk_wakeup_signal
+                0x008007c6                nrk_high_ready_TCB
+                0x008007c8                nrk_cur_task_prio
+                0x008007c9                _nrk_cpu_state
+                0x008007ca                _head_node
+                0x008007cc                nrk_system_time
+                0x008007d4                _nrk_resource_cnt
+                0x008007d5                nrk_cur_task_TCB
+                0x008007d7                nrk_high_ready_prio
+                0x008007d8                _nrk_readyQ
+ COMMON         0x008007f6        0x1 ./..//src/kernel/source/nrk_scheduler.o
+                0x008007f6                t
+ COMMON         0x008007f7        0x8 ./..//src/kernel/hal/atmega128/nrk_ext_int.o
+                0x008007f7                ext_int1_callback
+                0x008007f9                ext_int0_callback
+                0x008007fb                ext_int2_callback
+                0x008007fd                pc_int0_callback
+ COMMON         0x008007ff        0x5 ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
+                0x008007ff                i2cDataLen
+                0x00800800                i2cDataDirection
+                0x00800801                m_channel
+                0x00800802                i2cDestination
+ COMMON         0x00800804        0x6 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
+                0x00800804                __iob
+ COMMON         0x0080080a        0x4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
+                0x0080080a                __brkval
+                0x0080080c                __flp
+                0x0080080e                PROVIDE (__bss_end, .)
+                0x00008f8a                __data_load_start = LOADADDR (.data)
+                0x0000925a                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x0080074f        0x0
-                0x0080074f                PROVIDE (__noinit_start, .)
+.noinit         0x0080080e        0x0
+                0x0080080e                PROVIDE (__noinit_start, .)
  *(.noinit*)
-                0x0080074f                PROVIDE (__noinit_end, .)
-                0x0080074f                _end = .
-                0x0080074f                PROVIDE (__heap_start, .)
+                0x0080080e                PROVIDE (__noinit_end, .)
+                0x0080080e                _end = .
+                0x0080080e                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -1327,167 +1335,167 @@ LOAD /usr/lib/gcc/avr/4.5.3/avr51/libgcc.a
 .signature
  *(.signature*)
 
-.stab           0x00000000    0x19b24
+.stab           0x00000000    0x19e3c
  *(.stab)
  .stab          0x00000000      0x6cc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
- .stab          0x000006cc      0x8e8 main.o
-                                0x8f4 (size before relaxing)
- .stab          0x00000fb4      0x294 ./..//src/radio/cc2420/source/hal_rf_set_channel.o
+ .stab          0x000006cc      0xa08 main.o
+                                0xa14 (size before relaxing)
+ .stab          0x000010d4      0x294 ./..//src/radio/cc2420/source/hal_rf_set_channel.o
                                 0x600 (size before relaxing)
- .stab          0x00001248      0x264 ./..//src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
+ .stab          0x00001368      0x264 ./..//src/radio/cc2420/source/hal_rf_wait_for_crystal_oscillator.o
                                 0x5d0 (size before relaxing)
- .stab          0x000014ac     0x375c ./..//src/radio/cc2420/source/basic_rf.o
+ .stab          0x000015cc     0x375c ./..//src/radio/cc2420/source/basic_rf.o
                                0x3b7c (size before relaxing)
- .stab          0x00004c08     0x1170 ./..//src/platform/micaZ/source/ulib.o
+ .stab          0x00004d28     0x1170 ./..//src/platform/micaZ/source/ulib.o
                                0x14f4 (size before relaxing)
- .stab          0x00005d78      0x240 ./..//src/platform/micaZ/source/hal_wait.o
+ .stab          0x00005e98      0x240 ./..//src/platform/micaZ/source/hal_wait.o
                                 0x5ac (size before relaxing)
- .stab          0x00005fb8      0x684 ./..//src/platform/micaZ/source/nrk_eeprom.o
+ .stab          0x000060d8      0x684 ./..//src/platform/micaZ/source/nrk_eeprom.o
                                 0x9f0 (size before relaxing)
- .stab          0x0000663c      0xa14 ./..//src/kernel/source/nrk.o
+ .stab          0x0000675c      0xa14 ./..//src/kernel/source/nrk.o
                                 0xe04 (size before relaxing)
- .stab          0x00007050      0x2b8 ./..//src/kernel/source/nrk_stats.o
+ .stab          0x00007170      0x2b8 ./..//src/kernel/source/nrk_stats.o
                                 0x6cc (size before relaxing)
- .stab          0x00007308      0xc54 ./..//src/kernel/source/nrk_error.o
+ .stab          0x00007428      0xc54 ./..//src/kernel/source/nrk_error.o
                                0x1074 (size before relaxing)
- .stab          0x00007f5c      0x4a4 ./..//src/kernel/source/nrk_stack_check.o
+ .stab          0x0000807c      0x4a4 ./..//src/kernel/source/nrk_stack_check.o
                                 0x8b8 (size before relaxing)
- .stab          0x00008400      0xfc0 ./..//src/kernel/source/nrk_events.o
+ .stab          0x00008520      0xfc0 ./..//src/kernel/source/nrk_events.o
                                0x13ec (size before relaxing)
- .stab          0x000093c0     0x102c ./..//src/kernel/source/nrk_task.o
-                               0x1458 (size before relaxing)
- .stab          0x0000a3ec      0x7f8 ./..//src/kernel/source/nrk_time.o
+ .stab          0x000094e0     0x1020 ./..//src/kernel/source/nrk_task.o
+                               0x144c (size before relaxing)
+ .stab          0x0000a500      0x7f8 ./..//src/kernel/source/nrk_time.o
                                 0xc24 (size before relaxing)
- .stab          0x0000abe4      0x318 ./..//src/kernel/source/nrk_idle_task.o
+ .stab          0x0000acf8      0x318 ./..//src/kernel/source/nrk_idle_task.o
                                 0x744 (size before relaxing)
- .stab          0x0000aefc      0x8c4 ./..//src/kernel/source/nrk_scheduler.o
-                                0xcf0 (size before relaxing)
- .stab          0x0000b7c0       0xe4 ./..//src/kernel/source/nrk_driver.o
+ .stab          0x0000b010      0xac8 ./..//src/kernel/source/nrk_scheduler.o
+                                0xef4 (size before relaxing)
+ .stab          0x0000bad8       0xe4 ./..//src/kernel/source/nrk_driver.o
                                  0xf0 (size before relaxing)
- .stab          0x0000b8a4       0xe4 ./..//src/kernel/source/nrk_reserve.o
+ .stab          0x0000bbbc       0xe4 ./..//src/kernel/source/nrk_reserve.o
                                  0xf0 (size before relaxing)
- .stab          0x0000b988      0x21c ./..//src/kernel/source/nrk_sw_wdt.o
+ .stab          0x0000bca0      0x21c ./..//src/kernel/source/nrk_sw_wdt.o
                                 0x630 (size before relaxing)
- .stab          0x0000bba4      0xda4 ./..//src/kernel/hal/atmega128/nrk_timer.o
+ .stab          0x0000bebc      0xda4 ./..//src/kernel/hal/atmega128/nrk_timer.o
                                0x11c4 (size before relaxing)
- .stab          0x0000c948      0x2dc ./..//src/kernel/hal/atmega128/nrk_status.o
+ .stab          0x0000cc60      0x2dc ./..//src/kernel/hal/atmega128/nrk_status.o
                                 0x648 (size before relaxing)
- .stab          0x0000cc24      0x36c ./..//src/kernel/hal/atmega128/nrk_ext_int.o
+ .stab          0x0000cf3c      0x36c ./..//src/kernel/hal/atmega128/nrk_ext_int.o
                                 0x6f0 (size before relaxing)
- .stab          0x0000cf90      0x3e4 ./..//src/kernel/hal/atmega128/nrk_watchdog.o
+ .stab          0x0000d2a8      0x3e4 ./..//src/kernel/hal/atmega128/nrk_watchdog.o
                                 0x7ec (size before relaxing)
- .stab          0x0000d374      0x78c ./..//src/kernel/hal/atmega128/nrk_cpu.o
+ .stab          0x0000d68c      0x78c ./..//src/kernel/hal/atmega128/nrk_cpu.o
                                 0xbac (size before relaxing)
- .stab          0x0000db00      0x1f8 ./..//src/drivers/platform/micaZ/source/ad5242.o
+ .stab          0x0000de18      0x1f8 ./..//src/drivers/platform/micaZ/source/ad5242.o
                                 0x204 (size before relaxing)
- .stab          0x0000dcf8      0x318 ./..//src/drivers/platform/micaZ/source/adc_driver.o
+ .stab          0x0000e010      0x318 ./..//src/drivers/platform/micaZ/source/adc_driver.o
                                 0x4e0 (size before relaxing)
- .stab          0x0000e010      0x534 ./..//src/drivers/platform/micaZ/source/i2c_driver.o
+ .stab          0x0000e328      0x534 ./..//src/drivers/platform/micaZ/source/i2c_driver.o
                                 0x6fc (size before relaxing)
- .stab          0x0000e544      0x594 ./..//src/drivers/platform/micaZ/source/mda100_driver.o
+ .stab          0x0000e85c      0x594 ./..//src/drivers/platform/micaZ/source/mda100_driver.o
                                 0x75c (size before relaxing)
- .stab          0x0000ead8      0xb10 ./..//src/drivers/platform/micaZ/source/mts310cb_driver.o
+ .stab          0x0000edf0      0xb10 ./..//src/drivers/platform/micaZ/source/mts310cb_driver.o
                                 0xcd8 (size before relaxing)
- .stab          0x0000f5e8      0x8ac ./..//src/drivers/platform/micaZ/source/DS2401.o
+ .stab          0x0000f900      0x8ac ./..//src/drivers/platform/micaZ/source/DS2401.o
                                 0xca8 (size before relaxing)
- .stab          0x0000fe94      0x828 ./..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
+ .stab          0x000101ac      0x828 ./..//src/drivers/platform/micaZ/source/DOGM128-6_Graphicdisplay_driver.o
                                 0xa98 (size before relaxing)
- .stab          0x000106bc      0xeb8 ./..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
+ .stab          0x000109d4      0xeb8 ./..//src/drivers/platform/micaZ/source/eDIP240-7_TouchPanel_driver.o
                                0x12b4 (size before relaxing)
- .stab          0x00011574     0x18a8 ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
+ .stab          0x0001188c     0x18a8 ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
                                0x1cec (size before relaxing)
- .stab          0x00012e1c      0x204 ./..//src/kernel/hal/atmega128/atmel_hw_specific.o
+ .stab          0x00013134      0x204 ./..//src/kernel/hal/atmega128/atmel_hw_specific.o
                                 0x210 (size before relaxing)
- .stab          0x00013020     0x12f0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
+ .stab          0x00013338     0x12f0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)
                                0x1350 (size before relaxing)
- .stab          0x00014310       0x78 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
+ .stab          0x00014628       0x78 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3.o)
                                  0x84 (size before relaxing)
- .stab          0x00014388      0x4bc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
+ .stab          0x000146a0      0x4bc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(addsf3x.o)
                                 0x4c8 (size before relaxing)
- .stab          0x00014844       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
+ .stab          0x00014b5c       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3.o)
                                  0x54 (size before relaxing)
- .stab          0x0001488c      0x510 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
+ .stab          0x00014ba4      0x510 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(divsf3x.o)
                                 0x51c (size before relaxing)
- .stab          0x00014d9c      0x240 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
+ .stab          0x000150b4      0x240 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fixunssfsi.o)
                                 0x24c (size before relaxing)
- .stab          0x00014fdc      0x318 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
+ .stab          0x000152f4      0x318 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(floatsisf.o)
                                 0x324 (size before relaxing)
- .stab          0x000152f4       0x78 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
+ .stab          0x0001560c       0x78 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_inf.o)
                                  0x84 (size before relaxing)
- .stab          0x0001536c       0x54 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
+ .stab          0x00015684       0x54 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_nan.o)
                                  0x60 (size before relaxing)
- .stab          0x000153c0       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
+ .stab          0x000156d8       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscA.o)
                                  0x90 (size before relaxing)
- .stab          0x00015444       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
+ .stab          0x0001575c       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_pscB.o)
                                  0x90 (size before relaxing)
- .stab          0x000154c8       0xfc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
+ .stab          0x000157e0       0xfc /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_round.o)
                                 0x108 (size before relaxing)
- .stab          0x000155c4      0x1d4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
+ .stab          0x000158dc      0x1d4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_split3.o)
                                 0x1e0 (size before relaxing)
- .stab          0x00015798       0x90 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
+ .stab          0x00015ab0       0x90 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_zero.o)
                                  0x9c (size before relaxing)
- .stab          0x00015828       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
+ .stab          0x00015b40       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(gesf2.o)
                                  0x78 (size before relaxing)
- .stab          0x00015894      0x378 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
+ .stab          0x00015bac      0x378 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(log.o)
                                 0x384 (size before relaxing)
- .stab          0x00015c0c       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
+ .stab          0x00015f24       0x48 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3.o)
                                  0x54 (size before relaxing)
- .stab          0x00015c54      0x4d4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
+ .stab          0x00015f6c      0x4d4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(mulsf3x.o)
                                 0x4e0 (size before relaxing)
- .stab          0x00016128      0x3c0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
+ .stab          0x00016440      0x3c0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(pow.o)
                                 0x3cc (size before relaxing)
- .stab          0x000164e8      0x288 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
+ .stab          0x00016800      0x288 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(exp.o)
                                 0x294 (size before relaxing)
- .stab          0x00016770      0x1e0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
+ .stab          0x00016a88      0x1e0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_cmp.o)
                                 0x1ec (size before relaxing)
- .stab          0x00016950       0xe4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
+ .stab          0x00016c68       0xe4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_mpack.o)
                                  0xf0 (size before relaxing)
- .stab          0x00016a34      0x1ec /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
+ .stab          0x00016d4c      0x1ec /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(fp_powser.o)
                                 0x1f8 (size before relaxing)
- .stab          0x00016c20       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
+ .stab          0x00016f38       0x84 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(inverse.o)
                                  0x90 (size before relaxing)
- .stab          0x00016ca4      0x2c4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
+ .stab          0x00016fbc      0x2c4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(ldexp.o)
                                 0x2d0 (size before relaxing)
- .stab          0x00016f68      0x2a0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
+ .stab          0x00017280      0x2a0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libm.a(modf.o)
                                 0x2ac (size before relaxing)
- .stab          0x00017208      0x2f4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
+ .stab          0x00017520      0x2f4 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
                                 0x330 (size before relaxing)
- .stab          0x000174fc      0xa38 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
+ .stab          0x00017814      0xa38 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ftoa_engine.o)
                                 0xa44 (size before relaxing)
- .stab          0x00017f34       0x9c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
+ .stab          0x0001824c       0x9c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen_P.o)
                                  0xa8 (size before relaxing)
- .stab          0x00017fd0       0x9c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
+ .stab          0x000182e8       0x9c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
                                  0xa8 (size before relaxing)
- .stab          0x0001806c      0x288 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
+ .stab          0x00018384      0x288 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fdevopen.o)
                                 0x4b0 (size before relaxing)
- .stab          0x000182f4      0x264 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
+ .stab          0x0001860c      0x264 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fgetc.o)
                                 0x444 (size before relaxing)
- .stab          0x00018558      0x1e0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
+ .stab          0x00018870      0x1e0 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(fputc.o)
                                 0x3c0 (size before relaxing)
- .stab          0x00018738      0x12c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
+ .stab          0x00018a50      0x12c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(iob.o)
                                 0x30c (size before relaxing)
- .stab          0x00018864      0x18c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
+ .stab          0x00018b7c      0x18c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(printf.o)
                                 0x36c (size before relaxing)
- .stab          0x000189f0      0x1f8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
+ .stab          0x00018d08      0x1f8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(puts.o)
                                 0x3d8 (size before relaxing)
- .stab          0x00018be8      0x1f8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
+ .stab          0x00018f00      0x1f8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(sprintf.o)
                                 0x3d8 (size before relaxing)
- .stab          0x00018de0      0x480 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
+ .stab          0x000190f8      0x480 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(ultoa_invert.o)
                                 0x48c (size before relaxing)
- .stab          0x00019260       0x90 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
+ .stab          0x00019578       0x90 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eerd_byte_atmega128.o)
                                  0x9c (size before relaxing)
- .stab          0x000192f0       0xd8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
+ .stab          0x00019608       0xd8 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(eewr_byte_atmega128.o)
                                  0xe4 (size before relaxing)
- .stab          0x000193c8      0x174 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
+ .stab          0x000196e0      0x174 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(calloc.o)
                                 0x1d4 (size before relaxing)
- .stab          0x0001953c      0x57c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
+ .stab          0x00019854      0x57c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(malloc.o)
                                 0x75c (size before relaxing)
- .stab          0x00019ab8       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
+ .stab          0x00019dd0       0x6c /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(memset.o)
                                  0x78 (size before relaxing)
 
-.stabstr        0x00000000     0x6dad
+.stabstr        0x00000000     0x6e46
  *(.stabstr)
- .stabstr       0x00000000     0x6dad /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
+ .stabstr       0x00000000     0x6e46 /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/crtm128.o
 
 .stab.excl
  *(.stab.excl)
@@ -2465,7 +2473,6 @@ puts                                              /usr/lib/gcc/avr/4.5.3/../../.
 pwmFrac2Hex                                       ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
 radio_sem                                         ./..//src/radio/cc2420/source/basic_rf.o
 rand                                              /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
-                                                  main.o
 rand_r                                            /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(rand.o)
 readADC                                           ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
 readIOs                                           ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
@@ -2527,6 +2534,7 @@ srand                                             /usr/lib/gcc/avr/4.5.3/../../.
                                                   main.o
 stack_1                                           main.o
 stack_2                                           main.o
+stack_3                                           main.o
 steppertimeout                                    ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
 steps                                             ./..//src/drivers/platform/micaZ/source/TUM_LKN_Sensorboard_driver.o
 strnlen                                           /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libc.a(strnlen.o)
@@ -2548,6 +2556,10 @@ task_2                                            main.o
 task_2_execution                                  main.o
 task_2_func                                       main.o
 task_2_period                                     main.o
+task_3                                            main.o
+task_3_execution                                  main.o
+task_3_func                                       main.o
+task_3_period                                     main.o
 tmp_blah                                          ./..//src/radio/cc2420/source/basic_rf.o
 tx_ctr                                            ./..//src/radio/cc2420/source/basic_rf.o
 vfprintf                                          /usr/lib/gcc/avr/4.5.3/../../../avr/lib/avr51/libprintf_flt.a(vfprintf_flt.o)

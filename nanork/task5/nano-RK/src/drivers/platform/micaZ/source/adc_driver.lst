@@ -208,16 +208,16 @@
  230               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 adc_driver.c
-     /tmp/ccWHjFH0.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccWHjFH0.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccWHjFH0.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccWHjFH0.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccWHjFH0.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccWHjFH0.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccWHjFH0.s:74     .text:00000000 adc_init
-     /tmp/ccWHjFH0.s:131    .text:0000002c adc_Powersave
-     /tmp/ccWHjFH0.s:155    .text:00000030 adc_GetChannel
-     /tmp/ccWHjFH0.s:195    .text:00000048 adc_GetBatteryVoltage
+     /tmp/ccudTlEb.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccudTlEb.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccudTlEb.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccudTlEb.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccudTlEb.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccudTlEb.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccudTlEb.s:74     .text:00000000 adc_init
+     /tmp/ccudTlEb.s:131    .text:0000002c adc_Powersave
+     /tmp/ccudTlEb.s:155    .text:00000030 adc_GetChannel
+     /tmp/ccudTlEb.s:195    .text:00000048 adc_GetBatteryVoltage
 
 UNDEFINED SYMBOLS
 __floatunsisf
