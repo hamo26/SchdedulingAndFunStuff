@@ -66,7 +66,7 @@
   22:main.c        **** 	printf("\n------\nStart running task..%d\n", n);            \
   23:main.c        **** 	long int duty = 30000;					\
   24:main.c        **** 	if(duty<0) duty = 0-duty;					\
-  25:main.c        **** 	if(n==1 || n==3 || n==4){							\
+  25:main.c        **** 	if(n==1 || n==3){							\
   26:main.c        **** 	    printf("Duty amount is %d\n",duty);				\
   27:main.c        **** 	    for(int i=0;i<=duty;i++){				\
   28:main.c        **** 		if(i%2000==0){					\
@@ -873,28 +873,28 @@
  974               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccQJLKB1.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccQJLKB1.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccQJLKB1.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccQJLKB1.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccQJLKB1.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccQJLKB1.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccQJLKB1.s:152    .text:00000000 task_3_func
-     /tmp/ccQJLKB1.s:369    .text:00000168 task_1_func
-     /tmp/ccQJLKB1.s:590    .text:000002d0 task_2_func
-     /tmp/ccQJLKB1.s:658    .text:00000332 main
+     /tmp/cciH4P8G.s:2      *ABS*:0000003f __SREG__
+     /tmp/cciH4P8G.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cciH4P8G.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cciH4P8G.s:5      *ABS*:00000034 __CCP__
+     /tmp/cciH4P8G.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cciH4P8G.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cciH4P8G.s:152    .text:00000000 task_3_func
+     /tmp/cciH4P8G.s:369    .text:00000168 task_1_func
+     /tmp/cciH4P8G.s:590    .text:000002d0 task_2_func
+     /tmp/cciH4P8G.s:658    .text:00000332 main
                             *COM*:00000002 seed
                             *COM*:00000023 task_1
-     /tmp/ccQJLKB1.s:885    .data:0000009a task_1_period
-     /tmp/ccQJLKB1.s:893    .data:0000009e task_1_execution
+     /tmp/cciH4P8G.s:885    .data:0000009a task_1_period
+     /tmp/cciH4P8G.s:893    .data:0000009e task_1_execution
                             *COM*:00000080 stack_1
                             *COM*:00000023 task_2
-     /tmp/ccQJLKB1.s:901    .data:000000a2 task_2_period
-     /tmp/ccQJLKB1.s:909    .data:000000a6 task_2_execution
+     /tmp/cciH4P8G.s:901    .data:000000a2 task_2_period
+     /tmp/cciH4P8G.s:909    .data:000000a6 task_2_execution
                             *COM*:00000080 stack_2
                             *COM*:00000023 task_3
-     /tmp/ccQJLKB1.s:917    .data:000000aa task_3_period
-     /tmp/ccQJLKB1.s:925    .data:000000ae task_3_execution
+     /tmp/cciH4P8G.s:917    .data:000000aa task_3_period
+     /tmp/cciH4P8G.s:925    .data:000000ae task_3_execution
                             *COM*:00000080 stack_3
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk

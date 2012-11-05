@@ -198,9 +198,15 @@ void inline _nrk_scheduler()
 		}
 	    }
 	}
-	if(min_id != 0){
-	    nrk_task_TCB[nrk_get_high_ready_task_ID()].cpu_remaining += nrk_task_TCB[min_id].cash;
-	    printf("Use min_id%d' cash, which is %d <$$$$$$$$$$$\n", min_id, nrk_task_TCB[min_id].cash);
+	if(min_id != 0 && nrk_cur_task_TCB->task_ID != min_id){
+	    if (nrk_task_TCB[min_id].cash > _nrk_prev_timer_val) {
+	    	nrk_cur_task_TCB->cpu_remaining+=_nrk_prev_timer_val;
+	        nrk_task_TCB[min_id].cash-=_nrk_prev_timer_val;
+	    } else {
+		nrk_cur_task_TCB->cpu_remaining+=nrk_cur_task_TCB[min_id].cash;
+                nrk_task_TCB[min_id].cash = 0;
+	    }	    
+	    printf("min_id%d' cash remaining is %d <$$$$$$$$$$$\n", min_id, nrk_task_TCB[min_id].cash);
 	    //printf("Then the task%d's cpu_remaining becomes %d <$$$$$$$$$\n", nrk_cur)
 	}
     }

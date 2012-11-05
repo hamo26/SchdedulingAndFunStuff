@@ -17,12 +17,12 @@
  148               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_sw_wdt.c
-     /tmp/ccjbzpOZ.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccjbzpOZ.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccjbzpOZ.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccjbzpOZ.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccjbzpOZ.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccjbzpOZ.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccMDrOE2.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccMDrOE2.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccMDrOE2.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccMDrOE2.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccMDrOE2.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccMDrOE2.s:7      *ABS*:00000001 __zero_reg__
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

@@ -1559,24 +1559,24 @@
  1561               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 eDIP240-7_TouchPanel_driver.c
-     /tmp/ccUST9lN.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccUST9lN.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccUST9lN.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccUST9lN.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccUST9lN.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccUST9lN.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccUST9lN.s:143    .text:00000000 USART0_putchar
-     /tmp/ccUST9lN.s:169    .text:00000010 USART0_getchar
-     /tmp/ccUST9lN.s:211    .text:00000034 eDIP240_7_Display_send_packet
-     /tmp/ccUST9lN.s:360    .text:000000f4 eDIP240_7_Display_get_buffer
-     /tmp/ccUST9lN.s:566    .text:000001f6 eDIP240_7_Display_request_buffer_info
-     /tmp/ccUST9lN.s:770    .text:000002f8 eDIP240_7_Display_set_protocol
-     /tmp/ccUST9lN.s:889    .text:0000038c eDIP240_7_Display_get_protocoll_info
-     /tmp/ccUST9lN.s:1097   .text:0000049e eDIP240_7_Display_repeat_last_packet
-     /tmp/ccUST9lN.s:1268   .text:0000057a eDIP240_7_Display_select
-     /tmp/ccUST9lN.s:1381   .text:00000606 eDIP240_7_Display_deselect
-     /tmp/ccUST9lN.s:1493   .text:00000692 eDIP240_7_Display_send_string
-     /tmp/ccUST9lN.s:1525   .text:000006aa eDIP240_7_Display_send_string_with_NULL
+     /tmp/ccBIbcCQ.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccBIbcCQ.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccBIbcCQ.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccBIbcCQ.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccBIbcCQ.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccBIbcCQ.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccBIbcCQ.s:143    .text:00000000 USART0_putchar
+     /tmp/ccBIbcCQ.s:169    .text:00000010 USART0_getchar
+     /tmp/ccBIbcCQ.s:211    .text:00000034 eDIP240_7_Display_send_packet
+     /tmp/ccBIbcCQ.s:360    .text:000000f4 eDIP240_7_Display_get_buffer
+     /tmp/ccBIbcCQ.s:566    .text:000001f6 eDIP240_7_Display_request_buffer_info
+     /tmp/ccBIbcCQ.s:770    .text:000002f8 eDIP240_7_Display_set_protocol
+     /tmp/ccBIbcCQ.s:889    .text:0000038c eDIP240_7_Display_get_protocoll_info
+     /tmp/ccBIbcCQ.s:1097   .text:0000049e eDIP240_7_Display_repeat_last_packet
+     /tmp/ccBIbcCQ.s:1268   .text:0000057a eDIP240_7_Display_select
+     /tmp/ccBIbcCQ.s:1381   .text:00000606 eDIP240_7_Display_deselect
+     /tmp/ccBIbcCQ.s:1493   .text:00000692 eDIP240_7_Display_send_string
+     /tmp/ccBIbcCQ.s:1525   .text:000006aa eDIP240_7_Display_send_string_with_NULL
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

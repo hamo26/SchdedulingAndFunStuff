@@ -894,20 +894,20 @@
  749               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 DS2401.c
-     /tmp/ccq7K2nK.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccq7K2nK.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccq7K2nK.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccq7K2nK.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccq7K2nK.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccq7K2nK.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccq7K2nK.s:136    .text:00000000 Maxim_1Wire_ResetPulse
-     /tmp/ccq7K2nK.s:256    .text:00000048 Maxim_1Wire_WriteBit
-     /tmp/ccq7K2nK.s:349    .text:0000007e Maxim_1Wire_ReadBit
-     /tmp/ccq7K2nK.s:435    .text:000000b2 Maxim_1Wire_WriteByte
-     /tmp/ccq7K2nK.s:493    .text:000000f0 Maxim_1Wire_ReadByte
-     /tmp/ccq7K2nK.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
-     /tmp/ccq7K2nK.s:573    .text:0000012c DS2401_init
-     /tmp/ccq7K2nK.s:616    .text:0000013e DS2401_getSerialNumber
+     /tmp/ccuKADvm.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccuKADvm.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccuKADvm.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccuKADvm.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccuKADvm.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccuKADvm.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccuKADvm.s:136    .text:00000000 Maxim_1Wire_ResetPulse
+     /tmp/ccuKADvm.s:256    .text:00000048 Maxim_1Wire_WriteBit
+     /tmp/ccuKADvm.s:349    .text:0000007e Maxim_1Wire_ReadBit
+     /tmp/ccuKADvm.s:435    .text:000000b2 Maxim_1Wire_WriteByte
+     /tmp/ccuKADvm.s:493    .text:000000f0 Maxim_1Wire_ReadByte
+     /tmp/ccuKADvm.s:549    .text:00000124 Maxim_1Wire_CommandReadRom
+     /tmp/ccuKADvm.s:573    .text:0000012c DS2401_init
+     /tmp/ccuKADvm.s:616    .text:0000013e DS2401_getSerialNumber
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

@@ -208,16 +208,16 @@
  230               	.Letext0:
 DEFINED SYMBOLS
                             *ABS*:00000000 adc_driver.c
-     /tmp/cc5Tvc7p.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc5Tvc7p.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc5Tvc7p.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc5Tvc7p.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc5Tvc7p.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc5Tvc7p.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc5Tvc7p.s:74     .text:00000000 adc_init
-     /tmp/cc5Tvc7p.s:131    .text:0000002c adc_Powersave
-     /tmp/cc5Tvc7p.s:155    .text:00000030 adc_GetChannel
-     /tmp/cc5Tvc7p.s:195    .text:00000048 adc_GetBatteryVoltage
+     /tmp/cc3KoN2o.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc3KoN2o.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc3KoN2o.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc3KoN2o.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc3KoN2o.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc3KoN2o.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc3KoN2o.s:74     .text:00000000 adc_init
+     /tmp/cc3KoN2o.s:131    .text:0000002c adc_Powersave
+     /tmp/cc3KoN2o.s:155    .text:00000030 adc_GetChannel
+     /tmp/cc3KoN2o.s:195    .text:00000048 adc_GetBatteryVoltage
 
 UNDEFINED SYMBOLS
 __floatunsisf
