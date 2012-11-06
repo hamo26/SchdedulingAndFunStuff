@@ -2138,18 +2138,18 @@
  1968               		.text
  1970               	.Letext0:
 DEFINED SYMBOLS
-                            *ABS*:00000000 DOGM128-6_Graphicdisplay_driver.c
-     /tmp/ccGGI9aI.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccGGI9aI.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccGGI9aI.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccGGI9aI.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccGGI9aI.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccGGI9aI.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccGGI9aI.s:95     .text:00000000 DOGM128_6_usart1_sendByte
-     /tmp/ccGGI9aI.s:276    .text:00000078 DOGM128_6_clear_display
-     /tmp/ccGGI9aI.s:374    .text:000000da DOGM128_6_display_init
-     /tmp/ccGGI9aI.s:534    .text:00000180 DOGM128_6_display_backlight
-     /tmp/ccGGI9aI.s:565    .text:0000018c DOGM128_6_LCD_print
-     /tmp/ccGGI9aI.s:686    .progmem.data:00000000 font5x7
+                            *ABS*:0000000000000000 DOGM128-6_Graphicdisplay_driver.c
+     /tmp/ccau2ssw.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccau2ssw.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccau2ssw.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccau2ssw.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccau2ssw.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccau2ssw.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccau2ssw.s:95     .text:0000000000000000 DOGM128_6_usart1_sendByte
+     /tmp/ccau2ssw.s:276    .text:0000000000000078 DOGM128_6_clear_display
+     /tmp/ccau2ssw.s:374    .text:00000000000000da DOGM128_6_display_init
+     /tmp/ccau2ssw.s:534    .text:0000000000000180 DOGM128_6_display_backlight
+     /tmp/ccau2ssw.s:565    .text:000000000000018c DOGM128_6_LCD_print
+     /tmp/ccau2ssw.s:686    .progmem.data:0000000000000000 font5x7
 
 NO UNDEFINED SYMBOLS

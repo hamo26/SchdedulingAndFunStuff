@@ -189,24 +189,24 @@
  264               	.Letext0:
  265               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 nrk_ext_int.c
-     /tmp/ccPq74WC.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccPq74WC.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccPq74WC.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccPq74WC.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccPq74WC.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccPq74WC.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccPq74WC.s:123    .text:00000000 nrk_ext_int_enable
-     /tmp/ccPq74WC.s:145    .text:00000004 nrk_ext_int_disable
-     /tmp/ccPq74WC.s:169    .text:00000008 nrk_ext_int_configure
-     /tmp/ccPq74WC.s:190    .text:0000000c __vector_1
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000002 ext_int0_callback
-                            *COM*:00000002 ext_int1_callback
-                            *COM*:00000002 ext_int2_callback
-                            *COM*:00000002 pc_int0_callback
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
+                            *ABS*:0000000000000000 nrk_ext_int.c
+     /tmp/ccdL5NIL.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccdL5NIL.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccdL5NIL.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccdL5NIL.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccdL5NIL.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccdL5NIL.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccdL5NIL.s:123    .text:0000000000000000 nrk_ext_int_enable
+     /tmp/ccdL5NIL.s:145    .text:0000000000000004 nrk_ext_int_disable
+     /tmp/ccdL5NIL.s:169    .text:0000000000000008 nrk_ext_int_configure
+     /tmp/ccdL5NIL.s:190    .text:000000000000000c __vector_1
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000002 ext_int0_callback
+                            *COM*:0000000000000002 ext_int1_callback
+                            *COM*:0000000000000002 ext_int2_callback
+                            *COM*:0000000000000002 pc_int0_callback
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
 
 UNDEFINED SYMBOLS
 nrk_kernel_error_add

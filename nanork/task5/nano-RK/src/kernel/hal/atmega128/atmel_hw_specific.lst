@@ -59,7 +59,7 @@
   55               		   
   56:..//src/kernel/hal/atmega128/atmel_hw_specific.S ****     	reti 
 DEFINED SYMBOLS
-..//src/kernel/hal/atmega128/atmel_hw_specific.S:9      .text:00000000 nrk_start_high_ready_task
+..//src/kernel/hal/atmega128/atmel_hw_specific.S:9      .text:0000000000000000 nrk_start_high_ready_task
 
 UNDEFINED SYMBOLS
 nrk_high_ready_TCB

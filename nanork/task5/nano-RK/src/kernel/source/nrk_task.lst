@@ -98,8 +98,8 @@
  187 001c D091 0000 		lds r29,_head_node+1
   50:..//src/kernel/source/nrk_task.c **** 	nrk_kprintf (PSTR ("nrk_queue: "));
  189               	.LM5:
- 190 0020 80E0      		ldi r24,lo8(__c.2133)
- 191 0022 90E0      		ldi r25,hi8(__c.2133)
+ 190 0020 80E0      		ldi r24,lo8(__c.2148)
+ 191 0022 90E0      		ldi r25,hi8(__c.2148)
  192 0024 0E94 0000 		call nrk_kprintf
   51:..//src/kernel/source/nrk_task.c **** 	while (ptr != NULL)
   52:..//src/kernel/source/nrk_task.c **** 	{
@@ -153,8 +153,8 @@
   55:..//src/kernel/source/nrk_task.c **** 	}
   56:..//src/kernel/source/nrk_task.c **** 	nrk_kprintf (PSTR ("\n\r"));
  242               	.LM11:
- 243 0072 80E0      		ldi r24,lo8(__c.2138)
- 244 0074 90E0      		ldi r25,hi8(__c.2138)
+ 243 0072 80E0      		ldi r24,lo8(__c.2153)
+ 244 0074 90E0      		ldi r25,hi8(__c.2153)
  245 0076 0E94 0000 		call nrk_kprintf
  246               	/* epilogue start */
   57:..//src/kernel/source/nrk_task.c **** }
@@ -1910,9 +1910,9 @@
  1638               		.comm nrk_sem_list,15,1
  1639               		.comm systemceiling,1,1
  1640               		.section	.progmem.data,"a",@progbits
- 1643               	__c.2138:
+ 1643               	__c.2153:
  1644 0000 0A0D 00   		.string	"\n\r"
- 1647               	__c.2133:
+ 1647               	__c.2148:
  1648 0003 6E72 6B5F 		.string	"nrk_queue: "
  1648      7175 6575 
  1648      653A 2000 
@@ -1921,56 +1921,56 @@
  1677               	.global __do_copy_data
  1678               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 nrk_task.c
-     /tmp/ccJvypKG.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccJvypKG.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccJvypKG.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccJvypKG.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccJvypKG.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccJvypKG.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccJvypKG.s:140    .text:00000000 nrk_get_high_ready_task_ID
-                            *COM*:00000002 _head_node
-     /tmp/ccJvypKG.s:169    .text:0000000c nrk_print_readyQ
-     /tmp/ccJvypKG.s:1647   .progmem.data:00000003 __c.2133
-                            *COM*:000000be nrk_task_TCB
-     /tmp/ccJvypKG.s:1643   .progmem.data:00000000 __c.2138
-     /tmp/ccJvypKG.s:267    .text:00000088 nrk_add_to_readyQ
-                            *COM*:00000002 _free_node
-     /tmp/ccJvypKG.s:513    .text:000001cc nrk_rem_from_readyQ
-     /tmp/ccJvypKG.s:643    .text:0000026c nrk_activate_task
-     /tmp/ccJvypKG.s:777    .text:0000031a nrk_set_next_wakeup
-                            *COM*:00000002 nrk_cur_task_TCB
-     /tmp/ccJvypKG.s:867    .text:00000388 _nrk_wait_for_scheduler
-     /tmp/ccJvypKG.s:899    .text:0000039c nrk_wait
-                            *COM*:00000001 _nrk_prev_timer_val
-     /tmp/ccJvypKG.s:1022   .text:0000044c nrk_wait_until_nw
-     /tmp/ccJvypKG.s:1095   .text:0000049a nrk_wait_until_ticks
-     /tmp/ccJvypKG.s:1174   .text:000004f4 nrk_wait_ticks
-     /tmp/ccJvypKG.s:1269   .text:00000572 nrk_wait_until_next_n_periods
-     /tmp/ccJvypKG.s:1359   .text:000005d8 nrk_wait_until_next_period
-     /tmp/ccJvypKG.s:1437   .text:00000630 nrk_terminate_task
-     /tmp/ccJvypKG.s:1474   .text:00000652 nrk_wait_until
-     /tmp/ccJvypKG.s:1593   .text:000006fe nrk_get_pid
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000080 nrk_idle_task_stk
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000002 nrk_kernel_stk_ptr
-                            *COM*:00000001 nrk_wakeup_signal
-                            *COM*:0000001e _nrk_readyQ
-                            *COM*:00000001 nrk_cur_task_prio
-                            *COM*:00000001 nrk_high_ready_prio
-                            *COM*:00000002 nrk_high_ready_TCB
-                            *COM*:00000001 _nrk_resource_cnt
-                            *COM*:00000008 nrk_system_time
-                            *COM*:00000001 _nrk_time_trigger
-                            *COM*:00000002 app_timer0_callback
-                            *COM*:00000001 app_timer0_prescale
-                            *COM*:00000001 _nrk_cpu_state
-                            *COM*:00000002 next_next_wakeup
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
-                            *COM*:0000000f nrk_sem_list
-                            *COM*:00000001 systemceiling
+                            *ABS*:0000000000000000 nrk_task.c
+     /tmp/ccLlQilD.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccLlQilD.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccLlQilD.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccLlQilD.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccLlQilD.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccLlQilD.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccLlQilD.s:140    .text:0000000000000000 nrk_get_high_ready_task_ID
+                            *COM*:0000000000000002 _head_node
+     /tmp/ccLlQilD.s:169    .text:000000000000000c nrk_print_readyQ
+     /tmp/ccLlQilD.s:1647   .progmem.data:0000000000000003 __c.2148
+                            *COM*:00000000000000be nrk_task_TCB
+     /tmp/ccLlQilD.s:1643   .progmem.data:0000000000000000 __c.2153
+     /tmp/ccLlQilD.s:267    .text:0000000000000088 nrk_add_to_readyQ
+                            *COM*:0000000000000002 _free_node
+     /tmp/ccLlQilD.s:513    .text:00000000000001cc nrk_rem_from_readyQ
+     /tmp/ccLlQilD.s:643    .text:000000000000026c nrk_activate_task
+     /tmp/ccLlQilD.s:777    .text:000000000000031a nrk_set_next_wakeup
+                            *COM*:0000000000000002 nrk_cur_task_TCB
+     /tmp/ccLlQilD.s:867    .text:0000000000000388 _nrk_wait_for_scheduler
+     /tmp/ccLlQilD.s:899    .text:000000000000039c nrk_wait
+                            *COM*:0000000000000001 _nrk_prev_timer_val
+     /tmp/ccLlQilD.s:1022   .text:000000000000044c nrk_wait_until_nw
+     /tmp/ccLlQilD.s:1095   .text:000000000000049a nrk_wait_until_ticks
+     /tmp/ccLlQilD.s:1174   .text:00000000000004f4 nrk_wait_ticks
+     /tmp/ccLlQilD.s:1269   .text:0000000000000572 nrk_wait_until_next_n_periods
+     /tmp/ccLlQilD.s:1359   .text:00000000000005d8 nrk_wait_until_next_period
+     /tmp/ccLlQilD.s:1437   .text:0000000000000630 nrk_terminate_task
+     /tmp/ccLlQilD.s:1474   .text:0000000000000652 nrk_wait_until
+     /tmp/ccLlQilD.s:1593   .text:00000000000006fe nrk_get_pid
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000080 nrk_idle_task_stk
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
+                            *COM*:0000000000000001 nrk_wakeup_signal
+                            *COM*:000000000000001e _nrk_readyQ
+                            *COM*:0000000000000001 nrk_cur_task_prio
+                            *COM*:0000000000000001 nrk_high_ready_prio
+                            *COM*:0000000000000002 nrk_high_ready_TCB
+                            *COM*:0000000000000001 _nrk_resource_cnt
+                            *COM*:0000000000000008 nrk_system_time
+                            *COM*:0000000000000001 _nrk_time_trigger
+                            *COM*:0000000000000002 app_timer0_callback
+                            *COM*:0000000000000001 app_timer0_prescale
+                            *COM*:0000000000000001 _nrk_cpu_state
+                            *COM*:0000000000000002 next_next_wakeup
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
+                            *COM*:000000000000000f nrk_sem_list
+                            *COM*:0000000000000001 systemceiling
 
 UNDEFINED SYMBOLS
 nrk_kprintf

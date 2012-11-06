@@ -1024,8 +1024,8 @@
  676               	.L71:
  189:..//src/kernel/source/nrk_error.c ****         nrk_kprintf (PSTR ("*NRK ERROR("));
  678               	.LM81:
- 679 0228 80E0      		ldi r24,lo8(__c.2136)
- 680 022a 90E0      		ldi r25,hi8(__c.2136)
+ 679 0228 80E0      		ldi r24,lo8(__c.2151)
+ 680 022a 90E0      		ldi r25,hi8(__c.2151)
  681 022c 0E94 0000 		call nrk_kprintf
  190:..//src/kernel/source/nrk_error.c ****         printf ("%d", error_task);
  683               	.LM82:
@@ -1050,8 +1050,8 @@
  702 0254 0F90      		pop __tmp_reg__
  703 0256 0F90      		pop __tmp_reg__
  704 0258 0F90      		pop __tmp_reg__
- 705 025a 80E0      		ldi r24,lo8(__c.2138)
- 706 025c 90E0      		ldi r25,hi8(__c.2138)
+ 705 025a 80E0      		ldi r24,lo8(__c.2153)
+ 706 025c 90E0      		ldi r25,hi8(__c.2153)
  707 025e 0E94 0000 		call nrk_kprintf
  192:..//src/kernel/source/nrk_error.c ****         if (error_num > NRK_NUM_ERRORS)
  709               	.LM84:
@@ -1113,140 +1113,140 @@
  765               	.L65:
  197:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Task period too large. Period must be less than 61 seconds."));
  767               	.LM87:
- 768 0290 80E0      		ldi r24,lo8(__c.2141)
- 769 0292 90E0      		ldi r25,hi8(__c.2141)
+ 768 0290 80E0      		ldi r24,lo8(__c.2156)
+ 769 0292 90E0      		ldi r25,hi8(__c.2156)
  770 0294 00C0      		rjmp .L75
  771               	.L60:
  200:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Stack was not defined as large enough!"));
  773               	.LM88:
- 774 0296 80E0      		ldi r24,lo8(__c.2145)
- 775 0298 90E0      		ldi r25,hi8(__c.2145)
+ 774 0296 80E0      		ldi r24,lo8(__c.2160)
+ 775 0298 90E0      		ldi r25,hi8(__c.2160)
  776 029a 00C0      		rjmp .L75
  777               	.L44:
  203:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Task Stack Overflow"));
  779               	.LM89:
- 780 029c 80E0      		ldi r24,lo8(__c.2148)
- 781 029e 90E0      		ldi r25,hi8(__c.2148)
+ 780 029c 80E0      		ldi r24,lo8(__c.2163)
+ 781 029e 90E0      		ldi r25,hi8(__c.2163)
  782 02a0 00C0      		rjmp .L75
  783               	.L61:
  206:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Invalid Stack Pointer"));
  785               	.LM90:
- 786 02a2 80E0      		ldi r24,lo8(__c.2151)
- 787 02a4 90E0      		ldi r25,hi8(__c.2151)
+ 786 02a2 80E0      		ldi r24,lo8(__c.2166)
+ 787 02a4 90E0      		ldi r25,hi8(__c.2166)
  788 02a6 00C0      		rjmp .L75
  789               	.L45:
  209:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Reserve Error in Scheduler"));
  791               	.LM91:
- 792 02a8 80E0      		ldi r24,lo8(__c.2154)
- 793 02aa 90E0      		ldi r25,hi8(__c.2154)
+ 792 02a8 80E0      		ldi r24,lo8(__c.2169)
+ 793 02aa 90E0      		ldi r25,hi8(__c.2169)
  794 02ac 00C0      		rjmp .L75
  795               	.L46:
  212:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Task Reserve Violated"));
  797               	.LM92:
- 798 02ae 80E0      		ldi r24,lo8(__c.2157)
- 799 02b0 90E0      		ldi r25,hi8(__c.2157)
+ 798 02ae 80E0      		ldi r24,lo8(__c.2172)
+ 799 02b0 90E0      		ldi r25,hi8(__c.2172)
  800 02b2 00C0      		rjmp .L75
  801               	.L47:
  215:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Scheduler Missed Wakeup"));
  803               	.LM93:
- 804 02b4 80E0      		ldi r24,lo8(__c.2160)
- 805 02b6 90E0      		ldi r25,hi8(__c.2160)
+ 804 02b4 80E0      		ldi r24,lo8(__c.2175)
+ 805 02b6 90E0      		ldi r25,hi8(__c.2175)
  806 02b8 00C0      		rjmp .L75
  807               	.L48:
  218:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Duplicated Task ID"));
  809               	.LM94:
- 810 02ba 80E0      		ldi r24,lo8(__c.2163)
- 811 02bc 90E0      		ldi r25,hi8(__c.2163)
+ 810 02ba 80E0      		ldi r24,lo8(__c.2178)
+ 811 02bc 90E0      		ldi r25,hi8(__c.2178)
  812 02be 00C0      		rjmp .L75
  813               	.L49:
  221:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Unexpected Restart"));
  815               	.LM95:
- 816 02c0 80E0      		ldi r24,lo8(__c.2166)
- 817 02c2 90E0      		ldi r25,hi8(__c.2166)
+ 816 02c0 80E0      		ldi r24,lo8(__c.2181)
+ 817 02c2 90E0      		ldi r25,hi8(__c.2181)
  818 02c4 00C0      		rjmp .L75
  819               	.L51:
  224:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Idle or Kernel Stack Overflow"));
  821               	.LM96:
- 822 02c6 80E0      		ldi r24,lo8(__c.2169)
- 823 02c8 90E0      		ldi r25,hi8(__c.2169)
+ 822 02c6 80E0      		ldi r24,lo8(__c.2184)
+ 823 02c8 90E0      		ldi r25,hi8(__c.2184)
  824 02ca 00C0      		rjmp .L75
  825               	.L50:
  227:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Extra Task started, is nrk_cfg.h ok?"));
  827               	.LM97:
- 828 02cc 80E0      		ldi r24,lo8(__c.2172)
- 829 02ce 90E0      		ldi r25,hi8(__c.2172)
+ 828 02cc 80E0      		ldi r24,lo8(__c.2187)
+ 829 02ce 90E0      		ldi r25,hi8(__c.2187)
  830 02d0 00C0      		rjmp .L75
  831               	.L52:
  230:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Low Voltage"));
  833               	.LM98:
- 834 02d2 80E0      		ldi r24,lo8(__c.2175)
- 835 02d4 90E0      		ldi r25,hi8(__c.2175)
+ 834 02d2 80E0      		ldi r24,lo8(__c.2190)
+ 835 02d4 90E0      		ldi r25,hi8(__c.2190)
  836 02d6 00C0      		rjmp .L75
  837               	.L53:
  233:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Unhandled Interrupt Vector"));
  839               	.LM99:
- 840 02d8 80E0      		ldi r24,lo8(__c.2178)
- 841 02da 90E0      		ldi r25,hi8(__c.2178)
+ 840 02d8 80E0      		ldi r24,lo8(__c.2193)
+ 841 02da 90E0      		ldi r25,hi8(__c.2193)
  842 02dc 00C0      		rjmp .L75
  843               	.L54:
  236:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Timer Overflow"));
  845               	.LM100:
- 846 02de 80E0      		ldi r24,lo8(__c.2181)
- 847 02e0 90E0      		ldi r25,hi8(__c.2181)
+ 846 02de 80E0      		ldi r24,lo8(__c.2196)
+ 847 02e0 90E0      		ldi r25,hi8(__c.2196)
  848 02e2 00C0      		rjmp .L75
  849               	.L64:
  239:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("SW Watchdog Restart"));
  851               	.LM101:
- 852 02e4 80E0      		ldi r24,lo8(__c.2184)
- 853 02e6 90E0      		ldi r25,hi8(__c.2184)
+ 852 02e4 80E0      		ldi r24,lo8(__c.2199)
+ 853 02e6 90E0      		ldi r25,hi8(__c.2199)
  854 02e8 00C0      		rjmp .L75
  855               	.L59:
  242:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Watchdog Restart"));
  857               	.LM102:
- 858 02ea 80E0      		ldi r24,lo8(__c.2187)
- 859 02ec 90E0      		ldi r25,hi8(__c.2187)
+ 858 02ea 80E0      		ldi r24,lo8(__c.2202)
+ 859 02ec 90E0      		ldi r25,hi8(__c.2202)
  860 02ee 00C0      		rjmp .L75
  861               	.L55:
  245:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Device Driver Error"));
  863               	.LM103:
- 864 02f0 80E0      		ldi r24,lo8(__c.2190)
- 865 02f2 90E0      		ldi r25,hi8(__c.2190)
+ 864 02f0 80E0      		ldi r24,lo8(__c.2205)
+ 865 02f2 90E0      		ldi r25,hi8(__c.2205)
  866 02f4 00C0      		rjmp .L75
  867               	.L56:
  248:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Kernel function not implemented"));
  869               	.LM104:
- 870 02f6 80E0      		ldi r24,lo8(__c.2193)
- 871 02f8 90E0      		ldi r25,hi8(__c.2193)
+ 870 02f6 80E0      		ldi r24,lo8(__c.2208)
+ 871 02f8 90E0      		ldi r25,hi8(__c.2208)
  872 02fa 00C0      		rjmp .L75
  873               	.L57:
  251:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Failed to create Signal"));
  875               	.LM105:
- 876 02fc 80E0      		ldi r24,lo8(__c.2196)
- 877 02fe 90E0      		ldi r25,hi8(__c.2196)
+ 876 02fc 80E0      		ldi r24,lo8(__c.2211)
+ 877 02fe 90E0      		ldi r25,hi8(__c.2211)
  878 0300 00C0      		rjmp .L75
  879               	.L58:
  254:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Failed to create Semaphore"));
  881               	.LM106:
- 882 0302 80E0      		ldi r24,lo8(__c.2199)
- 883 0304 90E0      		ldi r25,hi8(__c.2199)
+ 882 0302 80E0      		ldi r24,lo8(__c.2214)
+ 883 0304 90E0      		ldi r25,hi8(__c.2214)
  884 0306 00C0      		rjmp .L75
  885               	.L62:
  257:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("Brown Out Detect"));
  887               	.LM107:
- 888 0308 80E0      		ldi r24,lo8(__c.2202)
- 889 030a 90E0      		ldi r25,hi8(__c.2202)
+ 888 0308 80E0      		ldi r24,lo8(__c.2217)
+ 889 030a 90E0      		ldi r25,hi8(__c.2217)
  890 030c 00C0      		rjmp .L75
  891               	.L63:
  260:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("External Reset"));
  893               	.LM108:
- 894 030e 80E0      		ldi r24,lo8(__c.2205)
- 895 0310 90E0      		ldi r25,hi8(__c.2205)
+ 894 030e 80E0      		ldi r24,lo8(__c.2220)
+ 895 0310 90E0      		ldi r25,hi8(__c.2220)
  896 0312 00C0      		rjmp .L75
  897               	.L43:
  263:..//src/kernel/source/nrk_error.c ****             nrk_kprintf (PSTR ("UNKOWN"));
  899               	.LM109:
- 900 0314 80E0      		ldi r24,lo8(__c.2208)
- 901 0316 90E0      		ldi r25,hi8(__c.2208)
+ 900 0314 80E0      		ldi r24,lo8(__c.2223)
+ 901 0316 90E0      		ldi r25,hi8(__c.2223)
  902               	.L75:
  903 0318 0E94 0000 		call nrk_kprintf
  265:..//src/kernel/source/nrk_error.c ****         putchar ('\r');
@@ -1500,140 +1500,140 @@
  1168               		.comm app_timer0_callback,2,1
  1169               		.comm app_timer0_prescale,1,1
  1170               		.section	.progmem.data,"a",@progbits
- 1173               	__c.2208:
+ 1173               	__c.2223:
  1174 0000 554E 4B4F 		.string	"UNKOWN"
  1174      574E 00
- 1177               	__c.2205:
+ 1177               	__c.2220:
  1178 0007 4578 7465 		.string	"External Reset"
  1178      726E 616C 
  1178      2052 6573 
  1178      6574 00
- 1181               	__c.2202:
+ 1181               	__c.2217:
  1182 0016 4272 6F77 		.string	"Brown Out Detect"
  1182      6E20 4F75 
  1182      7420 4465 
  1182      7465 6374 
  1182      00
- 1185               	__c.2199:
+ 1185               	__c.2214:
  1186 0027 4661 696C 		.string	"Failed to create Semaphore"
  1186      6564 2074 
  1186      6F20 6372 
  1186      6561 7465 
  1186      2053 656D 
- 1189               	__c.2196:
+ 1189               	__c.2211:
  1190 0042 4661 696C 		.string	"Failed to create Signal"
  1190      6564 2074 
  1190      6F20 6372 
  1190      6561 7465 
  1190      2053 6967 
- 1193               	__c.2193:
+ 1193               	__c.2208:
  1194 005a 4B65 726E 		.string	"Kernel function not implemented"
  1194      656C 2066 
  1194      756E 6374 
  1194      696F 6E20 
  1194      6E6F 7420 
- 1197               	__c.2190:
+ 1197               	__c.2205:
  1198 007a 4465 7669 		.string	"Device Driver Error"
  1198      6365 2044 
  1198      7269 7665 
  1198      7220 4572 
  1198      726F 7200 
- 1201               	__c.2187:
+ 1201               	__c.2202:
  1202 008e 5761 7463 		.string	"Watchdog Restart"
  1202      6864 6F67 
  1202      2052 6573 
  1202      7461 7274 
  1202      00
- 1205               	__c.2184:
+ 1205               	__c.2199:
  1206 009f 5357 2057 		.string	"SW Watchdog Restart"
  1206      6174 6368 
  1206      646F 6720 
  1206      5265 7374 
  1206      6172 7400 
- 1209               	__c.2181:
+ 1209               	__c.2196:
  1210 00b3 5469 6D65 		.string	"Timer Overflow"
  1210      7220 4F76 
  1210      6572 666C 
  1210      6F77 00
- 1213               	__c.2178:
+ 1213               	__c.2193:
  1214 00c2 556E 6861 		.string	"Unhandled Interrupt Vector"
  1214      6E64 6C65 
  1214      6420 496E 
  1214      7465 7272 
  1214      7570 7420 
- 1217               	__c.2175:
+ 1217               	__c.2190:
  1218 00dd 4C6F 7720 		.string	"Low Voltage"
  1218      566F 6C74 
  1218      6167 6500 
- 1221               	__c.2172:
+ 1221               	__c.2187:
  1222 00e9 4578 7472 		.string	"Extra Task started, is nrk_cfg.h ok?"
  1222      6120 5461 
  1222      736B 2073 
  1222      7461 7274 
  1222      6564 2C20 
- 1225               	__c.2169:
+ 1225               	__c.2184:
  1226 010e 4964 6C65 		.string	"Idle or Kernel Stack Overflow"
  1226      206F 7220 
  1226      4B65 726E 
  1226      656C 2053 
  1226      7461 636B 
- 1229               	__c.2166:
+ 1229               	__c.2181:
  1230 012c 556E 6578 		.string	"Unexpected Restart"
  1230      7065 6374 
  1230      6564 2052 
  1230      6573 7461 
  1230      7274 00
- 1233               	__c.2163:
+ 1233               	__c.2178:
  1234 013f 4475 706C 		.string	"Duplicated Task ID"
  1234      6963 6174 
  1234      6564 2054 
  1234      6173 6B20 
  1234      4944 00
- 1237               	__c.2160:
+ 1237               	__c.2175:
  1238 0152 5363 6865 		.string	"Scheduler Missed Wakeup"
  1238      6475 6C65 
  1238      7220 4D69 
  1238      7373 6564 
  1238      2057 616B 
- 1241               	__c.2157:
+ 1241               	__c.2172:
  1242 016a 5461 736B 		.string	"Task Reserve Violated"
  1242      2052 6573 
  1242      6572 7665 
  1242      2056 696F 
  1242      6C61 7465 
- 1245               	__c.2154:
+ 1245               	__c.2169:
  1246 0180 5265 7365 		.string	"Reserve Error in Scheduler"
  1246      7276 6520 
  1246      4572 726F 
  1246      7220 696E 
  1246      2053 6368 
- 1249               	__c.2151:
+ 1249               	__c.2166:
  1250 019b 496E 7661 		.string	"Invalid Stack Pointer"
  1250      6C69 6420 
  1250      5374 6163 
  1250      6B20 506F 
  1250      696E 7465 
- 1253               	__c.2148:
+ 1253               	__c.2163:
  1254 01b1 5461 736B 		.string	"Task Stack Overflow"
  1254      2053 7461 
  1254      636B 204F 
  1254      7665 7266 
  1254      6C6F 7700 
- 1257               	__c.2145:
+ 1257               	__c.2160:
  1258 01c5 5374 6163 		.string	"Stack was not defined as large enough!"
  1258      6B20 7761 
  1258      7320 6E6F 
  1258      7420 6465 
  1258      6669 6E65 
- 1261               	__c.2141:
+ 1261               	__c.2156:
  1262 01ec 5461 736B 		.string	"Task period too large. Period must be less than 61 seconds."
  1262      2070 6572 
  1262      696F 6420 
  1262      746F 6F20 
  1262      6C61 7267 
- 1265               	__c.2138:
+ 1265               	__c.2153:
  1266 0228 293A 2000 		.string	"): "
- 1269               	__c.2136:
+ 1269               	__c.2151:
  1270 022c 2A4E 524B 		.string	"*NRK ERROR("
  1270      2045 5252 
  1270      4F52 2800 
@@ -1642,58 +1642,58 @@
  1284               	.global __do_copy_data
  1285               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 nrk_error.c
-     /tmp/cc1pvpbY.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc1pvpbY.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc1pvpbY.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc1pvpbY.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc1pvpbY.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc1pvpbY.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc1pvpbY.s:139    .text:00000000 _nrk_errno_set
-     /tmp/cc1pvpbY.s:164    .text:0000000c nrk_errno_get
-     /tmp/cc1pvpbY.s:191    .text:00000018 nrk_error_get
-                            *COM*:00000001 error_num
-                            *COM*:00000001 error_task
-     /tmp/cc1pvpbY.s:232    .text:00000034 pause
-     /tmp/cc1pvpbY.s:284    .text:0000005e blink_dot
-     /tmp/cc1pvpbY.s:320    .text:00000078 blink_dash
-     /tmp/cc1pvpbY.s:367    .text:0000009a blink_morse_code_error
-     /tmp/cc1pvpbY.s:636    .text:000001fe nrk_error_print
-     /tmp/cc1pvpbY.s:1269   .progmem.data:0000022c __c.2136
-     /tmp/cc1pvpbY.s:1265   .progmem.data:00000228 __c.2138
-     /tmp/cc1pvpbY.s:1261   .progmem.data:000001ec __c.2141
-     /tmp/cc1pvpbY.s:1257   .progmem.data:000001c5 __c.2145
-     /tmp/cc1pvpbY.s:1253   .progmem.data:000001b1 __c.2148
-     /tmp/cc1pvpbY.s:1249   .progmem.data:0000019b __c.2151
-     /tmp/cc1pvpbY.s:1245   .progmem.data:00000180 __c.2154
-     /tmp/cc1pvpbY.s:1241   .progmem.data:0000016a __c.2157
-     /tmp/cc1pvpbY.s:1237   .progmem.data:00000152 __c.2160
-     /tmp/cc1pvpbY.s:1233   .progmem.data:0000013f __c.2163
-     /tmp/cc1pvpbY.s:1229   .progmem.data:0000012c __c.2166
-     /tmp/cc1pvpbY.s:1225   .progmem.data:0000010e __c.2169
-     /tmp/cc1pvpbY.s:1221   .progmem.data:000000e9 __c.2172
-     /tmp/cc1pvpbY.s:1217   .progmem.data:000000dd __c.2175
-     /tmp/cc1pvpbY.s:1213   .progmem.data:000000c2 __c.2178
-     /tmp/cc1pvpbY.s:1209   .progmem.data:000000b3 __c.2181
-     /tmp/cc1pvpbY.s:1205   .progmem.data:0000009f __c.2184
-     /tmp/cc1pvpbY.s:1201   .progmem.data:0000008e __c.2187
-     /tmp/cc1pvpbY.s:1197   .progmem.data:0000007a __c.2190
-     /tmp/cc1pvpbY.s:1193   .progmem.data:0000005a __c.2193
-     /tmp/cc1pvpbY.s:1189   .progmem.data:00000042 __c.2196
-     /tmp/cc1pvpbY.s:1185   .progmem.data:00000027 __c.2199
-     /tmp/cc1pvpbY.s:1181   .progmem.data:00000016 __c.2202
-     /tmp/cc1pvpbY.s:1177   .progmem.data:00000007 __c.2205
-     /tmp/cc1pvpbY.s:1173   .progmem.data:00000000 __c.2208
-     /tmp/cc1pvpbY.s:1017   .text:000003bc nrk_kernel_error_add
-     /tmp/cc1pvpbY.s:1131   .text:0000043e nrk_error_add
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000080 nrk_idle_task_stk
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000002 nrk_kernel_stk_ptr
-                            *COM*:00000001 _nrk_prev_timer_val
-                            *COM*:00000001 _nrk_time_trigger
-                            *COM*:00000002 app_timer0_callback
-                            *COM*:00000001 app_timer0_prescale
+                            *ABS*:0000000000000000 nrk_error.c
+     /tmp/ccoBwZt8.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccoBwZt8.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccoBwZt8.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccoBwZt8.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccoBwZt8.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccoBwZt8.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccoBwZt8.s:139    .text:0000000000000000 _nrk_errno_set
+     /tmp/ccoBwZt8.s:164    .text:000000000000000c nrk_errno_get
+     /tmp/ccoBwZt8.s:191    .text:0000000000000018 nrk_error_get
+                            *COM*:0000000000000001 error_num
+                            *COM*:0000000000000001 error_task
+     /tmp/ccoBwZt8.s:232    .text:0000000000000034 pause
+     /tmp/ccoBwZt8.s:284    .text:000000000000005e blink_dot
+     /tmp/ccoBwZt8.s:320    .text:0000000000000078 blink_dash
+     /tmp/ccoBwZt8.s:367    .text:000000000000009a blink_morse_code_error
+     /tmp/ccoBwZt8.s:636    .text:00000000000001fe nrk_error_print
+     /tmp/ccoBwZt8.s:1269   .progmem.data:000000000000022c __c.2151
+     /tmp/ccoBwZt8.s:1265   .progmem.data:0000000000000228 __c.2153
+     /tmp/ccoBwZt8.s:1261   .progmem.data:00000000000001ec __c.2156
+     /tmp/ccoBwZt8.s:1257   .progmem.data:00000000000001c5 __c.2160
+     /tmp/ccoBwZt8.s:1253   .progmem.data:00000000000001b1 __c.2163
+     /tmp/ccoBwZt8.s:1249   .progmem.data:000000000000019b __c.2166
+     /tmp/ccoBwZt8.s:1245   .progmem.data:0000000000000180 __c.2169
+     /tmp/ccoBwZt8.s:1241   .progmem.data:000000000000016a __c.2172
+     /tmp/ccoBwZt8.s:1237   .progmem.data:0000000000000152 __c.2175
+     /tmp/ccoBwZt8.s:1233   .progmem.data:000000000000013f __c.2178
+     /tmp/ccoBwZt8.s:1229   .progmem.data:000000000000012c __c.2181
+     /tmp/ccoBwZt8.s:1225   .progmem.data:000000000000010e __c.2184
+     /tmp/ccoBwZt8.s:1221   .progmem.data:00000000000000e9 __c.2187
+     /tmp/ccoBwZt8.s:1217   .progmem.data:00000000000000dd __c.2190
+     /tmp/ccoBwZt8.s:1213   .progmem.data:00000000000000c2 __c.2193
+     /tmp/ccoBwZt8.s:1209   .progmem.data:00000000000000b3 __c.2196
+     /tmp/ccoBwZt8.s:1205   .progmem.data:000000000000009f __c.2199
+     /tmp/ccoBwZt8.s:1201   .progmem.data:000000000000008e __c.2202
+     /tmp/ccoBwZt8.s:1197   .progmem.data:000000000000007a __c.2205
+     /tmp/ccoBwZt8.s:1193   .progmem.data:000000000000005a __c.2208
+     /tmp/ccoBwZt8.s:1189   .progmem.data:0000000000000042 __c.2211
+     /tmp/ccoBwZt8.s:1185   .progmem.data:0000000000000027 __c.2214
+     /tmp/ccoBwZt8.s:1181   .progmem.data:0000000000000016 __c.2217
+     /tmp/ccoBwZt8.s:1177   .progmem.data:0000000000000007 __c.2220
+     /tmp/ccoBwZt8.s:1173   .progmem.data:0000000000000000 __c.2223
+     /tmp/ccoBwZt8.s:1017   .text:00000000000003bc nrk_kernel_error_add
+     /tmp/ccoBwZt8.s:1131   .text:000000000000043e nrk_error_add
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000080 nrk_idle_task_stk
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
+                            *COM*:0000000000000001 _nrk_prev_timer_val
+                            *COM*:0000000000000001 _nrk_time_trigger
+                            *COM*:0000000000000002 app_timer0_callback
+                            *COM*:0000000000000001 app_timer0_prescale
 
 UNDEFINED SYMBOLS
 nrk_cur_task_TCB

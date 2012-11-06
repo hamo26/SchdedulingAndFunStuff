@@ -16,19 +16,19 @@
  147               	.Letext0:
  148               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 nrk_sw_wdt.c
-     /tmp/ccMDrOE2.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccMDrOE2.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccMDrOE2.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccMDrOE2.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccMDrOE2.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccMDrOE2.s:7      *ABS*:00000001 __zero_reg__
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000080 nrk_idle_task_stk
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000002 nrk_kernel_stk_ptr
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
+                            *ABS*:0000000000000000 nrk_sw_wdt.c
+     /tmp/cc1sUMzr.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/cc1sUMzr.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/cc1sUMzr.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/cc1sUMzr.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/cc1sUMzr.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc1sUMzr.s:7      *ABS*:0000000000000001 __zero_reg__
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000080 nrk_idle_task_stk
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
 
 UNDEFINED SYMBOLS
 __do_clear_bss

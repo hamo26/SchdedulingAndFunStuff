@@ -1195,47 +1195,47 @@
  1182               	.Letext0:
  1183               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 nrk_timer.c
-     /tmp/ccEhcSge.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccEhcSge.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccEhcSge.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccEhcSge.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccEhcSge.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccEhcSge.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccEhcSge.s:139    .text:00000000 nrk_spin_wait_us
-     /tmp/ccEhcSge.s:190    .text:0000000e _nrk_high_speed_timer_stop
-     /tmp/ccEhcSge.s:213    .text:00000012 _nrk_high_speed_timer_start
-     /tmp/ccEhcSge.s:237    .text:00000018 _nrk_high_speed_timer_reset
-     /tmp/ccEhcSge.s:266    .text:00000024 _nrk_high_speed_timer_get
-     /tmp/ccEhcSge.s:311    .text:00000046 nrk_high_speed_timer_wait
-     /tmp/ccEhcSge.s:403    .text:000000b6 _nrk_os_timer_set
-     /tmp/ccEhcSge.s:426    .text:000000ba _nrk_os_timer_stop
-     /tmp/ccEhcSge.s:459    .text:000000ca _nrk_os_timer_start
-     /tmp/ccEhcSge.s:488    .text:000000d6 _nrk_os_timer_reset
-                            *COM*:00000001 _nrk_time_trigger
-                            *COM*:00000001 _nrk_prev_timer_val
-     /tmp/ccEhcSge.s:522    .text:000000e8 _nrk_setup_timer
-     /tmp/ccEhcSge.s:591    .text:00000120 _nrk_precision_os_timer_reset
-     /tmp/ccEhcSge.s:611    .text:00000122 _nrk_get_next_wakeup
-     /tmp/ccEhcSge.s:636    .text:00000128 _nrk_set_next_wakeup
-     /tmp/ccEhcSge.s:660    .text:0000012e _nrk_os_timer_get
-     /tmp/ccEhcSge.s:683    .text:00000132 __vector_default
-     /tmp/ccEhcSge.s:745    .text:00000186 __vector_16
-     /tmp/ccEhcSge.s:764    .text:00000186 __vector_15
-                            *COM*:00000002 nrk_kernel_stk_ptr
-     /tmp/ccEhcSge.s:838    .text:000001ec nrk_timer_int_stop
-     /tmp/ccEhcSge.s:870    .text:000001fa nrk_timer_int_reset
-     /tmp/ccEhcSge.s:905    .text:00000208 nrk_timer_int_read
-     /tmp/ccEhcSge.s:942    .text:0000021a nrk_timer_int_start
-     /tmp/ccEhcSge.s:981    .text:0000022c nrk_timer_int_configure
-                            *COM*:00000001 app_timer0_prescale
-                            *COM*:00000002 app_timer0_callback
-     /tmp/ccEhcSge.s:1090   .text:0000028e __vector_9
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000080 nrk_idle_task_stk
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
+                            *ABS*:0000000000000000 nrk_timer.c
+     /tmp/cc3rFEVs.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/cc3rFEVs.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/cc3rFEVs.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/cc3rFEVs.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/cc3rFEVs.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc3rFEVs.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc3rFEVs.s:139    .text:0000000000000000 nrk_spin_wait_us
+     /tmp/cc3rFEVs.s:190    .text:000000000000000e _nrk_high_speed_timer_stop
+     /tmp/cc3rFEVs.s:213    .text:0000000000000012 _nrk_high_speed_timer_start
+     /tmp/cc3rFEVs.s:237    .text:0000000000000018 _nrk_high_speed_timer_reset
+     /tmp/cc3rFEVs.s:266    .text:0000000000000024 _nrk_high_speed_timer_get
+     /tmp/cc3rFEVs.s:311    .text:0000000000000046 nrk_high_speed_timer_wait
+     /tmp/cc3rFEVs.s:403    .text:00000000000000b6 _nrk_os_timer_set
+     /tmp/cc3rFEVs.s:426    .text:00000000000000ba _nrk_os_timer_stop
+     /tmp/cc3rFEVs.s:459    .text:00000000000000ca _nrk_os_timer_start
+     /tmp/cc3rFEVs.s:488    .text:00000000000000d6 _nrk_os_timer_reset
+                            *COM*:0000000000000001 _nrk_time_trigger
+                            *COM*:0000000000000001 _nrk_prev_timer_val
+     /tmp/cc3rFEVs.s:522    .text:00000000000000e8 _nrk_setup_timer
+     /tmp/cc3rFEVs.s:591    .text:0000000000000120 _nrk_precision_os_timer_reset
+     /tmp/cc3rFEVs.s:611    .text:0000000000000122 _nrk_get_next_wakeup
+     /tmp/cc3rFEVs.s:636    .text:0000000000000128 _nrk_set_next_wakeup
+     /tmp/cc3rFEVs.s:660    .text:000000000000012e _nrk_os_timer_get
+     /tmp/cc3rFEVs.s:683    .text:0000000000000132 __vector_default
+     /tmp/cc3rFEVs.s:745    .text:0000000000000186 __vector_16
+     /tmp/cc3rFEVs.s:764    .text:0000000000000186 __vector_15
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
+     /tmp/cc3rFEVs.s:838    .text:00000000000001ec nrk_timer_int_stop
+     /tmp/cc3rFEVs.s:870    .text:00000000000001fa nrk_timer_int_reset
+     /tmp/cc3rFEVs.s:905    .text:0000000000000208 nrk_timer_int_read
+     /tmp/cc3rFEVs.s:942    .text:000000000000021a nrk_timer_int_start
+     /tmp/cc3rFEVs.s:981    .text:000000000000022c nrk_timer_int_configure
+                            *COM*:0000000000000001 app_timer0_prescale
+                            *COM*:0000000000000002 app_timer0_callback
+     /tmp/cc3rFEVs.s:1090   .text:000000000000028e __vector_9
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000080 nrk_idle_task_stk
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
 
 UNDEFINED SYMBOLS
 nrk_kernel_error_add

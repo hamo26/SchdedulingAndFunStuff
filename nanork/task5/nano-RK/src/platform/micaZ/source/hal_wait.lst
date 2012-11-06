@@ -103,15 +103,15 @@
  171               	.Letext0:
  172               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 hal_wait.c
-     /tmp/cc0FaUem.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc0FaUem.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc0FaUem.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc0FaUem.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc0FaUem.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc0FaUem.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc0FaUem.s:120    .text:00000000 halWait
-                            *COM*:00000004 _nrk_signal_list
+                            *ABS*:0000000000000000 hal_wait.c
+     /tmp/ccm2eW4H.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccm2eW4H.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccm2eW4H.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccm2eW4H.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccm2eW4H.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccm2eW4H.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccm2eW4H.s:120    .text:0000000000000000 halWait
+                            *COM*:0000000000000004 _nrk_signal_list
 
 UNDEFINED SYMBOLS
 __do_clear_bss

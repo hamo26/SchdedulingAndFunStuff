@@ -1065,43 +1065,43 @@
  1018               	.Letext0:
  1019               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 nrk.c
-     /tmp/ccRSsWCJ.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccRSsWCJ.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccRSsWCJ.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccRSsWCJ.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccRSsWCJ.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccRSsWCJ.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccRSsWCJ.s:133    .text:00000000 nrk_int_disable
-     /tmp/ccRSsWCJ.s:161    .text:00000004 nrk_int_enable
-     /tmp/ccRSsWCJ.s:189    .text:00000008 nrk_halt
-     /tmp/ccRSsWCJ.s:210    .text:0000000e nrk_init
-                            *COM*:00000001 nrk_wakeup_signal
-                            *COM*:00000001 nrk_cur_task_prio
-                            *COM*:00000002 nrk_cur_task_TCB
-                            *COM*:00000002 nrk_high_ready_TCB
-                            *COM*:00000001 nrk_high_ready_prio
-                            *COM*:00000001 _nrk_resource_cnt
-                            *COM*:0000000f nrk_sem_list
-                            *COM*:000000be nrk_task_TCB
-                            *COM*:0000001e _nrk_readyQ
-                            *COM*:00000002 _head_node
-                            *COM*:00000002 _free_node
-                            *COM*:00000080 nrk_idle_task_stk
-     /tmp/ccRSsWCJ.s:503    .text:0000019a nrk_start
-     /tmp/ccRSsWCJ.s:640    .text:00000244 nrk_TCB_init
-                            *COM*:00000001 nrk_task_init_cnt
-     /tmp/ccRSsWCJ.s:931    .text:0000040a _nrk_timer_tick
-     /tmp/ccRSsWCJ.s:954    .text:00000410 nrk_version
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000002 nrk_kernel_stk_ptr
-                            *COM*:00000008 nrk_system_time
-                            *COM*:00000001 systemceiling
-                            *COM*:00000001 _nrk_cpu_state
-                            *COM*:00000002 next_next_wakeup
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
+                            *ABS*:0000000000000000 nrk.c
+     /tmp/ccaRFjgU.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccaRFjgU.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccaRFjgU.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccaRFjgU.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccaRFjgU.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccaRFjgU.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccaRFjgU.s:133    .text:0000000000000000 nrk_int_disable
+     /tmp/ccaRFjgU.s:161    .text:0000000000000004 nrk_int_enable
+     /tmp/ccaRFjgU.s:189    .text:0000000000000008 nrk_halt
+     /tmp/ccaRFjgU.s:210    .text:000000000000000e nrk_init
+                            *COM*:0000000000000001 nrk_wakeup_signal
+                            *COM*:0000000000000001 nrk_cur_task_prio
+                            *COM*:0000000000000002 nrk_cur_task_TCB
+                            *COM*:0000000000000002 nrk_high_ready_TCB
+                            *COM*:0000000000000001 nrk_high_ready_prio
+                            *COM*:0000000000000001 _nrk_resource_cnt
+                            *COM*:000000000000000f nrk_sem_list
+                            *COM*:00000000000000be nrk_task_TCB
+                            *COM*:000000000000001e _nrk_readyQ
+                            *COM*:0000000000000002 _head_node
+                            *COM*:0000000000000002 _free_node
+                            *COM*:0000000000000080 nrk_idle_task_stk
+     /tmp/ccaRFjgU.s:503    .text:000000000000019a nrk_start
+     /tmp/ccaRFjgU.s:640    .text:0000000000000244 nrk_TCB_init
+                            *COM*:0000000000000001 nrk_task_init_cnt
+     /tmp/ccaRFjgU.s:931    .text:000000000000040a _nrk_timer_tick
+     /tmp/ccaRFjgU.s:954    .text:0000000000000410 nrk_version
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
+                            *COM*:0000000000000008 nrk_system_time
+                            *COM*:0000000000000001 systemceiling
+                            *COM*:0000000000000001 _nrk_cpu_state
+                            *COM*:0000000000000002 next_next_wakeup
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
 
 UNDEFINED SYMBOLS
 nrk_signal_create

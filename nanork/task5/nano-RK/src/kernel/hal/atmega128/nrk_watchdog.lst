@@ -218,23 +218,23 @@
  303               	.Letext0:
  304               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 nrk_watchdog.c
-     /tmp/ccLcrywE.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccLcrywE.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccLcrywE.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccLcrywE.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccLcrywE.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccLcrywE.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccLcrywE.s:135    .text:00000000 nrk_watchdog_disable
-     /tmp/ccLcrywE.s:185    .text:0000001a nrk_watchdog_enable
-     /tmp/ccLcrywE.s:236    .text:00000036 nrk_watchdog_check
-     /tmp/ccLcrywE.s:266    .text:00000044 nrk_watchdog_reset
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
-                            *COM*:00000080 nrk_idle_task_stk
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000002 nrk_kernel_stk_ptr
+                            *ABS*:0000000000000000 nrk_watchdog.c
+     /tmp/cc7PjVKP.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/cc7PjVKP.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/cc7PjVKP.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/cc7PjVKP.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/cc7PjVKP.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/cc7PjVKP.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/cc7PjVKP.s:135    .text:0000000000000000 nrk_watchdog_disable
+     /tmp/cc7PjVKP.s:185    .text:000000000000001a nrk_watchdog_enable
+     /tmp/cc7PjVKP.s:236    .text:0000000000000036 nrk_watchdog_check
+     /tmp/cc7PjVKP.s:266    .text:0000000000000044 nrk_watchdog_reset
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
+                            *COM*:0000000000000080 nrk_idle_task_stk
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
 
 UNDEFINED SYMBOLS
 nrk_int_disable

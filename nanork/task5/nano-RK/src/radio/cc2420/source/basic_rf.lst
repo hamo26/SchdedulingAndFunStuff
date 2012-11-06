@@ -5089,72 +5089,72 @@
  5134               	.Letext0:
  5135               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 basic_rf.c
-     /tmp/ccNJnr7k.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccNJnr7k.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccNJnr7k.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccNJnr7k.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccNJnr7k.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccNJnr7k.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccNJnr7k.s:138    .text:00000000 cc259x_rx
-     /tmp/ccNJnr7k.s:166    .text:00000012 cc259x_tx
-     /tmp/ccNJnr7k.s:194    .text:00000024 rf_power_down
-     /tmp/ccNJnr7k.s:256    .text:00000042 rf_power_up
-     /tmp/ccNJnr7k.s:310    .text:0000005c rf_security_last_pkt_status
-                            *COM*:00000001 last_pkt_encrypted
-     /tmp/ccNJnr7k.s:332    .text:00000062 rf_security_set_ctr_counter
-                            *COM*:00000004 tx_ctr
-     /tmp/ccNJnr7k.s:453    .text:000000d6 rf_security_set_key
-     /tmp/ccNJnr7k.s:810    .text:0000026c rf_security_enable
-                            *COM*:00000001 security_enable
-     /tmp/ccNJnr7k.s:896    .text:000002ac rf_security_disable
-     /tmp/ccNJnr7k.s:950    .text:000002ce rf_get_sem
-                            *COM*:00000002 radio_sem
-     /tmp/ccNJnr7k.s:973    .text:000002d8 rf_tx_power
-     /tmp/ccNJnr7k.s:1033   .text:000002fc rf_set_channel
-     /tmp/ccNJnr7k.s:1056   .text:00000302 rf_addr_decode_enable
-                            *COM*:00000002 mdmctrl0
-     /tmp/ccNJnr7k.s:1114   .text:00000336 rf_addr_decode_disable
-     /tmp/ccNJnr7k.s:1172   .text:0000036a rf_auto_ack_enable
-                            *COM*:00000001 auto_ack_enable
-     /tmp/ccNJnr7k.s:1234   .text:000003a4 rf_auto_ack_disable
-     /tmp/ccNJnr7k.s:1296   .text:000003dc rf_addr_decode_set_my_mac
-                            *COM*:00000009 rfSettings
-     /tmp/ccNJnr7k.s:1388   .text:00000436 rf_set_rx
-     /tmp/ccNJnr7k.s:1451   .text:00000468 rf_init
-     /tmp/ccNJnr7k.s:1806   .text:000005d6 rf_rx_on
-                            *COM*:00000001 rx_ready
-     /tmp/ccNJnr7k.s:1859   .text:000005fa rf_polling_rx_on
-     /tmp/ccNJnr7k.s:1912   .text:0000061e rf_rx_off
-     /tmp/ccNJnr7k.s:1954   .text:00000634 rf_tx_tdma_packet
-     /tmp/ccNJnr7k.s:2659   .text:000008e0 rf_tx_packet
-     /tmp/ccNJnr7k.s:3440   .text:00000bc2 rf_busy
-     /tmp/ccNJnr7k.s:3465   .text:00000bca rf_rx_check_fifop
-     /tmp/ccNJnr7k.s:3490   .text:00000bd2 rf_rx_check_sfd
-     /tmp/ccNJnr7k.s:3515   .text:00000bda rf_polling_rx_packet
-                            *COM*:00000004 rx_ctr
-     /tmp/ccNJnr7k.s:4430   .text:00000f88 rf_rx_packet
-     /tmp/ccNJnr7k.s:4470   .text:00000f9e rf_flush_rx_fifo
-     /tmp/ccNJnr7k.s:4517   .text:00000fb8 rf_set_cca_thresh
-     /tmp/ccNJnr7k.s:4577   .text:00000fde rf_test_mode
-     /tmp/ccNJnr7k.s:4674   .text:00001026 rf_data_mode
-     /tmp/ccNJnr7k.s:4769   .text:0000106a rf_rx_set_serial
-     /tmp/ccNJnr7k.s:4836   .text:00001098 rf_tx_set_serial
-     /tmp/ccNJnr7k.s:4891   .text:000010ba rf_set_preamble_length
-     /tmp/ccNJnr7k.s:4959   .text:000010f8 rf_set_cca_mode
-     /tmp/ccNJnr7k.s:5030   .text:0000113e rf_carrier_on
-     /tmp/ccNJnr7k.s:5063   .text:0000114c rf_carrier_off
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000080 nrk_idle_task_stk
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000002 nrk_kernel_stk_ptr
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
-                            *COM*:00000001 _nrk_prev_timer_val
-                            *COM*:00000001 _nrk_time_trigger
-                            *COM*:00000002 app_timer0_callback
-                            *COM*:00000001 app_timer0_prescale
-                            *COM*:00000002 tmp_blah
+                            *ABS*:0000000000000000 basic_rf.c
+     /tmp/ccdJfeQr.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccdJfeQr.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccdJfeQr.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccdJfeQr.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccdJfeQr.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccdJfeQr.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccdJfeQr.s:138    .text:0000000000000000 cc259x_rx
+     /tmp/ccdJfeQr.s:166    .text:0000000000000012 cc259x_tx
+     /tmp/ccdJfeQr.s:194    .text:0000000000000024 rf_power_down
+     /tmp/ccdJfeQr.s:256    .text:0000000000000042 rf_power_up
+     /tmp/ccdJfeQr.s:310    .text:000000000000005c rf_security_last_pkt_status
+                            *COM*:0000000000000001 last_pkt_encrypted
+     /tmp/ccdJfeQr.s:332    .text:0000000000000062 rf_security_set_ctr_counter
+                            *COM*:0000000000000004 tx_ctr
+     /tmp/ccdJfeQr.s:453    .text:00000000000000d6 rf_security_set_key
+     /tmp/ccdJfeQr.s:810    .text:000000000000026c rf_security_enable
+                            *COM*:0000000000000001 security_enable
+     /tmp/ccdJfeQr.s:896    .text:00000000000002ac rf_security_disable
+     /tmp/ccdJfeQr.s:950    .text:00000000000002ce rf_get_sem
+                            *COM*:0000000000000002 radio_sem
+     /tmp/ccdJfeQr.s:973    .text:00000000000002d8 rf_tx_power
+     /tmp/ccdJfeQr.s:1033   .text:00000000000002fc rf_set_channel
+     /tmp/ccdJfeQr.s:1056   .text:0000000000000302 rf_addr_decode_enable
+                            *COM*:0000000000000002 mdmctrl0
+     /tmp/ccdJfeQr.s:1114   .text:0000000000000336 rf_addr_decode_disable
+     /tmp/ccdJfeQr.s:1172   .text:000000000000036a rf_auto_ack_enable
+                            *COM*:0000000000000001 auto_ack_enable
+     /tmp/ccdJfeQr.s:1234   .text:00000000000003a4 rf_auto_ack_disable
+     /tmp/ccdJfeQr.s:1296   .text:00000000000003dc rf_addr_decode_set_my_mac
+                            *COM*:0000000000000009 rfSettings
+     /tmp/ccdJfeQr.s:1388   .text:0000000000000436 rf_set_rx
+     /tmp/ccdJfeQr.s:1451   .text:0000000000000468 rf_init
+     /tmp/ccdJfeQr.s:1806   .text:00000000000005d6 rf_rx_on
+                            *COM*:0000000000000001 rx_ready
+     /tmp/ccdJfeQr.s:1859   .text:00000000000005fa rf_polling_rx_on
+     /tmp/ccdJfeQr.s:1912   .text:000000000000061e rf_rx_off
+     /tmp/ccdJfeQr.s:1954   .text:0000000000000634 rf_tx_tdma_packet
+     /tmp/ccdJfeQr.s:2659   .text:00000000000008e0 rf_tx_packet
+     /tmp/ccdJfeQr.s:3440   .text:0000000000000bc2 rf_busy
+     /tmp/ccdJfeQr.s:3465   .text:0000000000000bca rf_rx_check_fifop
+     /tmp/ccdJfeQr.s:3490   .text:0000000000000bd2 rf_rx_check_sfd
+     /tmp/ccdJfeQr.s:3515   .text:0000000000000bda rf_polling_rx_packet
+                            *COM*:0000000000000004 rx_ctr
+     /tmp/ccdJfeQr.s:4430   .text:0000000000000f88 rf_rx_packet
+     /tmp/ccdJfeQr.s:4470   .text:0000000000000f9e rf_flush_rx_fifo
+     /tmp/ccdJfeQr.s:4517   .text:0000000000000fb8 rf_set_cca_thresh
+     /tmp/ccdJfeQr.s:4577   .text:0000000000000fde rf_test_mode
+     /tmp/ccdJfeQr.s:4674   .text:0000000000001026 rf_data_mode
+     /tmp/ccdJfeQr.s:4769   .text:000000000000106a rf_rx_set_serial
+     /tmp/ccdJfeQr.s:4836   .text:0000000000001098 rf_tx_set_serial
+     /tmp/ccdJfeQr.s:4891   .text:00000000000010ba rf_set_preamble_length
+     /tmp/ccdJfeQr.s:4959   .text:00000000000010f8 rf_set_cca_mode
+     /tmp/ccdJfeQr.s:5030   .text:000000000000113e rf_carrier_on
+     /tmp/ccdJfeQr.s:5063   .text:000000000000114c rf_carrier_off
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000080 nrk_idle_task_stk
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
+                            *COM*:0000000000000001 _nrk_prev_timer_val
+                            *COM*:0000000000000001 _nrk_time_trigger
+                            *COM*:0000000000000002 app_timer0_callback
+                            *COM*:0000000000000001 app_timer0_prescale
+                            *COM*:0000000000000002 tmp_blah
 
 UNDEFINED SYMBOLS
 NRK_DEBUG_1

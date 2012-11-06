@@ -872,40 +872,40 @@
  973               	.global __do_copy_data
  974               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 main.c
-     /tmp/cciH4P8G.s:2      *ABS*:0000003f __SREG__
-     /tmp/cciH4P8G.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cciH4P8G.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cciH4P8G.s:5      *ABS*:00000034 __CCP__
-     /tmp/cciH4P8G.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cciH4P8G.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cciH4P8G.s:152    .text:00000000 task_3_func
-     /tmp/cciH4P8G.s:369    .text:00000168 task_1_func
-     /tmp/cciH4P8G.s:590    .text:000002d0 task_2_func
-     /tmp/cciH4P8G.s:658    .text:00000332 main
-                            *COM*:00000002 seed
-                            *COM*:00000023 task_1
-     /tmp/cciH4P8G.s:885    .data:0000009a task_1_period
-     /tmp/cciH4P8G.s:893    .data:0000009e task_1_execution
-                            *COM*:00000080 stack_1
-                            *COM*:00000023 task_2
-     /tmp/cciH4P8G.s:901    .data:000000a2 task_2_period
-     /tmp/cciH4P8G.s:909    .data:000000a6 task_2_execution
-                            *COM*:00000080 stack_2
-                            *COM*:00000023 task_3
-     /tmp/cciH4P8G.s:917    .data:000000aa task_3_period
-     /tmp/cciH4P8G.s:925    .data:000000ae task_3_execution
-                            *COM*:00000080 stack_3
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000080 nrk_idle_task_stk
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000002 nrk_kernel_stk_ptr
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
-                            *COM*:00000001 _nrk_prev_timer_val
-                            *COM*:00000001 _nrk_time_trigger
-                            *COM*:00000002 app_timer0_callback
-                            *COM*:00000001 app_timer0_prescale
+                            *ABS*:0000000000000000 main.c
+     /tmp/ccXGrYQc.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccXGrYQc.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccXGrYQc.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccXGrYQc.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccXGrYQc.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccXGrYQc.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccXGrYQc.s:152    .text:0000000000000000 task_3_func
+     /tmp/ccXGrYQc.s:369    .text:0000000000000168 task_1_func
+     /tmp/ccXGrYQc.s:590    .text:00000000000002d0 task_2_func
+     /tmp/ccXGrYQc.s:658    .text:0000000000000332 main
+                            *COM*:0000000000000002 seed
+                            *COM*:0000000000000023 task_1
+     /tmp/ccXGrYQc.s:885    .data:000000000000009a task_1_period
+     /tmp/ccXGrYQc.s:893    .data:000000000000009e task_1_execution
+                            *COM*:0000000000000080 stack_1
+                            *COM*:0000000000000023 task_2
+     /tmp/ccXGrYQc.s:901    .data:00000000000000a2 task_2_period
+     /tmp/ccXGrYQc.s:909    .data:00000000000000a6 task_2_execution
+                            *COM*:0000000000000080 stack_2
+                            *COM*:0000000000000023 task_3
+     /tmp/ccXGrYQc.s:917    .data:00000000000000aa task_3_period
+     /tmp/ccXGrYQc.s:925    .data:00000000000000ae task_3_execution
+                            *COM*:0000000000000080 stack_3
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000080 nrk_idle_task_stk
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
+                            *COM*:0000000000000001 _nrk_prev_timer_val
+                            *COM*:0000000000000001 _nrk_time_trigger
+                            *COM*:0000000000000002 app_timer0_callback
+                            *COM*:0000000000000001 app_timer0_prescale
 
 UNDEFINED SYMBOLS
 nrk_cur_task_TCB

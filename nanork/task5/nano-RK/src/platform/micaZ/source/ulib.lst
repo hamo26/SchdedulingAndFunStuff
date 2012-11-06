@@ -1908,72 +1908,72 @@
  1731               	.global __do_copy_data
  1732               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 ulib.c
-     /tmp/ccUqarXV.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccUqarXV.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccUqarXV.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccUqarXV.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccUqarXV.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccUqarXV.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccUqarXV.s:122    .text:00000000 getc0
-     /tmp/ccUqarXV.s:155    .text:0000000a putc0
-     /tmp/ccUqarXV.s:184    .text:00000014 nrk_uart_rx_signal_get
-     /tmp/ccUqarXV.s:206    .text:00000018 nrk_uart_data_ready
-     /tmp/ccUqarXV.s:253    .text:00000034 nrk_kprintf
-     /tmp/ccUqarXV.s:309    .text:0000005a nrk_gpio_set
-     /tmp/ccUqarXV.s:435    .text:000000e6 nrk_gpio_clr
-     /tmp/ccUqarXV.s:562    .text:00000174 nrk_gpio_get
-     /tmp/ccUqarXV.s:664    .text:000001e0 nrk_gpio_pullups
-     /tmp/ccUqarXV.s:702    .text:000001f4 nrk_gpio_toggle
-     /tmp/ccUqarXV.s:829    .text:00000280 nrk_gpio_direction
-     /tmp/ccUqarXV.s:1067   .text:000003a6 nrk_get_button
-     /tmp/ccUqarXV.s:1089   .text:000003aa nrk_led_toggle
-     /tmp/ccUqarXV.s:1146   .text:000003d0 nrk_led_clr
-     /tmp/ccUqarXV.s:1202   .text:000003f6 nrk_setup_ports
-     /tmp/ccUqarXV.s:1266   .text:0000043e nrk_led_set
-     /tmp/ccUqarXV.s:1323   .text:00000464 putc1
-     /tmp/ccUqarXV.s:1355   .text:0000047c setup_uart0
-     /tmp/ccUqarXV.s:1389   .text:00000494 nrk_setup_uart
-     /tmp/ccUqarXV.s:1438   .text:000004d2 setup_uart1
-     /tmp/ccUqarXV.s:1479   .text:000004fc getc1
-     /tmp/ccUqarXV.s:1515   .data:00000000 NRK_LED_0
-     /tmp/ccUqarXV.s:1520   .data:00000001 NRK_LED_1
-     /tmp/ccUqarXV.s:1525   .data:00000002 NRK_LED_2
-     /tmp/ccUqarXV.s:1530   .data:00000003 NRK_VREG_EN
-     /tmp/ccUqarXV.s:1535   .data:00000004 NRK_RESET_N
-     /tmp/ccUqarXV.s:1540   .data:00000005 NRK_CSN
-     /tmp/ccUqarXV.s:1545   .data:00000006 NRK_SCK
-     /tmp/ccUqarXV.s:1550   .data:00000007 NRK_MOSI
-     /tmp/ccUqarXV.s:1555   .data:00000008 NRK_MISO
-     /tmp/ccUqarXV.s:1560   .data:00000009 NRK_FIFO
-     /tmp/ccUqarXV.s:1565   .data:0000000a NRK_UART1_RXD
-     /tmp/ccUqarXV.s:1570   .data:0000000b NRK_UART1_TXD
-     /tmp/ccUqarXV.s:1575   .data:0000000c NRK_SFD
-     /tmp/ccUqarXV.s:1580   .data:0000000d NRK_UART1_RTS
-     /tmp/ccUqarXV.s:1585   .data:0000000e NRK_CCA
-     /tmp/ccUqarXV.s:1590   .data:0000000f NRK_UART1_CTS
-     /tmp/ccUqarXV.s:1595   .data:00000010 NRK_UART0_RXD
-     /tmp/ccUqarXV.s:1600   .data:00000011 NRK_UART0_TXD
-     /tmp/ccUqarXV.s:1605   .data:00000012 NRK_FIFOP
-     /tmp/ccUqarXV.s:1610   .data:00000013 NRK_ADC_INPUT_0
-     /tmp/ccUqarXV.s:1615   .data:00000014 NRK_ADC_INPUT_1
-     /tmp/ccUqarXV.s:1620   .data:00000015 NRK_ADC_INPUT_2
-     /tmp/ccUqarXV.s:1625   .data:00000016 NRK_ADC_INPUT_3
-     /tmp/ccUqarXV.s:1630   .data:00000017 NRK_ADC_INPUT_6
-     /tmp/ccUqarXV.s:1635   .data:00000018 NRK_ADC_INPUT_7
-     /tmp/ccUqarXV.s:1640   .data:00000019 NRK_DEBUG_0
-     /tmp/ccUqarXV.s:1645   .data:0000001a NRK_DEBUG_1
-     /tmp/ccUqarXV.s:1650   .data:0000001b NRK_DEBUG_2
-     /tmp/ccUqarXV.s:1655   .data:0000001c NRK_DEBUG_3
-     /tmp/ccUqarXV.s:1660   .data:0000001d NRK_LED_3
-     /tmp/ccUqarXV.s:1665   .data:0000001e NRK_BLED
-     /tmp/ccUqarXV.s:1670   .data:0000001f NRK_SPI_SS
-     /tmp/ccUqarXV.s:1675   .data:00000020 NRK_GPIO26
-     /tmp/ccUqarXV.s:1680   .data:00000021 NRK_GPIO28
-     /tmp/ccUqarXV.s:1685   .data:00000022 NRK_GPIO34
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
+                            *ABS*:0000000000000000 ulib.c
+     /tmp/ccK6zb6f.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccK6zb6f.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccK6zb6f.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccK6zb6f.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccK6zb6f.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccK6zb6f.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccK6zb6f.s:122    .text:0000000000000000 getc0
+     /tmp/ccK6zb6f.s:155    .text:000000000000000a putc0
+     /tmp/ccK6zb6f.s:184    .text:0000000000000014 nrk_uart_rx_signal_get
+     /tmp/ccK6zb6f.s:206    .text:0000000000000018 nrk_uart_data_ready
+     /tmp/ccK6zb6f.s:253    .text:0000000000000034 nrk_kprintf
+     /tmp/ccK6zb6f.s:309    .text:000000000000005a nrk_gpio_set
+     /tmp/ccK6zb6f.s:435    .text:00000000000000e6 nrk_gpio_clr
+     /tmp/ccK6zb6f.s:562    .text:0000000000000174 nrk_gpio_get
+     /tmp/ccK6zb6f.s:664    .text:00000000000001e0 nrk_gpio_pullups
+     /tmp/ccK6zb6f.s:702    .text:00000000000001f4 nrk_gpio_toggle
+     /tmp/ccK6zb6f.s:829    .text:0000000000000280 nrk_gpio_direction
+     /tmp/ccK6zb6f.s:1067   .text:00000000000003a6 nrk_get_button
+     /tmp/ccK6zb6f.s:1089   .text:00000000000003aa nrk_led_toggle
+     /tmp/ccK6zb6f.s:1146   .text:00000000000003d0 nrk_led_clr
+     /tmp/ccK6zb6f.s:1202   .text:00000000000003f6 nrk_setup_ports
+     /tmp/ccK6zb6f.s:1266   .text:000000000000043e nrk_led_set
+     /tmp/ccK6zb6f.s:1323   .text:0000000000000464 putc1
+     /tmp/ccK6zb6f.s:1355   .text:000000000000047c setup_uart0
+     /tmp/ccK6zb6f.s:1389   .text:0000000000000494 nrk_setup_uart
+     /tmp/ccK6zb6f.s:1438   .text:00000000000004d2 setup_uart1
+     /tmp/ccK6zb6f.s:1479   .text:00000000000004fc getc1
+     /tmp/ccK6zb6f.s:1515   .data:0000000000000000 NRK_LED_0
+     /tmp/ccK6zb6f.s:1520   .data:0000000000000001 NRK_LED_1
+     /tmp/ccK6zb6f.s:1525   .data:0000000000000002 NRK_LED_2
+     /tmp/ccK6zb6f.s:1530   .data:0000000000000003 NRK_VREG_EN
+     /tmp/ccK6zb6f.s:1535   .data:0000000000000004 NRK_RESET_N
+     /tmp/ccK6zb6f.s:1540   .data:0000000000000005 NRK_CSN
+     /tmp/ccK6zb6f.s:1545   .data:0000000000000006 NRK_SCK
+     /tmp/ccK6zb6f.s:1550   .data:0000000000000007 NRK_MOSI
+     /tmp/ccK6zb6f.s:1555   .data:0000000000000008 NRK_MISO
+     /tmp/ccK6zb6f.s:1560   .data:0000000000000009 NRK_FIFO
+     /tmp/ccK6zb6f.s:1565   .data:000000000000000a NRK_UART1_RXD
+     /tmp/ccK6zb6f.s:1570   .data:000000000000000b NRK_UART1_TXD
+     /tmp/ccK6zb6f.s:1575   .data:000000000000000c NRK_SFD
+     /tmp/ccK6zb6f.s:1580   .data:000000000000000d NRK_UART1_RTS
+     /tmp/ccK6zb6f.s:1585   .data:000000000000000e NRK_CCA
+     /tmp/ccK6zb6f.s:1590   .data:000000000000000f NRK_UART1_CTS
+     /tmp/ccK6zb6f.s:1595   .data:0000000000000010 NRK_UART0_RXD
+     /tmp/ccK6zb6f.s:1600   .data:0000000000000011 NRK_UART0_TXD
+     /tmp/ccK6zb6f.s:1605   .data:0000000000000012 NRK_FIFOP
+     /tmp/ccK6zb6f.s:1610   .data:0000000000000013 NRK_ADC_INPUT_0
+     /tmp/ccK6zb6f.s:1615   .data:0000000000000014 NRK_ADC_INPUT_1
+     /tmp/ccK6zb6f.s:1620   .data:0000000000000015 NRK_ADC_INPUT_2
+     /tmp/ccK6zb6f.s:1625   .data:0000000000000016 NRK_ADC_INPUT_3
+     /tmp/ccK6zb6f.s:1630   .data:0000000000000017 NRK_ADC_INPUT_6
+     /tmp/ccK6zb6f.s:1635   .data:0000000000000018 NRK_ADC_INPUT_7
+     /tmp/ccK6zb6f.s:1640   .data:0000000000000019 NRK_DEBUG_0
+     /tmp/ccK6zb6f.s:1645   .data:000000000000001a NRK_DEBUG_1
+     /tmp/ccK6zb6f.s:1650   .data:000000000000001b NRK_DEBUG_2
+     /tmp/ccK6zb6f.s:1655   .data:000000000000001c NRK_DEBUG_3
+     /tmp/ccK6zb6f.s:1660   .data:000000000000001d NRK_LED_3
+     /tmp/ccK6zb6f.s:1665   .data:000000000000001e NRK_BLED
+     /tmp/ccK6zb6f.s:1670   .data:000000000000001f NRK_SPI_SS
+     /tmp/ccK6zb6f.s:1675   .data:0000000000000020 NRK_GPIO26
+     /tmp/ccK6zb6f.s:1680   .data:0000000000000021 NRK_GPIO28
+     /tmp/ccK6zb6f.s:1685   .data:0000000000000022 NRK_GPIO34
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
 
 UNDEFINED SYMBOLS
 __iob

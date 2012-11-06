@@ -1753,51 +1753,51 @@
  1722               	.global __do_copy_data
  1723               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 nrk_events.c
-     /tmp/ccy4Lm6s.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccy4Lm6s.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccy4Lm6s.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccy4Lm6s.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccy4Lm6s.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccy4Lm6s.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccy4Lm6s.s:140    .text:00000000 nrk_signal_create
-                            *COM*:00000004 _nrk_signal_list
-     /tmp/ccy4Lm6s.s:219    .text:0000006c nrk_signal_get_registered_mask
-                            *COM*:00000002 nrk_cur_task_TCB
-     /tmp/ccy4Lm6s.s:250    .text:0000007e nrk_signal_delete
-                            *COM*:000000be nrk_task_TCB
-     /tmp/ccy4Lm6s.s:434    .text:0000018e nrk_signal_unregister
-     /tmp/ccy4Lm6s.s:535    .text:00000212 nrk_signal_register
-     /tmp/ccy4Lm6s.s:609    .text:0000027a nrk_event_signal
-     /tmp/ccy4Lm6s.s:802    .text:00000360 nrk_event_wait
-                            *COM*:00000001 nrk_wakeup_signal
-     /tmp/ccy4Lm6s.s:895    .text:000003d6 nrk_sem_create
-                            *COM*:00000001 _nrk_resource_cnt
-                            *COM*:0000000f nrk_sem_list
-     /tmp/ccy4Lm6s.s:972    .text:0000041a nrk_get_resource_index
-     /tmp/ccy4Lm6s.s:1027   .text:00000444 nrk_sem_delete
-     /tmp/ccy4Lm6s.s:1106   .text:00000488 nrk_sem_post
-                            *COM*:00000001 systemceiling
-     /tmp/ccy4Lm6s.s:1362   .text:000005e4 nrk_sem_pend
-     /tmp/ccy4Lm6s.s:1614   .text:0000075e nrk_sem_query
-                            *COM*:00000080 nrk_idle_task_stk
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000002 nrk_kernel_stk_ptr
-                            *COM*:0000001e _nrk_readyQ
-                            *COM*:00000002 _free_node
-                            *COM*:00000002 _head_node
-                            *COM*:00000001 nrk_cur_task_prio
-                            *COM*:00000001 nrk_high_ready_prio
-                            *COM*:00000002 nrk_high_ready_TCB
-                            *COM*:00000008 nrk_system_time
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
-                            *COM*:00000001 _nrk_cpu_state
-                            *COM*:00000002 next_next_wakeup
-                            *COM*:00000001 _nrk_prev_timer_val
-                            *COM*:00000001 _nrk_time_trigger
-                            *COM*:00000002 app_timer0_callback
-                            *COM*:00000001 app_timer0_prescale
+                            *ABS*:0000000000000000 nrk_events.c
+     /tmp/ccppnZwi.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccppnZwi.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccppnZwi.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccppnZwi.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccppnZwi.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccppnZwi.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccppnZwi.s:140    .text:0000000000000000 nrk_signal_create
+                            *COM*:0000000000000004 _nrk_signal_list
+     /tmp/ccppnZwi.s:219    .text:000000000000006c nrk_signal_get_registered_mask
+                            *COM*:0000000000000002 nrk_cur_task_TCB
+     /tmp/ccppnZwi.s:250    .text:000000000000007e nrk_signal_delete
+                            *COM*:00000000000000be nrk_task_TCB
+     /tmp/ccppnZwi.s:434    .text:000000000000018e nrk_signal_unregister
+     /tmp/ccppnZwi.s:535    .text:0000000000000212 nrk_signal_register
+     /tmp/ccppnZwi.s:609    .text:000000000000027a nrk_event_signal
+     /tmp/ccppnZwi.s:802    .text:0000000000000360 nrk_event_wait
+                            *COM*:0000000000000001 nrk_wakeup_signal
+     /tmp/ccppnZwi.s:895    .text:00000000000003d6 nrk_sem_create
+                            *COM*:0000000000000001 _nrk_resource_cnt
+                            *COM*:000000000000000f nrk_sem_list
+     /tmp/ccppnZwi.s:972    .text:000000000000041a nrk_get_resource_index
+     /tmp/ccppnZwi.s:1027   .text:0000000000000444 nrk_sem_delete
+     /tmp/ccppnZwi.s:1106   .text:0000000000000488 nrk_sem_post
+                            *COM*:0000000000000001 systemceiling
+     /tmp/ccppnZwi.s:1362   .text:00000000000005e4 nrk_sem_pend
+     /tmp/ccppnZwi.s:1614   .text:000000000000075e nrk_sem_query
+                            *COM*:0000000000000080 nrk_idle_task_stk
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
+                            *COM*:000000000000001e _nrk_readyQ
+                            *COM*:0000000000000002 _free_node
+                            *COM*:0000000000000002 _head_node
+                            *COM*:0000000000000001 nrk_cur_task_prio
+                            *COM*:0000000000000001 nrk_high_ready_prio
+                            *COM*:0000000000000002 nrk_high_ready_TCB
+                            *COM*:0000000000000008 nrk_system_time
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
+                            *COM*:0000000000000001 _nrk_cpu_state
+                            *COM*:0000000000000002 next_next_wakeup
+                            *COM*:0000000000000001 _nrk_prev_timer_val
+                            *COM*:0000000000000001 _nrk_time_trigger
+                            *COM*:0000000000000002 app_timer0_callback
+                            *COM*:0000000000000001 app_timer0_prescale
 
 UNDEFINED SYMBOLS
 nrk_int_disable

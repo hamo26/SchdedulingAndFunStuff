@@ -102,8 +102,8 @@
   37:..//src/kernel/source/nrk_stack_check.c **** 
   38:..//src/kernel/source/nrk_stack_check.c ****     nrk_kprintf( PSTR("\r\nSTACK DUMP\r\n"));
  177               	.LM1:
- 178 0020 80E0      		ldi r24,lo8(__c.2061)
- 179 0022 90E0      		ldi r25,hi8(__c.2061)
+ 178 0020 80E0      		ldi r24,lo8(__c.2076)
+ 179 0022 90E0      		ldi r25,hi8(__c.2076)
  180 0024 0E94 0000 		call nrk_kprintf
   39:..//src/kernel/source/nrk_stack_check.c **** 
   40:..//src/kernel/source/nrk_stack_check.c ****     printf( "cur: %d ",nrk_cur_task_TCB->task_ID);
@@ -538,7 +538,7 @@
  564               		.comm error_task,1,1
  565               		.comm error_num,1,1
  566               		.section	.progmem.data,"a",@progbits
- 569               	__c.2061:
+ 569               	__c.2076:
  570 0000 0D0A 5354 		.string	"\r\nSTACK DUMP\r\n"
  570      4143 4B20 
  570      4455 4D50 
@@ -548,23 +548,23 @@
  580               	.global __do_copy_data
  581               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 nrk_stack_check.c
-     /tmp/cc5IrsGe.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc5IrsGe.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc5IrsGe.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc5IrsGe.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc5IrsGe.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc5IrsGe.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc5IrsGe.s:151    .text:00000000 dump_stack_info
-     /tmp/cc5IrsGe.s:569    .progmem.data:00000000 __c.2061
-     /tmp/cc5IrsGe.s:426    .text:000001d6 nrk_stack_check
-     /tmp/cc5IrsGe.s:494    .text:0000021e nrk_stack_check_pid
-                            *COM*:00000004 _nrk_signal_list
-                            *COM*:00000080 nrk_idle_task_stk
-                            *COM*:00000080 nrk_kernel_stk
-                            *COM*:00000002 nrk_kernel_stk_ptr
-                            *COM*:00000001 error_task
-                            *COM*:00000001 error_num
+                            *ABS*:0000000000000000 nrk_stack_check.c
+     /tmp/ccb8Th9b.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccb8Th9b.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccb8Th9b.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccb8Th9b.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccb8Th9b.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccb8Th9b.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccb8Th9b.s:151    .text:0000000000000000 dump_stack_info
+     /tmp/ccb8Th9b.s:569    .progmem.data:0000000000000000 __c.2076
+     /tmp/ccb8Th9b.s:426    .text:00000000000001d6 nrk_stack_check
+     /tmp/ccb8Th9b.s:494    .text:000000000000021e nrk_stack_check_pid
+                            *COM*:0000000000000004 _nrk_signal_list
+                            *COM*:0000000000000080 nrk_idle_task_stk
+                            *COM*:0000000000000080 nrk_kernel_stk
+                            *COM*:0000000000000002 nrk_kernel_stk_ptr
+                            *COM*:0000000000000001 error_task
+                            *COM*:0000000000000001 error_num
 
 UNDEFINED SYMBOLS
 nrk_kprintf

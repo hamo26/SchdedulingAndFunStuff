@@ -483,22 +483,22 @@
  498               	.Letext0:
  499               	.global __do_clear_bss
 DEFINED SYMBOLS
-                            *ABS*:00000000 mda100_driver.c
-     /tmp/cc1lQbjI.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc1lQbjI.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc1lQbjI.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc1lQbjI.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc1lQbjI.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc1lQbjI.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc1lQbjI.s:78     .text:00000000 mda100_init
-     /tmp/cc1lQbjI.s:493    .bss:00000000 mda100_initDone
-     /tmp/cc1lQbjI.s:105    .text:0000000c mda100_Powersave
-     /tmp/cc1lQbjI.s:138    .text:0000001e mda100_LightSensor_Power
-     /tmp/cc1lQbjI.s:203    .text:00000052 mda100_TemperatureSensor_Power
-     /tmp/cc1lQbjI.s:267    .text:00000086 mda100_LightSensor_GetCounts
-     /tmp/cc1lQbjI.s:304    .text:000000a0 mda100_TemperatureSensor_GetCounts
-     /tmp/cc1lQbjI.s:341    .text:000000ba mda100_TemperatureSensor_GetKelvin
-     /tmp/cc1lQbjI.s:463    .text:0000018a mda100_TemperatureSensor_GetDegreeCelsius
+                            *ABS*:0000000000000000 mda100_driver.c
+     /tmp/ccNgHtzg.s:2      *ABS*:000000000000003f __SREG__
+     /tmp/ccNgHtzg.s:3      *ABS*:000000000000003e __SP_H__
+     /tmp/ccNgHtzg.s:4      *ABS*:000000000000003d __SP_L__
+     /tmp/ccNgHtzg.s:5      *ABS*:0000000000000034 __CCP__
+     /tmp/ccNgHtzg.s:6      *ABS*:0000000000000000 __tmp_reg__
+     /tmp/ccNgHtzg.s:7      *ABS*:0000000000000001 __zero_reg__
+     /tmp/ccNgHtzg.s:78     .text:0000000000000000 mda100_init
+     /tmp/ccNgHtzg.s:493    .bss:0000000000000000 mda100_initDone
+     /tmp/ccNgHtzg.s:105    .text:000000000000000c mda100_Powersave
+     /tmp/ccNgHtzg.s:138    .text:000000000000001e mda100_LightSensor_Power
+     /tmp/ccNgHtzg.s:203    .text:0000000000000052 mda100_TemperatureSensor_Power
+     /tmp/ccNgHtzg.s:267    .text:0000000000000086 mda100_LightSensor_GetCounts
+     /tmp/ccNgHtzg.s:304    .text:00000000000000a0 mda100_TemperatureSensor_GetCounts
+     /tmp/ccNgHtzg.s:341    .text:00000000000000ba mda100_TemperatureSensor_GetKelvin
+     /tmp/ccNgHtzg.s:463    .text:000000000000018a mda100_TemperatureSensor_GetDegreeCelsius
 
 UNDEFINED SYMBOLS
 adc_init

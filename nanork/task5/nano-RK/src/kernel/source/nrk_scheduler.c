@@ -49,6 +49,9 @@
 // For rfa1:
 //#define CONTEXT_SWAP_TIME_BOUND    1500 
 
+int getMinTaskWithCacheRemainingId();
+
+
 uint8_t t;
 void inline _nrk_scheduler()
 {
@@ -187,24 +190,33 @@ void inline _nrk_scheduler()
     if(nrk_cur_task_TCB->cpu_remaining == nrk_cur_task_TCB->cpu_reserve 
 	    && nrk_cur_task_TCB->task_type == CBS_TASK
 	    ){
-	int i =0;
-	int min_deadline=99999;
-	int min_id = 0;
-	for(i = 0; i< NRK_MAX_TASKS; i++){
-	    if(nrk_task_TCB[i].task_type == CBS_TASK){
-		if(nrk_task_TCB[i].cash_period < min_deadline){
-		    min_deadline = nrk_task_TCB[i].cash_period;
-		    min_id = i;
-		}
-	    }
-	}
-	if(min_id != 0 && nrk_cur_task_TCB->task_ID != min_id){
+	int min_id = getMinRelativeDeadlineTaskWithCacheRemainingId();
+	if(min_id != -1 && nrk_cur_task_TCB->task_ID != min_id){
 	    if (nrk_task_TCB[min_id].cash > _nrk_prev_timer_val) {
 	    	nrk_cur_task_TCB->cpu_remaining+=_nrk_prev_timer_val;
 	        nrk_task_TCB[min_id].cash-=_nrk_prev_timer_val;
 	    } else {
-		nrk_cur_task_TCB->cpu_remaining+=nrk_cur_task_TCB[min_id].cash;
-                nrk_task_TCB[min_id].cash = 0;
+		
+		int i;
+		int cache_sum = 0;
+		int residual_cache_time = 0;		
+		for(i = 0; i< NRK_MAX_TASKS; i++){
+			min_id = getMinRelativeDeadlineTaskWithCacheRemainingId();			
+			if (cache_sum >= _nrk_prev_timer_val) {
+				break;
+			}
+			residual_cache_time = (_nrk_prev_timer_val - cache_sum);
+			if (nrk_task_TCB[min_id].cash > residual_cache_time) {
+			    	nrk_cur_task_TCB->cpu_remaining+=residual_cache_time;
+			        nrk_task_TCB[min_id].cash-=residual_cache_time;
+				break;
+			}	    			
+			nrk_cur_task_TCB->cpu_remaining+=nrk_cur_task_TCB[min_id].cash;
+			cache_sum+=nrk_cur_task_TCB[min_id].cash;
+		        nrk_task_TCB[min_id].cash = 0;		
+			nrk_task_TCB[min_id].cash_period = 0;
+					
+		}		
 	    }	    
 	    printf("min_id%d' cash remaining is %d <$$$$$$$$$$$\n", min_id, nrk_task_TCB[min_id].cash);
 	    //printf("Then the task%d's cpu_remaining becomes %d <$$$$$$$$$\n", nrk_cur)
@@ -468,3 +480,17 @@ nrk_start_high_ready_task();
 
 }
 
+int getMinRelativeDeadlineTaskWithCacheRemainingId() {
+	int i =0;
+	int min_deadline=99999;
+	int min_id = -1;
+	for(i = 0; i< NRK_MAX_TASKS; i++){
+	    if(nrk_task_TCB[i].task_type == CBS_TASK){
+		if(nrk_task_TCB[i].cash_period < min_deadline){
+		    min_deadline = nrk_task_TCB[i].cash_period;
+		    if (nrk_task_TCB[i].cash > 0) min_id = i;
+		}
+	    }
+	}
+	return min_id;
+}
