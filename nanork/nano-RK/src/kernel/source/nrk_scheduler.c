@@ -19,8 +19,7 @@
  *  You should have received a copy of the GNU General Public License
  *  along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
- *  Contributing Authors (specific to this file):
- *  Anthony Rowe
+ *  Contributing Authors (specific to this file): *  Anthony Rowe
  *  Zane Starr
  *  Anand Eswaren
  *******************************************************************************/
@@ -49,6 +48,9 @@
 //#define CONTEXT_SWAP_TIME_BOUND    750
 // For rfa1:
 //#define CONTEXT_SWAP_TIME_BOUND    1500 
+
+int getMinTaskWithCacheRemainingId();
+
 
 uint8_t t;
 void inline _nrk_scheduler()
@@ -91,7 +93,7 @@ void inline _nrk_scheduler()
     //	}
     //printf( "%u\r\n",_nrk_prev_timer_val);
     if((_nrk_cpu_state!=CPU_ACTIVE) && (_nrk_os_timer_get()>nrk_max_sleep_wakeup_time))
-        nrk_max_sleep_wakeup_time=_nrk_os_timer_get();
+	nrk_max_sleep_wakeup_time=_nrk_os_timer_get();
 #endif
     //while(_nrk_time_trigger>0)
     //{
@@ -101,76 +103,178 @@ void inline _nrk_scheduler()
 #ifdef NRK_STATS_TRACKER
     if(nrk_cur_task_TCB->task_ID==NRK_IDLE_TASK_ID)
     {
-        if(_nrk_cpu_state==CPU_SLEEP) _nrk_stats_sleep(_nrk_prev_timer_val);
-        _nrk_stats_task_preempted(nrk_cur_task_TCB->task_ID, _nrk_prev_timer_val);
-        // Add 0 time since the preempted call before set the correct value
-        _nrk_stats_task_suspend(nrk_cur_task_TCB->task_ID, 0);
+	if(_nrk_cpu_state==CPU_SLEEP) _nrk_stats_sleep(_nrk_prev_timer_val);
+	_nrk_stats_task_preempted(nrk_cur_task_TCB->task_ID, _nrk_prev_timer_val);
+	// Add 0 time since the preempted call before set the correct value
+	_nrk_stats_task_suspend(nrk_cur_task_TCB->task_ID, 0);
     }
     else
     {
-        if(nrk_cur_task_TCB->suspend_flag==1)
-            _nrk_stats_task_suspend(nrk_cur_task_TCB->task_ID, _nrk_prev_timer_val);
-        else
-            _nrk_stats_task_preempted(nrk_cur_task_TCB->task_ID, _nrk_prev_timer_val);
+	if(nrk_cur_task_TCB->suspend_flag==1)
+	    _nrk_stats_task_suspend(nrk_cur_task_TCB->task_ID, _nrk_prev_timer_val);
+	else
+	    _nrk_stats_task_preempted(nrk_cur_task_TCB->task_ID, _nrk_prev_timer_val);
     }
 #endif
 
     while(nrk_system_time.nano_secs>=NANOS_PER_SEC)
     {
-        nrk_system_time.nano_secs-=NANOS_PER_SEC;
-        nrk_system_time.secs++;
-        nrk_system_time.nano_secs-=(nrk_system_time.nano_secs%(uint32_t)NANOS_PER_TICK);
+	nrk_system_time.nano_secs-=NANOS_PER_SEC;
+	nrk_system_time.secs++;
+	nrk_system_time.nano_secs-=(nrk_system_time.nano_secs%(uint32_t)NANOS_PER_TICK);
     }
     //  _nrk_time_trigger--;
     //}
     if(nrk_cur_task_TCB->suspend_flag==1 && nrk_cur_task_TCB->task_state!=FINISHED)
     {
-        //	nrk_cur_task_TCB->task_state = EVENT_SUSPENDED;
+	//	nrk_cur_task_TCB->task_state = EVENT_SUSPENDED;
 
-        if(nrk_cur_task_TCB->event_suspend==RSRC_EVENT_SUSPENDED)
-            nrk_cur_task_TCB->task_state = EVENT_SUSPENDED;
-        else if( nrk_cur_task_TCB->event_suspend>0 && nrk_cur_task_TCB->nw_flag==0)
-            nrk_cur_task_TCB->task_state = EVENT_SUSPENDED;
-        else if( nrk_cur_task_TCB->event_suspend>0 && nrk_cur_task_TCB->nw_flag==1)
-            nrk_cur_task_TCB->task_state = SUSPENDED;
-        else
-        {
-            nrk_cur_task_TCB->task_state = SUSPENDED;
-            nrk_cur_task_TCB->event_suspend=0;
-            nrk_cur_task_TCB->nw_flag=0;
-        }
-        nrk_rem_from_readyQ(nrk_cur_task_TCB->task_ID);
+	if(nrk_cur_task_TCB->event_suspend==RSRC_EVENT_SUSPENDED)
+	    nrk_cur_task_TCB->task_state = EVENT_SUSPENDED;
+	else if( nrk_cur_task_TCB->event_suspend>0 && nrk_cur_task_TCB->nw_flag==0)
+	    nrk_cur_task_TCB->task_state = EVENT_SUSPENDED;
+	else if( nrk_cur_task_TCB->event_suspend>0 && nrk_cur_task_TCB->nw_flag==1)
+	    nrk_cur_task_TCB->task_state = SUSPENDED;
+	else
+	{
+	    nrk_cur_task_TCB->task_state = SUSPENDED;
+	    nrk_cur_task_TCB->event_suspend=0;
+	    nrk_cur_task_TCB->nw_flag=0;
+	}
+	nrk_rem_from_readyQ(nrk_cur_task_TCB->task_ID);
     }
-    // nrk_print_readyQ();
+    //nrk_print_readyQ();
 
     // Update cpu used value for ended task
     // If the task has used its reserve, suspend task
     // Don't disable IdleTask which is 0
     // Don't decrease cpu_remaining if reserve is 0 and hence disabled
+
+
+#ifdef CBS_CASH
+
+    // 1:Add Cash
+    if(nrk_cur_task_TCB->task_state == SUSPENDED && nrk_cur_task_TCB->task_type == CBS_TASK){
+	nrk_task_TCB[nrk_cur_task_TCB->task_ID].cash = nrk_cur_task_TCB->cpu_remaining;
+	nrk_task_TCB[nrk_cur_task_TCB->task_ID].cash_period = nrk_cur_task_TCB->next_period - _nrk_prev_timer_val; 
+	printf("Add cash to task%d to cash %d, period is %d <===\n", nrk_cur_task_TCB->task_ID, nrk_task_TCB[nrk_cur_task_TCB->task_ID].cash, nrk_cur_task_TCB->next_period);
+    }
+
+    // 2:Maintein CashQ
+    // CASH book keeping - update cash given prev timer val
+    // Loop through all nrk tasks - Delete CBS tasks that passed deadline or reduce cash_period.
+    int i = 0;
+    for(i = 0; i < NRK_MAX_TASKS; i++){
+	if(nrk_task_TCB[i].task_type != IDLE_TASK) {
+	    // update all cash period
+	    if (nrk_task_TCB[i].task_type == CBS_TASK){
+		if(nrk_task_TCB[i].cash_period < _nrk_prev_timer_val && nrk_task_TCB[i].cash != 0){
+		    // delete cash where deadline pass
+		    nrk_task_TCB[i].cash = 0;
+		    nrk_task_TCB[i].cash_period = 0;
+		    printf("CASH task%d passes deadline <====\n", nrk_cur_task_TCB->task_ID);
+		}
+		else{
+		    // if cash_period is greater than prev_timer_val, reduce cash_period
+		    nrk_task_TCB[i].cash_period -= _nrk_prev_timer_val;
+
+		    if(nrk_task_TCB[i].cash > nrk_task_TCB[i].cash_period){
+		          nrk_task_TCB[i].cash = nrk_task_TCB[i].cash_period;
+		    }
+		}
+	    }
+	}
+    }
+
+    // 3:Use Cash
+    if(nrk_cur_task_TCB->cpu_remaining == nrk_cur_task_TCB->cpu_reserve 
+	    && nrk_cur_task_TCB->task_type == CBS_TASK
+	    ){
+	int min_id = getMinRelativeDeadlineTaskWithCacheRemainingId();
+	if(min_id != -1 && nrk_cur_task_TCB->task_ID != min_id){
+	    if (nrk_task_TCB[min_id].cash > _nrk_prev_timer_val) {
+	    	nrk_cur_task_TCB->cpu_remaining+=_nrk_prev_timer_val;
+	        nrk_task_TCB[min_id].cash-=_nrk_prev_timer_val;
+	    } else {
+		
+		int i;
+		int cache_sum = 0;
+		int residual_cache_time = 0;		
+		for(i = 0; i< NRK_MAX_TASKS; i++){
+			min_id = getMinRelativeDeadlineTaskWithCacheRemainingId();			
+			if (cache_sum >= _nrk_prev_timer_val) {
+				break;
+			}
+			residual_cache_time = (_nrk_prev_timer_val - cache_sum);
+			if (nrk_task_TCB[min_id].cash > residual_cache_time) {
+			    	nrk_cur_task_TCB->cpu_remaining+=residual_cache_time;
+			        nrk_task_TCB[min_id].cash-=residual_cache_time;
+				break;
+			}	    			
+			nrk_cur_task_TCB->cpu_remaining+=nrk_cur_task_TCB[min_id].cash;
+			cache_sum+=nrk_cur_task_TCB[min_id].cash;
+		        nrk_task_TCB[min_id].cash = 0;		
+			nrk_task_TCB[min_id].cash_period = 0;
+					
+		}		
+	    }	    
+	    printf("min_id%d' cash remaining is %d <$$$$$$$$$$$\n", min_id, nrk_task_TCB[min_id].cash);
+	    //printf("Then the task%d's cpu_remaining becomes %d <$$$$$$$$$\n", nrk_cur)
+	}
+    }
+
+#endif
+
     if(nrk_cur_task_TCB->cpu_reserve!=0 && nrk_cur_task_TCB->task_ID!=NRK_IDLE_TASK_ID && nrk_cur_task_TCB->task_state!=FINISHED )
     {
-        if(nrk_cur_task_TCB->cpu_remaining<_nrk_prev_timer_val)
-        {
-#ifdef NRK_STATS_TRACKER
-            _nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
-#endif
-            nrk_kernel_error_add(NRK_RESERVE_ERROR,nrk_cur_task_TCB->task_ID);
-            nrk_cur_task_TCB->cpu_remaining=0;
-        }
-        else
-            nrk_cur_task_TCB->cpu_remaining-=_nrk_prev_timer_val;
 
-        task_ID= nrk_cur_task_TCB->task_ID;
-
-        if (nrk_cur_task_TCB->cpu_remaining ==0 )
-        {
+	if(nrk_cur_task_TCB->cpu_remaining<_nrk_prev_timer_val)
+	{
+	    // It's an error for BASIC_TASK but for aperiodic CBS task it is possible to be the case.
+	    // We need make sure the CBC will not be forced to set its cpu_remaining to 0 if it hasnt finished its executions. Also we register to error only when it is BASIC_TASK
 #ifdef NRK_STATS_TRACKER
-            _nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
+	    _nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
 #endif
-            nrk_kernel_error_add(NRK_RESERVE_VIOLATED,task_ID);
-            nrk_cur_task_TCB->task_state = SUSPENDED;
-            nrk_rem_from_readyQ(task_ID);
-        }
+	    if(nrk_cur_task_TCB->task_type == CBS_TASK && nrk_cur_task_TCB->task_state != SUSPENDED){
+		nrk_cur_task_TCB->next_period = nrk_cur_task_TCB->period;
+		nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
+		printf("Replenish CBS of Task %d\n",nrk_cur_task_TCB->task_ID);
+	    }else{
+		nrk_cur_task_TCB->cpu_remaining=0;
+		nrk_kernel_error_add(NRK_RESERVE_ERROR,nrk_cur_task_TCB->task_ID);
+	    }
+	}
+	else{
+	    nrk_cur_task_TCB->cpu_remaining-=_nrk_prev_timer_val;
+	}
+
+	task_ID= nrk_cur_task_TCB->task_ID;
+	//                  printf("cpu remaining of %d is %d \n",task_ID,nrk_task_TCB[task_ID].cpu_remaining);
+
+	if (nrk_cur_task_TCB->cpu_remaining ==0 )
+	{
+	    //printf("Task %d cpu remaining = 0\n", task_ID);
+	    //printf("Task type is %d\n", nrk_cur_task_TCB->task_type);
+	    // Here we dont need to suspend CBS
+	    if(nrk_cur_task_TCB->task_type == BASIC_TASK){
+#ifdef NRK_STATS_TRACKER
+		_nrk_stats_add_violation(nrk_cur_task_TCB->task_ID);
+#endif
+		nrk_kernel_error_add(NRK_RESERVE_VIOLATED,task_ID);
+		nrk_cur_task_TCB->task_state = SUSPENDED;
+		nrk_rem_from_readyQ(task_ID);
+	    }else if(nrk_cur_task_TCB->task_type == CBS_TASK
+		    && nrk_cur_task_TCB->task_state != SUSPENDED
+		    ){
+		// We need replenish the budget for CBS
+		printf("Task %d: Replenish CBS <-------- \n", task_ID);
+		nrk_cur_task_TCB->next_period = nrk_cur_task_TCB->period;
+
+		nrk_cur_task_TCB->cpu_remaining = nrk_cur_task_TCB->cpu_reserve;
+		//printf("Next period is from %d\n", nrk_cur_task_TCB->next_period);
+	    }
+
+	}
     }
 
     // Check I/O nrk_queues to add tasks with remaining cpu back...
@@ -179,201 +283,214 @@ void inline _nrk_scheduler()
     // At the same time find the next earliest wakeup
     for (task_ID=0; task_ID < NRK_MAX_TASKS; task_ID++)
     {
-        if(nrk_task_TCB[task_ID].task_ID==-1) continue;
-        nrk_task_TCB[task_ID].suspend_flag=0;
-        if( nrk_task_TCB[task_ID].task_ID!=NRK_IDLE_TASK_ID && nrk_task_TCB[task_ID].task_state!=FINISHED )
-        {
-            if(  nrk_task_TCB[task_ID].next_wakeup >= _nrk_prev_timer_val )
-                nrk_task_TCB[task_ID].next_wakeup-=_nrk_prev_timer_val;
-            else
-            {
-                nrk_task_TCB[task_ID].next_wakeup=0;
-            }
-            // Do next period book keeping.
-            // next_period needs to be set such that the period is kept consistent even if other
-            // wait until functions are called.
-            if( nrk_task_TCB[task_ID].next_period >= _nrk_prev_timer_val )
-                nrk_task_TCB[task_ID].next_period-=_nrk_prev_timer_val;
-            else
-            {
-                if(nrk_task_TCB[task_ID].period>_nrk_prev_timer_val)
-                    nrk_task_TCB[task_ID].next_period= nrk_task_TCB[task_ID].period-_nrk_prev_timer_val;
-                else
-                    nrk_task_TCB[task_ID].next_period= _nrk_prev_timer_val % nrk_task_TCB[task_ID].period;
-            }
-            if(nrk_task_TCB[task_ID].next_period==0) nrk_task_TCB[task_ID].next_period=nrk_task_TCB[task_ID].period;
+	if(nrk_task_TCB[task_ID].task_ID==-1) continue;
+	nrk_task_TCB[task_ID].suspend_flag=0;
+	if( nrk_task_TCB[task_ID].task_ID!=NRK_IDLE_TASK_ID && nrk_task_TCB[task_ID].task_state!=FINISHED )
+	{
+	    if(  nrk_task_TCB[task_ID].next_wakeup >= _nrk_prev_timer_val )
+		nrk_task_TCB[task_ID].next_wakeup-=_nrk_prev_timer_val;
+	    else
+	    {
+		nrk_task_TCB[task_ID].next_wakeup=0;
+	    }
+	    // Do next period book keeping.
+	    // next_period needs to be set such that the period is kept consistent even if other
+	    // wait until functions are called.
+	    if( nrk_task_TCB[task_ID].next_period >= _nrk_prev_timer_val )
+		nrk_task_TCB[task_ID].next_period-=_nrk_prev_timer_val;
+	    else
+	    {
+		if(nrk_task_TCB[task_ID].period>_nrk_prev_timer_val)
+		    nrk_task_TCB[task_ID].next_period= nrk_task_TCB[task_ID].period-_nrk_prev_timer_val;
+		else
+		    nrk_task_TCB[task_ID].next_period= _nrk_prev_timer_val % nrk_task_TCB[task_ID].period;
+	    }
+	    if(nrk_task_TCB[task_ID].next_period==0) nrk_task_TCB[task_ID].next_period=nrk_task_TCB[task_ID].period;
 
-        }
+	}
 
 
-        // Look for Next Task that Might Wakeup to interrupt current task
-        if (nrk_task_TCB[task_ID].task_state == SUSPENDED )
-        {
-            // printf( "Task: %d nw: %d\n",task_ID,nrk_task_TCB[task_ID].next_wakeup);
-            // If a task needs to become READY, make it ready
-            if (nrk_task_TCB[task_ID].next_wakeup == 0)
-            {
-                // printf( "Adding back %d\n",task_ID );
-                if(nrk_task_TCB[task_ID].event_suspend>0 && nrk_task_TCB[task_ID].nw_flag==1) nrk_task_TCB[task_ID].active_signal_mask=SIG(nrk_wakeup_signal);
-                //if(nrk_task_TCB[task_ID].event_suspend==0) nrk_task_TCB[task_ID].active_signal_mask=0;
-                nrk_task_TCB[task_ID].event_suspend=0;
-                nrk_task_TCB[task_ID].nw_flag=0;
-                nrk_task_TCB[task_ID].suspend_flag=0;
-                if(nrk_task_TCB[task_ID].num_periods==1)
-                {
-                    nrk_task_TCB[task_ID].cpu_remaining = nrk_task_TCB[task_ID].cpu_reserve;
-                    nrk_task_TCB[task_ID].task_state = READY;
-                    nrk_task_TCB[task_ID].next_wakeup = nrk_task_TCB[task_ID].next_period;
-                    // If there is no period set, don't wakeup periodically
-                    if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCHED_WAKEUP_TIME;
-                    nrk_add_to_readyQ(task_ID);
-                }
-                else
-                {
-                    nrk_task_TCB[task_ID].cpu_remaining = nrk_task_TCB[task_ID].cpu_reserve;
-                    //nrk_task_TCB[task_ID].next_wakeup = nrk_task_TCB[task_ID].next_period;
-                    //nrk_task_TCB[task_ID].num_periods--;
-                    nrk_task_TCB[task_ID].next_wakeup = (nrk_task_TCB[task_ID].period*(nrk_task_TCB[task_ID].num_periods-1));
-                    nrk_task_TCB[task_ID].next_period = (nrk_task_TCB[task_ID].period*(nrk_task_TCB[task_ID].num_periods-1));
-                    if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCHED_WAKEUP_TIME;
-                    nrk_task_TCB[task_ID].num_periods=1;
-                    //			printf( "np = %d\r\n",nrk_task_TCB[task_ID].next_wakeup);
-                    //			nrk_task_TCB[task_ID].num_periods=1;
-                }
-            }
+	// Look for Next Task that Might Wakeup to interrupt current task
+	if (nrk_task_TCB[task_ID].task_state == SUSPENDED )
+	{
+	    // printf( "Task: %d nw: %d\n",task_ID,nrk_task_TCB[task_ID].next_wakeup);
+	    // If a task needs to become READY, make it ready
+	    if (nrk_task_TCB[task_ID].next_wakeup == 0)
+	    {
+		// printf( "Adding back %d\n",task_ID );
+		if(nrk_task_TCB[task_ID].event_suspend>0 && nrk_task_TCB[task_ID].nw_flag==1) nrk_task_TCB[task_ID].active_signal_mask=SIG(nrk_wakeup_signal);
+		//if(nrk_task_TCB[task_ID].event_suspend==0) nrk_task_TCB[task_ID].active_signal_mask=0;
+		nrk_task_TCB[task_ID].event_suspend=0;
+		nrk_task_TCB[task_ID].nw_flag=0;
+		nrk_task_TCB[task_ID].suspend_flag=0;
+		if(nrk_task_TCB[task_ID].num_periods==1)
+		{
+		    nrk_task_TCB[task_ID].cpu_remaining = nrk_task_TCB[task_ID].cpu_reserve;
+		    nrk_task_TCB[task_ID].task_state = READY;
+		    nrk_task_TCB[task_ID].next_wakeup = nrk_task_TCB[task_ID].next_period;
+		    // If there is no period set, don't wakeup periodically
+		    if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCHED_WAKEUP_TIME;
+		    nrk_add_to_readyQ(task_ID);
+		}
+		else
+		{
+		    nrk_task_TCB[task_ID].cpu_remaining = nrk_task_TCB[task_ID].cpu_reserve;
+		    //nrk_task_TCB[task_ID].next_wakeup = nrk_task_TCB[task_ID].next_period;
+		    //nrk_task_TCB[task_ID].num_periods--;
+		    nrk_task_TCB[task_ID].next_wakeup = (nrk_task_TCB[task_ID].period*(nrk_task_TCB[task_ID].num_periods-1));
+		    nrk_task_TCB[task_ID].next_period = (nrk_task_TCB[task_ID].period*(nrk_task_TCB[task_ID].num_periods-1));
+		    if(nrk_task_TCB[task_ID].period==0) nrk_task_TCB[task_ID].next_wakeup = MAX_SCHED_WAKEUP_TIME;
+		    nrk_task_TCB[task_ID].num_periods=1;
+		    //			printf( "np = %d\r\n",nrk_task_TCB[task_ID].next_wakeup);
+		    //			nrk_task_TCB[task_ID].num_periods=1;
+		}
+	    }
 
-            if(nrk_task_TCB[task_ID].next_wakeup!=0 &&
-                    nrk_task_TCB[task_ID].next_wakeup<next_wake )
-            {
-                // Find closest next_wake task
-                next_wake=nrk_task_TCB[task_ID].next_wakeup;
-            }
+	    if(nrk_task_TCB[task_ID].next_wakeup!=0 &&
+		    nrk_task_TCB[task_ID].next_wakeup<next_wake )
+	    {
+		// Find closest next_wake task
+		next_wake=nrk_task_TCB[task_ID].next_wakeup;
+	    }
 
-        }
+	}
     }
 
-
 #ifdef NRK_STATS_TRACKER
-    _nrk_stats_task_start(nrk_cur_task_TCB->task_ID);
+_nrk_stats_task_start(nrk_cur_task_TCB->task_ID);
 #endif
-    task_ID = nrk_get_high_ready_task_ID();
-    nrk_high_ready_prio = nrk_task_TCB[task_ID].task_prio;
-    nrk_high_ready_TCB = &nrk_task_TCB[task_ID];
+task_ID = nrk_get_high_ready_task_ID();
+nrk_high_ready_prio = nrk_task_TCB[task_ID].task_prio;
+nrk_high_ready_TCB = &nrk_task_TCB[task_ID];
 
-    // next_wake should hold next time when a suspended task might get run
-    // task_ID holds the highest priority READY task ID
-    // So nrk_task_TCB[task_ID].cpu_remaining holds the READY task's end time
+// next_wake should hold next time when a suspended task might get run
+// task_ID holds the highest priority READY task ID
+// So nrk_task_TCB[task_ID].cpu_remaining holds the READY task's end time
 
-    // Now we pick the next wakeup (either the end of the current task, or the possible resume
-    // of a suspended task)
-    if(task_ID!=NRK_IDLE_TASK_ID)
+// Now we pick the next wakeup (either the end of the current task, or the possible resume
+// of a suspended task)
+if(task_ID!=NRK_IDLE_TASK_ID)
+{
+    // You are a non-Idle Task
+    if(nrk_task_TCB[task_ID].cpu_reserve!=0 && nrk_task_TCB[task_ID].cpu_remaining<MAX_SCHED_WAKEUP_TIME)
     {
-        // You are a non-Idle Task
-        if(nrk_task_TCB[task_ID].cpu_reserve!=0 && nrk_task_TCB[task_ID].cpu_remaining<MAX_SCHED_WAKEUP_TIME)
-        {
-            if(next_wake>nrk_task_TCB[task_ID].cpu_remaining)
-                next_wake=nrk_task_TCB[task_ID].cpu_remaining;
-        }
-        else
-        {
-            if(next_wake>MAX_SCHED_WAKEUP_TIME)  next_wake=MAX_SCHED_WAKEUP_TIME;
-        }
+	if(next_wake>nrk_task_TCB[task_ID].cpu_remaining)
+	    next_wake=nrk_task_TCB[task_ID].cpu_remaining;
     }
     else
     {
-        // This is the idle task
-        // Make sure you wake up from the idle task a little earlier
-        // if you would go into deep sleep...
-        // After waking from deep sleep, the next context swap must be at least
-        // NRK_SLEEP_WAKEUP_TIME-1 away to make sure the CPU wakes up in time.
+	if(next_wake>MAX_SCHED_WAKEUP_TIME)  next_wake=MAX_SCHED_WAKEUP_TIME;
+    }
+}
+else
+{
+    // This is the idle task
+    // Make sure you wake up from the idle task a little earlier
+    // if you would go into deep sleep...
+    // After waking from deep sleep, the next context swap must be at least
+    // NRK_SLEEP_WAKEUP_TIME-1 away to make sure the CPU wakes up in time.
 #ifndef NRK_NO_POWER_DOWN
-        if(next_wake>NRK_SLEEP_WAKEUP_TIME)
-        {
-            if(next_wake-NRK_SLEEP_WAKEUP_TIME<MAX_SCHED_WAKEUP_TIME)
-            {
-                if(next_wake-NRK_SLEEP_WAKEUP_TIME<NRK_SLEEP_WAKEUP_TIME)
-                {
-                    next_wake=NRK_SLEEP_WAKEUP_TIME-1;
-                }
-                else
-                {
-                    next_wake=next_wake-NRK_SLEEP_WAKEUP_TIME;
-                }
-            }
-            else if(next_wake>NRK_SLEEP_WAKEUP_TIME+MAX_SCHED_WAKEUP_TIME)
-            {
-                next_wake=MAX_SCHED_WAKEUP_TIME;
-            }
-            else
-            {
-                next_wake=MAX_SCHED_WAKEUP_TIME-NRK_SLEEP_WAKEUP_TIME;
-            }
-        }
+    if(next_wake>NRK_SLEEP_WAKEUP_TIME)
+    {
+	if(next_wake-NRK_SLEEP_WAKEUP_TIME<MAX_SCHED_WAKEUP_TIME)
+	{
+	    if(next_wake-NRK_SLEEP_WAKEUP_TIME<NRK_SLEEP_WAKEUP_TIME)
+	    {
+		next_wake=NRK_SLEEP_WAKEUP_TIME-1;
+	    }
+	    else
+	    {
+		next_wake=next_wake-NRK_SLEEP_WAKEUP_TIME;
+	    }
+	}
+	else if(next_wake>NRK_SLEEP_WAKEUP_TIME+MAX_SCHED_WAKEUP_TIME)
+	{
+	    next_wake=MAX_SCHED_WAKEUP_TIME;
+	}
+	else
+	{
+	    next_wake=MAX_SCHED_WAKEUP_TIME-NRK_SLEEP_WAKEUP_TIME;
+	}
+    }
 #endif
-    }
+}
 
-    /*
-    // Some code to catch the case when the scheduler wakes up
-    // from deep sleep and has to execute again before NRK_SLEEP_WAKEUP_TIME-1
-    if(_nrk_cpu_state==2 && next_wake<NRK_SLEEP_WAKEUP_TIME-1)
-    {
-    nrk_int_disable();
-    while(1)
-    {
-    nrk_spin_wait_us(60000);
-    nrk_led_toggle(RED_LED);
-    nrk_spin_wait_us(60000);
-    nrk_led_toggle(GREEN_LED);
-    printf( "crash: %d %d %d\r\n",task_ID,next_wake,_nrk_cpu_state);
-    }
-    }*/
+/*
+// Some code to catch the case when the scheduler wakes up
+// from deep sleep and has to execute again before NRK_SLEEP_WAKEUP_TIME-1
+if(_nrk_cpu_state==2 && next_wake<NRK_SLEEP_WAKEUP_TIME-1)
+{
+nrk_int_disable();
+while(1)
+{
+nrk_spin_wait_us(60000);
+nrk_led_toggle(RED_LED);
+nrk_spin_wait_us(60000);
+nrk_led_toggle(GREEN_LED);
+printf( "crash: %d %d %d\r\n",task_ID,next_wake,_nrk_cpu_state);
+}
+}*/
 
 
-    //  If we disable power down, we still need to wakeup before the overflow
+//  If we disable power down, we still need to wakeup before the overflow
 #ifdef NRK_NO_POWER_DOWN
-    if(next_wake>MAX_SCHED_WAKEUP_TIME)  next_wake=MAX_SCHED_WAKEUP_TIME;
+if(next_wake>MAX_SCHED_WAKEUP_TIME)  next_wake=MAX_SCHED_WAKEUP_TIME;
 #endif
-    //printf( "nw = %d %d %d\r\n",task_ID,_nrk_cpu_state,next_wake);
-    nrk_cur_task_prio = nrk_high_ready_prio;
-    nrk_cur_task_TCB  = nrk_high_ready_TCB;
+//printf( "nw = %d %d %d\r\n",task_ID,_nrk_cpu_state,next_wake);
+nrk_cur_task_prio = nrk_high_ready_prio;
+nrk_cur_task_TCB  = nrk_high_ready_TCB;
 
 #ifdef NRK_KERNEL_TEST
-    if(nrk_high_ready_TCB==NULL)
-    {
-        nrk_kprintf( PSTR( "KERNEL TEST: BAD TCB!\r\n" ));
-    }
+if(nrk_high_ready_TCB==NULL)
+{
+    nrk_kprintf( PSTR( "KERNEL TEST: BAD TCB!\r\n" ));
+}
 #endif
-    //printf( "n %u %u %u %u\r\n",task_ID, _nrk_prev_timer_val, next_wake,_nrk_os_timer_get());
+//printf( "n %u %u %u %u\r\n",task_ID, _nrk_prev_timer_val, next_wake,_nrk_os_timer_get());
 
+_nrk_prev_timer_val=next_wake;
+
+
+if((_nrk_os_timer_get()+1)>=next_wake)  // just bigger then, or equal?
+{
+    // FIXME: Terrible Terrible...
+    // Need to find out why this is happening...
+#ifdef NRK_KERNEL_TEST
+    // Ignore if you are the idle task coming from deep sleep
+    if(!(task_ID==NRK_IDLE_TASK_ID && _nrk_cpu_state==CPU_SLEEP))
+	nrk_kernel_error_add(NRK_WAKEUP_MISSED,task_ID);
+#endif
+    // This is bad news, but keeps things running
+    // +2 just in case we are on the edge of the last tick
+    next_wake=_nrk_os_timer_get()+2;
     _nrk_prev_timer_val=next_wake;
+}
 
+if(task_ID!=NRK_IDLE_TASK_ID) _nrk_cpu_state=CPU_ACTIVE;
 
-    if((_nrk_os_timer_get()+1)>=next_wake)  // just bigger then, or equal?
-    {
-        // FIXME: Terrible Terrible...
-        // Need to find out why this is happening...
-#ifdef NRK_KERNEL_TEST
-        // Ignore if you are the idle task coming from deep sleep
-        if(!(task_ID==NRK_IDLE_TASK_ID && _nrk_cpu_state==CPU_SLEEP))
-            nrk_kernel_error_add(NRK_WAKEUP_MISSED,task_ID);
-#endif
-        // This is bad news, but keeps things running
-        // +2 just in case we are on the edge of the last tick
-        next_wake=_nrk_os_timer_get()+2;
-        _nrk_prev_timer_val=next_wake;
-    }
-
-    if(task_ID!=NRK_IDLE_TASK_ID) _nrk_cpu_state=CPU_ACTIVE;
-
-    _nrk_set_next_wakeup(next_wake);
+_nrk_set_next_wakeup(next_wake);
 
 #ifndef NRK_NO_BOUNDED_CONTEXT_SWAP
-    // Bound Context Swap to 100us
-    nrk_high_speed_timer_wait(start_time_stamp,CONTEXT_SWAP_TIME_BOUND);
+// Bound Context Swap to 100us
+nrk_high_speed_timer_wait(start_time_stamp,CONTEXT_SWAP_TIME_BOUND);
 #endif
-    nrk_stack_pointer_restore();
-    //nrk_int_enable();
-    nrk_start_high_ready_task();
+nrk_stack_pointer_restore();
+//nrk_int_enable();
+nrk_start_high_ready_task();
 
 }
 
+int getMinRelativeDeadlineTaskWithCacheRemainingId() {
+	int i =0;
+	int min_deadline=99999;
+	int min_id = -1;
+	for(i = 0; i< NRK_MAX_TASKS; i++){
+	    if(nrk_task_TCB[i].task_type == CBS_TASK){
+		if(nrk_task_TCB[i].cash_period < min_deadline){
+		    min_deadline = nrk_task_TCB[i].cash_period;
+		    if (nrk_task_TCB[i].cash > 0) min_id = i;
+		}
+	    }
+	}
+	return min_id;
+}

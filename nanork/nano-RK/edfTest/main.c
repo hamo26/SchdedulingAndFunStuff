@@ -17,6 +17,7 @@
 {                                                                       \
     while (1)                                                           \
     {									\
+        //for(int i=0;i<100000;i++){}                                     \
 	nrk_wait_until_next_period();	    				\
 	printf("Running task..%d\n", n);                                \
     }                                                                   \
@@ -42,8 +43,8 @@ nrk_task_set_stk(&task_##n, stack_##n, NRK_APP_STACKSIZE);              \
 nrk_activate_task(&task_##n)						
 
 //"Instantiate" tasks.
-TASK(1, 4, 2);
-TASK(2, 7, 3);
+TASK(1, 4, 4);
+TASK(2, 7, 1);
 
 
 int main ()

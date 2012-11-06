@@ -81,5 +81,6 @@ extern NRK_STK *nrk_kernel_stk_ptr;
 uint8_t systemceiling;
 
 #define SRP
+//#define CBS_CASH
 
 #endif

@@ -1,0 +1,191 @@
+The sniplet of output below shows task 1 completing and the residual budget is stored into the task1 cash.
+
+Busying with task (CBS) 26000 out of 30000
+CBS budget is 2071
+Busying with task (CBS) 28000 out of 30000
+CBS budget is 2071
+Busying with task (CBS) 30000 out of 30000
+Finishing the task 1
+------
+
+Add cash to task1 to cash 2071, period is 7163 <===
+
+------
+
+The next sniplet of output shows that task 1 is using its own resource as the task1 budget decreases
+
+Start running task..1
+Duty amount is 30000
+CBS budget is 3071
+Busying with task (CBS) 0 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 2000 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 4000 out of 30000
+CBS budget is 2821
+Busying with task (CBS) 6000 out of 30000
+CBS budget is 2821
+Busying with task (CBS) 8000 out of 30000
+CBS budget is 2821
+Busying with task (CBS) 10000 out of 30000
+CBS budget is 2821
+Busying with task (CBS) 12000 out of 30000
+CBS budget is 2571
+Busying with task (CBS) 14000 out of 30000
+CBS budget is 2571
+Busying with task (CBS) 16000 out of 30000
+CBS budget is 2571
+...
+Busying with task (CBS) 26000 out of 30000
+CBS budget is 2071
+Busying with task (CBS) 28000 out of 30000
+CBS budget is 2071
+Busying with task (CBS) 30000 out of 30000
+Finishing the task 1
+------
+
+Add cash to task1 to cash 2071, period is 5952 <===
+
+------
+
+The next sniplet of output shows another CBS task (task 3) using task 1 cash before using it's own resource. The task 1 resource cash is decreasing as task 3 is runned.
+
+Start running task..3
+Duty amount is 30000
+CBS budget is 2047
+Busying with task (CBS) 0 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 2000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 4000 out of 30000
+min_id1' cash remaining is 1821 <$$$$$$$$$$$
+CBS budget is 2047
+Busying with task (CBS) 6000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 8000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 10000 out of 30000
+CBS budget ismin_id1' cash remaining is 1571 <$$$$$$$$$$$
+ 2047
+Busying with task (CBS) 12000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 14000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 16000 out of 30000
+CBS budget is 2047
+...
+Busying with task (CBS) 26000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 28000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 30000 out of 30000
+Finishing the taskmin_id1' cash remaining is 821 <$$$$$$$$$$$
+ 3
+------
+
+Add cash to task3 to cash 2047, period is 5505 <===
+min_id1' cash remaining is 810 <$$$$$$$$$$$
+
+------
+
+The next sniplet of output shows that task 3 will use it's own resource after task 1 cash is used up.
+
+Start running task..3
+Duty amount is 30000
+CBS budget is 2047
+Busying with task (CBS) 0 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 2000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 4000 out of 30000
+min_id1' cash remaining is 560 <$$$$$$$$$$$
+CBS budget is 2047
+Busying with task (CBS) 6000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 8000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 10000 out of 30000
+min_id1' cash remaining is 310 <$$$$$$$$$$$
+CBS budget is 2047
+Busying with task (CBS) 12000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 14000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 16000 out of 30000
+min_id1' cash remaining is 60 <$$$$$$$$$$$
+CBS budget is 2047
+Busying with task (CBS) 18000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 20000 out of 30000
+CBS budget is 2047
+Busying with task (CBS) 22000 out of 30000
+CBS budget is 2047
+Bmin_id1' cash remaining is 0 <$$$$$$$$$$$
+usying with task (CBS) 24000 out of 30000
+CBS budget is 1797
+Busying with task (CBS) 26000 out of 30000
+CBS budget is 1797
+Busying with task (CBS) 28000 out of 30000
+CBS budget is 1797
+Busying with task (CBS) 30000 out of 30000
+Finishing the task 3
+------
+
+Add cash to task3 to cash 1547, period is 4244 <===
+
+------
+
+
+The next sniplet of output shows a basic task (task 2) running and then CBS task 1 runs. The output shows that part of task 3 cash is decremented from 1547 to 517 when the basic task was running.
+
+Start running task..2
+Some busy tasks
+Finishing the task 2
+------
+
+
+------
+Start running task..1
+Duty amount is 30000
+CBS budget is 3071
+Busying with task (CBS) 0 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 2000 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 4000 out of 30000
+CBS budget is 3071
+Busying with tmin_id3' cash remaining is 515 <$$$$$$$$$$$
+ask (CBS) 6000 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 8000 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 10000 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 12000 out of 30000
+min_id3' cash remaining is 265 <$$$$$$$$$$$
+CBS budget is 3071
+Busying with task (CBS) 14000 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 16000 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 18000 out of 30000
+min_id3' cash remaining is 15 <$$$$$$$$$$$
+CBS budget is 3071
+Busying with task (CBS) 20000 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 22000 out of 30000
+CBS budget is 3071
+Busying with task (CBS) 24000 out of 30000
+min_id3' cash remaining is 0 <$$$$$$$$$$$
+CBS budget is 2797
+Busying with task (CBS) 26000 out of 30000
+CBS budget is 2797
+Busying with task (CBS) 28000 out of 30000
+CBS budget is 2797
+Busying with task (CBS) 30000 out of 30000
+Finishing the task 1
+------
+
+Add cash to task1 to cash 2797, period is 7167 <===
+
+------

@@ -1,5 +1,5 @@
 #! /bin/sh
-cd srpTest/
+cd cashTest/
 make clean all
 make
 cd ../avrora/bin/
