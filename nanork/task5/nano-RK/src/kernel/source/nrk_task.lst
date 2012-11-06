@@ -1922,35 +1922,35 @@
  1678               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_task.c
-     /tmp/ccgPxMkA.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccgPxMkA.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccgPxMkA.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccgPxMkA.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccgPxMkA.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccgPxMkA.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccgPxMkA.s:140    .text:00000000 nrk_get_high_ready_task_ID
+     /tmp/ccZ5wqmx.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccZ5wqmx.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccZ5wqmx.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccZ5wqmx.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccZ5wqmx.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccZ5wqmx.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccZ5wqmx.s:140    .text:00000000 nrk_get_high_ready_task_ID
                             *COM*:00000002 _head_node
-     /tmp/ccgPxMkA.s:169    .text:0000000c nrk_print_readyQ
-     /tmp/ccgPxMkA.s:1647   .progmem.data:00000003 __c.2133
+     /tmp/ccZ5wqmx.s:169    .text:0000000c nrk_print_readyQ
+     /tmp/ccZ5wqmx.s:1647   .progmem.data:00000003 __c.2133
                             *COM*:000000be nrk_task_TCB
-     /tmp/ccgPxMkA.s:1643   .progmem.data:00000000 __c.2138
-     /tmp/ccgPxMkA.s:267    .text:00000088 nrk_add_to_readyQ
+     /tmp/ccZ5wqmx.s:1643   .progmem.data:00000000 __c.2138
+     /tmp/ccZ5wqmx.s:267    .text:00000088 nrk_add_to_readyQ
                             *COM*:00000002 _free_node
-     /tmp/ccgPxMkA.s:513    .text:000001cc nrk_rem_from_readyQ
-     /tmp/ccgPxMkA.s:643    .text:0000026c nrk_activate_task
-     /tmp/ccgPxMkA.s:777    .text:0000031a nrk_set_next_wakeup
+     /tmp/ccZ5wqmx.s:513    .text:000001cc nrk_rem_from_readyQ
+     /tmp/ccZ5wqmx.s:643    .text:0000026c nrk_activate_task
+     /tmp/ccZ5wqmx.s:777    .text:0000031a nrk_set_next_wakeup
                             *COM*:00000002 nrk_cur_task_TCB
-     /tmp/ccgPxMkA.s:867    .text:00000388 _nrk_wait_for_scheduler
-     /tmp/ccgPxMkA.s:899    .text:0000039c nrk_wait
+     /tmp/ccZ5wqmx.s:867    .text:00000388 _nrk_wait_for_scheduler
+     /tmp/ccZ5wqmx.s:899    .text:0000039c nrk_wait
                             *COM*:00000001 _nrk_prev_timer_val
-     /tmp/ccgPxMkA.s:1022   .text:0000044c nrk_wait_until_nw
-     /tmp/ccgPxMkA.s:1095   .text:0000049a nrk_wait_until_ticks
-     /tmp/ccgPxMkA.s:1174   .text:000004f4 nrk_wait_ticks
-     /tmp/ccgPxMkA.s:1269   .text:00000572 nrk_wait_until_next_n_periods
-     /tmp/ccgPxMkA.s:1359   .text:000005d8 nrk_wait_until_next_period
-     /tmp/ccgPxMkA.s:1437   .text:00000630 nrk_terminate_task
-     /tmp/ccgPxMkA.s:1474   .text:00000652 nrk_wait_until
-     /tmp/ccgPxMkA.s:1593   .text:000006fe nrk_get_pid
+     /tmp/ccZ5wqmx.s:1022   .text:0000044c nrk_wait_until_nw
+     /tmp/ccZ5wqmx.s:1095   .text:0000049a nrk_wait_until_ticks
+     /tmp/ccZ5wqmx.s:1174   .text:000004f4 nrk_wait_ticks
+     /tmp/ccZ5wqmx.s:1269   .text:00000572 nrk_wait_until_next_n_periods
+     /tmp/ccZ5wqmx.s:1359   .text:000005d8 nrk_wait_until_next_period
+     /tmp/ccZ5wqmx.s:1437   .text:00000630 nrk_terminate_task
+     /tmp/ccZ5wqmx.s:1474   .text:00000652 nrk_wait_until
+     /tmp/ccZ5wqmx.s:1593   .text:000006fe nrk_get_pid
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

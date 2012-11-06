@@ -549,16 +549,16 @@
  581               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_stack_check.c
-     /tmp/ccNy2N81.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccNy2N81.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccNy2N81.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccNy2N81.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccNy2N81.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccNy2N81.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccNy2N81.s:151    .text:00000000 dump_stack_info
-     /tmp/ccNy2N81.s:569    .progmem.data:00000000 __c.2061
-     /tmp/ccNy2N81.s:426    .text:000001d6 nrk_stack_check
-     /tmp/ccNy2N81.s:494    .text:0000021e nrk_stack_check_pid
+     /tmp/ccIvUHjg.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccIvUHjg.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccIvUHjg.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccIvUHjg.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccIvUHjg.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccIvUHjg.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccIvUHjg.s:151    .text:00000000 dump_stack_info
+     /tmp/ccIvUHjg.s:569    .progmem.data:00000000 __c.2061
+     /tmp/ccIvUHjg.s:426    .text:000001d6 nrk_stack_check
+     /tmp/ccIvUHjg.s:494    .text:0000021e nrk_stack_check_pid
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

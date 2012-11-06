@@ -547,16 +547,16 @@
  579               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_stack_check.c
-     /tmp/ccRGjEMW.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccRGjEMW.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccRGjEMW.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccRGjEMW.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccRGjEMW.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccRGjEMW.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccRGjEMW.s:151    .text:00000000 dump_stack_info
-     /tmp/ccRGjEMW.s:567    .progmem.data:00000000 __c.2059
-     /tmp/ccRGjEMW.s:423    .text:000001d0 nrk_stack_check
-     /tmp/ccRGjEMW.s:491    .text:00000218 nrk_stack_check_pid
+     /tmp/ccQMKqyP.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccQMKqyP.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccQMKqyP.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccQMKqyP.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccQMKqyP.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccQMKqyP.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccQMKqyP.s:151    .text:00000000 dump_stack_info
+     /tmp/ccQMKqyP.s:567    .progmem.data:00000000 __c.2059
+     /tmp/ccQMKqyP.s:423    .text:000001d0 nrk_stack_check
+     /tmp/ccQMKqyP.s:491    .text:00000218 nrk_stack_check_pid
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk

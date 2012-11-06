@@ -58,9 +58,9 @@ nrk_task_set_stk(&task_##n, stack_##n, NRK_APP_STACKSIZE);              \
 nrk_activate_task(&task_##n)						
 
 //"Instantiate" tasks.
-TASK(1, 8, 1);
-TASK(2, 5, 4);
-TASK(3, 9, 1);
+TASK(1, 8, 3);
+TASK(2, 5, 1);
+TASK(3, 9, 2);
 
 nrk_time_t *seed;
 

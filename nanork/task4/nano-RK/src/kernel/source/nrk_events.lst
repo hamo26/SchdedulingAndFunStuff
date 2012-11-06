@@ -1754,32 +1754,32 @@
  1723               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_events.c
-     /tmp/cc4r8H2Z.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc4r8H2Z.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc4r8H2Z.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc4r8H2Z.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc4r8H2Z.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc4r8H2Z.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc4r8H2Z.s:140    .text:00000000 nrk_signal_create
+     /tmp/cc6jEioU.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc6jEioU.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc6jEioU.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc6jEioU.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc6jEioU.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc6jEioU.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc6jEioU.s:140    .text:00000000 nrk_signal_create
                             *COM*:00000004 _nrk_signal_list
-     /tmp/cc4r8H2Z.s:219    .text:0000006c nrk_signal_get_registered_mask
+     /tmp/cc6jEioU.s:219    .text:0000006c nrk_signal_get_registered_mask
                             *COM*:00000002 nrk_cur_task_TCB
-     /tmp/cc4r8H2Z.s:250    .text:0000007e nrk_signal_delete
+     /tmp/cc6jEioU.s:250    .text:0000007e nrk_signal_delete
                             *COM*:000000aa nrk_task_TCB
-     /tmp/cc4r8H2Z.s:434    .text:0000018e nrk_signal_unregister
-     /tmp/cc4r8H2Z.s:535    .text:00000212 nrk_signal_register
-     /tmp/cc4r8H2Z.s:609    .text:0000027a nrk_event_signal
-     /tmp/cc4r8H2Z.s:802    .text:00000360 nrk_event_wait
+     /tmp/cc6jEioU.s:434    .text:0000018e nrk_signal_unregister
+     /tmp/cc6jEioU.s:535    .text:00000212 nrk_signal_register
+     /tmp/cc6jEioU.s:609    .text:0000027a nrk_event_signal
+     /tmp/cc6jEioU.s:802    .text:00000360 nrk_event_wait
                             *COM*:00000001 nrk_wakeup_signal
-     /tmp/cc4r8H2Z.s:895    .text:000003d6 nrk_sem_create
+     /tmp/cc6jEioU.s:895    .text:000003d6 nrk_sem_create
                             *COM*:00000001 _nrk_resource_cnt
                             *COM*:0000000f nrk_sem_list
-     /tmp/cc4r8H2Z.s:972    .text:0000041a nrk_get_resource_index
-     /tmp/cc4r8H2Z.s:1027   .text:00000444 nrk_sem_delete
-     /tmp/cc4r8H2Z.s:1106   .text:00000488 nrk_sem_post
+     /tmp/cc6jEioU.s:972    .text:0000041a nrk_get_resource_index
+     /tmp/cc6jEioU.s:1027   .text:00000444 nrk_sem_delete
+     /tmp/cc6jEioU.s:1106   .text:00000488 nrk_sem_post
                             *COM*:00000001 systemceiling
-     /tmp/cc4r8H2Z.s:1362   .text:000005e4 nrk_sem_pend
-     /tmp/cc4r8H2Z.s:1614   .text:0000075e nrk_sem_query
+     /tmp/cc6jEioU.s:1362   .text:000005e4 nrk_sem_pend
+     /tmp/cc6jEioU.s:1614   .text:0000075e nrk_sem_query
                             *COM*:00000080 nrk_idle_task_stk
                             *COM*:00000080 nrk_kernel_stk
                             *COM*:00000002 nrk_kernel_stk_ptr

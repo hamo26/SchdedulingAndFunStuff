@@ -219,16 +219,16 @@
  304               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_watchdog.c
-     /tmp/cclOkj2R.s:2      *ABS*:0000003f __SREG__
-     /tmp/cclOkj2R.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cclOkj2R.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cclOkj2R.s:5      *ABS*:00000034 __CCP__
-     /tmp/cclOkj2R.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cclOkj2R.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cclOkj2R.s:135    .text:00000000 nrk_watchdog_disable
-     /tmp/cclOkj2R.s:185    .text:0000001a nrk_watchdog_enable
-     /tmp/cclOkj2R.s:236    .text:00000036 nrk_watchdog_check
-     /tmp/cclOkj2R.s:266    .text:00000044 nrk_watchdog_reset
+     /tmp/ccTA4tpV.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccTA4tpV.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccTA4tpV.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccTA4tpV.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccTA4tpV.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccTA4tpV.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccTA4tpV.s:135    .text:00000000 nrk_watchdog_disable
+     /tmp/ccTA4tpV.s:185    .text:0000001a nrk_watchdog_enable
+     /tmp/ccTA4tpV.s:236    .text:00000036 nrk_watchdog_check
+     /tmp/ccTA4tpV.s:266    .text:00000044 nrk_watchdog_reset
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num

@@ -877,32 +877,32 @@
  908               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 mts310cb_driver.c
-     /tmp/ccVLiI46.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccVLiI46.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccVLiI46.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccVLiI46.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccVLiI46.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccVLiI46.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccVLiI46.s:80     .text:00000000 mts310cb_init
-     /tmp/ccVLiI46.s:902    .bss:00000000 mts310cb_initDone
-     /tmp/ccVLiI46.s:110    .text:00000010 mts310cb_Powersave
-     /tmp/ccVLiI46.s:143    .text:00000022 mts310cb_Accelerometer_Power
-     /tmp/ccVLiI46.s:196    .text:0000004e mts310cb_Magnetometer_Power
-     /tmp/ccVLiI46.s:249    .text:0000007a mts310cb_TemperatureSensor_Power
-     /tmp/ccVLiI46.s:305    .text:000000a2 mts310cb_LightSensor_Power
-     /tmp/ccVLiI46.s:361    .text:000000ca mts310cb_Sounder_Power
-     /tmp/ccVLiI46.s:414    .text:000000f6 mts310cb_Microphone_Power
-     /tmp/ccVLiI46.s:467    .text:00000122 mts310cb_Magnetometer_x_SetOffset
-     /tmp/ccVLiI46.s:513    .text:0000014e mts310cb_Magnetometer_y_SetOffset
-     /tmp/ccVLiI46.s:559    .text:0000017a mts310cb_Microphone_SetGain
-     /tmp/ccVLiI46.s:605    .text:000001a6 mts310cb_Microphone_SetMode
-     /tmp/ccVLiI46.s:661    .text:000001d6 mts310cb_LightSensor_GetCounts
-     /tmp/ccVLiI46.s:698    .text:000001f0 mts310cb_TemperatureSensor_GetCounts
-     /tmp/ccVLiI46.s:735    .text:0000020a mts310cb_Microphone_GetCounts
-     /tmp/ccVLiI46.s:768    .text:0000021e mts310cb_Accelerometer_x_GetCounts
-     /tmp/ccVLiI46.s:801    .text:00000232 mts310cb_Accelerometer_y_GetCounts
-     /tmp/ccVLiI46.s:834    .text:00000246 mts310cb_Magnetometer_x_GetCounts
-     /tmp/ccVLiI46.s:867    .text:0000025a mts310cb_Magnetometer_y_GetCounts
+     /tmp/cc6bC7Co.s:2      *ABS*:0000003f __SREG__
+     /tmp/cc6bC7Co.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cc6bC7Co.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cc6bC7Co.s:5      *ABS*:00000034 __CCP__
+     /tmp/cc6bC7Co.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cc6bC7Co.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cc6bC7Co.s:80     .text:00000000 mts310cb_init
+     /tmp/cc6bC7Co.s:902    .bss:00000000 mts310cb_initDone
+     /tmp/cc6bC7Co.s:110    .text:00000010 mts310cb_Powersave
+     /tmp/cc6bC7Co.s:143    .text:00000022 mts310cb_Accelerometer_Power
+     /tmp/cc6bC7Co.s:196    .text:0000004e mts310cb_Magnetometer_Power
+     /tmp/cc6bC7Co.s:249    .text:0000007a mts310cb_TemperatureSensor_Power
+     /tmp/cc6bC7Co.s:305    .text:000000a2 mts310cb_LightSensor_Power
+     /tmp/cc6bC7Co.s:361    .text:000000ca mts310cb_Sounder_Power
+     /tmp/cc6bC7Co.s:414    .text:000000f6 mts310cb_Microphone_Power
+     /tmp/cc6bC7Co.s:467    .text:00000122 mts310cb_Magnetometer_x_SetOffset
+     /tmp/cc6bC7Co.s:513    .text:0000014e mts310cb_Magnetometer_y_SetOffset
+     /tmp/cc6bC7Co.s:559    .text:0000017a mts310cb_Microphone_SetGain
+     /tmp/cc6bC7Co.s:605    .text:000001a6 mts310cb_Microphone_SetMode
+     /tmp/cc6bC7Co.s:661    .text:000001d6 mts310cb_LightSensor_GetCounts
+     /tmp/cc6bC7Co.s:698    .text:000001f0 mts310cb_TemperatureSensor_GetCounts
+     /tmp/cc6bC7Co.s:735    .text:0000020a mts310cb_Microphone_GetCounts
+     /tmp/cc6bC7Co.s:768    .text:0000021e mts310cb_Accelerometer_x_GetCounts
+     /tmp/cc6bC7Co.s:801    .text:00000232 mts310cb_Accelerometer_y_GetCounts
+     /tmp/cc6bC7Co.s:834    .text:00000246 mts310cb_Magnetometer_x_GetCounts
+     /tmp/cc6bC7Co.s:867    .text:0000025a mts310cb_Magnetometer_y_GetCounts
 
 UNDEFINED SYMBOLS
 adc_init

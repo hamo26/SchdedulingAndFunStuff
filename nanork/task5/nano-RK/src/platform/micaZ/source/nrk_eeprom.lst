@@ -403,22 +403,22 @@
  530               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 nrk_eeprom.c
-     /tmp/ccFS14Xd.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccFS14Xd.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccFS14Xd.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccFS14Xd.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccFS14Xd.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccFS14Xd.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccFS14Xd.s:129    .text:00000000 nrk_eeprom_read_byte
-     /tmp/ccFS14Xd.s:154    .text:00000006 nrk_eeprom_write_byte
-     /tmp/ccFS14Xd.s:178    .text:0000000e read_eeprom_mac_address
-     /tmp/ccFS14Xd.s:271    .text:0000007a read_eeprom_channel
-     /tmp/ccFS14Xd.s:304    .text:00000092 write_eeprom_load_img_pages
-     /tmp/ccFS14Xd.s:333    .text:000000a2 read_eeprom_load_img_pages
-     /tmp/ccFS14Xd.s:365    .text:000000ba read_eeprom_aes_key
-     /tmp/ccFS14Xd.s:414    .text:000000ea write_eeprom_aes_key
-     /tmp/ccFS14Xd.s:464    .text:0000011a read_eeprom_current_image_checksum
-     /tmp/ccFS14Xd.s:497    .text:00000132 write_eeprom_current_image_checksum
+     /tmp/cctybsXT.s:2      *ABS*:0000003f __SREG__
+     /tmp/cctybsXT.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cctybsXT.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cctybsXT.s:5      *ABS*:00000034 __CCP__
+     /tmp/cctybsXT.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cctybsXT.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cctybsXT.s:129    .text:00000000 nrk_eeprom_read_byte
+     /tmp/cctybsXT.s:154    .text:00000006 nrk_eeprom_write_byte
+     /tmp/cctybsXT.s:178    .text:0000000e read_eeprom_mac_address
+     /tmp/cctybsXT.s:271    .text:0000007a read_eeprom_channel
+     /tmp/cctybsXT.s:304    .text:00000092 write_eeprom_load_img_pages
+     /tmp/cctybsXT.s:333    .text:000000a2 read_eeprom_load_img_pages
+     /tmp/cctybsXT.s:365    .text:000000ba read_eeprom_aes_key
+     /tmp/cctybsXT.s:414    .text:000000ea write_eeprom_aes_key
+     /tmp/cctybsXT.s:464    .text:0000011a read_eeprom_current_image_checksum
+     /tmp/cctybsXT.s:497    .text:00000132 write_eeprom_current_image_checksum
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000001 error_task
                             *COM*:00000001 error_num

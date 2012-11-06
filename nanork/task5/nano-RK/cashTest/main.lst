@@ -66,7 +66,7 @@
   22:main.c        **** 	printf("\n------\nStart running task..%d\n", n);            \
   23:main.c        **** 	long int duty = 30000;					\
   24:main.c        **** 	if(duty<0) duty = 0-duty;					\
-  25:main.c        **** 	if(n==1 || n==3){							\
+  25:main.c        **** 	if(n==1 || n==3 || n==4){							\
   26:main.c        **** 	    printf("Duty amount is %d\n",duty);				\
   27:main.c        **** 	    for(int i=0;i<=duty;i++){				\
   28:main.c        **** 		if(i%2000==0){					\
@@ -102,9 +102,9 @@
   58:main.c        **** nrk_activate_task(&task_##n)						
   59:main.c        **** 
   60:main.c        **** //"Instantiate" tasks.
-  61:main.c        **** TASK(1, 8, 1);
-  62:main.c        **** TASK(2, 5, 4);
-  63:main.c        **** TASK(3, 9, 1);
+  61:main.c        **** TASK(1, 8, 3);
+  62:main.c        **** TASK(2, 5, 1);
+  63:main.c        **** TASK(3, 9, 2);
  155               	.LM0:
  156               	.LFBB1:
  157 0000 2F92      		push r2
@@ -302,7 +302,7 @@
  367               	.global	task_1_func
  369               	task_1_func:
  370               		.stabd	46,0,0
-  61:main.c        **** TASK(1, 8, 1);
+  61:main.c        **** TASK(1, 8, 3);
  372               	.LM7:
  373               	.LFBB2:
  374 0168 2F92      		push r2
@@ -327,7 +327,7 @@
  393               	/* frame size = 0 */
  394               	/* stack size = 18 */
  395               	.L__stack_usage = 18
-  61:main.c        **** TASK(1, 8, 1);
+  61:main.c        **** TASK(1, 8, 3);
  397               	.LM8:
  398 018c E091 0000 		lds r30,nrk_cur_task_TCB
  399 0190 F091 0000 		lds r31,nrk_cur_task_TCB+1
@@ -375,7 +375,7 @@
  441 01e0 E0E0      		ldi r30,hi8(.LC4)
  442 01e2 5E2E      		mov r5,r30
  443               	.L9:
-  61:main.c        **** TASK(1, 8, 1);
+  61:main.c        **** TASK(1, 8, 3);
  445               	.LM9:
  446 01e4 00D0      		rcall .
  447 01e6 00D0      		rcall .
@@ -416,7 +416,7 @@
  482 0230 D0E0      		ldi r29,hi8(0)
  483               	.L8:
  484               	.LBB7:
-  61:main.c        **** TASK(1, 8, 1);
+  61:main.c        **** TASK(1, 8, 3);
  486               	.LM10:
  487 0232 CE01      		movw r24,r28
  488 0234 60ED      		ldi r22,lo8(2000)
@@ -424,7 +424,7 @@
  490 0238 0E94 0000 		call __divmodhi4
  491 023c 0097      		sbiw r24,0
  492 023e 01F4      		brne .L7
-  61:main.c        **** TASK(1, 8, 1);
+  61:main.c        **** TASK(1, 8, 3);
  494               	.LM11:
  495 0240 00D0      		rcall .
  496 0242 00D0      		rcall .
@@ -471,7 +471,7 @@
  537 0298 0FBE      		out __SREG__,__tmp_reg__
  538 029a EDBF      		out __SP_L__,r30
  539               	.L7:
-  61:main.c        **** TASK(1, 8, 1);
+  61:main.c        **** TASK(1, 8, 3);
  541               	.LM12:
  542 029c 2196      		adiw r28,1
  543 029e F5E7      		ldi r31,hi8(30001)
@@ -479,7 +479,7 @@
  545 02a2 DF07      		cpc r29,r31
  546 02a4 01F4      		brne .L8
  547               	.LBE7:
-  61:main.c        **** TASK(1, 8, 1);
+  61:main.c        **** TASK(1, 8, 3);
  549               	.LM13:
  550 02a6 00D0      		rcall .
  551 02a8 00D0      		rcall .
@@ -513,7 +513,7 @@
  588               	.global	task_2_func
  590               	task_2_func:
  591               		.stabd	46,0,0
-  62:main.c        **** TASK(2, 5, 4);
+  62:main.c        **** TASK(2, 5, 1);
  593               	.LM14:
  594               	.LFBB3:
  595 02d0 EF92      		push r14
@@ -527,7 +527,7 @@
  603               	/* stack size = 6 */
  604               	.L__stack_usage = 6
  605               	.LBB8:
-  62:main.c        **** TASK(2, 5, 4);
+  62:main.c        **** TASK(2, 5, 1);
  607               	.LM15:
  608 02dc 80E0      		ldi r24,lo8(.LC0)
  609 02de E82E      		mov r14,r24
@@ -538,7 +538,7 @@
  614 02e8 00E0      		ldi r16,lo8(.LC4)
  615 02ea 10E0      		ldi r17,hi8(.LC4)
  616               	.L12:
-  62:main.c        **** TASK(2, 5, 4);
+  62:main.c        **** TASK(2, 5, 1);
  618               	.LM16:
  619 02ec 00D0      		rcall .
  620 02ee 00D0      		rcall .
@@ -822,7 +822,7 @@
  889 009d 00        		.byte	0
  890               	.global	task_1_execution
  893               	task_1_execution:
- 894 009e 01        		.byte	1
+ 894 009e 03        		.byte	3
  895 009f 00        		.byte	0
  896 00a0 00        		.byte	0
  897 00a1 00        		.byte	0
@@ -834,7 +834,7 @@
  905 00a5 00        		.byte	0
  906               	.global	task_2_execution
  909               	task_2_execution:
- 910 00a6 04        		.byte	4
+ 910 00a6 01        		.byte	1
  911 00a7 00        		.byte	0
  912 00a8 00        		.byte	0
  913 00a9 00        		.byte	0
@@ -846,7 +846,7 @@
  921 00ad 00        		.byte	0
  922               	.global	task_3_execution
  925               	task_3_execution:
- 926 00ae 01        		.byte	1
+ 926 00ae 02        		.byte	2
  927 00af 00        		.byte	0
  928 00b0 00        		.byte	0
  929 00b1 00        		.byte	0
@@ -873,28 +873,28 @@
  974               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 main.c
-     /tmp/ccoxoKWb.s:2      *ABS*:0000003f __SREG__
-     /tmp/ccoxoKWb.s:3      *ABS*:0000003e __SP_H__
-     /tmp/ccoxoKWb.s:4      *ABS*:0000003d __SP_L__
-     /tmp/ccoxoKWb.s:5      *ABS*:00000034 __CCP__
-     /tmp/ccoxoKWb.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/ccoxoKWb.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/ccoxoKWb.s:152    .text:00000000 task_3_func
-     /tmp/ccoxoKWb.s:369    .text:00000168 task_1_func
-     /tmp/ccoxoKWb.s:590    .text:000002d0 task_2_func
-     /tmp/ccoxoKWb.s:658    .text:00000332 main
+     /tmp/ccQJLKB1.s:2      *ABS*:0000003f __SREG__
+     /tmp/ccQJLKB1.s:3      *ABS*:0000003e __SP_H__
+     /tmp/ccQJLKB1.s:4      *ABS*:0000003d __SP_L__
+     /tmp/ccQJLKB1.s:5      *ABS*:00000034 __CCP__
+     /tmp/ccQJLKB1.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/ccQJLKB1.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/ccQJLKB1.s:152    .text:00000000 task_3_func
+     /tmp/ccQJLKB1.s:369    .text:00000168 task_1_func
+     /tmp/ccQJLKB1.s:590    .text:000002d0 task_2_func
+     /tmp/ccQJLKB1.s:658    .text:00000332 main
                             *COM*:00000002 seed
                             *COM*:00000023 task_1
-     /tmp/ccoxoKWb.s:885    .data:0000009a task_1_period
-     /tmp/ccoxoKWb.s:893    .data:0000009e task_1_execution
+     /tmp/ccQJLKB1.s:885    .data:0000009a task_1_period
+     /tmp/ccQJLKB1.s:893    .data:0000009e task_1_execution
                             *COM*:00000080 stack_1
                             *COM*:00000023 task_2
-     /tmp/ccoxoKWb.s:901    .data:000000a2 task_2_period
-     /tmp/ccoxoKWb.s:909    .data:000000a6 task_2_execution
+     /tmp/ccQJLKB1.s:901    .data:000000a2 task_2_period
+     /tmp/ccQJLKB1.s:909    .data:000000a6 task_2_execution
                             *COM*:00000080 stack_2
                             *COM*:00000023 task_3
-     /tmp/ccoxoKWb.s:917    .data:000000aa task_3_period
-     /tmp/ccoxoKWb.s:925    .data:000000ae task_3_execution
+     /tmp/ccQJLKB1.s:917    .data:000000aa task_3_period
+     /tmp/ccQJLKB1.s:925    .data:000000ae task_3_execution
                             *COM*:00000080 stack_3
                             *COM*:00000004 _nrk_signal_list
                             *COM*:00000080 nrk_idle_task_stk

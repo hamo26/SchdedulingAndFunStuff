@@ -104,13 +104,13 @@
  172               	.global __do_clear_bss
 DEFINED SYMBOLS
                             *ABS*:00000000 hal_wait.c
-     /tmp/cc2RiPgq.s:2      *ABS*:0000003f __SREG__
-     /tmp/cc2RiPgq.s:3      *ABS*:0000003e __SP_H__
-     /tmp/cc2RiPgq.s:4      *ABS*:0000003d __SP_L__
-     /tmp/cc2RiPgq.s:5      *ABS*:00000034 __CCP__
-     /tmp/cc2RiPgq.s:6      *ABS*:00000000 __tmp_reg__
-     /tmp/cc2RiPgq.s:7      *ABS*:00000001 __zero_reg__
-     /tmp/cc2RiPgq.s:120    .text:00000000 halWait
+     /tmp/cczNrzpt.s:2      *ABS*:0000003f __SREG__
+     /tmp/cczNrzpt.s:3      *ABS*:0000003e __SP_H__
+     /tmp/cczNrzpt.s:4      *ABS*:0000003d __SP_L__
+     /tmp/cczNrzpt.s:5      *ABS*:00000034 __CCP__
+     /tmp/cczNrzpt.s:6      *ABS*:00000000 __tmp_reg__
+     /tmp/cczNrzpt.s:7      *ABS*:00000001 __zero_reg__
+     /tmp/cczNrzpt.s:120    .text:00000000 halWait
                             *COM*:00000004 _nrk_signal_list
 
 UNDEFINED SYMBOLS
