@@ -14,6 +14,10 @@
  ******************************************************/
 #include "defs.h"
 
+typedef struct cam_t {
+    std::unordered_map<ip_address_t, int> routing_table;
+} cam_t;
+
 void cam_init();
 void cam_add_entry(ip_address_t *address, int port);
 int cam_lookup_address(ip_address_t *address);
