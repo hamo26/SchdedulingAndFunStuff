@@ -12,9 +12,11 @@
  *  You won't need to modify any of the other other files.
  *
  ******************************************************/
-
+#include "defs.h"
 
 void cam_init();
 void cam_add_entry(ip_address_t *address, int port);
 int cam_lookup_address(ip_address_t *address);
 void cam_free();
+
+int rtable[MAX_ENTRIES];

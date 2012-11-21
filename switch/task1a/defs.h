@@ -24,6 +24,7 @@
 #include <string.h>
 #include <time.h>
 #include <pthread.h>
+#include <unordered_map>
 
 /*----------------------------------------------------
  * The maximum length of a line in the input file
@@ -41,3 +42,6 @@
 #include "misc.h"
 #include "cam.h"
 #include "ext.h"
+
+//Defines the max num of entries
+#define MAX_ENTRIES 400000
