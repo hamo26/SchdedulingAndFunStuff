@@ -1,5 +1,5 @@
 
-CC = gcc
+CC = g++ -std=c++0x
 
 LIB = -lpthread -lrt
 
