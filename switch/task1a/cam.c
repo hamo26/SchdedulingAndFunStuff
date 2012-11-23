@@ -25,27 +25,27 @@
    This will create  a variable called cam (of type cam_h)
    that can be accessed by any routine in this file.  */
 
-extern cam_t cam;
+extern cam_t * cam;
 
 void cam_init()
 {
-    cam = (cam_t) malloc(sizeof(struct cam_t));
+	cam = (cam_t*) malloc(sizeof(cam_t));
 }
 
 
 void cam_add_entry(ip_address_t *address, int port)
 {
-    cam->routing_table.insert(*address, port);
+	//cam->routing_table.insert(*address, port);
 }
 
 int cam_lookup_address(ip_address_t *address)
 {
    /* Write your code here */
-	cam->routing_table.find(*address);
+	//cam->routing_table.find(*address);
 }
 
 void cam_free()
 {
    /* Write your code here */
-	free(cam);
+	//free(cam);
 }
