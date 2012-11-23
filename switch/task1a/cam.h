@@ -13,7 +13,7 @@
  *
  ******************************************************/
 
-typedef struct cam_t {
+typedef struct{
     std::unordered_map<ip_address_t, int> routing_table;
 } cam_t;
 

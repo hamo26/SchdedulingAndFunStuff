@@ -25,11 +25,12 @@
    This will create  a variable called cam (of type cam_h)
    that can be accessed by any routine in this file.  */
 
-extern cam_t * cam;
+cam_t* cam_ptr;
 
 void cam_init()
 {
-	cam = (cam_t*) malloc(sizeof(cam_t));
+    cam_t cam;
+    cam_ptr = &cam;
 }
 
 
