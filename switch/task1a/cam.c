@@ -36,7 +36,7 @@ void cam_init()
 
 void cam_add_entry(ip_address_t *address, int port)
 {
-	//cam->routing_table.insert(*address, port);
+	cam_ptr->routing_table.insert({address, port});
 }
 
 int cam_lookup_address(ip_address_t *address)
