@@ -30,129 +30,130 @@
    note that this is *not part of the routing table*, only part of
    the test bench */
 
+using namespace std;
+
 typedef struct my_version_of_the_table_t {
-   ip_address_t address;
-   int port;
+    ip_address_t address;
+    int port;
 } my_version_of_the_table_t;
 
 
 BOOL is_this_entry_in_the_table(my_version_of_the_table_t *table,
-                                int table_size,
-                                int n1,
-                                int n2,
-                                int n3,
-                                int n4)
+	int table_size,
+	int n1,
+	int n2,
+	int n3,
+	int n4)
 {
-   int i;
+    int i;
 
-   for(i=0;i<table_size;i++) {
-      if ((n1 == table[i].address.n1) &&
-          (n2 == table[i].address.n2) &&
-          (n3 == table[i].address.n3) &&
-          (n4 == table[i].address.n4)) {
-         return(TRUE);
-      }
-   }
-   return(FALSE);
+    for(i=0;i<table_size;i++) {
+	if ((n1 == table[i].address.n1) &&
+		(n2 == table[i].address.n2) &&
+		(n3 == table[i].address.n3) &&
+		(n4 == table[i].address.n4)) {
+	    return(TRUE);
+	}
+    }
+    return(FALSE);
 }
 
 
 main()
 {
-   int i;
-   ip_address_t address;
-   int port;
-   int entry;
-   double accum;
-   struct timespec start_time, end_time;
-   my_version_of_the_table_t my_version_of_the_table[NUMBER_ENTRIES_IN_ROUTING_TABLE];
-   BOOL ok;
+    int i;
+    ip_address_t address;
+    int port;
+    int entry;
+    double accum;
+    struct timespec start_time, end_time;
+    my_version_of_the_table_t my_version_of_the_table[NUMBER_ENTRIES_IN_ROUTING_TABLE];
+    BOOL ok;
 
-   /* Initalize the routing table by calling your routine */
-   
-   printf("Initializing the Routing Table\n");  
-   cam_init();
+    /* Initalize the routing table by calling your routine */
 
-   /* Now go through and set up the routing table.  */
-   
-   printf("Adding %d entries to the routing table\n", NUMBER_ENTRIES_IN_ROUTING_TABLE);
+    printf("Initializing the Routing Table\n");  
+    cam_init();
 
-   for(i=0;i<NUMBER_ENTRIES_IN_ROUTING_TABLE;i++) {
- 
-      /* Choose an IP address randomly */
+    /* Now go through and set up the routing table.  */
 
-      ok = FALSE;
-      while(!ok) {
-         address.n1 = random()%256;
-         address.n2 = random()%256;
-         address.n3 = random()%256;
-         address.n4 = random()%255;
-         ok = !is_this_entry_in_the_table(my_version_of_the_table,i,
-                                                     address.n1,
-                                                     address.n2,
-                                                     address.n3,
-                                                     address.n4);
-      }
- 
-      /* Choose an output port randomly */
+    printf("Adding %d entries to the routing table\n", NUMBER_ENTRIES_IN_ROUTING_TABLE);
 
-      port = random()%4;
+    for(i=0;i<NUMBER_ENTRIES_IN_ROUTING_TABLE;i++) {
 
-      /* Add this entry to the routing table by calling your routine */
+	/* Choose an IP address randomly */
 
-      cam_add_entry(&address,port);
+	ok = FALSE;
+	while(!ok) {
+	    address.n1 = random()%256;
+	    address.n2 = random()%256;
+	    address.n3 = random()%256;
+	    address.n4 = random()%255;
+	    ok = !is_this_entry_in_the_table(my_version_of_the_table,i,
+		    address.n1,
+		    address.n2,
+		    address.n3,
+		    address.n4);
+	}
 
-      /* Save the address locally to the testbench.  This will help us
-         choose valid IP addresses during our tests */
+	/* Choose an output port randomly */
 
-      ip_address_copy( & address,
-                       & (my_version_of_the_table[i].address));
-      my_version_of_the_table[i].port = port;
-   }
+	port = random()%4;
 
-   /* Read the start time */
+	/* Add this entry to the routing table by calling your routine */
+	cam_add_entry(&address,port);
 
-   if (clock_gettime(CLOCK_REALTIME,&start_time) == -1) {
-       printf("Error reading clock\n");
-       exit(0);
-   } 
+	/* Save the address locally to the testbench.  This will help us
+	   choose valid IP addresses during our tests */
 
-   /* Perform the actual test */
+	ip_address_copy( & address,
+		& (my_version_of_the_table[i].address));
+	my_version_of_the_table[i].port = port;
+    }
 
-   printf("Performing %d lookups\n", NUMBER_LOOKUPS);
+    /* Read the start time */
 
-   for(i=0;i<NUMBER_LOOKUPS;i++) {
+    if (clock_gettime(CLOCK_REALTIME,&start_time) == -1) {
+	printf("Error reading clock\n");
+	exit(0);
+    } 
 
-      /* Choose a valid IP address at random */
+    /* Perform the actual test */
 
-      entry = random()%NUMBER_ENTRIES_IN_ROUTING_TABLE;
+    printf("Performing %d lookups\n", NUMBER_LOOKUPS);
 
-      /* Call your routine to look up the entry in the routing table
-         (this is the part that you want to be as fast as possible */
+    for(i=0;i<NUMBER_LOOKUPS;i++) {
 
-      port = cam_lookup_address(
-              &(my_version_of_the_table[entry].address));
+	/* Choose a valid IP address at random */
 
-      /* Make sure your routine returned the right value */
+	entry = random()%NUMBER_ENTRIES_IN_ROUTING_TABLE;
 
-      if (port != my_version_of_the_table[entry].port) {
-         printf("Error: cam_lookup_address returned the wrong output port.  You really need to fix this.\n");
-      }
-   }
+	/* Call your routine to look up the entry in the routing table
+	   (this is the part that you want to be as fast as possible */
 
-   /* Measure the end time */
+	port = cam_lookup_address(
+		&(my_version_of_the_table[entry].address));
 
-   if (clock_gettime(CLOCK_REALTIME,&end_time) == -1) {
-       printf("Error reading clock\n");
-       exit(0);
-   } 
+	/* Make sure your routine returned the right value */
 
-   accum = (double)(end_time.tv_sec - start_time.tv_sec) +
-       (double)(end_time.tv_nsec - start_time.tv_nsec)/1000000000.0;
+	if (port != my_version_of_the_table[entry].port) {
+	    printf("Error: cam_lookup_address returned the wrong output port.  You really need to fix this.\n");
+	}
+    }
 
-   printf("Time difference: %f seconds\n",accum);
-   printf("That is %f microseconds per lookup\n",
-                 1000.0 * 1000.0 * accum / NUMBER_LOOKUPS);
-                                     
-   cam_free();
+    /* Measure the end time */
+
+    if (clock_gettime(CLOCK_REALTIME,&end_time) == -1) {
+	printf("Error reading clock\n");
+	exit(0);
+    } 
+
+    accum = (double)(end_time.tv_sec - start_time.tv_sec) +
+	(double)(end_time.tv_nsec - start_time.tv_nsec)/1000000000.0;
+
+    printf("Time difference: %f seconds\n",accum);
+    printf("That is %f microseconds per lookup\n",
+	    1000.0 * 1000.0 * accum / NUMBER_LOOKUPS);
+
+    cam_free();
 }

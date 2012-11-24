@@ -25,6 +25,11 @@
 #include <time.h>
 #include <pthread.h>
 #include <unordered_map>
+#include <iostream>
+#include <iomanip>
+#include <locale>
+#include <sstream>
+#include <utility>
 
 /*----------------------------------------------------
  * The maximum length of a line in the input file
