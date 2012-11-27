@@ -19,17 +19,24 @@ void *switch_thread_routine(void *arg)
   //iterate over all input ports.
   int i;
   port_t current_input_port;			
-  for (i = 0; i < 4; i++) {
-  	if (die == TRUE) { return NULL; }
+  packet_t send_packet;
+  while(1) {
+  	for (i = 0; i < 4; i++) {
+  	printf("I am here\n");
+	if (die == TRUE) { return NULL; }
+	printf("I am here\n");
 	current_input_port = in_port[i];
 	if (current_input_port.flag) {
 		pthread_mutex_lock(&current_input_port.mutex);
-		forward_packet_to_port(current_input_port.packet);
+		send_packet = current_input_port.packet;
+		printf("port sent to packet  %d\n",get_port_from_packet(&current_input_port.packet));
 		current_input_port.flag = false;
 		pthread_mutex_unlock(&current_input_port.mutex);
+		forward_packet_to_port(current_input_port.packet);
+	} 
 	}
   }
-  usleep(THREAD_SLEEP_TIME);				   
+  sleep(THREAD_SLEEP_TIME);				   
 }
 
 void forward_packet_to_port(packet_t packet) {
