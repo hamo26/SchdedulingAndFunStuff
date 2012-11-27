@@ -20,7 +20,8 @@ void *switch_thread_routine(void *arg)
   int i;
   port_t current_input_port;			
   for (i = 0; i < 4; i++) {
-  	current_input_port = in_port[i];
+  	if (die == TRUE) { return NULL; }
+	current_input_port = in_port[i];
 	if (current_input_port.flag) {
 		pthread_mutex_lock(&current_input_port.mutex);
 		forward_packet_to_port(current_input_port.packet);
@@ -36,8 +37,10 @@ void forward_packet_to_port(packet_t packet) {
 	int dest_port;	
 	dest_port = get_port_from_packet(&packet);
 	if (!out_port[dest_port].flag) {
+		pthread_mutex_lock(&out_port[dest_port].mutex);
 		out_port[dest_port].packet = packet;
 		out_port[dest_port].flag = true;
+		pthread_mutex_unlock(&out_port[dest_port].mutex);
 	} 
 	return;
 }

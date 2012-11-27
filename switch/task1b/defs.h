@@ -44,7 +44,7 @@
 #define BOOL char
 #define TRUE ((BOOL)1)
 #define FALSE ((BOOL)0)
-#define THREAD_SLEEP_TIME 500
+#define THREAD_SLEEP_TIME 1
 
 #include "misc.h"
 #include "cam.h"
