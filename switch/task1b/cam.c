@@ -70,11 +70,14 @@ int cam_lookup_address(ip_address_t *address)
 
     int result_port;
 
-    if ( got == cam_g.routing_table.end() )
+    if ( got == cam_g.routing_table.end() ){
 	cout << "not found";
-    else
+	return -1;
+    }
+    else{
 	result_port = got->second;
-    return result_port;
+	return result_port;
+    }
 }
 
 void cam_free()

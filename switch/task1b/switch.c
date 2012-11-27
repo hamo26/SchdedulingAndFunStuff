@@ -20,21 +20,27 @@ void *switch_thread_routine(void *arg)
     while(1){
 	int i;
 	port_t current_input_port;			
-	for (i = 0; i < 4; i++) {
-	    if (die == true) { 
-		std::cout<<"DIE is true now \n";
-		return NULL; 
-	    }
+	
+	printf( "DIE:%d\n", die_flag );
 
+	if (die_flag == 0) { 
+	    std::cout<<"DIE is true now \n";
+	    pthread_exit(NULL);
+	}else{
+	    std::cout<<"NOT DIE"<<"\n";
+	}
+
+	for (i = 0; i < 4; i++) {
 	    current_input_port = in_port[i];
 	    if (current_input_port.flag) {
 		pthread_mutex_lock(&current_input_port.mutex);
 		forward_packet_to_port(current_input_port.packet);
 		pthread_mutex_unlock(&current_input_port.mutex);
-		current_input_port.flag = false;
+		current_input_port.flag = FALSE;
 	    }
+	    usleep(1000000);
 	}
-	usleep(100000);
+
     }
 
 }
@@ -48,9 +54,8 @@ void forward_packet_to_port(packet_t packet) {
 	pthread_mutex_lock(&out_port[dest_port].mutex);
 	out_port[dest_port].packet = packet;
 	pthread_mutex_unlock(&out_port[dest_port].mutex);
-	out_port[dest_port].flag = true;
+	out_port[dest_port].flag = TRUE;
     } 
-    return;
 }
 
 /* Gets a port number from a packet*/
