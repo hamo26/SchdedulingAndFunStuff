@@ -18,7 +18,7 @@ void *switch_thread_routine(void *arg)
    /* Add your code here */
   //iterate over all input ports.
   int i;
-  t_port current_input_port;			
+  port_t current_input_port;			
   for (i = 0; i < 4; i++) {
   	current_input_port = in_port[i];
 	if (current_input_port.flag) {

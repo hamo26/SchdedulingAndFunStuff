@@ -22,4 +22,8 @@ void switch_add_entry(ip_address_t *address,
 
 void *switch_thread_routine(void *arg);
 
-void switch_free();                      
+void switch_free();      
+
+int get_port_from_packet(packet_t* packet);    
+
+void forward_packet_to_port(packet_t packet);            
