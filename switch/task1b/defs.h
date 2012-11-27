@@ -44,9 +44,11 @@
 #define BOOL char
 #define TRUE ((BOOL)1)
 #define FALSE ((BOOL)0)
+#define THREAD_SLEEP_TIME 500
 
 #include "misc.h"
 #include "cam.h"
 #include "switch.h"
 #include "harness.h"
 #include "ext.h"
+

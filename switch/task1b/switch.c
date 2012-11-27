@@ -12,33 +12,38 @@
  ******************************************************/
 
 #include "defs.h"
-#include "time.h"
 
 void *switch_thread_routine(void *arg)
 {
    /* Add your code here */
   //iterate over all input ports.
   int i;
-  t_port* current_input_port;			
+  t_port current_input_port;			
   for (i = 0; i < 4; i++) {
   	current_input_port = in_port[i];
-	if (current_input_port->flag) {
+	if (current_input_port.flag) {
 		pthread_mutex_lock(current_input_port->mutex);
+		forward_packet_to_port(current_input_port.packet);
+		current_input_port.flag = false;
+		pthread_mutex_unlock(current_input_port->mutex);
 	}
   }
-				   
+  usleep(THREAD_SLEEP_TIME);				   
 }
 
-void forward_packet_to_port(packet_t* packet) {
+void forward_packet_to_port(packet_t packet) {
 //This should be thread safe because only one thread deals with an output port.
-
+	int dest_port;	
+	dest_port = get_port_from_packet(packet);
+	if (out_port[dest_port].flag) {
+		out_port[dest_port].packet = packet;
+	} 
+	return;
 }
 
 /* Gets a port number from a packet*/
 int get_port_from_packet(packet_t* packet) {
-
 	return cam_lookup_address(&(packet->address));
-
 }
 
 void switch_init()
