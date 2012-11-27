@@ -35,8 +35,9 @@ void forward_packet_to_port(packet_t packet) {
 //This should be thread safe because only one thread deals with an output port.
 	int dest_port;	
 	dest_port = get_port_from_packet(packet);
-	if (out_port[dest_port].flag) {
+	if (!out_port[dest_port].flag) {
 		out_port[dest_port].packet = packet;
+		out_port[dest_port].flag = true;
 	} 
 	return;
 }
