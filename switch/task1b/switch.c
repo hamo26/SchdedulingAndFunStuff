@@ -37,6 +37,8 @@ void forward_packet_to_port(packet_t* packet) {
 /* Gets a port number from a packet*/
 int get_port_from_packet(packet_t* packet) {
 
+	return cam_lookup_address(&(packet->address));
+
 }
 
 void switch_init()
