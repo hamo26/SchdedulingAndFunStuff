@@ -36,6 +36,7 @@ void *switch_thread_routine(void *arg)
 	}
 	usleep(100000);
     }
+
 }
 
 void forward_packet_to_port(packet_t packet) {
