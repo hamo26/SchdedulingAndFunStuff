@@ -27,3 +27,11 @@ void switch_free();
 int get_port_from_packet(packet_t* packet);    
 
 void forward_packet_to_port(packet_t packet);            
+
+void add_packet_to_buffer(packet_t packet);
+
+packet_t get_packet_from_buffer();
+
+void *read_in_port_packet(void* p);
+
+void *read_out_port_packet(void* p);

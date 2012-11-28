@@ -13,54 +13,107 @@
 
 #include "defs.h"
 
+#define SIZE 100
+
+pthread_mutex_t region_mutex = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t space_available = PTHREAD_COND_INITIALIZER;
+pthread_cond_t data_available = PTHREAD_COND_INITIALIZER;
+
+packet_t network_buffer[SIZE];  
+int size = 0;  /* number of full elements */
+int front,rear=0;  /* queue */
+
 void *switch_thread_routine(void *arg)
 {
-    /* Add your code here */
-    //iterate over all input ports.
-    while(1){
-	int i;
-	port_t current_input_port;			
+        pthread_t in_port_thread; 
+	pthread_t out_port_thread; 
 	
-	printf( "DIE:%d\n", die_flag );
-
-	if (die_flag == 0) { 
-	    std::cout<<"DIE is true now \n";
-	    pthread_exit(NULL);
-	}else{
-	    std::cout<<"NOT DIE"<<"\n";
-	}
-
-	for (i = 0; i < 4; i++) {
-	    current_input_port = in_port[i];
-	    if (current_input_port.flag) {
-		pthread_mutex_lock(&current_input_port.mutex);
-		forward_packet_to_port(current_input_port.packet);
-		pthread_mutex_unlock(&current_input_port.mutex);
-		current_input_port.flag = FALSE;
-	    }
-	    usleep(1000000);
-	}
-
-    }
-
+	pthread_create(&in_port_thread,NULL,read_in_port_packet,NULL);
+	pthread_create(&out_port_thread,NULL,read_out_port_packet,NULL);
+	pthread_join(in_port_thread,NULL);
+	pthread_exit(NULL);
 }
 
-void forward_packet_to_port(packet_t packet) {
+void forward_packet_to_port(packet_t packet, int destination) {
     //This should be thread safe because only one thread deals with an output port.
-    int dest_port;	
-    dest_port = get_port_from_packet(&packet);
-    std::cout<<"dest_port:"<<dest_port<<"\n";
-    if (!out_port[dest_port].flag) {
-	pthread_mutex_lock(&out_port[dest_port].mutex);
-	out_port[dest_port].packet = packet;
-	pthread_mutex_unlock(&out_port[dest_port].mutex);
-	out_port[dest_port].flag = TRUE;
-    } 
+    std::cout<<"dest_port:"<<destination<<"\n";
+    out_port[destination].packet = packet;
+    out_port[destination].flag = TRUE;
+    printf("Packet delivered\n");
 }
 
 /* Gets a port number from a packet*/
 int get_port_from_packet(packet_t* packet) {
     return cam_lookup_address(&(packet->address));
+}
+
+void add_packet_to_buffer(packet_t packet){
+  network_buffer[rear] = packet;
+  rear = (rear+1) % SIZE;
+  size++;
+}
+
+packet_t get_packet_from_buffer(){
+  packet_t packet;
+  packet = network_buffer[front];
+  front= (front+1) % SIZE;
+  size--;
+  return packet;
+}
+ 
+void *read_in_port_packet(void* p)
+{
+	while(1){
+		int i;
+		port_t current_input_port;			
+	
+		printf( "DIE:%d\n", die_flag );
+
+		if (die_flag == 0) { 
+			std::cout<<"DIE is true now \n";
+			pthread_exit(NULL);
+		}else{
+			std::cout<<"NOT DIE"<<"\n";
+		}
+
+		for (i = 0; i < 4; i++) {
+			current_input_port = in_port[i];
+			if (current_input_port.flag) {
+				pthread_mutex_lock(&current_input_port.mutex);
+				pthread_mutex_lock(&region_mutex);
+				if (size == SIZE) {	
+					printf("The buffer is full\n");
+					pthread_cond_wait(&space_available,&region_mutex);
+				}
+				add_packet_to_buffer(current_input_port.packet);
+				pthread_cond_signal(&data_available);
+				pthread_mutex_unlock(&region_mutex);
+				//Add logic here to read from network port.
+				current_input_port.flag = TRUE;
+				pthread_mutex_unlock(&current_input_port.mutex);
+			}
+		}
+
+    }
+}
+
+void *read_out_port_packet(void* p)
+{
+   packet_t packet;
+   int dest_port;
+   while (1) {
+	   if (size == 0) {
+		   pthread_cond_wait(&data_available,&region_mutex); 
+	   }
+	   pthread_mutex_lock(&out_port[dest_port].mutex);
+	   if (out_port[dest_port].flag != TRUE) {
+		packet = get_packet_from_buffer();
+		dest_port = get_port_from_packet(&packet);
+		forward_packet_to_port(packet, dest_port);
+		pthread_cond_signal(&space_available);
+	   } 
+	   pthread_mutex_unlock(&out_port[dest_port].mutex);
+	}
 }
 
 void switch_init()
