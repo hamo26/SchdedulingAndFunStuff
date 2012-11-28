@@ -76,9 +76,10 @@ void *read_in_port_packet(void* p)
 		}
 
 		for (i = 0; i < 4; i++) {
+			printf("I am here.\n");
 			current_input_port = in_port[i];
+			pthread_mutex_lock(&current_input_port.mutex);
 			if (current_input_port.flag == TRUE) {
-				pthread_mutex_lock(&current_input_port.mutex);
 				pthread_mutex_lock(&region_mutex);
 				if (size == SIZE) {	
 					printf("The buffer is full\n");
@@ -103,19 +104,21 @@ void *read_out_port_packet(void* p)
    packet_t packet;
    int dest_port;
    while (1) {
-	   if (size == 0) {
-		   printf("Thread out locked.\n");
-		   pthread_cond_wait(&data_available,&region_mutex);
-		   printf("Thread out unlocked.\n"); 
-	   }
 	   pthread_mutex_lock(&out_port[dest_port].mutex);
 	   if (out_port[dest_port].flag != TRUE) {
-		pthread_mutex_lock(&region_mutex);
+		printf("Attempting to get mutext for out thread\n");
+		 pthread_mutex_lock(&region_mutex);
+		 if (size == 0) {
+                   printf("Thread out locked.\n");
+                   pthread_cond_wait(&data_available,&region_mutex);
+                   printf("Thread out unlocked.\n");
+	         }
+
 		packet = get_packet_from_buffer();
+		pthread_cond_signal(&space_available);
 		pthread_mutex_unlock(&region_mutex);
 		dest_port = get_port_from_packet(&packet);
 		forward_packet_to_port(packet, dest_port);
-		pthread_cond_signal(&space_available);
 	   } 
 	   pthread_mutex_unlock(&out_port[dest_port].mutex);
 	}
