@@ -36,9 +36,9 @@ void *switch_thread_routine(void *arg)
 
 void forward_packet_to_port(packet_t packet, int destination) {
     std::cout<<"dest_port:"<<destination<<"\n";
-    out_port[destination].packet = packet;
+    packet_copy(&packet, &(out_port[destination].packet));
+    printf("Forwarding packet: "); packet_print(&packet);
     out_port[destination].flag = TRUE;
-    printf("Packet delivered\n");
 }
 
 /* Gets a port number from a packet*/
@@ -46,15 +46,15 @@ int get_port_from_packet(packet_t* packet) {
     return cam_lookup_address(&(packet->address));
 }
 
-void add_packet_to_buffer(packet_t packet){
-  network_buffer[rear] = packet;
+void add_packet_to_buffer(packet_t* packet){
+  packet_copy(packet,&(network_buffer[rear]));
   rear = (rear+1) % SIZE;
   size++;
 }
 
 packet_t get_packet_from_buffer(){
   packet_t packet;
-  packet = network_buffer[front];
+  packet_copy(&(network_buffer[front]),&packet);
   front= (front+1) % SIZE;
   size--;
   return packet;
@@ -71,11 +71,10 @@ void *read_in_port_packet(void* p)
 		}
 
 		for (i = 0; i < 4; i++) {
-			printf("Reading from port %d\n",i);
-			pthread_mutex_lock(&(in_port[i].mutex));
-
+			//printf("Reading from port %d\n",i);
 
 			if (in_port[i].flag == TRUE) {
+				port_lock(&(in_port[i]));
 				printf("Adding data to buffer from port %d\n",i);
 				pthread_mutex_lock(&region_mutex);
 				if (size == SIZE) {	
@@ -84,12 +83,12 @@ void *read_in_port_packet(void* p)
 					pthread_cond_wait(&space_available,&region_mutex);
 					printf("Thread in unlocked\n");
 				}
-				add_packet_to_buffer(in_port[i].packet);
+				add_packet_to_buffer(&(in_port[i].packet));
 				pthread_cond_signal(&data_available);
 				pthread_mutex_unlock(&region_mutex);
 				//Add logic here to read from network port.
 				in_port[i].flag = FALSE;
-				pthread_mutex_unlock(&(in_port[i].mutex));
+				port_unlock(&(in_port[i]));
 			}
 			
 		}
@@ -104,9 +103,9 @@ void *read_out_port_packet(void* p)
 	   packet_t packet;
 	   int dest_port;
 	   BOOL flag = TRUE;
-	   printf("Attempting to get lock for regional mutex in out thread\n");
+//	   printf("Attempting to get lock for regional mutex in out thread\n");
 	   pthread_mutex_lock(&region_mutex);
-	   printf("Successfuly retrieved lock for regional mutex in out thread\n");
+//	   printf("Successfuly retrieved lock for regional mutex in out thread\n");
            if (size == 0) {
            	printf("Thread out locked.\n");
                 pthread_cond_wait(&data_available,&region_mutex);
@@ -116,16 +115,15 @@ void *read_out_port_packet(void* p)
            packet = get_packet_from_buffer();
            pthread_cond_signal(&space_available);
            pthread_mutex_unlock(&region_mutex);
-               
+           
 	   dest_port = get_port_from_packet(&packet);
 
-	   printf("Attempting to get out port lock in out thread\n");
-	   //pthread_mutex_lock(&out_port[dest_port].mutex);
-	   printf("successfuly retrieved lock for out port in out thread\n");	  
-	   while (out_port[dest_port].flag == flag) {printf("Waiting for dest port to become available\n");}
-           pthread_mutex_lock(&out_port[dest_port].mutex);
+//	   printf("Attempting to get out port lock in out thread\n");
+//	   printf("successfuly retrieved lock for out port in out thread\n");	  
+	   while (out_port[dest_port].flag == flag) {}
+           port_lock(&(out_port[dest_port]));
 	   forward_packet_to_port(packet, dest_port);
-	   pthread_mutex_unlock(&out_port[dest_port].mutex);
+	   port_unlock(&(out_port[dest_port]));
 	}
 }
 
