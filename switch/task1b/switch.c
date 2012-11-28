@@ -64,7 +64,6 @@ void *read_in_port_packet(void* p)
 {
 	while(1){
 		int i;
-		port_t current_input_port;			
 	
 		if (die_flag == 0) { 
 			std::cout<<"DIE is true now \n";
@@ -73,11 +72,11 @@ void *read_in_port_packet(void* p)
 
 		for (i = 0; i < 4; i++) {
 			printf("Reading from port %d\n",i);
-			current_input_port = in_port[i];
-			pthread_mutex_lock(&current_input_port.mutex);
+			pthread_mutex_lock(&(in_port[i].mutex));
 
 
-			if (current_input_port.flag == TRUE) {
+			if (in_port[i].flag == TRUE) {
+				printf("Adding data to buffer from port %d\n",i);
 				pthread_mutex_lock(&region_mutex);
 				if (size == SIZE) {	
 					printf("The buffer is full\n");
@@ -85,12 +84,12 @@ void *read_in_port_packet(void* p)
 					pthread_cond_wait(&space_available,&region_mutex);
 					printf("Thread in unlocked\n");
 				}
-				add_packet_to_buffer(current_input_port.packet);
+				add_packet_to_buffer(in_port[i].packet);
 				pthread_cond_signal(&data_available);
 				pthread_mutex_unlock(&region_mutex);
 				//Add logic here to read from network port.
-				current_input_port.flag = FALSE;
-				pthread_mutex_unlock(&current_input_port.mutex);
+				in_port[i].flag = FALSE;
+				pthread_mutex_unlock(&(in_port[i].mutex));
 			}
 			
 		}
@@ -104,6 +103,7 @@ void *read_out_port_packet(void* p)
 	   
 	   packet_t packet;
 	   int dest_port;
+	   BOOL flag = TRUE;
 	   printf("Attempting to get lock for regional mutex in out thread\n");
 	   pthread_mutex_lock(&region_mutex);
 	   printf("Successfuly retrieved lock for regional mutex in out thread\n");
@@ -120,10 +120,10 @@ void *read_out_port_packet(void* p)
 	   dest_port = get_port_from_packet(&packet);
 
 	   printf("Attempting to get out port lock in out thread\n");
-	   pthread_mutex_lock(&out_port[dest_port].mutex);
+	   //pthread_mutex_lock(&out_port[dest_port].mutex);
 	   printf("successfuly retrieved lock for out port in out thread\n");	  
-	   while (out_port[dest_port].flag == TRUE) {}
-
+	   while (out_port[dest_port].flag == flag) {printf("Waiting for dest port to become available\n");}
+           pthread_mutex_lock(&out_port[dest_port].mutex);
 	   forward_packet_to_port(packet, dest_port);
 	   pthread_mutex_unlock(&out_port[dest_port].mutex);
 	}
