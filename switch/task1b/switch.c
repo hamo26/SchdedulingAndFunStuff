@@ -35,7 +35,6 @@ void *switch_thread_routine(void *arg)
 }
 
 void forward_packet_to_port(packet_t packet, int destination) {
-    //This should be thread safe because only one thread deals with an output port.
     std::cout<<"dest_port:"<<destination<<"\n";
     out_port[destination].packet = packet;
     out_port[destination].flag = TRUE;
@@ -78,18 +77,20 @@ void *read_in_port_packet(void* p)
 
 		for (i = 0; i < 4; i++) {
 			current_input_port = in_port[i];
-			if (current_input_port.flag) {
+			if (current_input_port.flag == TRUE) {
 				pthread_mutex_lock(&current_input_port.mutex);
 				pthread_mutex_lock(&region_mutex);
 				if (size == SIZE) {	
 					printf("The buffer is full\n");
+				       	printf("Thread in locked\n");
 					pthread_cond_wait(&space_available,&region_mutex);
+					printf("Thread in unlocked\n");
 				}
 				add_packet_to_buffer(current_input_port.packet);
 				pthread_cond_signal(&data_available);
 				pthread_mutex_unlock(&region_mutex);
 				//Add logic here to read from network port.
-				current_input_port.flag = TRUE;
+				current_input_port.flag = FALSE;
 				pthread_mutex_unlock(&current_input_port.mutex);
 			}
 		}
@@ -103,11 +104,15 @@ void *read_out_port_packet(void* p)
    int dest_port;
    while (1) {
 	   if (size == 0) {
-		   pthread_cond_wait(&data_available,&region_mutex); 
+		   printf("Thread out locked.\n");
+		   pthread_cond_wait(&data_available,&region_mutex);
+		   printf("Thread out unlocked.\n"); 
 	   }
 	   pthread_mutex_lock(&out_port[dest_port].mutex);
 	   if (out_port[dest_port].flag != TRUE) {
+		pthread_mutex_lock(&region_mutex);
 		packet = get_packet_from_buffer();
+		pthread_mutex_unlock(&region_mutex);
 		dest_port = get_port_from_packet(&packet);
 		forward_packet_to_port(packet, dest_port);
 		pthread_cond_signal(&space_available);
