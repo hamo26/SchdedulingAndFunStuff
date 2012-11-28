@@ -66,19 +66,17 @@ void *read_in_port_packet(void* p)
 		int i;
 		port_t current_input_port;			
 	
-		printf( "DIE:%d\n", die_flag );
-
 		if (die_flag == 0) { 
 			std::cout<<"DIE is true now \n";
 			pthread_exit(NULL);
-		}else{
-			std::cout<<"NOT DIE"<<"\n";
 		}
 
 		for (i = 0; i < 4; i++) {
-			printf("I am here.\n");
+			printf("Reading from port %d\n",i);
 			current_input_port = in_port[i];
 			pthread_mutex_lock(&current_input_port.mutex);
+
+
 			if (current_input_port.flag == TRUE) {
 				pthread_mutex_lock(&region_mutex);
 				if (size == SIZE) {	
@@ -102,13 +100,13 @@ void *read_in_port_packet(void* p)
 
 void *read_out_port_packet(void* p)
 {
-   printf("HERE!!!!");
    while (1) {
 	   
 	   packet_t packet;
 	   int dest_port;
 	   printf("Attempting to get lock for regional mutex in out thread\n");
 	   pthread_mutex_lock(&region_mutex);
+	   printf("Successfuly retrieved lock for regional mutex in out thread\n");
            if (size == 0) {
            	printf("Thread out locked.\n");
                 pthread_cond_wait(&data_available,&region_mutex);
@@ -121,9 +119,9 @@ void *read_out_port_packet(void* p)
                
 	   dest_port = get_port_from_packet(&packet);
 
-	   printf("Attempting to get out put port lock\n");
+	   printf("Attempting to get out port lock in out thread\n");
 	   pthread_mutex_lock(&out_port[dest_port].mutex);
-	  
+	   printf("successfuly retrieved lock for out port in out thread\n");	  
 	   while (out_port[dest_port].flag == TRUE) {}
 
 	   forward_packet_to_port(packet, dest_port);
