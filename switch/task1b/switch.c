@@ -65,7 +65,7 @@ void *read_in_port_packet(void* p)
 	while(1){
 		int i;
 	
-		if (die_flag == 0) { 
+		if (die == TRUE) { 
 			std::cout<<"DIE is true now \n";
 			pthread_exit(NULL);
 		}

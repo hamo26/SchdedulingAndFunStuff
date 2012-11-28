@@ -371,7 +371,6 @@ void *harness_thread_routine(void *arg)
       thread will see this and die */
 
    die = TRUE;
-   die_flag = 0;
 }
 
 

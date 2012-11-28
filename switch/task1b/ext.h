@@ -21,4 +21,3 @@
 extern port_t in_port[4];
 extern port_t out_port[4];
 extern BOOL die;
-extern int die_flag;

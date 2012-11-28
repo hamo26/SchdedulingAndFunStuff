@@ -16,7 +16,6 @@
 port_t in_port[4];
 port_t out_port[4];
 BOOL die;
-int die_flag;
 
 main()
 {
@@ -40,7 +39,6 @@ main()
    harness_init();
 
    die = FALSE;
-   die_flag = 1;
 
    printf("Starting switch thread\n");
    status = pthread_create(&switch_thread_id,
@@ -77,7 +75,7 @@ main()
       exit(0);
    }
 
-   while (die_flag != 0) {
+   while (!die) {
       sleep(1);
    }
 
