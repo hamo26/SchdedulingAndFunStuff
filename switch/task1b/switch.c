@@ -118,12 +118,16 @@ void *read_out_port_packet(void* p)
            
 	   dest_port = get_port_from_packet(&packet);
 
-//	   printf("Attempting to get out port lock in out thread\n");
-//	   printf("successfuly retrieved lock for out port in out thread\n");	  
-	   while (out_port[dest_port].flag == flag) {}
-           port_lock(&(out_port[dest_port]));
-	   forward_packet_to_port(packet, dest_port);
-	   port_unlock(&(out_port[dest_port]));
+	   while (1) {
+		port_lock(&(out_port[dest_port]));
+	        if (out_port[dest_port].flag) {
+			port_unlock(&(out_port[dest_port]));
+		} else {
+	   		forward_packet_to_port(packet, dest_port);
+	   		port_unlock(&(out_port[dest_port]));
+			break;
+		}
+	    }
 	}
 }
 
