@@ -18,7 +18,7 @@
 
 typedef struct voq_buffer_struct {
 	pthread_mutex_t mutex;
-	packet_t buffer[SIZE];
+	packet_t* buffer[SIZE];
 } VOQBUFFER;
 	
 
@@ -46,3 +46,7 @@ packet_t get_packet_from_voq(int input_port, int destination_port);
 void *read_in_port_packet(void* p);
 
 void *read_out_port_packet(void* p);
+
+void *drive_time_cell(void* p);
+
+void *schedule_rr(void* p);
