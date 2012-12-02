@@ -14,15 +14,7 @@
  *
  ******************************************************/
 
-#define SIZE 100
 
-typedef struct network_buffer {
-  pthread_mutex_t region_mutex;
-  pthread_cond_t space_available;
-  pthread_cond_t data_available;
-  packet_t network_buffer[SIZE];
-} network_buffer;
-  
 void switch_init();
 
 void switch_add_entry(ip_address_t *address,
@@ -36,11 +28,14 @@ int get_port_from_packet(packet_t* packet);
 
 void forward_packet_to_port(packet_t packet);            
 
-void add_packet_to_buffer(network_buffer buffer, packet_t packet);
+void add_packet_to_buffer(packet_t network_buffer[], packet_t packet);
 
-packet_t get_packet_from_buffer(network_buffer buffer);
+packet_t get_packet_from_buffer(packet_t network_buffer[]);
+
+void add_packet_to_voq(int input_port, int destination_port, packet_t* packet);
+
+packet_t get_packet_from_voq(int input_port, int destination_port);
 
 void *read_in_port_packet(void* p);
 
 void *read_out_port_packet(void* p);
-
