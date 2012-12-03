@@ -13,33 +13,55 @@
 
 #include "defs.h"
 
-#define SIZE 100
 
-pthread_mutex_t main_buffer_region_mutex = PTHREAD_MUTEX_INITIALIZER;
-pthread_cond_t main_buffer_space_available = PTHREAD_COND_INITIALIZER;
-pthread_cond_t main_buffer_data_available = PTHREAD_COND_INITIALIZER;
+//These are the 16 voq buffers that the rr thread reads from. Initialized below.
+VOQBUFFER voq_buffer[4][4];
 
-//follows the format [input_port_#][virtual_output_queue_#].
-pthread_mutex_t voq_mutex_[4][4] = {PTHREAD_MUTEX_INITIALIZER};
-pthread_cond_t voq_space_available[4][4] = {PTHREAD_COND_INITIALIZER};
-pthread_cond_t voq_data_available[4][4] = {PTHREAD_COND_INITIALIZER};
-
-packet_t base_network_buffer[SIZE];  
-packet_t voq_network_buffer[4][4][SIZE];
-
-int voq_size[4][4] = {0};
+//These are the voq buffer parameters used to get, pop and block the queue.
+Int voq_size[4][4] = {0};
 int voq_front[4][4] = {0};
 int voq_rear[4][4] = {0};
 
-int size = 0;  /* number of full elements */
-int front,rear=0;  /* queue */
+//These are the input and output round robin schedules. It is easier to use arrays for updating the position of the highest priority. Use (granted/accepted port) modulus 4 to point to the next highest priority.
+
+int rr_schedule_input[4][4] =  {{1, 2, 3, 4},
+			       {1, 2, 3, 4},
+			       {1, 2, 3, 4},
+			       {1, 2, 3, 4}};
+
+int rr_schedule_output[4][4] =    {{1, 2, 3, 4},
+                                   {1, 2, 3, 4},
+                                   {1, 2, 3, 4},
+                                   {1, 2, 3, 4}};
 
 
 void *switch_thread_routine(void *arg)
 {
+	//This is the input thread that puts directly on the voqs
         pthread_t in_port_thread; 
-	pthread_t out_port_thread; 
 	
+	//We may not need an out put thread. The rr thread might be able to put 	//directly on the ports.
+	pthread_t out_port_thread;
+	
+	//This is the rr algorithm thread doing most of the work. Replace what
+	//is currently the out_thread with the rr thread.
+	pthread_t rr_thread; 
+	
+	//This is the driver thread that keeps track of cell time. Take a look
+	//at the pthreads library to figure out how it could suspend and restart
+	//the rr_thread.
+	pthread_t driver_thread;
+
+	int i,j;
+	
+	//initialize voq buffer mutexes. Required when using a struct.
+	for (i=0; i<4; i++) {
+		for (j=0; j<4; j++) {
+			voq_buffer[i][j].mutex = PTHREAD_MUTEX_INITIALIZER;
+		}
+	}
+
+	//The driver thread needs to somehow be the parent thread of the rr_thre	//ad. The input thread can remain busy.	
 	pthread_create(&in_port_thread,NULL,read_in_port_packet,NULL);
 	pthread_create(&out_port_thread,NULL,read_out_port_packet,NULL);
 	pthread_join(in_port_thread,NULL);
@@ -58,33 +80,34 @@ int get_port_from_packet(packet_t* packet) {
     return cam_lookup_address(&(packet->address));
 }
 
-void add_packet_to_buffer(packet_t network_buffer[], packet_t* packet){
-  packet_copy(packet,&(network_buffer[rear]));
-  rear = (rear+1) % SIZE;
-  size++;
+//Add a packet to a specific voq.
+void add_packet_to_voq(int input_port, packet_t packet) {
+	int dest_port = get_port_from_packet(&packet);
+	pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
+	if (!voq_size[input_port][dest_port] == SIZE) {
+		packet_copy(&packet, &(voq_buffer[input_port][dest_port].buffer));
+		voq_rear[input_port][dest_port] = (voq_rear[input_port][dest_port] + 1) % SIZE;
+		voq_size[input_port][dest_port]++;
+	}
+	pthread_mutex_unlock(&(voq_buffer[input_port][dest_port].mutex));
 }
 
-void add_packet_to_voq(int input_port, int destination_port, packet_t* packet) {
-	packet_copy(packet, &(voq_network_buffer[input_port][destination_port][voq_rear[input_port][destination_port]]));
-	voq_rear[input_port][destination_port] = voq_rear[input_port][destination_port] % SIZE;
-	voq_size[input_port][destination_port]++;
-}
-
-packet_t get_packet_from_voq(int input_port, int destination_port) {
-	packet_t packet;
-	packet_copy(&(voq_network_buffer[input_port][destination_port][voq_front[input_port][destination_port]]), &packet);
-	voq_front[input_port][destination_port] = (voq_front[input_port][destination_port]+1) % SIZE;
+//Get a packet from a specific voq.
+packet_t* get_packet_from_buffer(int input_port, int dest_port) {
+	pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
+	packet_t* packet;
+	if (!voq_size[input_port][dest_port] == 0) {
+		packet_copy(&(voq_buffer[input_port][dest_port].buffer), packet);
+		voq_front[input_port][dest_port] = (voq_front[input_port][dest_port] + 1) % SIZE;
+		voq_size[input_port][dest_port]--;
+	} else {
+		packet = NULL;
+	}
+	pthread_mutex_unlock(&(voq_buffer[input_port][dest_port].mutex));
 	return packet;
 }
 
-packet_t get_packet_from_buffer(packet_t network_buffer[]){
-  packet_t packet;
-  packet_copy(&(network_buffer[front]),&packet);
-  front= (front+1) % SIZE;
-  size--;
-  return packet;
-}
- 
+//THis needs to be re written completely to add packets directly to voq. But use this code as an example.
 void *read_in_port_packet(void* p)
 {
 	while(1){
@@ -121,6 +144,7 @@ void *read_in_port_packet(void* p)
     }
 }
 
+//This needs to be re written completely to use the RR thread. We also need something for the driver thread in another method.
 void *read_out_port_packet(void* p)
 {
    while (1) {

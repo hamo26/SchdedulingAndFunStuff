@@ -13,12 +13,14 @@
  *  You won't need to modify any of the other other files.
  *
  ******************************************************/
+
+#define SIZE 100
+
 typedef struct voq_buffer_struct {
 	pthread_mutex_t mutex;
-	packet_t buffer[size];
-	} VOQBUFFER;
+	packet_t buffer[SIZE];
+} VOQBUFFER;
 	
-VOQBUFFER voq_buffer[4][4];
 
 void switch_init();
 
