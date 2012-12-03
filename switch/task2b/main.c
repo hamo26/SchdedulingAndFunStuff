@@ -16,6 +16,7 @@
 port_t in_port[4];
 port_t out_port[4];
 BOOL die;
+int cell_flag = 0;
 
 main()
 {

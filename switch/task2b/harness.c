@@ -72,12 +72,14 @@ BOOL received_message[4][NUMBER_PACKETS_TO_SEND];
 
 static void short_sleep()
 {
+   cell_flag = 1;
    struct timespec delay_time, what_time_is_it;
 
    delay_time.tv_sec = 0;
    delay_time.tv_nsec = HARNESS_SPEED;
 
    nanosleep(&delay_time, &what_time_is_it);
+   cell_flag = 0;
 }
 
 /*-------------------------------------------------------------------------*

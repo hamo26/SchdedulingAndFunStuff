@@ -21,3 +21,4 @@
 extern port_t in_port[4];
 extern port_t out_port[4];
 extern BOOL die;
+extern int cell_flag; // Used to signal rr_thread for cell time

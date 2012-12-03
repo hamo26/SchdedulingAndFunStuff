@@ -22,9 +22,8 @@ int voq_size[4][4] = {0};
 int voq_front[4][4] = {0};
 int voq_rear[4][4] = {0};
 
-// This is used to count how many packet we have already transfered in current time cell. Reset this count each time driver_thread flags.
-// FIXME Need additional mutex for this counter
-int transfer_count = 0;
+// This is used to tell the first iteration of the cell time
+int cell_first = 1;
 
 //These are the input and output round robin schedules. It is easier to use arrays for updating the position of the highest priority. Use (granted/accepted port) modulus 4 to point to the next highest priority.
 
@@ -51,7 +50,8 @@ void *switch_thread_routine(void *arg)
     //This is the driver thread that keeps track of cell time. Take a look
     //at the pthreads library to figure out how it could suspend and restart
     //the rr_thread.
-    pthread_t driver_thread;
+    pthread_t rr_thread; 
+    pthread_create(&rr_thread, NULL, schedule_rr, NULL);
 
     //initialize voq buffer mutexes. Required when using a struct.
     for (int i=0; i<4; i++) {
@@ -71,99 +71,105 @@ void *switch_thread_routine(void *arg)
     //The driver thread needs to somehow be the parent thread of the rr_thre
     //ad. The input thread can remain busy.	
     pthread_create(&in_port_thread, NULL, read_in_port_packet, NULL);
-    pthread_create(&driver_thread, NULL, drive_time_cell, NULL);
     pthread_join(in_port_thread, NULL);
     pthread_exit(NULL);
 }
 
-// This is used to drive rr_thread and signal it based on timer
-void *drive_time_cell(void* p){
-    //This is the rr algorithm thread doing most of the work. Replace what
-    //is currently the out_thread with the rr thread.
-    pthread_t rr_thread; 
-    pthread_create(&rr_thread, NULL, schedule_rr, NULL);
-    // TODO We need somehow simulate the cell timer to flush the transfer_counter.
-}
-
 void *schedule_rr(void* p){
     while(1){
-	// 1. Loop through voqs and send request for each packet
-	for(int i=0; i<4; i++){
-	    for(int j=0; j<4; j++){
-		// Loop through the head packet in this inport buffer(VOQ)
-		// Send the request from this inport to the outport request que
-		if( voq_buffer[i][j].buffer.size() != 0){// Make sure the VOQ is not empty
-		    // Write the inport NO. to the correct output request que
-		    output_request_queue[j].push_back(i+1);
-		}
-		cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
-	    }
+
+	while(cell_flag == 0){
+	    // Reset all buffers
+
 	}
 
-	// 2. Loop through outputs request placeholder and choose the one the rph-array based on the prio. And send grants to grant-place-holder of the ports
-	for(int i=0; i<4; i++){
-	    int min_distance = 1000;
-	    int high_inport = 0; // We find something matches and update it, otherwise it is 0 as a flag.
-	    int output_port = i+1;
-	    for(int j=0; j<output_request_queue[i].size(); j++){
-		// Check the prio.
-		int out_prio = rr_schedule_output[i];
-		int input_port = output_request_queue[i][j];
-		// Compare prio with in_port and choose the nearest one
-		if(input_port < out_prio) input_port += 4;
-		int distance = input_port - out_prio;
-		if(distance < min_distance){
-		    min_distance = distance;
-		    if(input_port > 4) input_port -= 4;
-		    high_inport = input_port;
+	// We only process RR in cell time (nano sleep in harness)
+	while(cell_flag == 1){
+	    // 1. Loop through voqs and send request for each packet
+	    for(int i=0; i<4; i++){
+		for(int j=0; j<4; j++){
+		    // Loop through the head packet in this inport buffer(VOQ)
+		    // Send the request from this inport to the outport request que
+		    if( voq_buffer[i][j].buffer.size() != 0){// Make sure the VOQ is not empty
+			// Write the inport NO. to the correct output request que
+			// TODO check if the output has been written in this cell time
+			output_request_queue[j].push_back(i+1);
+		    }
+		    cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
 		}
 	    }
-	    if(high_inport != 0){//We found the next highest inport
-		input_grant_queue[high_inport-1].push_back(output_port);
-	    }
-	    // TODO Do we need flush the buffer here?
-	    output_request_queue[i].clear();
-	    cout << "Highest inport for outport " << i<<": "<< high_inport<<"\n";
-	}
 
-	// 3. Loop through each input port's grant-place-holder and choose which to accept based on the prio. And finally transfer the packet to output port.
-	for(int i=0; i<4; i++){
-	    int min_distance = 1000;
-	    int high_outport = 0; // Same as above
-	    int input_port = i+1;
-	    for(int j=0; j<input_grant_queue[i].size(); j++){
-		int in_prio = rr_schedule_input[i];
-		int output_port = input_grant_queue[i][j];
-		// Compare same as above
-		if(output_port < in_prio) output_port += 4;
-		int distance = output_port - in_prio;
-		if(distance < min_distance){
-		    min_distance = distance;
-		    if(output_port > 4) output_port -= 4;
-		    high_outport = output_port;
-		}
-	    }
-	    cout << "Highest outport for inport " << i<<": " << high_outport<<"\n";
-	    if(high_outport != 0){//Found the outport and match
-		// Copy the packet
-		while(1){
-		    port_lock(&(out_port[high_outport-1]));
-		    if(out_port[high_outport-1].flag){
-			port_unlock(&(out_port[high_outport-1]));
-		    }else{
-			packet_t* packet = get_packet_from_voq(input_port-1, high_outport-1);
-			forward_packet_to_port(packet, high_outport-1);
-			port_unlock(&(out_port[high_outport-1]));
-			break;
+	    // 2. Loop through outputs request placeholder and choose the one the rph-array based on the prio. And send grants to grant-place-holder of the ports
+	    for(int i=0; i<4; i++){
+		int min_distance = 1000;
+		int high_inport = 0; // We find something matches and update it, otherwise it is 0 as a flag.
+		int output_port = i+1;
+		for(int j=0; j<output_request_queue[i].size(); j++){
+		    // Check the prio.
+		    int out_prio = rr_schedule_output[i];
+		    int input_port = output_request_queue[i][j];
+		    // Compare prio with in_port and choose the nearest one
+		    if(input_port < out_prio) input_port += 4;
+		    int distance = input_port - out_prio;
+		    if(distance < min_distance){
+			min_distance = distance;
+			if(input_port > 4) input_port -= 4;
+			high_inport = input_port;
 		    }
 		}
-		// Update prio for both inport and outport
-		rr_schedule_output[high_outport-1] = high_outport + rr_schedule_output[high_outport-1]%4;
-		if(rr_schedule_output[high_outport-1] > 4) rr_schedule_output[high_outport-1] -= 4;
-		rr_schedule_input[i] = i + rr_schedule_input[i]%4;
-		if(rr_schedule_input[i] > 4) rr_schedule_input[i] -= 4;
+		if(high_inport != 0){//We found the next highest inport
+		    input_grant_queue[high_inport-1].push_back(output_port);
+		}
+		output_request_queue[i].clear();
+		cout << "Highest inport for outport " << i<<": "<< high_inport<<"\n";
 	    }
-	    input_grant_queue[i].clear();
+
+	    // 3. Loop through each input port's grant-place-holder and choose which to accept based on the prio. And finally transfer the packet to output port.
+	    for(int i=0; i<4; i++){
+		int min_distance = 1000;
+		int high_outport = 0; // Same as above
+		int input_port = i+1;
+		for(int j=0; j<input_grant_queue[i].size(); j++){
+		    int in_prio = rr_schedule_input[i];
+		    int output_port = input_grant_queue[i][j];
+		    // Compare same as above
+		    if(output_port < in_prio) output_port += 4;
+		    int distance = output_port - in_prio;
+		    if(distance < min_distance){
+			min_distance = distance;
+			if(output_port > 4) output_port -= 4;
+			high_outport = output_port;
+		    }
+		}
+		cout << "Highest outport for inport " << i<<": " << high_outport<<"\n";
+		// TODO also check if the output port has been written in this cell time
+		if(high_outport != 0){//Found the outport and match
+		    // Copy the packet
+		    while(1){
+			port_lock(&(out_port[high_outport-1]));
+			if(out_port[high_outport-1].flag){
+			    port_unlock(&(out_port[high_outport-1]));
+			}else{
+			    // Poping actually
+			    packet_t* packet = get_packet_from_voq(input_port-1, high_outport-1);
+			    forward_packet_to_port(packet, high_outport-1);
+			    port_unlock(&(out_port[high_outport-1]));
+			    break;
+			}
+		    }
+		    if(cell_first == 1){
+			// Make sure we only update rr list at the first iteration of each cell time
+			cell_first = 0;
+
+			// Update prio for both inport and outport
+			rr_schedule_output[high_outport-1] = high_outport + rr_schedule_output[high_outport-1]%4;
+			if(rr_schedule_output[high_outport-1] > 4) rr_schedule_output[high_outport-1] -= 4;
+			rr_schedule_input[i] = i + rr_schedule_input[i]%4;
+			if(rr_schedule_input[i] > 4) rr_schedule_input[i] -= 4;
+		    }
+		}
+		input_grant_queue[i].clear();
+	    }
 	}
     }
 
