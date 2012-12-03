@@ -96,7 +96,7 @@ void *schedule_rr(void* p){
 		    // Write the inport NO. to the correct output request que
 		    output_request_queue[j].push_back(i+1);
 		}
-		cout<<"VOQ buffer size:"<< voq_buffer[i][j].buffer.size()<<"\n";
+		cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
 	    }
 	}
 
@@ -114,6 +114,7 @@ void *schedule_rr(void* p){
 		int distance = input_port - out_prio;
 		if(distance < min_distance){
 		    min_distance = distance;
+		    if(input_port > 4) input_port -= 4;
 		    high_inport = input_port;
 		}
 	    }
@@ -122,6 +123,7 @@ void *schedule_rr(void* p){
 	    }
 	    // TODO Do we need flush the buffer here?
 	    output_request_queue[i].clear();
+	    cout << "Highest inport for outport " << i<<": "<< high_inport<<"\n";
 	}
 
 	// 3. Loop through each input port's grant-place-holder and choose which to accept based on the prio. And finally transfer the packet to output port.
@@ -137,19 +139,21 @@ void *schedule_rr(void* p){
 		int distance = output_port - in_prio;
 		if(distance < min_distance){
 		    min_distance = distance;
+		    if(output_port > 4) output_port -= 4;
 		    high_outport = output_port;
 		}
 	    }
+	    cout << "Highest outport for inport " << i<<": " << high_outport<<"\n";
 	    if(high_outport != 0){//Found the outport and match
 		// Copy the packet
 		while(1){
-		    port_lock(&(out_port[high_outport]));
-		    if(out_port[high_outport].flag){
-			port_unlock(&(out_port[high_outport]));
+		    port_lock(&(out_port[high_outport-1]));
+		    if(out_port[high_outport-1].flag){
+			port_unlock(&(out_port[high_outport-1]));
 		    }else{
-			packet_t* packet = get_packet_from_voq(input_port, high_outport);
-			forward_packet_to_port(packet, high_outport);
-			port_unlock(&(out_port[high_outport]));
+			packet_t* packet = get_packet_from_voq(input_port-1, high_outport-1);
+			forward_packet_to_port(packet, high_outport-1);
+			port_unlock(&(out_port[high_outport-1]));
 			break;
 		    }
 		}
@@ -179,6 +183,7 @@ int get_port_from_packet(packet_t* packet) {
 // Add a packet to a specific voq.
 void add_packet_to_voq(int input_port, packet_t* packet) {
     int dest_port = get_port_from_packet(packet);
+    dest_port--;
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
     // FIXME thinkabout vector use size
     if ( voq_buffer[input_port][dest_port].buffer.size() < SIZE) {
@@ -189,6 +194,7 @@ void add_packet_to_voq(int input_port, packet_t* packet) {
 }
 
 // Pop a packet from a specific voq.
+// Taking INDEX as params
 packet_t* get_packet_from_voq(int input_port, int dest_port) {
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
     packet_t* packet;
