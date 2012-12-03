@@ -70,6 +70,7 @@ typedef struct port_t {
    pthread_mutex_t mutex;  /* The mutex */
    packet_t packet;   /* Packet in this port */
    BOOL flag;   /* Whether the port contains a valid packet or not */
+   BOOL is_written; // This is to tell whether we write the outport in current cell time
 } port_t;
 
 

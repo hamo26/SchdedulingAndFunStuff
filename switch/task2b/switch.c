@@ -60,6 +60,11 @@ void *switch_thread_routine(void *arg)
 	}
     }
 
+    for(int i=0; i<4; i++){
+	out_port[i].is_written = FALSE;
+    }
+
+
     //init output_request_queue and input_grant_queue
     for(int i=0; i<4; i++){
 	vector<int> rque;
@@ -79,8 +84,11 @@ void *schedule_rr(void* p){
     while(1){
 
 	while(cell_flag == 0){
-	    // Reset all buffers
-
+	    // Reset all buffers and flags
+	    cell_first = 1;
+	    for(int i=0; i<4; i++){
+		out_port[i].is_written = FALSE;
+	    }
 	}
 
 	// We only process RR in cell time (nano sleep in harness)
@@ -92,10 +100,9 @@ void *schedule_rr(void* p){
 		    // Send the request from this inport to the outport request que
 		    if( voq_buffer[i][j].buffer.size() != 0){// Make sure the VOQ is not empty
 			// Write the inport NO. to the correct output request que
-			// TODO check if the output has been written in this cell time
 			output_request_queue[j].push_back(i+1);
+			cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
 		    }
-		    cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
 		}
 	    }
 
@@ -121,7 +128,7 @@ void *schedule_rr(void* p){
 		    input_grant_queue[high_inport-1].push_back(output_port);
 		}
 		output_request_queue[i].clear();
-		cout << "Highest inport for outport " << i<<": "<< high_inport<<"\n";
+		//cout << "Highest inport for outport " << i<<": "<< high_inport<<"\n";
 	    }
 
 	    // 3. Loop through each input port's grant-place-holder and choose which to accept based on the prio. And finally transfer the packet to output port.
@@ -141,9 +148,8 @@ void *schedule_rr(void* p){
 			high_outport = output_port;
 		    }
 		}
-		cout << "Highest outport for inport " << i<<": " << high_outport<<"\n";
-		// TODO also check if the output port has been written in this cell time
-		if(high_outport != 0){//Found the outport and match
+		//cout << "Highest outport for inport " << i<<": " << high_outport<<"\n";
+		if(high_outport != 0 && out_port[high_outport-1].is_written == FALSE){//Found the outport and match
 		    // Copy the packet
 		    while(1){
 			port_lock(&(out_port[high_outport-1]));
@@ -153,6 +159,7 @@ void *schedule_rr(void* p){
 			    // Poping actually
 			    packet_t* packet = get_packet_from_voq(input_port-1, high_outport-1);
 			    forward_packet_to_port(packet, high_outport-1);
+			    out_port[high_outport-1].is_written = TRUE;
 			    port_unlock(&(out_port[high_outport-1]));
 			    break;
 			}
