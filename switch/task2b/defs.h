@@ -30,6 +30,7 @@
 #include <locale>
 #include <sstream>
 #include <utility>
+#include <vector>
 
 
 /*----------------------------------------------------

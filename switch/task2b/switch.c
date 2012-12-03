@@ -12,7 +12,7 @@
  ******************************************************/
 
 #include "defs.h"
-
+using namespace std;
 
 //These are the 16 voq buffers that the rr thread reads from. Initialized below.
 VOQBUFFER voq_buffer[4][4];
@@ -28,22 +28,16 @@ int transfer_count = 0;
 
 //These are the input and output round robin schedules. It is easier to use arrays for updating the position of the highest priority. Use (granted/accepted port) modulus 4 to point to the next highest priority.
 
-int rr_schedule_input[4][4] =  {{1, 2, 3, 4},
-    {1, 2, 3, 4},
-    {1, 2, 3, 4},
-    {1, 2, 3, 4}};
+int rr_schedule_input[4] =  {1,2,3,4};
 
-int rr_schedule_output[4][4] =    {{1, 2, 3, 4},
-    {1, 2, 3, 4},
-    {1, 2, 3, 4},
-    {1, 2, 3, 4}};
+int rr_schedule_output[4] = {1,2,3,4};
 
 
 //Request queue on output ports. An array of ints. At most 4 requests per port.
-int output_request_queue[4][4];
+vector<int> output_request_queue[4];
 
 //Request queue on input ports. An array of ints. At most 4 grants per port.
-int input_grant_queue[4][4];
+vector<int> input_grant_queue[4];
 
 
 void *switch_thread_routine(void *arg)
@@ -59,13 +53,19 @@ void *switch_thread_routine(void *arg)
     //the rr_thread.
     pthread_t driver_thread;
 
-    int i,j;
-
     //initialize voq buffer mutexes. Required when using a struct.
-    for (i=0; i<4; i++) {
-	for (j=0; j<4; j++) {
+    for (int i=0; i<4; i++) {
+	for (int j=0; j<4; j++) {
 	    voq_buffer[i][j].mutex = PTHREAD_MUTEX_INITIALIZER;
 	}
+    }
+
+    //init output_request_queue and input_grant_queue
+    for(int i=0; i<4; i++){
+	vector<int> rque;
+	output_request_queue[i] = rque;
+	vector<int> gque;
+	input_grant_queue[i] = gque;
     }
 
     //The driver thread needs to somehow be the parent thread of the rr_thre
@@ -87,31 +87,76 @@ void *drive_time_cell(void* p){
 
 void *schedule_rr(void* p){
     // 1. Loop through voqs and send request for each packet
-    for(int i=0; i < 4; i++){
+    for(int i=0; i<4; i++){
 	for(int j=0; j<4; j++){
-	    int port = j+1;
-	    //Loop through all packet in this inport buffer(VOQ)
-	    for(int k=0; k < SizeOfArray(voq_buffer[i][j].buffer); k++ ){
-		// Send the request from this inport to the outport request que
-		int output_request_size = SizeOfArray(output_request_queue[port]);
-		if(output_request_size<4){//Max 4 request per outport
-		    // Write the inport NO. to the correct output request que
-		    output_reques_queue[port][output_request_size] = i+1;
-		}
+	    // Loop through the head packet in this inport buffer(VOQ)
+	    // Send the request from this inport to the outport request que
+	    if( voq_buffer[i][j].buffer.size() != 0){// Make sure the VOQ is not empty
+		// Write the inport NO. to the correct output request que
+		output_request_queue[j].push_back(i+1);
 	    }
 	}
     }
 
     // 2. Loop through outputs request placeholder and choose the one the rph-array based on the prio. And send grants to grant-place-holder of the ports
-    // 3. Loop through each input port's grant-place-holder and choose which to accept based on the prio. And finally transfer the packet to output port.
+    for(int i=0; i<4; i++){
+	int min_distance = 1000;
+	int high_inport = 0; // We find something matches and update it, otherwise it is 0 as a flag.
+	int out_port = i+1;
+	for(int j=0; j<output_request_queue[i].size(); j++){
+	    // Check the prio.
+	    int out_prio = rr_schedule_output[i];
+	    int in_port = output_request_queue[i][j];
+	    // Compare prio with in_port and choose the nearest one
+	    if(in_port < out_prio) in_port += 4;
+	    int distance = in_port - out_prio;
+	    if(distance < min_distance){
+		min_distance = distance;
+		high_inport = in_port;
+	    }
+	}
+	if(high_inport != 0){//We found the next highest inport
+	    input_grant_queue[high_inport-1].push_back(out_port);
+	}
+	// TODO Do we need flush the buffer here?
+	output_request_queue[i].clear();
+    }
 
+    // 3. Loop through each input port's grant-place-holder and choose which to accept based on the prio. And finally transfer the packet to output port.
+    for(int i=0; i<4; i++){
+	int min_distance = 1000;
+	int high_outport = 0; // Same as above
+	int in_port = i+1;
+	for(int j=0; j<input_grant_queue[i].size(); j++){
+	    int in_prio = rr_schedule_input[i];
+	    int out_port = input_grant_queue[i][j];
+	    // Compare same as above
+	    if(out_port < in_prio) out_port += 4;
+	    int distance = out_port - in_prio;
+	    if(distance < min_distance){
+		min_distance = distance;
+		high_outport = out_port;
+	    }
+	}
+	if(high_outport != 0){//Found the outport and match
+	    // Copy the packet
+	    packet_t* packet = get_packet_from_voq(in_port, high_outport);
+	    forward_packet_to_port(packet, high_outport);
+	    // Update prio for both inport and outport
+	    rr_schedule_output[high_outport-1] = high_outport + rr_schedule_output[high_outport-1]%4;
+	    if(rr_schedule_output[high_outport-1] > 4) rr_schedule_output[high_outport-1] -= 4;
+	    rr_schedule_input[i] = i + rr_schedule_input[i]%4;
+	    if(rr_schedule_input[i] > 4) rr_schedule_input[i] -= 4;
+	}
+	input_grant_queue[i].clear();
+    }
 
 }
 
-void forward_packet_to_port(packet_t packet, int destination) {
+void forward_packet_to_port(packet_t* packet, int destination) {
     std::cout<<"dest_port:"<<destination<<"\n";
-    packet_copy(&packet, &(out_port[destination].packet));
-    printf("Forwarding packet: "); packet_print(&packet);
+    packet_copy(packet, &(out_port[destination].packet));
+    printf("Forwarding packet: "); packet_print(packet);
     out_port[destination].flag = TRUE;
 }
 
@@ -124,9 +169,10 @@ int get_port_from_packet(packet_t* packet) {
 void add_packet_to_voq(int input_port, packet_t* packet) {
     int dest_port = get_port_from_packet(packet);
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
+    // FIXME thinkabout vector use size
     if (!voq_size[input_port][dest_port] == SIZE) {
-	// TODO Please Hamid examine if the usage here is correct, also check the changes in switch.h
-	packet_copy(packet, (voq_buffer[input_port][dest_port].buffer[voq_size[input_port][dest_port]]));
+	//packet_copy(packet, (voq_buffer[input_port][dest_port].buffer[voq_size[input_port][dest_port]]));
+	voq_buffer[input_port][dest_port].buffer.push_back(packet);
 	voq_rear[input_port][dest_port] = (voq_rear[input_port][dest_port] + 1) % SIZE;
 	voq_size[input_port][dest_port]++;
     }
@@ -134,11 +180,11 @@ void add_packet_to_voq(int input_port, packet_t* packet) {
 }
 
 // Get a packet from a specific voq.
-packet_t* get_packet_from_buffer(int input_port, int dest_port) {
+packet_t* get_packet_from_voq(int input_port, int dest_port) {
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
     packet_t* packet;
     if (!voq_size[input_port][dest_port] == 0) {
-	packet_copy((voq_buffer[input_port][dest_port].buffer[voq_size[input_port][dest_port]]), packet);
+	packet_copy(voq_buffer[input_port][dest_port].buffer.back(), packet);
 	voq_front[input_port][dest_port] = (voq_front[input_port][dest_port] + 1) % SIZE;
 	voq_size[input_port][dest_port]--;
     } else {
@@ -179,40 +225,42 @@ void *read_in_port_packet(void* p)
 }
 
 // This needs to be re written completely to use the RR thread. We also need something for the driver thread in another method.
-void *read_out_port_packet(void* p)
-{
-    while (1) {
+/*
+   void *read_out_port_packet(void* p)
+   {
+   while (1) {
 
-	packet_t packet;
-	int dest_port;
-	BOOL flag = TRUE;
-	//	   printf("Attempting to get lock for regional mutex in out thread\n");
-	pthread_mutex_lock(&main_buffer_region_mutex);
-	//	   printf("Successfuly retrieved lock for regional mutex in out thread\n");
-	if (size == 0) {
-	    printf("Thread out locked.\n");
-	    pthread_cond_wait(&main_buffer_data_available,&main_buffer_region_mutex);
-	    printf("Thread out unlocked.\n");
-	}
-
-	packet = get_packet_from_buffer(base_network_buffer);
-	pthread_cond_signal(&main_buffer_space_available);
-	pthread_mutex_unlock(&main_buffer_region_mutex);
-
-	dest_port = get_port_from_packet(&packet);
-
-	while (1) {
-	    port_lock(&(out_port[dest_port]));
-	    if (out_port[dest_port].flag) {
-		port_unlock(&(out_port[dest_port]));
-	    } else {
-		forward_packet_to_port(packet, dest_port);
-		port_unlock(&(out_port[dest_port]));
-		break;
-	    }
-	}
-    }
+   packet_t packet;
+   int dest_port;
+   BOOL flag = TRUE;
+//	   printf("Attempting to get lock for regional mutex in out thread\n");
+pthread_mutex_lock(&main_buffer_region_mutex);
+//	   printf("Successfuly retrieved lock for regional mutex in out thread\n");
+if (size == 0) {
+printf("Thread out locked.\n");
+pthread_cond_wait(&main_buffer_data_available,&main_buffer_region_mutex);
+printf("Thread out unlocked.\n");
 }
+
+packet = get_packet_from_buffer(base_network_buffer);
+pthread_cond_signal(&main_buffer_space_available);
+pthread_mutex_unlock(&main_buffer_region_mutex);
+
+dest_port = get_port_from_packet(&packet);
+
+while (1) {
+port_lock(&(out_port[dest_port]));
+if (out_port[dest_port].flag) {
+port_unlock(&(out_port[dest_port]));
+} else {
+forward_packet_to_port(packet, dest_port);
+port_unlock(&(out_port[dest_port]));
+break;
+}
+}
+}
+}
+ */
 
 void switch_init()
 {
