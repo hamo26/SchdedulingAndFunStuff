@@ -101,7 +101,7 @@ void *schedule_rr(void* p){
 		    if( voq_buffer[i][j].buffer.size() != 0){// Make sure the VOQ is not empty
 			// Write the inport NO. to the correct output request que
 			output_request_queue[j].push_back(i);
-			//cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
+			cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
 		    }
 		}
 	    }
@@ -116,16 +116,15 @@ void *schedule_rr(void* p){
 		    int out_prio = rr_schedule_output[i];
 		    int input_port = output_request_queue[i][j];
 		    // Compare prio with in_port and choose the nearest one
-		    if(input_port < out_prio) input_port += 3;
+		    if(input_port < out_prio) input_port += 4;
 		    int distance = input_port - out_prio;
 		    if(distance < min_distance){
 			min_distance = distance;
-			if(input_port > 3) input_port -= 3;
+			if(input_port > 3) input_port -= 4;
 			high_inport = input_port;
 		    }
 		}
 		if(high_inport != 9){//We found the next highest inport
-		    cout << "Pushing outport "<<output_port<<" to input_grant_queue\n";
 		    input_grant_queue[high_inport].push_back(output_port);
 		}
 		output_request_queue[i].clear();
@@ -141,11 +140,11 @@ void *schedule_rr(void* p){
 		    int in_prio = rr_schedule_input[i];
 		    int output_port = input_grant_queue[i][j];
 		    // Compare same as above
-		    if(output_port < in_prio) output_port += 3;
+		    if(output_port < in_prio) output_port += 4;
 		    int distance = output_port - in_prio;
 		    if(distance < min_distance){
 			min_distance = distance;
-			if(output_port > 3) output_port -= 3;
+			if(output_port > 3) output_port -= 4;
 			high_outport = output_port;
 		    }
 		}
@@ -171,9 +170,9 @@ void *schedule_rr(void* p){
 
 			// Update prio for both inport and outport
 			rr_schedule_output[high_outport] = high_outport + rr_schedule_output[high_outport]%4;
-			if(rr_schedule_output[high_outport] > 3) rr_schedule_output[high_outport] -= 3;
+			if(rr_schedule_output[high_outport] > 3) rr_schedule_output[high_outport] -= 4;
 			rr_schedule_input[i] = i + rr_schedule_input[i]%4;
-			if(rr_schedule_input[i] > 3) rr_schedule_input[i] -= 3;
+			if(rr_schedule_input[i] > 3) rr_schedule_input[i] -= 4;
 		    }
 		}
 		input_grant_queue[i].clear();
@@ -183,9 +182,8 @@ void *schedule_rr(void* p){
 
 }
 
-// Pass INDEX
 void forward_packet_to_port(packet_t* packet, int destination) {
-    printf("Forwarding packet: "); packet_print(packet);
+    //printf("Forwarding packet: "); packet_print(packet);
     packet_copy(packet, &(out_port[destination].packet));
     out_port[destination].flag = TRUE;
 }
@@ -196,7 +194,6 @@ int get_port_from_packet(packet_t* packet) {
 }
 
 // Add a packet to a specific voq.
-// Pass INDEX
 void add_packet_to_voq(int input_port, packet_t* packet) {
     int dest_port = get_port_from_packet(packet);
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
