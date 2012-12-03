@@ -63,9 +63,9 @@ void *switch_thread_routine(void *arg)
 
     //initialize voq buffer mutexes. Required when using a struct.
     for (i=0; i<4; i++) {
-        for (j=0; j<4; j++) {
-            voq_buffer[i][j].mutex = PTHREAD_MUTEX_INITIALIZER;
-        }
+	for (j=0; j<4; j++) {
+	    voq_buffer[i][j].mutex = PTHREAD_MUTEX_INITIALIZER;
+	}
     }
 
     //The driver thread needs to somehow be the parent thread of the rr_thre
@@ -87,6 +87,21 @@ void *drive_time_cell(void* p){
 
 void *schedule_rr(void* p){
     // 1. Loop through voqs and send request for each packet
+    for(int i=0; i < 4; i++){
+	for(int j=0; j<4; j++){
+	    int port = j+1;
+	    //Loop through all packet in this inport buffer(VOQ)
+	    for(int k=0; k < SizeOfArray(voq_buffer[i][j].buffer); k++ ){
+		// Send the request from this inport to the outport request que
+		int output_request_size = SizeOfArray(output_request_queue[port]);
+		if(output_request_size<4){//Max 4 request per outport
+		    // Write the inport NO. to the correct output request que
+		    output_reques_queue[port][output_request_size] = i+1;
+		}
+	    }
+	}
+    }
+
     // 2. Loop through outputs request placeholder and choose the one the rph-array based on the prio. And send grants to grant-place-holder of the ports
     // 3. Loop through each input port's grant-place-holder and choose which to accept based on the prio. And finally transfer the packet to output port.
 
@@ -110,10 +125,10 @@ void add_packet_to_voq(int input_port, packet_t* packet) {
     int dest_port = get_port_from_packet(packet);
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
     if (!voq_size[input_port][dest_port] == SIZE) {
-        // TODO Please Hamid examine if the usage here is correct, also check the changes in switch.h
-        packet_copy(packet, (voq_buffer[input_port][dest_port].buffer[voq_size[input_port][dest_port]]));
-        voq_rear[input_port][dest_port] = (voq_rear[input_port][dest_port] + 1) % SIZE;
-        voq_size[input_port][dest_port]++;
+	// TODO Please Hamid examine if the usage here is correct, also check the changes in switch.h
+	packet_copy(packet, (voq_buffer[input_port][dest_port].buffer[voq_size[input_port][dest_port]]));
+	voq_rear[input_port][dest_port] = (voq_rear[input_port][dest_port] + 1) % SIZE;
+	voq_size[input_port][dest_port]++;
     }
     pthread_mutex_unlock(&(voq_buffer[input_port][dest_port].mutex));
 }
@@ -123,11 +138,11 @@ packet_t* get_packet_from_buffer(int input_port, int dest_port) {
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
     packet_t* packet;
     if (!voq_size[input_port][dest_port] == 0) {
-        packet_copy((voq_buffer[input_port][dest_port].buffer[voq_size[input_port][dest_port]]), packet);
-        voq_front[input_port][dest_port] = (voq_front[input_port][dest_port] + 1) % SIZE;
-        voq_size[input_port][dest_port]--;
+	packet_copy((voq_buffer[input_port][dest_port].buffer[voq_size[input_port][dest_port]]), packet);
+	voq_front[input_port][dest_port] = (voq_front[input_port][dest_port] + 1) % SIZE;
+	voq_size[input_port][dest_port]--;
     } else {
-        packet = NULL;
+	packet = NULL;
     }
     pthread_mutex_unlock(&(voq_buffer[input_port][dest_port].mutex));
     return packet;
@@ -137,28 +152,28 @@ packet_t* get_packet_from_buffer(int input_port, int dest_port) {
 void *read_in_port_packet(void* p)
 {
     while(1){
-        int i;
+	int i;
 
-        if (die == TRUE) { 
-            std::cout<<"DIE is true now \n";
-            pthread_exit(NULL);
-        }
+	if (die == TRUE) { 
+	    std::cout<<"DIE is true now \n";
+	    pthread_exit(NULL);
+	}
 
-        for (i = 0; i < 4; i++) {
-            //printf("Reading from port %d\n",i);
+	for (i = 0; i < 4; i++) {
+	    //printf("Reading from port %d\n",i);
 
-            if (in_port[i].flag == TRUE) {
-                port_lock(&(in_port[i]));
-                printf("Adding data to buffer from port %d\n",i);
+	    if (in_port[i].flag == TRUE) {
+		port_lock(&(in_port[i]));
+		printf("Adding data to buffer from port %d\n",i);
 
-                add_packet_to_voq(i,&(in_port[i].packet));
+		add_packet_to_voq(i,&(in_port[i].packet));
 
-                //Add logic here to read from network port.
-                in_port[i].flag = FALSE;
-                port_unlock(&(in_port[i]));
-            }
+		//Add logic here to read from network port.
+		in_port[i].flag = FALSE;
+		port_unlock(&(in_port[i]));
+	    }
 
-        }
+	}
 
     }
 }
@@ -168,34 +183,34 @@ void *read_out_port_packet(void* p)
 {
     while (1) {
 
-        packet_t packet;
-        int dest_port;
-        BOOL flag = TRUE;
-        //	   printf("Attempting to get lock for regional mutex in out thread\n");
-        pthread_mutex_lock(&main_buffer_region_mutex);
-        //	   printf("Successfuly retrieved lock for regional mutex in out thread\n");
-        if (size == 0) {
-            printf("Thread out locked.\n");
-            pthread_cond_wait(&main_buffer_data_available,&main_buffer_region_mutex);
-            printf("Thread out unlocked.\n");
-        }
+	packet_t packet;
+	int dest_port;
+	BOOL flag = TRUE;
+	//	   printf("Attempting to get lock for regional mutex in out thread\n");
+	pthread_mutex_lock(&main_buffer_region_mutex);
+	//	   printf("Successfuly retrieved lock for regional mutex in out thread\n");
+	if (size == 0) {
+	    printf("Thread out locked.\n");
+	    pthread_cond_wait(&main_buffer_data_available,&main_buffer_region_mutex);
+	    printf("Thread out unlocked.\n");
+	}
 
-        packet = get_packet_from_buffer(base_network_buffer);
-        pthread_cond_signal(&main_buffer_space_available);
-        pthread_mutex_unlock(&main_buffer_region_mutex);
+	packet = get_packet_from_buffer(base_network_buffer);
+	pthread_cond_signal(&main_buffer_space_available);
+	pthread_mutex_unlock(&main_buffer_region_mutex);
 
-        dest_port = get_port_from_packet(&packet);
+	dest_port = get_port_from_packet(&packet);
 
-        while (1) {
-            port_lock(&(out_port[dest_port]));
-            if (out_port[dest_port].flag) {
-                port_unlock(&(out_port[dest_port]));
-            } else {
-                forward_packet_to_port(packet, dest_port);
-                port_unlock(&(out_port[dest_port]));
-                break;
-            }
-        }
+	while (1) {
+	    port_lock(&(out_port[dest_port]));
+	    if (out_port[dest_port].flag) {
+		port_unlock(&(out_port[dest_port]));
+	    } else {
+		forward_packet_to_port(packet, dest_port);
+		port_unlock(&(out_port[dest_port]));
+		break;
+	    }
+	}
     }
 }
 
@@ -210,7 +225,7 @@ void switch_init()
 }
 
 void switch_add_entry(ip_address_t *address,
-        int port)
+	int port)
 {
     /* Add your code here.  It might be as simple as adding
        a call to cam_add_entry() */
