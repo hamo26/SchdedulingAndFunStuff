@@ -111,6 +111,15 @@ main()
 	my_version_of_the_table[i].port = port;
     }
 
+    // Load the last one for testing
+    port = 4;
+    ip_address_t lastAddress;
+    lastAddress.n1 = 100;
+    lastAddress.n2 = 100;
+    lastAddress.n3 = 100;
+    lastAddress.n4 = 100;
+    cam_add_entry(&lastAddress, port);
+
     /* Read the start time */
 
     if (clock_gettime(CLOCK_REALTIME,&start_time) == -1) {
@@ -154,6 +163,26 @@ main()
     printf("Time difference: %f seconds\n",accum);
     printf("That is %f microseconds per lookup\n",
 	    1000.0 * 1000.0 * accum / NUMBER_LOOKUPS);
+
+
+    // Try to look up the last one: 100.100.100.100
+    if (clock_gettime(CLOCK_REALTIME,&start_time) == -1) {
+	printf("Error reading clock\n");
+	exit(0);
+    }
+    port = cam_lookup_address(&lastAddress);
+    if(port != 4){
+	printf("Error on looking up the last entry\n");
+    }
+    if (clock_gettime(CLOCK_REALTIME,&end_time) == -1) {
+	printf("Error reading clock\n");
+	exit(0);
+    }
+    accum = (double)(end_time.tv_sec - start_time.tv_sec) +
+	(double)(end_time.tv_nsec - start_time.tv_nsec)/1000000000.0;
+
+    printf("Time difference for WC: %f seconds\n",accum);
+
 
     cam_free();
 }
