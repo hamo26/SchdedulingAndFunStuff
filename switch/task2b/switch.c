@@ -101,7 +101,7 @@ void *schedule_rr(void* p){
 		    if( voq_buffer[i][j].buffer.size() != 0){// Make sure the VOQ is not empty
 			// Write the inport NO. to the correct output request que
 			output_request_queue[j].push_back(i+1);
-			cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
+			//cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
 		    }
 		}
 	    }
@@ -125,6 +125,7 @@ void *schedule_rr(void* p){
 		    }
 		}
 		if(high_inport != 0){//We found the next highest inport
+		    cout << "Pushing outport "<<output_port<<" to input_grant_queue\n";
 		    input_grant_queue[high_inport-1].push_back(output_port);
 		}
 		output_request_queue[i].clear();
@@ -182,6 +183,7 @@ void *schedule_rr(void* p){
 
 }
 
+// Pass INDEX
 void forward_packet_to_port(packet_t* packet, int destination) {
     printf("Forwarding packet: "); packet_print(packet);
     packet_copy(packet, &(out_port[destination].packet));
@@ -194,6 +196,7 @@ int get_port_from_packet(packet_t* packet) {
 }
 
 // Add a packet to a specific voq.
+// Pass INDEX
 void add_packet_to_voq(int input_port, packet_t* packet) {
     int dest_port = get_port_from_packet(packet);
     dest_port--;
@@ -212,7 +215,7 @@ packet_t* get_packet_from_voq(int input_port, int dest_port) {
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
     packet_t* packet;
     if (voq_buffer[input_port][dest_port].buffer.size() != 0) {
-	//packet_copy(voq_buffer[input_port][dest_port].buffer.back(), packet);
+	//packet_copy(voq_buffer[input_port][dest_port].buffer.front(), packet);
 	// Poping from the front
 	packet = voq_buffer[input_port][dest_port].buffer.front();
 	voq_buffer[input_port][dest_port].buffer.erase(voq_buffer[input_port][dest_port].buffer.begin());
