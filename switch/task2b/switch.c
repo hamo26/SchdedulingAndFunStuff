@@ -93,10 +93,10 @@ void *schedule_rr(void* p){
 		// Loop through the head packet in this inport buffer(VOQ)
 		// Send the request from this inport to the outport request que
 		if( voq_buffer[i][j].buffer.size() != 0){// Make sure the VOQ is not empty
-		    cout<<"VOQ buffer size:"<< voq_buffer[i][j].buffer.size()<<"\n";
 		    // Write the inport NO. to the correct output request que
 		    output_request_queue[j].push_back(i+1);
 		}
+		cout<<"VOQ buffer size:"<< voq_buffer[i][j].buffer.size()<<"\n";
 	    }
 	}
 
@@ -166,8 +166,8 @@ void *schedule_rr(void* p){
 }
 
 void forward_packet_to_port(packet_t* packet, int destination) {
-    packet_copy(packet, &(out_port[destination].packet));
     printf("Forwarding packet: "); packet_print(packet);
+    packet_copy(packet, &(out_port[destination].packet));
     out_port[destination].flag = TRUE;
 }
 
@@ -181,23 +181,22 @@ void add_packet_to_voq(int input_port, packet_t* packet) {
     int dest_port = get_port_from_packet(packet);
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
     // FIXME thinkabout vector use size
-    if (!voq_size[input_port][dest_port] == SIZE) {
-	//packet_copy(packet, (voq_buffer[input_port][dest_port].buffer[voq_size[input_port][dest_port]]));
+    if ( voq_buffer[input_port][dest_port].buffer.size() < SIZE) {
 	voq_buffer[input_port][dest_port].buffer.push_back(packet);
-	voq_rear[input_port][dest_port] = (voq_rear[input_port][dest_port] + 1) % SIZE;
-	voq_size[input_port][dest_port]++;
+	//packet_copy(packet, voq_buffer[input_port][dest_port].buffer.back());
     }
     pthread_mutex_unlock(&(voq_buffer[input_port][dest_port].mutex));
 }
 
-// Get a packet from a specific voq.
+// Pop a packet from a specific voq.
 packet_t* get_packet_from_voq(int input_port, int dest_port) {
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
     packet_t* packet;
-    if (!voq_size[input_port][dest_port] == 0) {
-	packet_copy(voq_buffer[input_port][dest_port].buffer.back(), packet);
-	voq_front[input_port][dest_port] = (voq_front[input_port][dest_port] + 1) % SIZE;
-	voq_size[input_port][dest_port]--;
+    if (voq_buffer[input_port][dest_port].buffer.size() != 0) {
+	//packet_copy(voq_buffer[input_port][dest_port].buffer.back(), packet);
+	// Poping from the front
+	packet = voq_buffer[input_port][dest_port].buffer.front();
+	voq_buffer[input_port][dest_port].buffer.erase(voq_buffer[input_port][dest_port].buffer.begin());
     } else {
 	packet = NULL;
     }
