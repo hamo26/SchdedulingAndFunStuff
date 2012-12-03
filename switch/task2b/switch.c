@@ -35,6 +35,13 @@ int rr_schedule_output[4][4] =    {{1, 2, 3, 4},
                                    {1, 2, 3, 4}};
 
 
+//Request queue on output ports. An array of ints. At most 4 requests per port.
+int output_request_queue[4][4];
+
+//Request queue on input ports. An array of ints. At most 4 grants per port.
+int input_grant_queue[4][4];
+
+
 void *switch_thread_routine(void *arg)
 {
 	//This is the input thread that puts directly on the voqs
