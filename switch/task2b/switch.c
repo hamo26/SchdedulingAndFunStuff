@@ -102,21 +102,21 @@ void *schedule_rr(void* p){
     for(int i=0; i<4; i++){
 	int min_distance = 1000;
 	int high_inport = 0; // We find something matches and update it, otherwise it is 0 as a flag.
-	int out_port = i+1;
+	int output_port = i+1;
 	for(int j=0; j<output_request_queue[i].size(); j++){
 	    // Check the prio.
 	    int out_prio = rr_schedule_output[i];
-	    int in_port = output_request_queue[i][j];
+	    int input_port = output_request_queue[i][j];
 	    // Compare prio with in_port and choose the nearest one
-	    if(in_port < out_prio) in_port += 4;
-	    int distance = in_port - out_prio;
+	    if(input_port < out_prio) input_port += 4;
+	    int distance = input_port - out_prio;
 	    if(distance < min_distance){
 		min_distance = distance;
-		high_inport = in_port;
+		high_inport = input_port;
 	    }
 	}
 	if(high_inport != 0){//We found the next highest inport
-	    input_grant_queue[high_inport-1].push_back(out_port);
+	    input_grant_queue[high_inport-1].push_back(output_port);
 	}
 	// TODO Do we need flush the buffer here?
 	output_request_queue[i].clear();
@@ -126,22 +126,31 @@ void *schedule_rr(void* p){
     for(int i=0; i<4; i++){
 	int min_distance = 1000;
 	int high_outport = 0; // Same as above
-	int in_port = i+1;
+	int input_port = i+1;
 	for(int j=0; j<input_grant_queue[i].size(); j++){
 	    int in_prio = rr_schedule_input[i];
-	    int out_port = input_grant_queue[i][j];
+	    int output_port = input_grant_queue[i][j];
 	    // Compare same as above
-	    if(out_port < in_prio) out_port += 4;
-	    int distance = out_port - in_prio;
+	    if(output_port < in_prio) output_port += 4;
+	    int distance = output_port - in_prio;
 	    if(distance < min_distance){
 		min_distance = distance;
-		high_outport = out_port;
+		high_outport = output_port;
 	    }
 	}
 	if(high_outport != 0){//Found the outport and match
 	    // Copy the packet
-	    packet_t* packet = get_packet_from_voq(in_port, high_outport);
-	    forward_packet_to_port(packet, high_outport);
+	    while(1){
+		port_lock(&(out_port[high_outport]));
+		if(out_port[high_outport].flag){
+		    port_unlock(&(out_port[high_outport]));
+		}else{
+		    packet_t* packet = get_packet_from_voq(input_port, high_outport);
+		    forward_packet_to_port(packet, high_outport);
+		    port_unlock(&(out_port[high_outport]));
+		    break;
+		}
+	    }
 	    // Update prio for both inport and outport
 	    rr_schedule_output[high_outport-1] = high_outport + rr_schedule_output[high_outport-1]%4;
 	    if(rr_schedule_output[high_outport-1] > 4) rr_schedule_output[high_outport-1] -= 4;
@@ -210,7 +219,7 @@ void *read_in_port_packet(void* p)
 
 	    if (in_port[i].flag == TRUE) {
 		port_lock(&(in_port[i]));
-		printf("Adding data to buffer from port %d\n",i);
+		//printf("Adding data to buffer from port %d\n",i);
 
 		add_packet_to_voq(i,&(in_port[i].packet));
 
