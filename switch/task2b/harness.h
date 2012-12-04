@@ -18,8 +18,8 @@
 
 #define NUMBER_ENTRIES_IN_ROUTING_TABLE 20000  /* How many IP addresses
                                                   to load into the routing table */
-#define NUMBER_PACKETS_TO_SEND 1000   /* How many packets to send during the test */
-#define SEND_DENSITY 40              /* A Density of 100 means that a packet is
+#define NUMBER_PACKETS_TO_SEND 100000   /* How many packets to send during the test */
+#define SEND_DENSITY 50              /* A Density of 100 means that a packet is
                                         sent through every input port every cycle.
                                         A Density of less than 100 indicates the
                                         percentage of cycles in which a packet
@@ -29,7 +29,7 @@
                                         dropped packets */
 //#define HARNESS_SPEED (1000000000/10)  /* How fast the harness should run (in ns) */
 
-#define HARNESS_SPEED (99999999)  /* How fast the harness should run (in ns) */
+#define HARNESS_SPEED (10000000)  /* How fast the harness should run (in ns) */
 #define HARNESS_DEBUG 0            /* 1 means debugging messages are printed */
 
 /*------------------------------------------------------------*
