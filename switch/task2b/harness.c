@@ -195,9 +195,9 @@ static BOOL receive_message_if_there_is_one(int output_port)
       seq_num = (payload / 16);
 
       if (to_port != output_port) {
-         printf("Error: received packet on port %d when it should have come on port %d\n",
-                     output_port, to_port);
-         printf("Discarding packet... this is probably an error you should fix\n");
+         //printf("Error: received packet on port %d when it should have come on port %d\n",
+	    //          output_port, to_port);
+         //printf("Discarding packet... this is probably an error you should fix\n");
       } else {
 
          /* If it has come out of the right port, extract the sequence number 
