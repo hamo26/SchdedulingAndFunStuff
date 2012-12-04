@@ -24,6 +24,9 @@ int voq_rear[4][4] = {0};
 
 // This is used to tell the first iteration of the cell time
 int cell_first = 1;
+// This is used to tell whether we need busy check in this cell time. It keeps how many packet has been transfered
+int transfer_count = 0;
+int cell_print = 0;
 
 //These are the input and output round robin schedules. It is easier to use arrays for updating the position of the highest priority. Use (granted/accepted port) modulus 4 to point to the next highest priority.
 
@@ -86,13 +89,24 @@ void *schedule_rr(void* p){
 	while(cell_flag == 0){
 	    // Reset all buffers and flags
 	    cell_first = 1;
+	    transfer_count = 0;
+
 	    for(int i=0; i<4; i++){
 		out_port[i].is_written = FALSE;
+		for(int j=0; j<4; j++){
+		    pthread_mutex_unlock(&(voq_buffer[i][j].mutex));
+		}
+	    }
+	    if(cell_print == 0){
+		//cout << "cell_flag = 0 \n";
+		cell_print = 1;
+		cout << "\n***\n New Cell Time \n***\n";
 	    }
 	}
 
 	// We only process RR in cell time (nano sleep in harness)
-	while(cell_flag == 1){
+	while(cell_flag == 1 ){
+	    cell_print = 0;
 	    // 1. Loop through voqs and send request for each packet
 	    for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
@@ -101,7 +115,7 @@ void *schedule_rr(void* p){
 		    if( voq_buffer[i][j].buffer.size() != 0){// Make sure the VOQ is not empty
 			// Write the inport NO. to the correct output request que
 			output_request_queue[j].push_back(i);
-			cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
+			//cout<<"VOQ buffer in "<<i<< " and out "<<j<<", size:"<< voq_buffer[i][j].buffer.size()<<"\n";
 		    }
 		}
 	    }
@@ -159,6 +173,8 @@ void *schedule_rr(void* p){
 			    // Poping actually
 			    packet_t* packet = get_packet_from_voq(input_port, high_outport);
 			    forward_packet_to_port(packet, high_outport);
+			    transfer_count++;
+			    cout << "Transfer counter: "<<transfer_count<<"\n";
 			    out_port[high_outport].is_written = TRUE;
 			    port_unlock(&(out_port[high_outport]));
 			    break;
@@ -197,7 +213,6 @@ int get_port_from_packet(packet_t* packet) {
 void add_packet_to_voq(int input_port, packet_t* packet) {
     int dest_port = get_port_from_packet(packet);
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
-    // FIXME thinkabout vector use size
     if ( voq_buffer[input_port][dest_port].buffer.size() < SIZE) {
 	voq_buffer[input_port][dest_port].buffer.push_back(packet);
 	//packet_copy(packet, voq_buffer[input_port][dest_port].buffer.back());
@@ -206,7 +221,6 @@ void add_packet_to_voq(int input_port, packet_t* packet) {
 }
 
 // Pop a packet from a specific voq.
-// Taking INDEX as params
 packet_t* get_packet_from_voq(int input_port, int dest_port) {
     pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
     packet_t* packet;
@@ -247,44 +261,6 @@ void *read_in_port_packet(void* p)
 
     }
 }
-
-// This needs to be re written completely to use the RR thread. We also need something for the driver thread in another method.
-/*
-   void *read_out_port_packet(void* p)
-   {
-   while (1) {
-
-   packet_t packet;
-   int dest_port;
-   BOOL flag = TRUE;
-//	   printf("Attempting to get lock for regional mutex in out thread\n");
-pthread_mutex_lock(&main_buffer_region_mutex);
-//	   printf("Successfuly retrieved lock for regional mutex in out thread\n");
-if (size == 0) {
-printf("Thread out locked.\n");
-pthread_cond_wait(&main_buffer_data_available,&main_buffer_region_mutex);
-printf("Thread out unlocked.\n");
-}
-
-packet = get_packet_from_buffer(base_network_buffer);
-pthread_cond_signal(&main_buffer_space_available);
-pthread_mutex_unlock(&main_buffer_region_mutex);
-
-dest_port = get_port_from_packet(&packet);
-
-while (1) {
-port_lock(&(out_port[dest_port]));
-if (out_port[dest_port].flag) {
-port_unlock(&(out_port[dest_port]));
-} else {
-forward_packet_to_port(packet, dest_port);
-port_unlock(&(out_port[dest_port]));
-break;
-}
-}
-}
-}
- */
 
 void switch_init()
 {

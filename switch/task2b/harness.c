@@ -72,14 +72,12 @@ BOOL received_message[4][NUMBER_PACKETS_TO_SEND];
 
 static void short_sleep()
 {
-   cell_flag = 1;
    struct timespec delay_time, what_time_is_it;
 
    delay_time.tv_sec = 0;
    delay_time.tv_nsec = HARNESS_SPEED;
 
    nanosleep(&delay_time, &what_time_is_it);
-   cell_flag = 0;
 }
 
 /*-------------------------------------------------------------------------*
@@ -350,7 +348,8 @@ void *harness_thread_routine(void *arg)
             num_sent ++;
          }
       }
-
+	
+      cell_flag = 1;
       short_sleep();
 
       /* Check all output ports and see if there is
@@ -366,6 +365,9 @@ void *harness_thread_routine(void *arg)
 
       done = (received == FALSE) &&  
              (num_sent >= NUMBER_PACKETS_TO_SEND);
+
+      cell_flag = 0;
+      short_sleep();
 
    }
 
