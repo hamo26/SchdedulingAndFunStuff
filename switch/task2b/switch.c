@@ -270,7 +270,7 @@ packet_t* get_packet_from_voq(int input_port, int dest_port) {
     if (voq_buffer[input_port][dest_port].buffer.size() != 0 && voq_buffer[input_port][dest_port].buffer.front()!=(packet_t *)NULL ) {
 	//packet_copy(packet_in_voq, packet);
 	// Poping from the front
-	packet = voq_buffer[input_port][dest_port].buffer.front();
+	packet_copy(voq_buffer[input_port][dest_port].buffer.front(), packet);
 	voq_buffer[input_port][dest_port].buffer.erase(voq_buffer[input_port][dest_port].buffer.begin());
     } else {
 	packet = NULL;
