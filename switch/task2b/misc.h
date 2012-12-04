@@ -50,6 +50,7 @@ typedef struct ip_address_t {
 typedef struct packet_t {
    ip_address_t address;   /* IP Address this packet is destined for */
    int payload;            /* Payload of the packet */
+   struct timespec start_time, end_time;
 } packet_t;
 
 

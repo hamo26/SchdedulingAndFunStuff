@@ -238,7 +238,7 @@ int get_port_from_packet(packet_t* packet) {
 // Add a packet to a specific voq.
 void add_packet_to_voq(int input_port, packet_t* packet) {
     int dest_port = get_port_from_packet(packet);
-
+	clock_gettime(CLOCK_REALTIME,&packet->start_time);
     int lock;
     while(1){
 	if( pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex)) != 0 ){
@@ -273,6 +273,10 @@ packet_t* get_packet_from_voq(int input_port, int dest_port) {
 	//packet_copy(voq_buffer[input_port][dest_port].buffer.front(), packet);
 	packet = voq_buffer[input_port][dest_port].buffer.front();
 	voq_buffer[input_port][dest_port].buffer.erase(voq_buffer[input_port][dest_port].buffer.begin());
+	clock_gettime(CLOCK_REALTIME,&packet->end_time);
+	 accum += (double)(packet->end_time.tv_sec - packet->start_time.tv_sec) +
+(double)(packet->end_time.tv_nsec - packet->start_time.tv_nsec)/1000000000.0;
+	countPackets++;
     } else {
 	packet = NULL;
     }

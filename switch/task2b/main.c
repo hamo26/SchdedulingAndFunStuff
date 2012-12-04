@@ -17,6 +17,9 @@ port_t in_port[4];
 port_t out_port[4];
 BOOL die;
 int cell_flag = 0;
+double accum = 0;
+double countPackets = 0;
+double sleepDelay = 0;
 
 main()
 {
@@ -81,6 +84,12 @@ main()
    }
 
    printf("Main program is now done\n");
+	sleepDelay = countPackets*HARNESS_SPEED*2 / 1000000000.0;
+	printf("Total accumulated packet delays: %f seconds\n",accum);
+	printf("Total packets: %f packets\n",countPackets);
+	printf("Total sleep delay: %f nano seconds \n",sleepDelay);
+	printf("Average Delay without sleep: %f seconds per packet \n",(accum - sleepDelay/1000000000) /countPackets);
+	
 
    harness_end();   
    switch_free();   
