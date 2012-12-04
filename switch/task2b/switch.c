@@ -16,11 +16,12 @@ using namespace std;
 
 //These are the 16 voq buffers that the rr thread reads from. Initialized below.
 VOQBUFFER voq_buffer[4][4];
+pthread_mutex_t voq_buffer_mutex = PTHREAD_MUTEX_INITIALIZER;
 
 //These are the voq buffer parameters used to get, pop and block the queue.
 int voq_size[4][4] = {0};
-int voq_front[4][4] = {0};
-int voq_rear[4][4] = {0};
+//int voq_front[4][4] = {0};
+//int voq_rear[4][4] = {0};
 
 // This is used to tell the first iteration of the cell time
 int cell_first = 1;
@@ -54,7 +55,6 @@ void *switch_thread_routine(void *arg)
     //at the pthreads library to figure out how it could suspend and restart
     //the rr_thread.
     pthread_t rr_thread; 
-    pthread_create(&rr_thread, NULL, schedule_rr, NULL);
 
     //initialize voq buffer mutexes. Required when using a struct.
     for (int i=0; i<4; i++) {
@@ -79,6 +79,7 @@ void *switch_thread_routine(void *arg)
     //The driver thread needs to somehow be the parent thread of the rr_thre
     //ad. The input thread can remain busy.	
     pthread_create(&in_port_thread, NULL, read_in_port_packet, NULL);
+    pthread_create(&rr_thread, NULL, schedule_rr, NULL);
     pthread_join(in_port_thread, NULL);
     pthread_exit(NULL);
 }
@@ -105,9 +106,18 @@ void *schedule_rr(void* p){
 	}
 
 	// We only process RR in cell time (nano sleep in harness)
-	while(cell_flag == 1 ){
+	while(cell_flag == 1 && transfer_count <=4 ){
 	    cell_print = 0;
 	    // 1. Loop through voqs and send request for each packet
+	    int lock;
+	    while(1){
+		if( pthread_mutex_lock(&(voq_buffer_mutex)) != 0 ){
+		    pthread_mutex_unlock(&(voq_buffer_mutex));
+		}else{
+		    break;
+		}
+	    }
+
 	    for(int i=0; i<4; i++){
 		for(int j=0; j<4; j++){
 		    // Loop through the head packet in this inport buffer(VOQ)
@@ -119,6 +129,8 @@ void *schedule_rr(void* p){
 		    }
 		}
 	    }
+
+	    pthread_mutex_unlock(&(voq_buffer_mutex));
 
 	    // 2. Loop through outputs request placeholder and choose the one the rph-array based on the prio. And send grants to grant-place-holder of the ports
 	    for(int i=0; i<4; i++){
@@ -171,15 +183,27 @@ void *schedule_rr(void* p){
 			    port_unlock(&(out_port[high_outport]));
 			}else{
 			    // Poping actually
-			    packet_t* packet = get_packet_from_voq(input_port, high_outport);
-			    forward_packet_to_port(packet, high_outport);
+			    int lock;
+			    while(1){
+				if( pthread_mutex_lock(&(voq_buffer_mutex)) != 0 ){
+				    pthread_mutex_unlock(&(voq_buffer_mutex));
+				}else{
+				    break;
+				}
+			    }
+
+			    packet_t* packet_ptr = get_packet_from_voq(input_port, high_outport);
+			    forward_packet_to_port(packet_ptr, high_outport);
+			    pthread_mutex_unlock(&voq_buffer_mutex);
 			    transfer_count++;
 			    cout << "Transfer counter: "<<transfer_count<<"\n";
+
 			    out_port[high_outport].is_written = TRUE;
 			    port_unlock(&(out_port[high_outport]));
 			    break;
 			}
 		    }
+
 		    if(cell_first == 1){
 			// Make sure we only update rr list at the first iteration of each cell time
 			cell_first = 0;
@@ -193,7 +217,9 @@ void *schedule_rr(void* p){
 		}
 		input_grant_queue[i].clear();
 	    }
+
 	}
+
     }
 
 }
@@ -212,7 +238,16 @@ int get_port_from_packet(packet_t* packet) {
 // Add a packet to a specific voq.
 void add_packet_to_voq(int input_port, packet_t* packet) {
     int dest_port = get_port_from_packet(packet);
-    pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
+
+    int lock;
+    while(1){
+	if( pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex)) != 0 ){
+	    pthread_mutex_unlock(&(voq_buffer[input_port][dest_port].mutex));
+	}else{
+	    break;
+	}
+    }
+
     if ( voq_buffer[input_port][dest_port].buffer.size() < SIZE) {
 	voq_buffer[input_port][dest_port].buffer.push_back(packet);
 	//packet_copy(packet, voq_buffer[input_port][dest_port].buffer.back());
@@ -222,10 +257,18 @@ void add_packet_to_voq(int input_port, packet_t* packet) {
 
 // Pop a packet from a specific voq.
 packet_t* get_packet_from_voq(int input_port, int dest_port) {
-    pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex));
+    int lock;
+    while(1){
+	if( pthread_mutex_lock(&(voq_buffer[input_port][dest_port].mutex)) != 0 ){
+	    pthread_mutex_unlock(&(voq_buffer[input_port][dest_port].mutex));
+	}else{
+	    break;
+	}
+    }
+
     packet_t* packet;
-    if (voq_buffer[input_port][dest_port].buffer.size() != 0) {
-	//packet_copy(voq_buffer[input_port][dest_port].buffer.front(), packet);
+    if (voq_buffer[input_port][dest_port].buffer.size() != 0 && voq_buffer[input_port][dest_port].buffer.front()!=(packet_t *)NULL ) {
+	//packet_copy(packet_in_voq, packet);
 	// Poping from the front
 	packet = voq_buffer[input_port][dest_port].buffer.front();
 	voq_buffer[input_port][dest_port].buffer.erase(voq_buffer[input_port][dest_port].buffer.begin());
@@ -252,7 +295,17 @@ void *read_in_port_packet(void* p)
 
 	    if (in_port[i].flag == TRUE) {
 		port_lock(&(in_port[i]));
+
+		while(1){
+		    if( pthread_mutex_lock(&(voq_buffer_mutex)) != 0 ){
+			pthread_mutex_unlock(&(voq_buffer_mutex));
+		    }else{
+			break;
+		    }
+		}
+
 		add_packet_to_voq(i,&(in_port[i].packet));
+		pthread_mutex_unlock(&(voq_buffer_mutex));
 		in_port[i].flag = FALSE;
 		port_unlock(&(in_port[i]));
 	    }
